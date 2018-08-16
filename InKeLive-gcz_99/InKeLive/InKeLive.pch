@@ -1,0 +1,56 @@
+//
+//  InKeLive.pch
+//  InKeLive
+//
+//  Created by 1 on 2016/12/12.
+//  Copyright © 2016年 jh. All rights reserved.
+//
+
+#ifndef InKeLive_pch
+#define InKeLive_pch
+
+/*-------------------------------------------------
+ * $(SRCROOT)/$(PROJECT_NAME)/InKeLive.pch *
+ -------------------------------------------------*/
+
+#ifdef DEBUG // 处于开发阶段
+#define ATLog(...) NSLog(__VA_ARGS__)
+#else // 处于发布阶段
+#define ATLog(...)
+#endif
+
+#import "PortConfiguration.h"
+
+#import "UIView+Frame.h"
+
+#import "Masonry.h"
+
+#import "UIImageView+WebCache.h"
+
+#import "UIButton+ImageTitleSpacing.h"
+
+//#import <UMSocialCore/UMSocialCore.h>////
+
+#import <ReactiveCocoa.h>
+
+#import "AutoCommon.h"
+
+#import "Notification.h"
+
+//RGB
+#define RGBA(r, g, b, a)    [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
+#define RGB(r, g, b)     RGBA(r, g, b, 1.0f)
+#define MAIN_COLOR [UIColor colorWithRed:255/255.0 green:207/255.0 blue:61/255.0 alpha:1.0]
+#define TEXT_COLOR [UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0]
+#define GRAY_COLOR [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]
+
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+//弱指针
+#define WEAKSELF __weak typeof(self)weakSelf =self
+
+//聊天字体
+#define MessageFont [UIFont systemFontOfSize:13.0]
+
+#endif /* InKeLive_pch */

@@ -1,0 +1,90 @@
+//
+//  MineViewController.m
+//  InKeLive
+//
+//  Created by 高婷婷 on 2018/8/15.
+//  Copyright © 2018年 jh. All rights reserved.
+//
+
+#import "MineViewController.h"
+#import "MineHeadView.h"
+
+#define BG_COLOR RGB(239, 239, 239)
+
+@interface MineViewController ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong)NSArray *arrTitle;
+@property (nonatomic, strong)NSArray *arrVC;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+
+@end
+
+@implementation MineViewController
+- (void)initData{
+    _arrTitle = @[@"我的收益", @"安全中心", @"积分兑换", @"活动中心", @"设置"];
+    [self.tableView reloadData];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = BG_COLOR;
+    [self.navigationController.navigationBar setHidden:YES];
+    [self initData];
+}
+
+- (UITableView *)tableView{
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.backgroundColor = MAIN_COLOR;
+    _tableView.separatorColor = [UIColor clearColor];
+    return _tableView;
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 5;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellWithIdentifier = @"MineTableView";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
+    }
+    UIView *viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 1)];
+    viewLine.backgroundColor = BG_COLOR;
+    [cell.contentView addSubview:viewLine];
+    cell.textLabel.text = [_arrTitle objectAtIndex:indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:16];
+    cell.textLabel.textColor = TEXT_COLOR;
+    cell.accessoryType = UITableViewCellStyleValue1;
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44;
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end
