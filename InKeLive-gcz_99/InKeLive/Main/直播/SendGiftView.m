@@ -29,34 +29,27 @@
 @property (nonatomic, strong)UIButton *btnSelect;
 
 @property (nonatomic, strong)NSMutableArray *array;
-@property (nonatomic, strong)NSArray *array2;
-@property (nonatomic, strong)NSArray *array3;
-@property (nonatomic, strong)NSArray *array4;
-@property (nonatomic, strong)NSArray *array5;
-@property (nonatomic, strong)NSArray *array6;
+@property (nonatomic, strong)NSArray *arrayCollect;
+
 @end
 
 @implementation SendGiftView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
+        [self array];
+        _arrayCollect = [NSArray arrayWithArray:[_array objectAtIndex:0]];
         [self setSubViews];
         self.userId = 0;
         self.giftNum = 1;
-        [self array];
+        
     }
     return self;
 }
 
-- (NSMutableArray *)array{
-    if (!_array) {
-        _array = [NSMutableArray array];
-    }
-    return _array;
-}
-
 - (void)setSubViews{
     //这里没有设置自己(UIView),意思就是背景透明了
+    self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
     [self.rechargeView addSubview:self.pageControl];
     [self addSubview:self.giftCollectionView];
     [self addSubview:self.rechargeView];
@@ -67,6 +60,7 @@
     [self.rechargeView addSubview:self.selectUserButton];
     [self.rechargeView addSubview:self.selectNumButton];
     [self addSubview:self.topClassifyView];
+    
 }
 
 //弹出礼物
@@ -74,9 +68,9 @@
     //这个Window是什么?
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
-    //重新计算页数
-    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
-    self.pageControl.numberOfPages = (dpk_app.giftList.count +7)/8;
+//    //重新计算页数
+//    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+//    self.pageControl.numberOfPages = (dpk_app.giftList.count +7)/8;
 }
 
 //更新用户金币信息
@@ -148,19 +142,12 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GiftViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RegisterId" forIndexPath:indexPath];
-    DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-    
-    //测试数据,testcode
-    //for(int i=0; i<dpk_app.giftArray.count; i++) {
-    //    ClientGiftModel* model = [dpk_app.giftArray objectAtIndex:i];
-    //    NSLog(@"icon:%@", model.icon);
-    //}
+//    DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
 
-    
-    if(dpk_app.giftList.count >0 && indexPath.row < dpk_app.giftList.count)
+    if(_arrayCollect.count>0 && indexPath.row < _arrayCollect.count)
     {
         //设置礼物信息
-        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:indexPath.row];
+        GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
         [cell setGiftInfo:model.giftId GiftImage:model.pic_thumb GiftName:model.name GiftPrice:model.price];
 
         if (_reuse == indexPath.row) {
@@ -262,32 +249,49 @@
 }
 
 - (void)btnTypeClicked: (UIButton *)btnType{
+    if (_arrayCollect.count > 0) {
+        _arrayCollect = nil;
+    }
     for (int index = 0; index < 6; index ++) {
         UIButton *btn = (UIButton *)[[btnType superview]viewWithTag:1000 + index];
         [btn setSelected:NO];
     }
     UIButton *button = btnType;
     [button setSelected:YES];
-    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
-    NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
-    NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
-    int ID = (int)btnType.tag - 999;
-    GTGiftGroupModel*model = [arrayGroup objectAtIndex:ID];
-    for (int index = 0; index < model.list.count-1; index ++) {
-        for (int x = 0; x < arrayList.count-1; x++) {
-            GTGiftListModel *listModel = [arrayList objectAtIndex:x];
-            if ((int)[model.list objectAtIndex:x] == listModel.giftId) {
-                [_array addObject:listModel];
-            }
-        }
-
-    }
-
-   
-    NSLog(@"_array == %@",_array);
+    _arrayCollect = [NSArray arrayWithArray:[_array objectAtIndex:btnType.tag - 1000]];
+    NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
+    self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
+    [self.rechargeView reloadInputViews];
     [self.giftCollectionView reloadData];
 }
 
+
+- (NSMutableArray *)array{
+    _array = [NSMutableArray array];
+    for (int count = 0; count < typeCount ; count ++) {
+        DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+        NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
+        NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
+        NSMutableArray *arrSame = [NSMutableArray array];
+        GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
+        for (int index = 0; index < model.list.count; index ++) {
+            //        NSLog(@"%@",model.list[index]);
+            for (int x = 0; x < arrayList.count; x++) {
+                GTGiftListModel *listModel = [arrayList objectAtIndex:x];
+                //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
+                //            NSLog(@"list == %d",listModel.giftId);
+                if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
+                    [arrSame addObject:listModel];
+                }
+            }
+        }
+        NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
+//        [_array addObject:arrSame];
+        [_array insertObject:arrSame atIndex:count];
+        NSLog(@"arrSame == %lu",(unsigned long)_array.count);
+    }
+    return _array;
+}
 
 //充值按钮
 //- (UIButton *)rechargeButton{

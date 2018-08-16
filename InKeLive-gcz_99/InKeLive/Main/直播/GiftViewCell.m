@@ -56,8 +56,9 @@
 {
     //self.giftImageView
     
-    NSURL *url = [NSURL URLWithString:giftImage];
-    //NSURL *url =[NSURL URLWithString:@"http://pic.nipic.com/2007-11-19/20071119205414928_2.jpg"];
+//    NSURL *url = [NSURL URLWithString:giftImage];
+    NSString *strUrl = [NSString stringWithFormat:@"http://cache.aa1258.com/%@",giftImage];
+    NSURL *url =[NSURL URLWithString:strUrl];
     [self.giftImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     
     self.giftNameView.text = giftName;
