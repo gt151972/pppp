@@ -214,6 +214,44 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
         [sock SetMessageEventSink:delegate];
     return 0;
 }
+- (void)loadGiftVersion{
+    NSLog(@"请求礼物配置 >>>>> ");
+    
+    // 获得请求管理者
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    
+    // 设置请求格式
+    session.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = @"20001";
+    parameters[@"flag"] = @"0";
+    NSString* strAPIUrl = URL_GiftInfo;
+    NSLog(@"url:%@", strAPIUrl);
+    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
+    [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"Success: %@", responseObject);
+        NSLog(@"task: %@",task);
+        NSDictionary *appDic =(NSDictionary*)responseObject;
+        if(1){
+            NSString *plistPath = [[NSBundle mainBundle]pathForResource:@"AppInfo" ofType:@"plist"];
+            NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
+            NSLog(@"%@",dataDic);//直接打印数据
+            NSString *strVersion = [NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]];
+            if (strVersion.length > 0 && [strVersion isEqualToString:[NSString stringWithFormat:@"%@",dataDic[@"version"]]]) {
+            }else{
+                dataDic[@"imageUrl"] = [appDic objectForKey:@"res"];
+                dataDic[@"uDown"] = [appDic objectForKey:@"uDown"];
+                dataDic[@"uUp"] = [appDic objectForKey:@"uUp"];
+                dataDic[@"version"] = [appDic objectForKey:@"GiftVersion"];
+                [dataDic writeToFile:plistPath atomically:YES];
+                [self loadGiftConf];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error: %@", error);
+    }];
+}
 
 -(void) loadGiftConf
 {
@@ -224,11 +262,10 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
     
     // 设置请求格式
     session.requestSerializer = [AFJSONRequestSerializer serializer];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     parameters[@"cmd"] = @"20001";
     parameters[@"flag"] = @"2";
-    NSString* strAPIUrl = [NSString stringWithFormat:@"%@",self.clientConfigParam.giftList];
+    NSString* strAPIUrl = URL_GiftInfo;
     NSLog(@"url:%@", strAPIUrl);
     [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
     [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {

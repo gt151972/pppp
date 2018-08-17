@@ -52,12 +52,17 @@
     }];
 }
 
+- (void)getDataFromPlist: (NSString *)plistName{
+}
+
 -(void) setGiftInfo:(int)giftId GiftImage:(NSString*)giftImage GiftName:(NSString*)giftName GiftPrice:(int)giftPrice
 {
     //self.giftImageView
+    NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+    NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
     
 //    NSURL *url = [NSURL URLWithString:giftImage];
-    NSString *strUrl = [NSString stringWithFormat:@"http://cache.aa1258.com/%@",giftImage];
+    NSString *strUrl = [NSString stringWithFormat:@"%@%@",[dataDic objectForKey:@"imageUrl"],giftImage];
     NSURL *url =[NSURL URLWithString:strUrl];
     [self.giftImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     

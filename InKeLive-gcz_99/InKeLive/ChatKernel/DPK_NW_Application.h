@@ -46,7 +46,7 @@
 -(int) CloseRoomSocket:(DPKTCPSocket*)sock;
 -(int)SetRoomMessageSink:(DPKTCPSocket*)sock RoomMessageSink:(id) delegate;
 
--(void) loadGiftConf;
+-(void) loadGiftVersion;
 -(GTGiftListModel*) findGiftConfig:(int)giftId;
 
 @end

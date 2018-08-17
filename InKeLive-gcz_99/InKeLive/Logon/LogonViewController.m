@@ -265,7 +265,7 @@
         //获取礼物配置列表
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.00001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-            [dpk_app loadGiftConf];
+            [dpk_app loadGiftVersion];
         });
         [self dismissViewControllerAnimated:YES completion:nil];
     }

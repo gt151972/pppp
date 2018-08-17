@@ -136,8 +136,8 @@
 #pragma
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     //数量
-    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
-    return dpk_app.giftList.count;
+    //    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+    return _arrayCollect.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -184,6 +184,10 @@
     }
 }
 
+-(CGFloat )collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
+}
 
 #pragma 加载
 //滑动
@@ -268,27 +272,34 @@
 
 - (NSMutableArray *)array{
     _array = [NSMutableArray array];
-    for (int count = 0; count < typeCount ; count ++) {
-        DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
-        NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
-        NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
-        NSMutableArray *arrSame = [NSMutableArray array];
-        GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
-        for (int index = 0; index < model.list.count; index ++) {
-            //        NSLog(@"%@",model.list[index]);
-            for (int x = 0; x < arrayList.count; x++) {
-                GTGiftListModel *listModel = [arrayList objectAtIndex:x];
-                //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
-                //            NSLog(@"list == %d",listModel.giftId);
-                if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
-                    [arrSame addObject:listModel];
+    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+    NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
+    NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
+    NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+    NSMutableArray *arrData = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
+    if (arrayGroup.count > 0 && arrData.count > 0) {
+        for (int count = 0; count < typeCount ; count ++) {
+            NSMutableArray *arrSame = [NSMutableArray array];
+            GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
+            for (int index = 0; index < model.list.count; index ++) {
+                //        NSLog(@"%@",model.list[index]);
+                for (int x = 0; x < arrayList.count; x++) {
+                    GTGiftListModel *listModel = [arrayList objectAtIndex:x];
+                    //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
+                    //            NSLog(@"list == %d",listModel.giftId);
+                    if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
+                        [arrSame addObject:listModel];
+                    }
                 }
             }
+            NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
+            //        [_array addObject:arrSame];
+            [_array insertObject:arrSame atIndex:count];
         }
-        NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
-//        [_array addObject:arrSame];
-        [_array insertObject:arrSame atIndex:count];
-        NSLog(@"arrSame == %lu",(unsigned long)_array.count);
+        arrData = _array;
+        [arrData writeToFile:plistPath atomically:YES];
+    }else{
+        _array = arrData;
     }
     return _array;
 }

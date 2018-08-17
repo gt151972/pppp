@@ -281,6 +281,7 @@
 		63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */; };
 		6421A3D621214F20009E2874 /* PrivateChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6421A3D521214F20009E2874 /* PrivateChatView.m */; };
 		6421A3D821214F5D009E2874 /* PrivateChatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6421A3D721214F5D009E2874 /* PrivateChatView.xib */; };
+		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
 		644B18082114244800939E76 /* AttentionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B18072114244800939E76 /* AttentionController.m */; };
 		644B18102114249F00939E76 /* AttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B180E2114249F00939E76 /* AttentionViewController.m */; };
@@ -761,6 +762,8 @@
 		6421A3D421214F20009E2874 /* PrivateChatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrivateChatView.h; sourceTree = "<group>"; };
 		6421A3D521214F20009E2874 /* PrivateChatView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PrivateChatView.m; sourceTree = "<group>"; };
 		6421A3D721214F5D009E2874 /* PrivateChatView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrivateChatView.xib; sourceTree = "<group>"; };
+		6423C9EB2126631D00801996 /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppInfo.plist; sourceTree = "<group>"; };
+		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
 		6431960F2113FCB600D97682 /* libSocialOfficialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocialOfficialWeChat.a; path = Pods/UMengUShare/UShareSDK/SocialLibraries/WeChat/WechatSDK/libSocialOfficialWeChat.a; sourceTree = "<group>"; };
 		643196112114027F00D97682 /* Time.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		643196122114027F00D97682 /* Time.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Time.m; sourceTree = "<group>"; };
@@ -1414,11 +1417,13 @@
 				6357A5D71DFE32B2001E77AF /* AppDelegate.h */,
 				6357A5D81DFE32B2001E77AF /* AppDelegate.m */,
 				6357A5E51DFE32B2001E77AF /* Info.plist */,
+				6423C9EB2126631D00801996 /* AppInfo.plist */,
 				633281F91E02452100EC018B /* Assets.xcassets */,
 				6357A5D41DFE32B2001E77AF /* Supporting Files */,
 				6357A6291DFE5138001E77AF /* InKeLive.pch */,
 				1A9D1CF91F433C7E0003EA13 /* CommonAPIDefines.h */,
 				6460CF98211D7F8C000855F4 /* Notification.h */,
+				6423C9ED212669B500801996 /* PlistName.h */,
 			);
 			path = InKeLive;
 			sourceTree = "<group>";
@@ -2092,6 +2097,7 @@
 				6302FDFB1E1B9DD9007122D3 /* yipitiezhi05.png in Resources */,
 				6302FE0E1E1B9DD9007122D3 /* yipitiezhi014.png in Resources */,
 				635587351E29C62900D1A209 /* send.jpg in Resources */,
+				6423C9EC2126631D00801996 /* AppInfo.plist in Resources */,
 				6332823B1E024CB400EC018B /* meteor_after_16.png in Resources */,
 				6304831F1E1F3B01004837C5 /* RecommendView.xib in Resources */,
 				633282421E024CB400EC018B /* meteor_after_23.png in Resources */,
