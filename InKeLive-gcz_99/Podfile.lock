@@ -20,6 +20,9 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
   - GPUImage (0.1.7)
   - libksygpulive/base (3.0.4)
   - libksygpulive/libksygpulive (3.0.4):
@@ -54,6 +57,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.3)
+  - FMDB
   - libksygpulive/libksygpulive
   - Masonry (~> 1.0.2)
   - MBProgressHUD (~> 1.0.0)
@@ -67,6 +71,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - FMDB
     - GPUImage
     - libksygpulive
     - Masonry
@@ -80,6 +85,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   libksygpulive: aca3eb30e7a38ee6565feb52feb82ccc0103ce43
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -91,6 +97,6 @@ SPEC CHECKSUMS:
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
 
-PODFILE CHECKSUM: f910d5410a44be9c87876db11ce1310cc523748c
+PODFILE CHECKSUM: 4c66ad842790354d86154e48764da700e060556a
 
 COCOAPODS: 1.5.3

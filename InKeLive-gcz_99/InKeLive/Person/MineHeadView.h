@@ -12,5 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgHead;
 @property (weak, nonatomic) IBOutlet UILabel *labName;
 @property (weak, nonatomic) IBOutlet UILabel *labUserId;
-
+@property (weak, nonatomic) IBOutlet UILabel *labMoney;
+@property (weak, nonatomic) IBOutlet UILabel *labMoneyUp;
+@property (weak, nonatomic) IBOutlet UIButton *btnRecharge;
 @end

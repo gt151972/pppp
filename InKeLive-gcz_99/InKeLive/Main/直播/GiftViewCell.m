@@ -16,7 +16,7 @@
         //整个背景半透明
         //self.backgroundColor = RGBA(0, 0, 0, 0.3);
         self.backgroundColor = [UIColor clearColor];
-        self.giftImageView.image = [UIImage imageNamed:@"1"];
+//        self.giftImageView.image = [UIImage imageNamed:@"1"];
         [self setSubViews];
     }
     return self;
@@ -24,32 +24,34 @@
 
 - (void)setSubViews{
     [self addSubview:self.giftImageView];
-    [self addSubview:self.hitButton];
+    [self addSubview:self.hitButton]; //连击标志
     [self addSubview:self.giftNameView];
-    [self addSubview:self.giftPriceView];
+//    [self addSubview:self.giftPriceView];
     //和自己一样大
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.equalTo(self);
-        make.top.equalTo(self).offset(25);
+        make.left.equalTo(self).offset(13);
+        make.right.equalTo(self).offset(-13);
+        make.top.equalTo(self).offset (9);
+        make.bottom.equalTo(self).offset(-23);
     }];
-    
-    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.equalTo(self);
-        make.height.width.equalTo(@25);
-    }];
+//
+//    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.right.equalTo(self);
+//        make.height.width.equalTo(@25);
+//    }];
     
     [self.giftNameView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_bottom).offset(-36);
-        make.height.equalTo(@18);
+        make.bottom.equalTo(self.mas_bottom);
+        make.height.equalTo(@12);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
     }];
-    [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_bottom).offset(-18);
-        make.height.equalTo(@18);
-        make.left.equalTo(self.mas_left);
-        make.right.equalTo(self.mas_right);
-    }];
+//    [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.mas_bottom).offset(-18);
+//        make.height.equalTo(@18);
+//        make.left.equalTo(self.mas_left);
+//        make.right.equalTo(self.mas_right);
+//    }];
 }
 
 - (void)getDataFromPlist: (NSString *)plistName{
@@ -58,12 +60,15 @@
 -(void) setGiftInfo:(int)giftId GiftImage:(NSString*)giftImage GiftName:(NSString*)giftName GiftPrice:(int)giftPrice
 {
     //self.giftImageView
-    NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
-    NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
-    
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+
 //    NSURL *url = [NSURL URLWithString:giftImage];
-    NSString *strUrl = [NSString stringWithFormat:@"%@%@",[dataDic objectForKey:@"imageUrl"],giftImage];
+    NSString *strUrl = [NSString stringWithFormat:@"%@%@",[dict objectForKey:@"res"],giftImage];
     NSURL *url =[NSURL URLWithString:strUrl];
+    NSLog(@"strUrl == %@",strUrl);
     [self.giftImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     
     self.giftNameView.text = giftName;
@@ -99,7 +104,7 @@
 -(UILabel*)giftNameView {
     if(!_giftNameView) {
         _giftNameView = [[UILabel alloc]init];
-        _giftNameView.backgroundColor = RGBA(0, 0,0, 0.5);
+        _giftNameView.backgroundColor = [UIColor clearColor];
         _giftNameView.text = @"礼物名称";
         _giftNameView.textColor = [UIColor whiteColor];
         _giftNameView.textAlignment = NSTextAlignmentCenter;

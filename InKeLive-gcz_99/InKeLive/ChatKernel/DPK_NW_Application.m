@@ -11,11 +11,11 @@
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
 
-
+#define typeCount 6
 
 static DPK_NW_Application* DPKApp_ShareObj =nil;
 @interface DPK_NW_Application()
-
+@property (nonatomic, strong)NSMutableArray *array;
 @end
 
 @implementation DPK_NW_Application
@@ -233,19 +233,20 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
         NSLog(@"task: %@",task);
         NSDictionary *appDic =(NSDictionary*)responseObject;
         if(1){
-            NSString *plistPath = [[NSBundle mainBundle]pathForResource:@"AppInfo" ofType:@"plist"];
-            NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
-            NSLog(@"%@",dataDic);//直接打印数据
-            NSString *strVersion = [NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]];
-            if (strVersion.length > 0 && [strVersion isEqualToString:[NSString stringWithFormat:@"%@",dataDic[@"version"]]]) {
-            }else{
-                dataDic[@"imageUrl"] = [appDic objectForKey:@"res"];
-                dataDic[@"uDown"] = [appDic objectForKey:@"uDown"];
-                dataDic[@"uUp"] = [appDic objectForKey:@"uUp"];
-                dataDic[@"version"] = [appDic objectForKey:@"GiftVersion"];
-                [dataDic writeToFile:plistPath atomically:YES];
-                [self loadGiftConf];
-            }
+//            NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+//            NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
+//            NSLog(@"%@",dataDic);//直接打印数据
+//            dataDic[@"imageUrl"] = [appDic objectForKey:@"res"];
+//            dataDic[@"uDown"] = [appDic objectForKey:@"uDown"];
+//            dataDic[@"uUp"] = [appDic objectForKey:@"uUp"];
+//            dataDic[@"version"] = [appDic objectForKey:@"GiftVersion"];
+//            [dataDic writeToFile:plistPath atomically:YES];
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+            NSDictionary*dict =@{@"res": [appDic objectForKey:@"res"],@"uDown":[appDic objectForKey:@"uDown"],@"uUp":[appDic objectForKey:@"uUp"],@"GiftVersion":[NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]]};
+            [dict writeToFile:filePathName atomically:YES];
+            [self loadGiftConf];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -288,9 +289,9 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 model.giftId =[giftItem[@"id"] intValue];
                 model.name = giftItem[@"name"];
                 model.note = giftItem[@"experience"];
-                model.pic_original = [NSString stringWithFormat:@"%@%@", url_giftpic_prefix, giftItem[@"pic_original"]];
-                model.pic_s = [NSString stringWithFormat:@"%@%@", url_giftpic_prefix, giftItem[@"pic_s"]];
-                model.pic_thumb = [NSString stringWithFormat:@"%@%@", url_giftpic_prefix, giftItem[@"pic_thumb"]];
+                model.pic_original = giftItem[@"pic_original"];
+                model.pic_s = giftItem[@"pic_s"];
+                model.pic_thumb = giftItem[@"pic_thumb"];
                 model.price = [giftItem[@"price"] intValue];
                 model.sname = giftItem[@"sname"];
                 model.sort = [giftItem[@"sort"] intValue];
@@ -313,6 +314,43 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error: %@", error);
     }];
+}
+
+- (NSMutableArray *)array{
+    _array = [NSMutableArray array];
+    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+    NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
+    NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
+    NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+    NSMutableArray *arrData = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
+    if (arrayGroup.count > 0 && arrData.count > 0) {
+        for (int count = 0; count < typeCount ; count ++) {
+            NSMutableArray *arrSame = [NSMutableArray array];
+            GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
+            for (int index = 0; index < model.list.count; index ++) {
+                //        NSLog(@"%@",model.list[index]);
+                for (int x = 0; x < arrayList.count; x++) {
+                    GTGiftListModel *listModel = [arrayList objectAtIndex:x];
+                    //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
+                    //            NSLog(@"list == %d",listModel.giftId);
+                    if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
+                        [arrSame addObject:listModel];
+                    }
+                }
+            }
+            NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
+            //        [_array addObject:arrSame];
+            [_array insertObject:arrSame atIndex:count];
+        }
+        arrData = _array;
+        [arrData writeToFile:plistPath atomically:YES];
+        NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+        NSMutableArray *arr = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
+        NSLog(@"arr == %@",arr);
+    }else{
+        _array = arrData;
+    }
+    return _array;
 }
 
 -(GTGiftListModel*) findGiftConfig:(int)giftId

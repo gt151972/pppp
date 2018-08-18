@@ -330,14 +330,13 @@
 		6489CAF72123F235007F6F3C /* MineHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAF62123F235007F6F3C /* MineHeadView.xib */; };
 		6489CAFA212404C8007F6F3C /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAF9212404C8007F6F3C /* MineViewController.m */; };
 		6489CAFC21240514007F6F3C /* MineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAFB21240514007F6F3C /* MineViewController.xib */; };
-		6489CB0321240DAF007F6F3C /* MineHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CB0121240DAF007F6F3C /* MineHeadCell.m */; };
-		6489CB0421240DAF007F6F3C /* MineHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CB0221240DAF007F6F3C /* MineHeadCell.xib */; };
 		64AA3D612112C8EB00111B80 /* ForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D5F2112C8EB00111B80 /* ForgetPasswordViewController.m */; };
 		64AA3D622112C8EB00111B80 /* ForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */; };
 		64AA3D662112C91700111B80 /* RegisteredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D642112C91700111B80 /* RegisteredViewController.m */; };
 		64AA3D672112C91700111B80 /* RegisteredViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D652112C91700111B80 /* RegisteredViewController.xib */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
+		746636D72128663B008B4A52 /* FMDBData.m in Sources */ = {isa = PBXBuildFile; fileRef = 746636D62128663B008B4A52 /* FMDBData.m */; };
 		D625F1BB0A18D8AEBB1A58AB /* libPods-InKeLive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE17B114013C22152C4C9264 /* libPods-InKeLive.a */; };
 /* End PBXBuildFile section */
 
@@ -844,9 +843,6 @@
 		6489CAF8212404C8007F6F3C /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		6489CAF9212404C8007F6F3C /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		6489CAFB21240514007F6F3C /* MineViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MineViewController.xib; sourceTree = "<group>"; };
-		6489CB0021240DAF007F6F3C /* MineHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineHeadCell.h; sourceTree = "<group>"; };
-		6489CB0121240DAF007F6F3C /* MineHeadCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineHeadCell.m; sourceTree = "<group>"; };
-		6489CB0221240DAF007F6F3C /* MineHeadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MineHeadCell.xib; sourceTree = "<group>"; };
 		64AA3D5E2112C8EB00111B80 /* ForgetPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordViewController.h; sourceTree = "<group>"; };
 		64AA3D5F2112C8EB00111B80 /* ForgetPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordViewController.m; sourceTree = "<group>"; };
 		64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgetPasswordViewController.xib; sourceTree = "<group>"; };
@@ -856,6 +852,8 @@
 		64D07BDA211C19E8001C864F /* RoomInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RoomInfo.plist; sourceTree = "<group>"; };
 		64D07BDC211C2406001C864F /* TopToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopToolView.h; sourceTree = "<group>"; };
 		64D07BDD211C2406001C864F /* TopToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopToolView.m; sourceTree = "<group>"; };
+		746636D52128663B008B4A52 /* FMDBData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDBData.h; sourceTree = "<group>"; };
+		746636D62128663B008B4A52 /* FMDBData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDBData.m; sourceTree = "<group>"; };
 		B6D595258B4A4B86BBA509C4 /* Pods-InKeLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InKeLive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InKeLive/Pods-InKeLive.debug.xcconfig"; sourceTree = "<group>"; };
 		DE17B114013C22152C4C9264 /* libPods-InKeLive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InKeLive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1472,9 +1470,6 @@
 				6489CAF32123F226007F6F3C /* MineHeadView.h */,
 				6489CAF42123F226007F6F3C /* MineHeadView.m */,
 				6489CAF62123F235007F6F3C /* MineHeadView.xib */,
-				6489CB0021240DAF007F6F3C /* MineHeadCell.h */,
-				6489CB0121240DAF007F6F3C /* MineHeadCell.m */,
-				6489CB0221240DAF007F6F3C /* MineHeadCell.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -1539,6 +1534,8 @@
 				635B5E641E00D02900E62E7A /* Class */,
 				630E75561DFFFB3C00AF5EAF /* GIftAnimation */,
 				6357A6251DFE4DB1001E77AF /* UIView-Frame */,
+				746636D52128663B008B4A52 /* FMDBData.h */,
+				746636D62128663B008B4A52 /* FMDBData.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2079,7 +2076,6 @@
 				635587341E29C62900D1A209 /* search.jpg in Resources */,
 				633282381E024CB400EC018B /* meteor_after_13.png in Resources */,
 				6302FE021E1B9DD9007122D3 /* yipitiezhi008.png in Resources */,
-				6489CB0421240DAF007F6F3C /* MineHeadCell.xib in Resources */,
 				63A335341E02780000027174 /* ShipViews.xib in Resources */,
 				1AEED2D71F5BAC7300A545BA /* radio.png in Resources */,
 				633282371E024CB400EC018B /* meteor_after_12.png in Resources */,
@@ -2356,7 +2352,6 @@
 				637D2D161E003FDB004F1873 /* CameraView.m in Sources */,
 				647F33F521250AA800D06FD5 /* GTLocationManager.m in Sources */,
 				633D8D961E0796010087BD77 /* UIColor+Category.m in Sources */,
-				6489CB0321240DAF007F6F3C /* MineHeadCell.m in Sources */,
 				6462E7DC2117F44E005EF737 /* TADotView.m in Sources */,
 				6462E7DE2117F44E005EF737 /* TAAnimatedDotView.m in Sources */,
 				63402F111E1247F2002F6661 /* HomeViewController.m in Sources */,
@@ -2405,6 +2400,7 @@
 				63402EFE1E124723002F6661 /* NearCell.m in Sources */,
 				6357A61C1DFE4C91001E77AF /* CameraViewController.m in Sources */,
 				632CCB501E0B74710040B9EB /* PresentViewCell.m in Sources */,
+				746636D72128663B008B4A52 /* FMDBData.m in Sources */,
 				1A9D1CF81F4321B80003EA13 /* ClientConfigParam.m in Sources */,
 				6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */,
 				633D8D981E0796010087BD77 /* MessageModel.m in Sources */,

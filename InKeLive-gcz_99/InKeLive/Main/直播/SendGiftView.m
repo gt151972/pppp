@@ -27,9 +27,8 @@
 @property (nonatomic, strong) UIView *topClassifyView;//顶部分类栏
 @property (nonatomic, strong)NSArray *arrGroupTitle;
 @property (nonatomic, strong)UIButton *btnSelect;
-
-@property (nonatomic, strong)NSMutableArray *array;
 @property (nonatomic, strong)NSArray *arrayCollect;
+@property (nonatomic, strong)NSMutableArray *arrayAll;
 
 @end
 
@@ -37,8 +36,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        [self array];
-        _arrayCollect = [NSArray arrayWithArray:[_array objectAtIndex:0]];
+        [self arrayAll];
+        _arrayCollect = [NSArray arrayWithArray:[_arrayAll objectAtIndex:0]];
         [self setSubViews];
         self.userId = 0;
         self.giftNum = 1;
@@ -58,7 +57,7 @@
     [self.rechargeView addSubview:self.userMoneyLabel];
     [self.rechargeView addSubview:self.senderButton];
     [self.rechargeView addSubview:self.selectUserButton];
-    [self.rechargeView addSubview:self.selectNumButton];
+//    [self.rechargeView addSubview:self.selectNumButton];
     [self addSubview:self.topClassifyView];
     
 }
@@ -142,12 +141,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GiftViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RegisterId" forIndexPath:indexPath];
-//    DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
 
     if(_arrayCollect.count>0 && indexPath.row < _arrayCollect.count)
     {
+        NSLog(@"_arrayCollect == %@",_arrayCollect);
         //设置礼物信息
         GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
+        NSLog(@"pic == %@",model.pic_thumb);
         [cell setGiftInfo:model.giftId GiftImage:model.pic_thumb GiftName:model.name GiftPrice:model.price];
 
         if (_reuse == indexPath.row) {
@@ -171,13 +171,13 @@
         }
         cell.hitButton.selected = YES;
         //可以发送礼物
-        self.senderButton.backgroundColor = RGB(36, 215, 200);
+//        self.senderButton.backgroundColor = RGB(36, 215, 200);
         self.senderButton.enabled = YES;
         _reuse = indexPath.row;
     } else {
         cell.hitButton.selected = NO;
         //未有选中，禁用发送按钮
-        self.senderButton.backgroundColor = [UIColor grayColor];
+//        self.senderButton.backgroundColor = [UIColor grayColor];
         self.senderButton.enabled = NO;
         _reuse = 100;
         return;
@@ -211,6 +211,39 @@
         [_giftCollectionView registerClass:[GiftViewCell class] forCellWithReuseIdentifier:@"RegisterId"];
     }
     return _giftCollectionView;
+}
+
+- (NSMutableArray *)arrayAll{
+    _arrayAll = [NSMutableArray array];
+    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
+    NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
+    NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
+    if (arrayGroup.count > 0 && arrayList.count > 0) {
+        for (int count = 0; count < typeCount ; count ++) {
+            NSMutableArray *arrSame = [NSMutableArray array];
+            GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
+            for (int index = 0; index < model.list.count; index ++) {
+                //        NSLog(@"%@",model.list[index]);
+                for (int x = 0; x < arrayList.count; x++) {
+                    GTGiftListModel *listModel = [arrayList objectAtIndex:x];
+                    //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
+                    //            NSLog(@"list == %d",listModel.giftId);
+                    if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
+                        [arrSame addObject:listModel];
+                    }
+                }
+            }
+            NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
+            //        [_array addObject:arrSame];
+            [_arrayAll insertObject:arrSame atIndex:count];
+        }
+//        arrData = _array;
+//        [arrData writeToFile:plistPath atomically:YES];
+//        NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
+//        NSMutableArray *arr = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
+//        NSLog(@"arr == %@",arr);
+    }
+    return _arrayAll;
 }
 
 //底部工具栏(充值按钮，发送按钮)
@@ -262,46 +295,11 @@
     }
     UIButton *button = btnType;
     [button setSelected:YES];
-    _arrayCollect = [NSArray arrayWithArray:[_array objectAtIndex:btnType.tag - 1000]];
+    _arrayCollect = [NSArray arrayWithArray:[_arrayAll objectAtIndex:btnType.tag - 1000]];
     NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
     self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
     [self.rechargeView reloadInputViews];
     [self.giftCollectionView reloadData];
-}
-
-
-- (NSMutableArray *)array{
-    _array = [NSMutableArray array];
-    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
-    NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
-    NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
-    NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
-    NSMutableArray *arrData = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
-    if (arrayGroup.count > 0 && arrData.count > 0) {
-        for (int count = 0; count < typeCount ; count ++) {
-            NSMutableArray *arrSame = [NSMutableArray array];
-            GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
-            for (int index = 0; index < model.list.count; index ++) {
-                //        NSLog(@"%@",model.list[index]);
-                for (int x = 0; x < arrayList.count; x++) {
-                    GTGiftListModel *listModel = [arrayList objectAtIndex:x];
-                    //            NSLog(@"group == %@",[model.list objectAtIndex:index]);
-                    //            NSLog(@"list == %d",listModel.giftId);
-                    if ([[model.list objectAtIndex:index]intValue] == listModel.giftId) {
-                        [arrSame addObject:listModel];
-                    }
-                }
-            }
-            NSLog(@"arrSame == %lu",(unsigned long)arrSame.count);
-            //        [_array addObject:arrSame];
-            [_array insertObject:arrSame atIndex:count];
-        }
-        arrData = _array;
-        [arrData writeToFile:plistPath atomically:YES];
-    }else{
-        _array = arrData;
-    }
-    return _array;
 }
 
 //充值按钮
@@ -316,8 +314,8 @@
 //用户金币/记分
 -(UILabel*)userMoneyLabel {
     if(!_userMoneyLabel) {
-        _userMoneyLabel =[[UILabel alloc] initWithFrame:CGRectMake(5, 36, SCREEN_WIDTH- 80, 14)];
-        _userMoneyLabel.font =[UIFont systemFontOfSize:13];
+        _userMoneyLabel =[[UILabel alloc] initWithFrame:CGRectMake(12, 8, SCREEN_WIDTH- 80, 14)];
+        _userMoneyLabel.font =[UIFont systemFontOfSize:12];
         _userMoneyLabel.textColor = RGB(255, 255, 255);
         _userMoneyLabel.textAlignment = NSTextAlignmentLeft;
         _userMoneyLabel.text = @"金币:0 积分:0";
@@ -330,16 +328,15 @@
 //发送礼物按钮
 - (UIButton *)senderButton{
     if (!_senderButton) {
-        _senderButton = [MyControlTool buttonWithText:@"发送" textColor:[UIColor whiteColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 70, 17, 60, 26) clickBlock:^(id x) {
+        _senderButton = [MyControlTool buttonWithText:@"发送" textColor:[UIColor whiteColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
             if (self.giftClick) {
                 self.giftClick(_reuse);
             }
         }];
         _senderButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        _senderButton.frame = CGRectMake(SCREEN_WIDTH-50, 10, 45, 40);
         _senderButton.layer.cornerRadius = 2; //圆角
         _senderButton.layer.masksToBounds = YES;
-        [_senderButton setBackgroundColor:RGB(23, 23, 23)];
+        [_senderButton setBackgroundColor:MAIN_COLOR];
     }
     return _senderButton;
 }
@@ -347,7 +344,7 @@
 //选择赠送对象按钮
 -(UIButton *)selectUserButton {
     if(!_selectUserButton) {
-        CGRect frame = CGRectMake(0, 2, 130, 28);
+        CGRect frame = CGRectMake(12, 28, 230, 22);
         _selectUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectUserButton.frame = frame;
         _selectUserButton.backgroundColor = [UIColor clearColor];
@@ -356,8 +353,8 @@
         _selectUserButton.titleLabel.font = [UIFont systemFontOfSize:13];
         _selectUserButton.titleLabel.textColor = [UIColor whiteColor];
         _selectUserButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _selectUserButton.contentEdgeInsets = UIEdgeInsetsMake(0,5, 0, 0);
-        [_selectUserButton setTitle:@"赠送:请选择对象" forState:UIControlStateNormal];
+//        _selectUserButton.contentEdgeInsets = UIEdgeInsetsMake(0,5, 0, 0);
+        [_selectUserButton setTitle:[NSString stringWithFormat:@"送给:%d",_userId] forState:UIControlStateNormal];
         [_selectUserButton addTarget:self action:@selector(selectUserBtnClicked:) forControlEvents:UIControlEventTouchUpInside ];
     }
     return _selectUserButton;

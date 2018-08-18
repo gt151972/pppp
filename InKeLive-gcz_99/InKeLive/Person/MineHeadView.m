@@ -15,7 +15,6 @@
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
     return [nib lastObject];
 }
-
 + (instancetype)createViewFromNib
 {
     return [self createViewFromNibName:NSStringFromClass(self.class)];
@@ -27,8 +26,11 @@
     return [self createViewFromNib];
     //return [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil].lastObject;
 }
--(void)awakeFromNib {
-    [super awakeFromNib];
+- (IBAction)btnRechangeClicked:(id)sender {
 }
 
+- (UIImageView *)imgHead{
+      [_imgHead sd_setImageWithURL:[NSURL URLWithString:MY_HEAD_IMAGE_PATH] placeholderImage:[UIImage imageNamed:@"imgHead"]];
+    return _imgHead;
+}
 @end

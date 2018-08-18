@@ -12,6 +12,7 @@
 #define BG_COLOR RGB(239, 239, 239)
 
 @interface MineViewController ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) MineHeadView *headView;
 @property (nonatomic, strong)NSArray *arrTitle;
 @property (nonatomic, strong)NSArray *arrVC;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -30,15 +31,25 @@
     self.view.backgroundColor = BG_COLOR;
     [self.navigationController.navigationBar setHidden:YES];
     [self initData];
+    [self.view addSubview:_headView];
 }
 
 - (UITableView *)tableView{
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.backgroundColor = MAIN_COLOR;
+    _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
     return _tableView;
 }
+
+//- (MineHeadView *)headView{
+//    if (!_headView) {
+//        //头 视图
+//        _headView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 169);
+//        _headView = [[[NSBundle mainBundle]loadNibNamed:@"MineHeadView" owner:self options:nil]lastObject];
+//    }
+//    return _headView;
+//}
 
 #pragma mark - Table view data source
 
@@ -68,9 +79,21 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 44;
+    return 40;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSArray *objs = [[NSBundle mainBundle]loadNibNamed:@"MineHeadView" owner:nil options:nil];
+    UIView *xibView = objs[0];
+    xibView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 255);
+    xibView.backgroundColor = [UIColor clearColor];
+//    [view addSubview:xibView];
+    return xibView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 255;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
