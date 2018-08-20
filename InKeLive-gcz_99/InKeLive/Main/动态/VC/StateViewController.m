@@ -18,6 +18,9 @@
 #import "WBStatusLayout.h"
 #import "WBModel.h"
 #import "YYPhotoGroupView.h"
+#import "BaseViewController.h"
+
+#import "SendDynamicViewController.h"
 
 #define URL_IMAGE @"http://up.aa1258.com/upload.php"
 #define Dynamic_text_color RGB(97, 97, 97)
@@ -170,7 +173,7 @@
     labText.font = [UIFont systemFontOfSize:14];
     labText.textAlignment = NSTextAlignmentLeft;
     [imgBackground addSubview:labText];
-    UIImageView *imgPhoto = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_attention_select"]];
+    UIImageView *imgPhoto = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dynamic_head_camera"]];
     [viewHead addSubview:imgPhoto];
     [imgHead mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
@@ -179,14 +182,14 @@
     }];
     [imgBackground mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgHead.mas_right).offset(8);
-        make.right.equalTo(viewHead.mas_right).with.offset(-50);
+        make.width.mas_equalTo(SCREEN_WIDTH-73);
         make.centerY.equalTo(viewHead);
         make.height.equalTo(@40);
         
     }];
     NSLog(@"width == %lf",imgBackground.frame.size.width);
     [imgPhoto mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(viewHead).offset(-12);
+        make.right.equalTo(imgBackground.mas_right).offset(-12);
         make.width.equalTo(@20);
         make.height.equalTo(@17);
         make.centerY.equalTo(viewHead);
@@ -197,9 +200,16 @@
         make.height.equalTo(@14);
         make.centerY.equalTo(viewHead);
     }];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToSendDynamic)];
+    [viewHead addGestureRecognizer:tap];
     return viewHead;
 }
 
+- (void)goToSendDynamic{
+    SendDynamicViewController *sendVC = [[SendDynamicViewController alloc] init];
+//    BaseViewController *Nav = [[BaseViewController alloc] initWithRootViewController:sendVC];
+    [self.navigationController pushViewController:sendVC animated:YES];
+}
 
 - (void)getLocation{
     //只获取一次

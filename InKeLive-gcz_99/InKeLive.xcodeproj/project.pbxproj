@@ -356,6 +356,8 @@
 		64C022C7212A991800116F7F /* weibo_6.json in Resources */ = {isa = PBXBuildFile; fileRef = 64C022BF212A991800116F7F /* weibo_6.json */; };
 		64C022C8212A991800116F7F /* weibo_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 64C022C0212A991800116F7F /* weibo_1.json */; };
 		64C022C9212A991800116F7F /* weibo_0.json in Resources */ = {isa = PBXBuildFile; fileRef = 64C022C1212A991800116F7F /* weibo_0.json */; };
+		64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022CB212AC02700116F7F /* SendDynamicViewController.m */; };
+		64C022CE212AC02700116F7F /* SendDynamicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C022CC212AC02700116F7F /* SendDynamicViewController.xib */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
 		D625F1BB0A18D8AEBB1A58AB /* libPods-InKeLive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE17B114013C22152C4C9264 /* libPods-InKeLive.a */; };
@@ -906,6 +908,9 @@
 		64C022BF212A991800116F7F /* weibo_6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weibo_6.json; sourceTree = "<group>"; };
 		64C022C0212A991800116F7F /* weibo_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weibo_1.json; sourceTree = "<group>"; };
 		64C022C1212A991800116F7F /* weibo_0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weibo_0.json; sourceTree = "<group>"; };
+		64C022CA212AC02700116F7F /* SendDynamicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendDynamicViewController.h; sourceTree = "<group>"; };
+		64C022CB212AC02700116F7F /* SendDynamicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendDynamicViewController.m; sourceTree = "<group>"; };
+		64C022CC212AC02700116F7F /* SendDynamicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendDynamicViewController.xib; sourceTree = "<group>"; };
 		64D07BDA211C19E8001C864F /* RoomInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RoomInfo.plist; sourceTree = "<group>"; };
 		64D07BDC211C2406001C864F /* TopToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopToolView.h; sourceTree = "<group>"; };
 		64D07BDD211C2406001C864F /* TopToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopToolView.m; sourceTree = "<group>"; };
@@ -1839,6 +1844,9 @@
 				644B1812211424B700939E76 /* StateViewController.h */,
 				644B1813211424B700939E76 /* StateViewController.m */,
 				644B1814211424B700939E76 /* StateViewController.xib */,
+				64C022CA212AC02700116F7F /* SendDynamicViewController.h */,
+				64C022CB212AC02700116F7F /* SendDynamicViewController.m */,
+				64C022CC212AC02700116F7F /* SendDynamicViewController.xib */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -2197,6 +2205,7 @@
 				63A3352C1E02767F00027174 /* rocket-fire-3.png in Resources */,
 				63A335011E026B5E00027174 /* porche-b1.png in Resources */,
 				6302FDF31E1B9DD9007122D3 /* yipitiezhi01.png in Resources */,
+				64C022CE212AC02700116F7F /* SendDynamicViewController.xib in Resources */,
 				6332820B1E024BBA00EC018B /* heart1@2x.png in Resources */,
 				6302FE051E1B9DD9007122D3 /* yipitiezhi010 16-51-33-688.png in Resources */,
 				6302FE171E1B9DD9007122D3 /* yipitiezhi019 16-51-33-528.png in Resources */,
@@ -2517,6 +2526,7 @@
 				63402EDF1E124534002F6661 /* NearbyController.m in Sources */,
 				1A9D1D011F43C4420003EA13 /* TempQueryVCBSvrInfo.m in Sources */,
 				1AE89EBE1F41C6B50001C5D8 /* TempLogonInfo.m in Sources */,
+				64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */,
 				6357A6281DFE4DB1001E77AF /* UIView+Frame.m in Sources */,
 				633E2E0E1E1CF9430049C9E8 /* FlowLayout.m in Sources */,
 				1AAD2FDB1F3EFB7A00FBB894 /* LogonViewController.m in Sources */,
