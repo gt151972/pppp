@@ -28,6 +28,8 @@
 }
 - (IBAction)btnRechangeClicked:(id)sender {
 }
+- (IBAction)btnEditClicked:(id)sender {
+}
 
 - (UIImageView *)imgHead{
       [_imgHead sd_setImageWithURL:[NSURL URLWithString:MY_HEAD_IMAGE_PATH] placeholderImage:[UIImage imageNamed:@"imgHead"]];

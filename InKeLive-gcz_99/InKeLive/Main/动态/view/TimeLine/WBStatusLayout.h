@@ -11,8 +11,8 @@
 #import "WBStatusHelper.h"
 
 // 宽高
-#define kWBCellTopMargin 8      // cell 顶部灰色留白
-#define kWBCellTitleHeight 36   // cell 标题高度 (例如"仅自己可见")
+#define kWBCellTopMargin 0      // cell 顶部灰色留白
+#define kWBCellTitleHeight 13   // cell 标题高度 (例如"仅自己可见")
 #define kWBCellPadding 12       // cell 内边距
 #define kWBCellPaddingText 10   // cell 文本与其他元素间留白
 #define kWBCellPaddingPic 4     // cell 多张图片中间留白
@@ -26,22 +26,22 @@
 #define kWBCellTagNormalHeight 16   // 一般 tag 高度
 #define kWBCellTagPlaceHeight 24    // 地理位置 tag 高度
 
-#define kWBCellToolbarHeight 35     // cell 下方工具栏高度
-#define kWBCellToolbarBottomMargin 2 // cell 下方灰色留白
+#define kWBCellToolbarHeight 20     // cell 下方工具栏高度
+#define kWBCellToolbarBottomMargin 0 // cell 下方灰色留白
 
 // 字体 应该做成动态的，这里只是 Demo，临时写死了。
-#define kWBCellNameFontSize 16      // 名字字体大小
+#define kWBCellNameFontSize 13      // 名字字体大小
 #define kWBCellSourceFontSize 12    // 来源字体大小
-#define kWBCellTextFontSize 17      // 文本字体大小
-#define kWBCellTextFontRetweetSize 16 // 转发字体大小
-#define kWBCellCardTitleFontSize 16 // 卡片标题文本字体大小
+#define kWBCellTextFontSize 13      // 文本字体大小
+#define kWBCellTextFontRetweetSize 13 // 转发字体大小
+#define kWBCellCardTitleFontSize 13 // 卡片标题文本字体大小
 #define kWBCellCardDescFontSize 12 // 卡片描述文本字体大小
-#define kWBCellTitlebarFontSize 14 // 标题栏字体大小
-#define kWBCellToolbarFontSize 14 // 工具栏字体大小
+#define kWBCellTitlebarFontSize 13 // 标题栏字体大小
+#define kWBCellToolbarFontSize 8 // 工具栏字体大小
 
 // 颜色
-#define kWBCellNameNormalColor UIColorHex(333333) // 名字颜色
-#define kWBCellNameOrangeColor UIColorHex(f26220) // 橙名颜色 (VIP)
+#define kWBCellNameNormalColor RGB(62, 108, 193) // 名字颜色
+#define kWBCellNameOrangeColor RGB(62, 108, 193) // 橙名颜色 (VIP)
 #define kWBCellTimeNormalColor UIColorHex(828282) // 时间颜色
 #define kWBCellTimeOrangeColor UIColorHex(f28824) // 橙色时间 (最新刷出)
 
@@ -49,7 +49,7 @@
 #define kWBCellTextSubTitleColor UIColorHex(5d5d5d) // 次要文本色
 #define kWBCellTextHighlightColor UIColorHex(527ead) // Link 文本色
 #define kWBCellTextHighlightBackgroundColor UIColorHex(bfdffe) // Link 点击背景色
-#define kWBCellToolbarTitleColor UIColorHex(929292) // 工具栏文本色
+#define kWBCellToolbarTitleColor RGB(110, 110, 110) // 工具栏文本色
 #define kWBCellToolbarTitleHighlightColor UIColorHex(df422d) // 工具栏文本高亮色
 
 #define kWBCellBackgroundColor UIColorHex(f2f2f2)    // Cell背景灰色

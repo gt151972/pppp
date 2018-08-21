@@ -9,6 +9,8 @@
 #import "MineViewController.h"
 #import "MineHeadView.h"
 
+#import "EditInfoViewController.h"
+
 #define BG_COLOR RGB(239, 239, 239)
 
 @interface MineViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -28,6 +30,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (@available(iOS 11.0, *)) {
+        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     self.view.backgroundColor = BG_COLOR;
     [self.navigationController.navigationBar setHidden:YES];
     [self initData];
@@ -37,6 +44,7 @@
 - (UITableView *)tableView{
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.scrollEnabled =NO;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
     return _tableView;
@@ -76,6 +84,10 @@
     cell.textLabel.textColor = TEXT_COLOR;
     cell.accessoryType = UITableViewCellStyleValue1;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

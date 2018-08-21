@@ -21,10 +21,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iod-E2-5je">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="478"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="478" id="ckt-B5-Pps"/>
+                        <constraint firstAttribute="height" constant="453" id="ckt-B5-Pps"/>
                     </constraints>
                 </tableView>
             </subviews>

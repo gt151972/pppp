@@ -87,7 +87,7 @@
         manager = [[YYWebImageManager alloc] initWithCache:cache queue:[YYWebImageManager sharedManager].queue];
         manager.sharedTransformBlock = ^(UIImage *image, NSURL *url) {
             if (!image) return image;
-            return [image imageByRoundCornerRadius:100]; // a large value
+            return [image imageByRoundCornerRadius:3]; // a large value
         };
     });
     return manager;
@@ -174,9 +174,8 @@
 
 + (NSString *)shortedNumberDesc:(NSUInteger)number {
     // should be localized
-    if (number <= 9999) return [NSString stringWithFormat:@"%d", (int)number];
-    if (number <= 9999999) return [NSString stringWithFormat:@"%d万", (int)(number / 10000)];
-    return [NSString stringWithFormat:@"%d千万", (int)(number / 10000000)];
+    if (number <= 99) return [NSString stringWithFormat:@"%d", (int)number];
+    return [NSString stringWithFormat:@"99+"];
 }
 
 + (NSRegularExpression *)regexAt {

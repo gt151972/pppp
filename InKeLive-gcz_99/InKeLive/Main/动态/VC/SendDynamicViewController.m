@@ -14,9 +14,39 @@
 
 @implementation SendDynamicViewController
 
+- (void)awakeFromNib{
+    [super awakeFromNib];
+   
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"发状态";
+    
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [btnLeft setTitle:@"取消" forState:UIControlStateNormal];
+    [btnLeft setTitleColor:RGB(23, 23, 23) forState:UIControlStateNormal];
+    [btnLeft.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [btnLeft addTarget:self action:@selector(btnCancleClicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:btnLeft];
+    self.navigationController.navigationItem.leftBarButtonItem = leftItem;
+    
+    UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [btnRight setTitle:@"发送" forState:UIControlStateNormal];
+    [btnRight setTitleColor:RGB(23, 23, 23) forState:UIControlStateNormal];
+    [btnRight.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [btnRight addTarget:self action:@selector(btnSendClicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:btnRight];
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+#pragma mark ---------Clicked---------
+- (void)btnCancleClicked{
+    
+}
+
+- (void)btnSendClicked{
+    
 }
 
 - (void)didReceiveMemoryWarning {

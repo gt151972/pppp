@@ -230,7 +230,6 @@
         [nameText appendString:@" "];
         [nameText appendAttributedString:vipText];
     }
-    
     nameText.font = [UIFont systemFontOfSize:kWBCellNameFontSize];
     nameText.color = user.mbrank > 0 ? kWBCellNameOrangeColor : kWBCellNameNormalColor;
     nameText.lineBreakMode = NSLineBreakByCharWrapping;
@@ -255,46 +254,46 @@
     }
     
     // 来自 XXX
-    if (_status.source.length) {
-        // <a href="sinaweibo://customweibosource" rel="nofollow">iPhone 5siPhone 5s</a>
-        static NSRegularExpression *hrefRegex, *textRegex;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            hrefRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=href=\").+(?=\" )" options:kNilOptions error:NULL];
-            textRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=>).+(?=<)" options:kNilOptions error:NULL];
-        });
-        NSTextCheckingResult *hrefResult, *textResult;
-        NSString *href = nil, *text = nil;
-        hrefResult = [hrefRegex firstMatchInString:_status.source options:kNilOptions range:NSMakeRange(0, _status.source.length)];
-        textResult = [textRegex firstMatchInString:_status.source options:kNilOptions range:NSMakeRange(0, _status.source.length)];
-        if (hrefResult && textResult && hrefResult.range.location != NSNotFound && textResult.range.location != NSNotFound) {
-            href = [_status.source substringWithRange:hrefResult.range];
-            text = [_status.source substringWithRange:textResult.range];
-        }
-        if (href.length && text.length) {
-            NSMutableAttributedString *from = [NSMutableAttributedString new];
-            [from appendString:[NSString stringWithFormat:@"来自 %@", text]];
-            from.font = [UIFont systemFontOfSize:kWBCellSourceFontSize];
-            from.color = kWBCellTimeNormalColor;
-            if (_status.sourceAllowClick > 0) {
-                NSRange range = NSMakeRange(3, text.length);
-                [from setColor:kWBCellTextHighlightColor range:range];
-                YYTextBackedString *backed = [YYTextBackedString stringWithString:href];
-                [from setTextBackedString:backed range:range];
-                
-                YYTextBorder *border = [YYTextBorder new];
-                border.insets = UIEdgeInsetsMake(-2, 0, -2, 0);
-                border.fillColor = kWBCellTextHighlightBackgroundColor;
-                border.cornerRadius = 3;
-                YYTextHighlight *highlight = [YYTextHighlight new];
-                if (href) highlight.userInfo = @{kWBLinkHrefName : href};
-                [highlight setBackgroundBorder:border];
-                [from setTextHighlight:highlight range:range];
-            }
-            
-            [sourceText appendAttributedString:from];
-        }
-    }
+//    if (_status.source.length) {
+//        // <a href="sinaweibo://customweibosource" rel="nofollow">iPhone 5siPhone 5s</a>
+//        static NSRegularExpression *hrefRegex, *textRegex;
+//        static dispatch_once_t onceToken;
+//        dispatch_once(&onceToken, ^{
+//            hrefRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=href=\").+(?=\" )" options:kNilOptions error:NULL];
+//            textRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=>).+(?=<)" options:kNilOptions error:NULL];
+//        });
+//        NSTextCheckingResult *hrefResult, *textResult;
+//        NSString *href = nil, *text = nil;
+//        hrefResult = [hrefRegex firstMatchInString:_status.source options:kNilOptions range:NSMakeRange(0, _status.source.length)];
+//        textResult = [textRegex firstMatchInString:_status.source options:kNilOptions range:NSMakeRange(0, _status.source.length)];
+//        if (hrefResult && textResult && hrefResult.range.location != NSNotFound && textResult.range.location != NSNotFound) {
+//            href = [_status.source substringWithRange:hrefResult.range];
+//            text = [_status.source substringWithRange:textResult.range];
+//        }
+//        if (href.length && text.length) {
+//            NSMutableAttributedString *from = [NSMutableAttributedString new];
+//            [from appendString:[NSString stringWithFormat:@"来自 %@", text]];
+//            from.font = [UIFont systemFontOfSize:kWBCellSourceFontSize];
+//            from.color = kWBCellTimeNormalColor;
+//            if (_status.sourceAllowClick > 0) {
+//                NSRange range = NSMakeRange(3, text.length);
+//                [from setColor:kWBCellTextHighlightColor range:range];
+//                YYTextBackedString *backed = [YYTextBackedString stringWithString:href];
+//                [from setTextBackedString:backed range:range];
+//
+//                YYTextBorder *border = [YYTextBorder new];
+//                border.insets = UIEdgeInsetsMake(-2, 0, -2, 0);
+//                border.fillColor = kWBCellTextHighlightBackgroundColor;
+//                border.cornerRadius = 3;
+//                YYTextHighlight *highlight = [YYTextHighlight new];
+//                if (href) highlight.userInfo = @{kWBLinkHrefName : href};
+//                [highlight setBackgroundBorder:border];
+//                [from setTextHighlight:highlight range:range];
+//            }
+//
+//            [sourceText appendAttributedString:from];
+//        }
+//    }
     
     if (sourceText.length == 0) {
         _sourceTextLayout = nil;
@@ -625,19 +624,19 @@
     YYTextContainer *container = [YYTextContainer containerWithSize:CGSizeMake(kScreenWidth, kWBCellToolbarHeight)];
     container.maximumNumberOfRows = 1;
     
-    NSMutableAttributedString *repostText = [[NSMutableAttributedString alloc] initWithString:_status.repostsCount <= 0 ? @"转发" : [WBStatusHelper shortedNumberDesc:_status.repostsCount]];
+    NSMutableAttributedString *repostText = [[NSMutableAttributedString alloc] initWithString:_status.repostsCount <= 0 ? @"" : [WBStatusHelper shortedNumberDesc:_status.repostsCount]];
     repostText.font = font;
     repostText.color = kWBCellToolbarTitleColor;
     _toolbarRepostTextLayout = [YYTextLayout layoutWithContainer:container text:repostText];
     _toolbarRepostTextWidth = CGFloatPixelRound(_toolbarRepostTextLayout.textBoundingRect.size.width);
     
-    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:_status.commentsCount <= 0 ? @"评论" : [WBStatusHelper shortedNumberDesc:_status.commentsCount]];
+    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:_status.commentsCount <= 0 ? @"" : [WBStatusHelper shortedNumberDesc:_status.commentsCount]];
     commentText.font = font;
     commentText.color = kWBCellToolbarTitleColor;
     _toolbarCommentTextLayout = [YYTextLayout layoutWithContainer:container text:commentText];
     _toolbarCommentTextWidth = CGFloatPixelRound(_toolbarCommentTextLayout.textBoundingRect.size.width);
     
-    NSMutableAttributedString *likeText = [[NSMutableAttributedString alloc] initWithString:_status.attitudesCount <= 0 ? @"赞" : [WBStatusHelper shortedNumberDesc:_status.attitudesCount]];
+    NSMutableAttributedString *likeText = [[NSMutableAttributedString alloc] initWithString:_status.attitudesCount <= 0 ? @"" : [WBStatusHelper shortedNumberDesc:_status.attitudesCount]];
     likeText.font = font;
     likeText.color = _status.attitudesStatus ? kWBCellToolbarTitleHighlightColor : kWBCellToolbarTitleColor;
     _toolbarLikeTextLayout = [YYTextLayout layoutWithContainer:container text:likeText];

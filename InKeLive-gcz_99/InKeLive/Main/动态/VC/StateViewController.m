@@ -53,7 +53,7 @@
     [self.navigationController.navigationBar setHidden:NO];
     self.navigationItem.title = @"动态";
     
-    _tableView.frame = self.view.bounds;
+    _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-49);
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     _tableView.scrollIndicatorInsets = _tableView.contentInset;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -66,7 +66,7 @@
     _fpsLabel.bottom = self.view.height - kWBCellPadding;
     _fpsLabel.left = kWBCellPadding;
     _fpsLabel.alpha = 0;
-    [self.view addSubview:_fpsLabel];
+//    [self.view addSubview:_fpsLabel];
     
 //    self.navigationController.view.userInteractionEnabled = NO;
 //    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -99,7 +99,7 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 1;
+//            _fpsLabel.alpha = 1;
         } completion:NULL];
     }
 }
@@ -108,7 +108,7 @@
     if (!decelerate) {
         if (_fpsLabel.alpha != 0) {
             [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                _fpsLabel.alpha = 0;
+//                _fpsLabel.alpha = 0;
             } completion:NULL];
         }
     }
@@ -117,7 +117,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha != 0) {
         [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 0;
+//            _fpsLabel.alpha = 0;
         } completion:NULL];
     }
 }
@@ -125,7 +125,7 @@
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 1;
+//            _fpsLabel.alpha = 1;
         } completion:^(BOOL finished) {
         }];
     }
@@ -207,7 +207,7 @@
 
 - (void)goToSendDynamic{
     SendDynamicViewController *sendVC = [[SendDynamicViewController alloc] init];
-//    BaseViewController *Nav = [[BaseViewController alloc] initWithRootViewController:sendVC];
+
     [self.navigationController pushViewController:sendVC animated:YES];
 }
 

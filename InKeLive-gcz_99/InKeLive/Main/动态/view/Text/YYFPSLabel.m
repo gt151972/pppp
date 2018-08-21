@@ -76,7 +76,7 @@
     text.font = _font;
     [text setFont:_subFont range:NSMakeRange(text.length - 4, 1)];
     
-    self.attributedText = text;
+//    self.attributedText = text;
 }
 
 @end

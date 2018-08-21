@@ -52,22 +52,24 @@
     _avatarView.size = CGSizeMake(40, 40);
     _avatarView.origin = CGPointMake(kWBCellPadding, kWBCellPadding + 3);
     _avatarView.contentMode = UIViewContentModeScaleAspectFill;
+    _avatarView.layer.masksToBounds = YES;
+    _avatarView.layer.cornerRadius = 3;
     [self addSubview:_avatarView];
     
-    CALayer *avatarBorder = [CALayer layer];
-    avatarBorder.frame = _avatarView.bounds;
-    avatarBorder.borderWidth = CGFloatFromPixel(1);
-    avatarBorder.borderColor = [UIColor colorWithWhite:0.000 alpha:0.090].CGColor;
-    avatarBorder.cornerRadius = _avatarView.height / 2;
-    avatarBorder.shouldRasterize = YES;
-    avatarBorder.rasterizationScale = kScreenScale;
-    [_avatarView.layer addSublayer:avatarBorder];
+//    CALayer *avatarBorder = [CALayer layer];
+//    avatarBorder.frame = _avatarView.bounds;
+//    avatarBorder.borderWidth = CGFloatFromPixel(1);
+//    avatarBorder.borderColor = [UIColor colorWithWhite:0.000 alpha:0.090].CGColor;
+//    avatarBorder.cornerRadius = 3;
+//    avatarBorder.shouldRasterize = YES;
+//    avatarBorder.rasterizationScale = kScreenScale;
+//    [_avatarView.layer addSublayer:avatarBorder];
     
-    _avatarBadgeView = [UIImageView new];
-    _avatarBadgeView.size = CGSizeMake(14, 14);
-    _avatarBadgeView.center = CGPointMake(_avatarView.right - 6, _avatarView.bottom - 6);
-    _avatarBadgeView.contentMode = UIViewContentModeScaleAspectFit;
-    [self addSubview:_avatarBadgeView];
+//    _avatarBadgeView = [UIImageView new];
+//    _avatarBadgeView.size = CGSizeMake(14, 14);
+//    _avatarBadgeView.center = CGPointMake(_avatarView.right - 6, _avatarView.bottom - 6);
+//    _avatarBadgeView.contentMode = UIViewContentModeScaleAspectFit;
+//    [self addSubview:_avatarBadgeView];
     
     _nameLabel = [YYLabel new];
     _nameLabel.size = CGSizeMake(kWBCellNameWidth, 24);
@@ -291,35 +293,45 @@
     
     _repostButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _repostButton.exclusiveTouch = YES;
-    _repostButton.size = CGSizeMake(CGFloatPixelRound(self.width / 3.0), self.height);
-    [_repostButton setBackgroundImage:[UIImage imageWithColor:kWBCellHighlightColor] forState:UIControlStateHighlighted];
-    
-    _commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _commentButton.exclusiveTouch = YES;
-    _commentButton.size = CGSizeMake(CGFloatPixelRound(self.width / 3.0), self.height);
-    _commentButton.left = CGFloatPixelRound(self.width / 3.0);
-    [_commentButton setBackgroundImage:[UIImage imageWithColor:kWBCellHighlightColor] forState:UIControlStateHighlighted];
+    _repostButton.size = CGSizeMake(40, 20);
+    _repostButton.left = CGFloatPixelRound(SCREEN_WIDTH - 127);
+    [_repostButton setImage:[UIImage imageNamed:@"dynamic_tool_tranmit"] forState:UIControlStateNormal];
+    [_repostButton setTitle:@"     " forState:UIControlStateNormal];
+    NSLog(@"%@",_repostLabel.text);
+    [_repostButton setTitleColor:kWBCellToolbarTitleColor forState:UIControlStateNormal];
+//    [_repostButton setBackgroundImage:[UIImage imageWithColor:[UIColor redColor]] forState:UIControlStateHighlighted];
     
     _likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _likeButton.exclusiveTouch = YES;
-    _likeButton.size = CGSizeMake(CGFloatPixelRound(self.width / 3.0), self.height);
-    _likeButton.left = CGFloatPixelRound(self.width / 3.0 * 2.0);
-    [_likeButton setBackgroundImage:[UIImage imageWithColor:kWBCellHighlightColor] forState:UIControlStateHighlighted];
+    _likeButton.size = CGSizeMake(40, 20);
+    _likeButton.left = CGFloatPixelRound(SCREEN_WIDTH-87);
+    [_likeButton setImage:[UIImage imageNamed:@"dynamic_tool_like"] forState:UIControlStateNormal];
+    [_likeButton setTitle:@"     " forState:UIControlStateNormal];
+//    [_likeButton setBackgroundImage:[UIImage imageWithColor:kWBCellHighlightColor] forState:UIControlStateHighlighted];
     
-    _repostImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_retweet"]];
-    _repostImageView.centerY = self.height / 2;
-    [_repostButton addSubview:_repostImageView];
-    _commentImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_comment"]];
-    _commentImageView.centerY = self.height / 2;
-    [_commentButton addSubview:_commentImageView];
-    _likeImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_unlike"]];
-    _likeImageView.centerY = self.height / 2;
-    [_likeButton addSubview:_likeImageView];
+    _commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _commentButton.exclusiveTouch = YES;
+    _commentButton.size = CGSizeMake(40, 20);
+    _commentButton.left = CGFloatPixelRound(SCREEN_WIDTH-47);
+    [_commentButton setImage:[UIImage imageNamed:@"dynamic_tool_comment"] forState:UIControlStateNormal];
+    [_commentButton setTitle:@"     " forState:UIControlStateNormal];
+//    [_commentButton setBackgroundImage:[UIImage imageWithColor:kWBCellHighlightColor] forState:UIControlStateHighlighted];
+    
+//    _repostImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_retweet"]];
+//    _repostImageView.centerY = self.height / 2;
+//    [_repostButton addSubview:_repostImageView];
+//    _commentImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_comment"]];
+//    _commentImageView.centerY = self.height / 2;
+//    [_commentButton addSubview:_commentImageView];
+//    _likeImageView = [[UIImageView alloc] initWithImage:[WBStatusHelper imageNamed:@"timeline_icon_unlike"]];
+//    _likeImageView.centerY = self.height / 2;
+//    [_likeButton addSubview:_likeImageView];
     
     _repostLabel = [YYLabel new];
     _repostLabel.userInteractionEnabled = NO;
     _repostLabel.height = self.height;
-    _repostLabel.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+//    _repostLabel.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+    _repostLabel.textAlignment = NSTextAlignmentRight;
     _repostLabel.displaysAsynchronously = YES;
     _repostLabel.ignoreCommonProperties = YES;
     _repostLabel.fadeOnHighlight = NO;
@@ -351,21 +363,21 @@
     NSArray *colors = @[(id)clear.CGColor,(id)dark.CGColor, (id)clear.CGColor];
     NSArray *locations = @[@0.2, @0.5, @0.8];
     
-    _line1 = [CAGradientLayer layer];
-    _line1.colors = colors;
-    _line1.locations = locations;
-    _line1.startPoint = CGPointMake(0, 0);
-    _line1.endPoint = CGPointMake(0, 1);
-    _line1.size = CGSizeMake(CGFloatFromPixel(1), self.height);
-    _line1.left = _repostButton.right;
-    
-    _line2 = [CAGradientLayer layer];
-    _line2.colors = colors;
-    _line2.locations = locations;
-    _line2.startPoint = CGPointMake(0, 0);
-    _line2.endPoint = CGPointMake(0, 1);
-    _line2.size = CGSizeMake(CGFloatFromPixel(1), self.height);
-    _line2.left = _commentButton.right;
+//    _line1 = [CAGradientLayer layer];
+//    _line1.colors = colors;
+//    _line1.locations = locations;
+//    _line1.startPoint = CGPointMake(0, 0);
+//    _line1.endPoint = CGPointMake(0, 1);
+//    _line1.size = CGSizeMake(CGFloatFromPixel(1), self.height);
+//    _line1.left = _repostButton.right;
+//
+//    _line2 = [CAGradientLayer layer];
+//    _line2.colors = colors;
+//    _line2.locations = locations;
+//    _line2.startPoint = CGPointMake(0, 0);
+//    _line2.endPoint = CGPointMake(0, 1);
+//    _line2.size = CGSizeMake(CGFloatFromPixel(1), self.height);
+//    _line2.left = _commentButton.right;
     
     _topLine = [CALayer layer];
     _topLine.size = CGSizeMake(self.width, CGFloatFromPixel(1));
@@ -379,8 +391,8 @@
     [self addSubview:_repostButton];
     [self addSubview:_commentButton];
     [self addSubview:_likeButton];
-    [self.layer addSublayer:_line1];
-    [self.layer addSublayer:_line2];
+//    [self.layer addSublayer:_line1];
+//    [self.layer addSublayer:_line2];
     [self.layer addSublayer:_topLine];
     [self.layer addSublayer:_bottomLine];
     
@@ -460,7 +472,7 @@
     newCount = liked ? newCount + 1 : newCount - 1;
     if (newCount < 0) newCount = 0;
     if (liked && newCount < 1) newCount = 1;
-    NSString *newCountDesc = newCount > 0 ? [WBStatusHelper shortedNumberDesc:newCount] : @"赞";
+    NSString *newCountDesc = newCount > 0 ? [WBStatusHelper shortedNumberDesc:newCount] : @"";
     
     UIFont *font = [UIFont systemFontOfSize:kWBCellToolbarFontSize];
     YYTextContainer *container = [YYTextContainer containerWithSize:CGSizeMake(kScreenWidth, kWBCellToolbarHeight)];
@@ -751,14 +763,20 @@
     }
     
     /// 圆角头像
+//    [_profileView.avatarView setImageWithURL:layout.status.user.avatarLarge //profileImageURL
+//                                 placeholder:nil
+//                                     options:kNilOptions
+//                                     manager:[WBStatusHelper avatarImageManager] //< 圆角头像manager，内置圆角处理
+//                                    progress:nil
+//                                   transform:nil
+//                                  completion:nil];
     [_profileView.avatarView setImageWithURL:layout.status.user.avatarLarge //profileImageURL
                                  placeholder:nil
                                      options:kNilOptions
-                                     manager:[WBStatusHelper avatarImageManager] //< 圆角头像manager，内置圆角处理
+                                     manager:nil //< 圆角头像manager，内置圆角处理
                                     progress:nil
                                    transform:nil
                                   completion:nil];
-
     _profileView.nameLabel.textLayout = layout.nameTextLayout;
     _profileView.sourceLabel.textLayout = layout.sourceTextLayout;
     _profileView.verifyType = layout.status.user.userVerifyType;
@@ -766,14 +784,15 @@
     _profileView.top = top;
     top += layout.profileHeight;
 
-    NSURL *picBg = [WBStatusHelper defaultURLForImageURL:layout.status.picBg];
-    __weak typeof(_vipBackgroundView) vipBackgroundView = _vipBackgroundView;
-    [_vipBackgroundView setImageWithURL:picBg placeholder:nil options:YYWebImageOptionAvoidSetImage completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
-        if (image) {
-            image = [UIImage imageWithCGImage:image.CGImage scale:2.0 orientation:image.imageOrientation];
-            vipBackgroundView.image = image;
-        }
-    }];
+//    NSURL *picBg = [WBStatusHelper defaultURLForImageURL:layout.status.picBg];
+//    __weak typeof(_vipBackgroundView) vipBackgroundView = _vipBackgroundView;
+    //设置背景图片
+//    [_vipBackgroundView setImageWithURL:picBg placeholder:nil options:YYWebImageOptionAvoidSetImage completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+//        if (image) {
+//            image = [UIImage imageWithCGImage:image.CGImage scale:2.0 orientation:image.imageOrientation];
+//            vipBackgroundView.image = image;
+//        }
+//    }];
     
     _textLabel.top = top;
     _textLabel.height = layout.textHeight;
