@@ -8,7 +8,8 @@
 
 #import "MineViewController.h"
 #import "MineHeadView.h"
-
+#import "DPK_NW_Application.h"
+#import "LocalUserModel.h"
 #import "EditInfoViewController.h"
 
 #define BG_COLOR RGB(239, 239, 239)
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) MineHeadView *headView;
 @property (nonatomic, strong)NSArray *arrTitle;
 @property (nonatomic, strong)NSArray *arrVC;
+@property (nonatomic, strong) LocalUserModel *userModel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 
@@ -25,11 +27,14 @@
 @implementation MineViewController
 - (void)initData{
     _arrTitle = @[@"我的收益", @"安全中心", @"积分兑换", @"活动中心", @"设置"];
+    BOOL bLogon = [DPK_NW_Application sharedInstance].isLogon;
+    _userModel = [DPK_NW_Application sharedInstance].localUserModel;
     [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainVCReload) name:@"hzmsg_reload_me_data" object:nil];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
@@ -39,6 +44,13 @@
     [self.navigationController.navigationBar setHidden:YES];
     [self initData];
     [self.view addSubview:_headView];
+    
+}
+
+- (void)mainVCReload{
+    if (self.tableView != nil) {
+        [self.tableView reloadData];
+    }
 }
 
 - (UITableView *)tableView{
@@ -99,7 +111,10 @@
     UIView *xibView = objs[0];
     xibView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 255);
     xibView.backgroundColor = [UIColor clearColor];
-//    [view addSubview:xibView];
+//    MineHeadView *mineView = [[[NSBundle mainBundle]loadNibNamed:@"MineHeadView" owner:self options:nil]lastObject];
+//
+//    [self.view addSubview:brightView];
+
     return xibView;
 }
 

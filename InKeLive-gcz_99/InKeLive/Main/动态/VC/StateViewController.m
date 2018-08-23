@@ -45,11 +45,19 @@
     _tableView.dataSource = self;
     _layouts = [NSMutableArray new];
     return self;
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSString *str_Json = @"Array\n(\n[file_name] => one.jpg\n[file_content_type] => image/jpeg\n[file_path] => /usr/local/nginx/html/mobile/0/0000000020\n[file_md5] =>\n[file_size] => 1848021\n)";
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"Array\n" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"(\n" withString:@"{"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@")" withString:@"}"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"[" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"]" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@">" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"\n" withString:@";\n"];
+    NSLog(@"str == %@",str_Json);
     [self.navigationController.navigationBar setHidden:NO];
     self.navigationItem.title = @"动态";
     

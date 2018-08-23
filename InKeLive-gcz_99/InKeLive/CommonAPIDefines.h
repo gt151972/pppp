@@ -17,6 +17,8 @@
 #define URL_ChangePWD       @"set_userlogonpwd.php"   //修改密码
 #define URL_ChangeNickName  @"set_useralias.php"      //修改昵称
 
+//cmd
+#define CMD_REQUEST_SEARCH @"21006"   //搜索接口cmd
 
 #define URL_GiftInfo   @"http://em.aa1258.com/E/Api" //礼物状态和分组列表
 #endif /* CommonAPIDefines_h */

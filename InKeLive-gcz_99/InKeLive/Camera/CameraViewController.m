@@ -531,20 +531,21 @@
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     NSString* strUserId = [NSString stringWithFormat:@"%d", userData.userID];
     //网络请求
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     [parameters setObject:strUserId forKey:@"userid"];
     [self showLoadingHud];
     WEAKSELF;
     NSString* strAPIUrl = [NSString stringWithFormat:@"%@%@",[DPK_NW_Application sharedInstance].clientConfigParam.commonApiPrefix, URL_QueryVCBServer];
-    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //do nothing
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"CameraViewController Success: %@", responseObject);
         if(weakSelf !=nil)
             [weakSelf onAPI_QueryVCBServerRequest_Success:responseObject];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"CameraViewController Error: %@", error);
         if(weakSelf !=nil)
             [weakSelf onAPI_QueryVCBServerRequest_Failed];

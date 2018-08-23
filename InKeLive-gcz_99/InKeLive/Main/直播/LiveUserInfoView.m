@@ -10,12 +10,16 @@
 #import "UIImageView+WebCache.h"
 #import "SelectGiftUserView.h"
 
-@interface LiveUserInfoView()
+@interface LiveUserInfoView(){
+    int userId;
+    NSString *UserAlias;
+}
 @property (weak, nonatomic) IBOutlet UIImageView *userHeadImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userAliasLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userIdLabel;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserId;
 @property (weak, nonatomic) IBOutlet UILabel *userLevelLable;
+
 //@property (weak, nonatomic) IBOutlet UILabel *zhibuNum;
 //@property (weak, nonatomic) IBOutlet UILabel *guanzhuNum;
 //@property (weak, nonatomic) IBOutlet UILabel *fensiNum;
@@ -100,7 +104,7 @@
  */
 - (IBAction)btnSandGiftClicked:(id)sender {
     if (self.sandGiftBlock) {
-        self.sandGiftBlock();
+        self.sandGiftBlock(userId, UserAlias);
     }
 }
 
@@ -115,6 +119,8 @@
     [self.userHeadImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     NSString* strUserAlias = [NSString stringWithFormat:@"%@", [dict objectForKey:@"userAlias"]];
     NSString *strUserId = [NSString stringWithFormat:@"ID:%@",[dict objectForKey:@"userId"]];
+    userId = [[dict objectForKey:@"userId"] intValue];
+    UserAlias = [dict objectForKey:@"userAlias"];
 //    NSString* strUserVipLevel = [NSString stringWithFormat:@"用户等级：%d", self.userModel.vipLevel];
     
     self.userAliasLabel.text = strUserAlias;

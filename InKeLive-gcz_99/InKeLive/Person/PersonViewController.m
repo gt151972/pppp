@@ -360,7 +360,7 @@
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     
     //上传文件
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSString* strUserId = [NSString stringWithFormat:@"%d", userData.userID];
     [parameters setObject:strUserId forKey:@"userid"];
@@ -373,12 +373,12 @@
     
     NSString* strAPIUrl = [NSString stringWithFormat:@"%@%@",[DPK_NW_Application sharedInstance].clientConfigParam.commonApiPrefix, URL_UploadUserHead];
     
-    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //[formData appendPartWithFileURL:filePathURL name:@"image" error:nil];
+    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath isDirectory:NO] name:@"file1" error:nil];
         [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath2 isDirectory:NO] name:@"file2" error:nil];
-
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Success: %@", responseObject);
         
         NSDictionary *appDic =(NSDictionary*)responseObject;
@@ -388,13 +388,10 @@
         
         NSLog(@"Success: %@", responseObject);
         [hud removeFromSuperview];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Error: %@", error);
         [hud removeFromSuperview];
     }];
-    
-    
 }
 
 -(void)myProgressTask {

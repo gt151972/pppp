@@ -78,9 +78,9 @@
 }
 
 - (void)enterSearchClick{
-    SearchViewController *searchVc = [[SearchViewController alloc]init];
-    BaseViewController *baseVc = [[BaseViewController alloc]initWithRootViewController:searchVc];
-    [self presentViewController:baseVc animated:YES completion:nil];
+//    SearchViewController *searchVc = [[SearchViewController alloc]init];
+//    BaseViewController *baseVc = [[BaseViewController alloc]initWithRootViewController:searchVc];
+//    [self presentViewController:baseVc animated:YES completion:nil];
 }
 
 

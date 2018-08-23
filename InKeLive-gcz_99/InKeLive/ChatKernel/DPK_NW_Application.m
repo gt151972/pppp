@@ -992,6 +992,13 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 }
             }
                 break;
+            case MXP_SUBCMD_WEB_USERPAY_REQ:{
+                NSLog(@"MXP_SUBCMD_WEB_USERPAY_REQ");
+            }
+            case MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ:{
+                NSLog(@"MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ");
+                [self loadGiftVersion];
+            }
                 
             default:
             {

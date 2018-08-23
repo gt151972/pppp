@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SendDynamicViewController">
             <connections>
+                <outlet property="btnImagePick" destination="CTd-CA-Eb6" id="zal-Kd-IGg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -67,6 +68,9 @@
                                         <constraint firstAttribute="height" constant="65" id="nAu-ha-ls3"/>
                                     </constraints>
                                     <state key="normal" title="Button" image="dynamic_take_photo"/>
+                                    <connections>
+                                        <action selector="btnPickImageClicked:" destination="-1" eventType="touchUpInside" id="fAy-wg-MDL"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

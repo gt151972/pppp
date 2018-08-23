@@ -41,6 +41,7 @@
         [self setSubViews];
         self.userId = 0;
         self.giftNum = 1;
+        self.userName = @"请选择赠送礼物的对象";
         
     }
     return self;
@@ -70,6 +71,10 @@
 //    //重新计算页数
 //    DPK_NW_Application* dpk_app= [DPK_NW_Application sharedInstance];
 //    self.pageControl.numberOfPages = (dpk_app.giftList.count +7)/8;
+}
+
+-(void)hide {
+    [self removeFromSuperview];
 }
 
 //更新用户金币信息
@@ -144,16 +149,16 @@
 
     if(_arrayCollect.count>0 && indexPath.row < _arrayCollect.count)
     {
-        NSLog(@"_arrayCollect == %@",_arrayCollect);
+//        NSLog(@"_arrayCollect == %@",_arrayCollect);
         //设置礼物信息
         GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
-        NSLog(@"pic == %@",model.pic_thumb);
+//        NSLog(@"pic == %@",model.pic_thumb);
         [cell setGiftInfo:model.giftId GiftImage:model.pic_thumb GiftName:model.name GiftPrice:model.price];
-
+        [cell.hitButton setTitle:[NSString stringWithFormat:@"%d",model.price] forState:UIControlStateNormal];
         if (_reuse == indexPath.row) {
-            cell.hitButton.selected = YES;
+            cell.hitButton.hidden = NO;
         } else {
-            cell.hitButton.selected = NO;
+            cell.hitButton.hidden = YES;
         }
     }
     return cell;
@@ -166,16 +171,16 @@
             //遍历所有cell，重置为未连击状态
             if ([view isKindOfClass:[GiftViewCell class]]) {
                 GiftViewCell *cell = (GiftViewCell *)view;
-                cell.hitButton.selected = NO;
+                cell.hitButton.hidden = YES;
             }
         }
-        cell.hitButton.selected = YES;
+        cell.hitButton.hidden = NO;
         //可以发送礼物
 //        self.senderButton.backgroundColor = RGB(36, 215, 200);
         self.senderButton.enabled = YES;
         _reuse = indexPath.row;
     } else {
-        cell.hitButton.selected = NO;
+        cell.hitButton.hidden = YES;
         //未有选中，禁用发送按钮
 //        self.senderButton.backgroundColor = [UIColor grayColor];
         self.senderButton.enabled = NO;
@@ -331,6 +336,7 @@
         _senderButton = [MyControlTool buttonWithText:@"发送" textColor:[UIColor whiteColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
             if (self.giftClick) {
                 self.giftClick(_reuse);
+                [self hide];
             }
         }];
         _senderButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -351,14 +357,21 @@
         _selectUserButton.tag = 2000;
         
         _selectUserButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        _selectUserButton.titleLabel.textColor = [UIColor whiteColor];
+        _selectUserButton.titleLabel.textColor = MAIN_COLOR;
         _selectUserButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 //        _selectUserButton.contentEdgeInsets = UIEdgeInsetsMake(0,5, 0, 0);
-        [_selectUserButton setTitle:[NSString stringWithFormat:@"送给:%d",_userId] forState:UIControlStateNormal];
+        [_selectUserButton setTitle:[NSString stringWithFormat:@"送给:%@",_userName] forState:UIControlStateNormal];
         [_selectUserButton addTarget:self action:@selector(selectUserBtnClicked:) forControlEvents:UIControlEventTouchUpInside ];
     }
     return _selectUserButton;
 }
+
+//- (void)selectUserBtnClicked: (UIButton *)button{
+//    if (self.selectGiftUser) {
+//        self.selectGiftUser();
+//        [self hide];
+//    }
+//}
 
 //选择赠送数量按钮
 -(UIButton*)selectNumButton {
@@ -412,9 +425,10 @@
     view.userArray = self.roomObj.memberList;
     WEAKSELF;
     [view setUserClick:^(NSInteger userId, NSString* userAlias) {
-        weakSelf.userId = userId;
+        weakSelf.userId = (int)userId;
         [self.selectUserButton setTitle:[NSString stringWithFormat:@"赠送:%@", userAlias] forState:UIControlStateNormal ];
     }];
+    [view popShow];
 }
 
 //选择赠送数量

@@ -8,6 +8,7 @@
 
 #import "GiftViewCell.h"
 #import "UIImageView+WebCache.h"
+#import <YYKit.h>
 
 @implementation GiftViewCell
 
@@ -28,6 +29,11 @@
     [self addSubview:self.giftNameView];
 //    [self addSubview:self.giftPriceView];
     //和自己一样大
+    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@8);
+        make.width.equalTo(@35);
+        make.top.right.equalTo(self.giftImageView);
+    }];
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(13);
         make.right.equalTo(self).offset(-13);
@@ -35,11 +41,6 @@
         make.bottom.equalTo(self).offset(-23);
     }];
 //
-//    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.right.equalTo(self);
-//        make.height.width.equalTo(@25);
-//    }];
-    
     [self.giftNameView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom);
         make.height.equalTo(@12);
@@ -66,11 +67,10 @@
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
 
 //    NSURL *url = [NSURL URLWithString:giftImage];
-    NSString *strUrl = [NSString stringWithFormat:@"%@%@",[dict objectForKey:@"res"],giftImage];
+    NSString *strUrl = [NSString stringWithFormat:@"%@gift/%@",[dict objectForKey:@"res"],giftImage];
     NSURL *url =[NSURL URLWithString:strUrl];
-    NSLog(@"strUrl == %@",strUrl);
+//    NSLog(@"strUrl == %@",strUrl);
     [self.giftImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
-    
     self.giftNameView.text = giftName;
     
     NSString* strGiftPrice;
@@ -82,7 +82,6 @@
     }
     self.giftPriceView.text = strGiftPrice;
 }
-
 - (UIImageView *)giftImageView{
     if (!_giftImageView) {
         _giftImageView = [[UIImageView alloc]init];
@@ -95,8 +94,13 @@
     if (!_hitButton) {
         _hitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         //根据状态设置不同的图片
-        [_hitButton setImage:[UIImage imageNamed:@"pop_gift_lian"] forState:UIControlStateNormal];
-        [_hitButton setImage:[UIImage imageNamed:@"button_choose-on"] forState:UIControlStateSelected];
+        _hitButton.layer.cornerRadius = 4;
+        _hitButton.layer.masksToBounds = YES;
+        [_hitButton setBackgroundColor:MAIN_COLOR];
+        [_hitButton.titleLabel setFont:[UIFont systemFontOfSize:8]];
+        [_hitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [_hitButton setImage:[UIImage imageNamed:@"pop_gift_lian"] forState:UIControlStateNormal];
+//        [_hitButton setImage:[UIImage imageNamed:@"button_choose-on"] forState:UIControlStateSelected];
     }
     return _hitButton;
 }

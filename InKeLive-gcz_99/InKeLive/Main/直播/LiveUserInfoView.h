@@ -19,7 +19,7 @@
 
 @property (nonatomic, copy) void (^publicChatBlock)();//公聊回调函数
 @property (nonatomic, copy) void (^privateChatBlock)();//私聊回调函数
-@property (nonatomic, copy) void (^sandGiftBlock)();//送礼回调函数
+@property (nonatomic, copy) void (^sandGiftBlock)(int userId, NSString *userName);//送礼回调函数
 /** 用户信息 */
 @property (nonatomic, strong) ClientUserModel* userModel;
 

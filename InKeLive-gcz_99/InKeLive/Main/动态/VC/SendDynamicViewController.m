@@ -7,9 +7,11 @@
 //
 
 #import "SendDynamicViewController.h"
+#import <AFNetworking.h>
 
-@interface SendDynamicViewController ()
-
+@interface SendDynamicViewController ()<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *btnImagePick;
+@property(nonatomic,strong) UIImagePickerController *imagePicker;
 @end
 
 @implementation SendDynamicViewController
@@ -48,20 +50,104 @@
 - (void)btnSendClicked{
     
 }
+- (IBAction)btnPickImageClicked:(id)sender {
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    sheet.tag = 2550;
+    //显示消息框
+    [sheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 2550) {
+        NSUInteger sourceType = 0;
+        // 判断系统是否支持相机
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            imagePickerController.delegate = self; //设置代理
+            imagePickerController.allowsEditing = YES;
+            imagePickerController.sourceType = sourceType; //图片来源
+            if (buttonIndex == 0) {
+                return;
+            }else if (buttonIndex == 1) {
+                //拍照
+                sourceType = UIImagePickerControllerSourceTypeCamera;
+                imagePickerController.sourceType = sourceType;
+                [self presentViewController:imagePickerController animated:YES completion:nil];
+            }else if (buttonIndex == 2){
+                //相册
+                sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                imagePickerController.sourceType = sourceType;
+                [self presentViewController:imagePickerController animated:YES completion:nil];
+            }
+        }else {
+            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            imagePickerController.sourceType = sourceType;
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        }
+    }
+}
+
+#pragma mark -实现图片选择器代理-（上传图片的网络请求也是在这个方法里面进行，这里我不再介绍具体怎么上传图片）
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage]; //通过key值获取到图片
+    [_btnImagePick setImage:image forState:UIControlStateNormal];
+    
+    NSString *url1 = @"http://www.aa1258.com/upload";
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = 20;
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
+     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [manager POST:url1 parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSData *fileData = UIImageJPEGRepresentation(image, 0.5);
+        [formData appendPartWithFileData:fileData name:@"file" fileName:@"one.jpg" mimeType:@"image/jpeg"];
+//        [formData appendPartWithFileURL:fileData name:@"file2" error:nil];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSData *data = [self deleteEscapeStringWithResponseObject:responseObject];
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSData * datas = [receiveStr dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:datas options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"dic == %@",jsonDict);
+        NSLog(@"成功:%@",[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error == %@",error);
+    }];
+    //上传图片到服务器--在这里进行图片上传的网络请求，这里不再介绍
+}
+
+- (NSData * )deleteEscapeStringWithResponseObject:(NSData * )responseObject{
+    NSString * str_Json = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"Array\n" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"(" withString:@"{"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@")" withString:@"}"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"[" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"]" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@">" withString:@""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"\n" withString:@";\n"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"{;" withString:@"{"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"};" withString:@"}"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@"= " withString:@" = \""];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@";" withString:@"\";"];
+    str_Json = [str_Json stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"str_js == %@",str_Json);
+    NSData * data = [str_Json dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"dic == %@",jsonDict);
+    return data;
+}
+
+//当用户取消选择的时候，调用该方法
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

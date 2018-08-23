@@ -656,14 +656,17 @@ UIAlertViewDelegate >
                                            GiftText:0];
             }
         }
-        
+        [weakSelf bottomToolShow];
     }];
     //显示底部工具栏
     [self.giftView setGrayClick:^{
         [weakSelf bottomToolShow];
     }];
     //testcode 创建开始预览和开始推流按钮
-    
+    //选择赠送用户
+    [self.giftView setSelectGiftUser:^{
+        [weakSelf showSelectGiftUserView];
+    }];
 }
 
 - (void) registerForKeyboardNotifications
@@ -1354,6 +1357,20 @@ UIAlertViewDelegate >
             }];
             
         }];
+
+        [userView setSandGiftBlock:^(int userId, NSString *userName) {
+            //关闭回调函数
+            [UIView animateWithDuration:0 animations:^{
+                self.userView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            } completion:^(BOOL finished) {
+                [self.userView removeFromSuperview];
+                self.userView = nil;
+            }];
+            self.giftView.userName = userName;
+            self.giftView.userId = userId;
+            NSLog(@"userid == %d",userId);
+            [self bottomToolPosition];
+        }];
         
     }
     return _userView;
@@ -1663,6 +1680,36 @@ UIAlertViewDelegate >
     //[alert addButtonWithTitle:@"确定"];
     [alert setTag:14];
     [alert show];
+}
+- (void)showSelectSendGiftUserView{
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SelectGiftUserView* view = [[SelectGiftUserView alloc] initWithFrame:frame];
+    
+#if 0
+    // 利用block进行排序
+    //========================================
+    NSArray *array2 = [self.roomObj.memberList sortedArrayUsingComparator:
+                       ^NSComparisonResult(ClientUserModel *obj1, ClientUserModel *obj2) {
+                           // 先按照麦序
+                           NSComparisonResult result = [obj1.lastname compare:obj2.lastname];
+                           // 如果有相同的姓，就比较名字
+                           if (result == NSOrderedSame) {
+                               result = [obj1.firstname compare:obj2.firstname];
+                           }
+                           
+                           return result;
+                       }];
+    //=======================================
+#endif
+    view.userArray = self.roomObj.memberList;
+    
+    [view setUserClick:^(NSInteger userId, NSString *userAlias) {
+        self.giftView.userName = userAlias;
+        self.giftView.userId = (int)userId;
+        [self bottomToolPosition];
+    }];
+    
+    [view popShow];
 }
 
 -(void)showSelectGiftUserView {
