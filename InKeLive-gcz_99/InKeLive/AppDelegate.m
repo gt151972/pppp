@@ -150,7 +150,7 @@
     NSString *strUserLogonPwd =[[NSUserDefaults standardUserDefaults] objectForKey:@"DPK_USERLOGONPWD"];
     if(strUserId !=nil && strUserLogonPwd !=nil && strUserId.length >0 && strUserLogonPwd.length >0)
     {
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
         [parameters setObject:@"" forKey:@"mobile"];
         [parameters setObject:@"" forKey:@"authCode"];
@@ -162,9 +162,11 @@
         NSLog(@"=========================");
         NSLog(@"%@", strAPIUrl);
         NSLog(@"=========================");
-        [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            //do nothing
-        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"Success: %@", responseObject);
             NSDictionary *appDic =(NSDictionary*)responseObject;
             NSString* errorCode= appDic[@"errorCode"];
@@ -208,8 +210,7 @@
                     [dpk_app loadGiftVersion];
                 });
             }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"Error: %@", error);
         }];
     }

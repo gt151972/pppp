@@ -186,7 +186,7 @@
     userData.tmpLogonAccount =strUserLogonAccount;
     userData.tmpLogonPwd =strUserLogonPwd;
     //网络请求
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     [parameters setObject:@"" forKey:@"mobile"];
     [parameters setObject:@"" forKey:@"authCode"];
@@ -202,15 +202,15 @@
     NSLog(@"========================================");
     NSLog(@"%@", strAPIUrl);
     NSLog(@"========================================");
-    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //do nothing
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Success: %@", responseObject);
         if(weakSelf !=nil)
-        [weakSelf onAPI_UserLogonRequest_Success:responseObject];
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [weakSelf onAPI_UserLogonRequest_Success:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Error: %@", error);
         if(weakSelf !=nil)
             [weakSelf onAPI_UserLogonRequest_Failed];

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface MineHeadView : UIView
+@property (nonatomic, strong)NSArray *arrayInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *imgHead;
 @property (weak, nonatomic) IBOutlet UILabel *labName;
 @property (weak, nonatomic) IBOutlet UILabel *labUserId;

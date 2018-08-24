@@ -12,22 +12,36 @@
 #import "MJExtension.h"
 #import "LiveViewController.h"
 #import "MoreViewController.h"
+#import <AFNetworking.h>
+#import "CommonAPIDefines.h"
+#import "SearchModel.h"
 
 #import "AppDelegate.h"
 
 @class User_Nodes,Users,User,Live_Nodes,Lives,Creator;
 
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource>
-
+@property (nonatomic, strong) UIButton *btnSearch;
+@property (nonatomic, strong) NSMutableArray *arrayInfo;
 @end
 
 @implementation SearchViewController
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        _arrayInfo = [NSMutableArray array];
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.navigationController setNavigationBarHidden:NO];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.titleView = self.searchView;  //设置titleView
+    [self.searchView addSubview:self.btnSearch];
     [self.view addSubview:self.recommdTableView];
     [self loadData];
 }
@@ -179,6 +193,46 @@
         }];
     }
     return _searchView;
+}
+
+- (UIButton *)btnSearch{
+    _btnSearch  = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 50, 0, 40, 20)];
+    [_btnSearch setTitle:@"搜索" forState:UIControlStateNormal];
+    [_btnSearch setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [_btnSearch addTarget:self action:@selector(requestData) forControlEvents:UIControlEventTouchUpInside];
+    return _btnSearch;
+}
+
+- (void)requestData{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = CMD_REQUEST_SEARCH;
+    parameters[@"uid"] = @"1259";
+    parameters[@"sid"] = @"";
+    parameters[@"rid"] = @"0";
+    parameters[@"info"] = @"177777";
+    NSString* strAPIUrl = URL_GiftInfo;
+    [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"response == %@",responseObject);
+        NSArray *array = [responseObject objectForKey:@"List"];
+        for (NSDictionary *dic in array) {
+            SearchModel *model = [[SearchModel alloc] init];
+            model.title = [dic objectForKey:@"Title"];
+            model.img = [dic objectForKey:@"img"];
+            model.mLevel = [[dic objectForKey:@"mLevel"] intValue];
+            model.max = [[dic objectForKey:@"max"] intValue];
+            model.online = [[dic objectForKey:@"online"] intValue];
+            model.rId = [[dic objectForKey:@"rId"] intValue];
+            model.uId = [[dic objectForKey:@"uId"] intValue];
+            [_arrayInfo addObject:model];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
 }
 
 //标题数组

@@ -26,7 +26,10 @@
     return [self createViewFromNib];
     //return [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil].lastObject;
 }
+
 - (IBAction)btnRechangeClicked:(id)sender {
+}
+- (IBAction)btnEditClicked:(id)sender {
 }
 
 - (UIImageView *)imgHead{

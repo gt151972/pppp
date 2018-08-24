@@ -80,16 +80,18 @@
  */
 - (void)getData{
     //网络请求
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     [parameters setObject:@"0" forKey:@"startPos"];
     [parameters setObject:@"100" forKey:@"pageCount"];
      [self showLoadingHud];
     WEAKSELF;
     NSString* strAPIUrl = [NSString stringWithFormat:@"%@%@",[DPK_NW_Application sharedInstance].clientConfigParam.commonApiPrefix, URL_HotPlayerList];
-    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //do nothing
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Success: %@", responseObject);
         if(weakSelf !=nil) {
             [weakSelf hideLoadingHud];
@@ -128,11 +130,10 @@
             [weakSelf.mainTableView reloadData];
             [weakSelf.mainTableView.mj_header endRefreshing];
         }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Error: %@", error);
         if(weakSelf !=nil)
-        [weakSelf hideLoadingHud];
+            [weakSelf hideLoadingHud];
         [weakSelf.mainTableView.mj_header endRefreshing];
     }];
 }

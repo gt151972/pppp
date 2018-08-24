@@ -24,6 +24,7 @@
 @property (nonatomic, weak)ClientRoomModel* roomObj;
 //当前选择用户ID
 @property (nonatomic, assign)int userId;
+@property (nonatomic, strong)NSString *userName;
 //当前选择礼物数量
 @property (nonatomic, assign)int giftNum;
 //礼物列表
@@ -44,9 +45,11 @@
 
 @property (nonatomic,copy)void (^giftClick)(NSInteger tag);
 @property (nonatomic,copy)void (^grayClick)();
+@property (nonatomic,copy)void (^selectGiftUser)();
 
 //@property (nonatomic,strong)NSMutableArray *dataArr;  //数据
 
+- (void)hide;
 - (void)popShow;
 - (void)updateUserMoney:(long long)nk NB:(long long)nb;
 - (void)addUser:(int)userId UserName:(NSString*)userName;

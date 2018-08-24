@@ -7,6 +7,7 @@
 //
 
 #import "MyControlTool.h"
+#import <ReactiveCocoa.h>
 
 @implementation MyControlTool
 

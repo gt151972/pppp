@@ -14,6 +14,11 @@
 
 @property (nonatomic,strong)UIButton *cancleButton;
 
+@property (nonatomic,strong)UIButton *searchButton;
+
 @property (nonatomic,copy)void (^cancleBlock)();
+
+- (void) popToView;
+- (void) hide;
 
 @end

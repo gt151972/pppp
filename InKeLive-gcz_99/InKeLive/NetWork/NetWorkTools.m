@@ -7,8 +7,7 @@
 //
 
 #import "NetWorkTools.h"
-#import "AFHTTPSessionManager.h"
-#import "AFHTTPRequestOperationManager.h"
+#import <AFHTTPSessionManager.h>
 
 #define TIMEOUT 10.0f
 
@@ -24,8 +23,8 @@
     return tools;
 }
 
--(AFHTTPRequestOperationManager *)baseHtppRequest{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+-(AFHTTPSessionManager *)baseHtppRequest{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 
     //设置网络请求为忽略本地缓存  直接请求服务器
@@ -42,17 +41,17 @@
               parameters:(id)parameters
                  success:(void (^)(NSDictionary * dictionary))success
                  failure:(void (^)(NSError * error))failure {
-    AFHTTPRequestOperationManager *manager = [self baseHtppRequest];
+    AFHTTPSessionManager *manager = [self baseHtppRequest];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [manager GET:URLString parameters:parameters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+    [manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //这里使用json解析返回数据
         NSDictionary *appDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         if (responseObject) {
             success(appDic);
         }
-        
-    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (error) {
             failure(error);
         }
