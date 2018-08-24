@@ -175,11 +175,13 @@
             }
         }
         cell.hitButton.hidden = NO;
+        _giftNum ++;
+        [cell.hitButton setTitle:[NSString stringWithFormat:@"X%d",_giftNum] forState:UIControlStateNormal];
         //可以发送礼物
 //        self.senderButton.backgroundColor = RGB(36, 215, 200);
         self.senderButton.enabled = YES;
         _reuse = indexPath.row;
-        _giftNum ++;
+        
     } else {
         cell.hitButton.hidden = YES;
         //未有选中，禁用发送按钮
