@@ -19,8 +19,10 @@
 
 
 
+
 @interface HomeViewController ()<UIScrollViewDelegate>
 @property (nonatomic, strong)UIViewController *currentVC;
+
 @end
 
 @implementation HomeViewController{
@@ -41,7 +43,11 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:rightImg style:UIBarButtonItemStylePlain target:self action:nil];
     
     [self.view addSubview:self.homeScrollView];
+    [self searchView];
+    
     [self initChildViewControllers];
+//    [self.view addSubview:_searchView];
+//    _searchView.hidden = YES;
 }
 
 - (void)initChildViewControllers{
@@ -76,11 +82,16 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     [self.titleView scrollMove:(scrollView.contentOffset.x/SCREEN_WIDTH + 50)];
 }
+//搜索栏
+- (SearchView *)searchView{
+    if (!_searchView) {
+        _searchView = [[SearchView alloc]initWithFrame:self.view.bounds];
+    }
+    return _searchView;
+}
 
 - (void)enterSearchClick{
-//    SearchViewController *searchVc = [[SearchViewController alloc]init];
-//    BaseViewController *baseVc = [[BaseViewController alloc]initWithRootViewController:searchVc];
-//    [self presentViewController:baseVc animated:YES completion:nil];
+    [_searchView popToView];
 }
 
 

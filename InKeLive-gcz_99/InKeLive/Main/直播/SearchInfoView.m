@@ -7,11 +7,20 @@
 //
 
 #import "SearchInfoView.h"
+#import <POP.h>
+
 @interface SearchInfoView()
 @property (weak, nonatomic) IBOutlet UIView *searchBg;
 
 @end
+
 @implementation SearchInfoView
+static const NSTimeInterval kAnimalTime = 1.0f;
+
+- (void)awakeFromNib{
+    [super awakeFromNib];
+}
+
 - (UIView *)searchBg{
     _searchBg.layer.masksToBounds = YES;
     _searchBg.layer.cornerRadius = 18.0;
@@ -24,7 +33,23 @@
     [self removeFromSuperview];
 }
 - (IBAction)btnGoToNextViewClicked:(id)sender {
-    
+    POPSpringAnimation *anSpring = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleX];
+    anSpring.springBounciness = 20;
+    anSpring.toValue = @100;
+    anSpring.velocity = @400;
+    anSpring.springSpeed = 5.0;
+    [_searchBg.layer pop_addAnimation:anSpring forKey:@"positionAnimation"];
+}
+
+- (void)popShow {
+    //这个Window是什么?
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self];
+
+}
+
+-(void)hide {
+    [self removeFromSuperview];
 }
 
 /*

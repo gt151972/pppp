@@ -744,7 +744,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 break;
             case MXP_SUBCMD_VIDEOCHAT_ROOMCHATMSG_NOTY:
             {
-                NSLog(@"MXP_SUBCMD_VIDEOCHAT_ROOMCHATMSG_NOTY");
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_ROOMCHATMSG_NOTY");//聊天
                 NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
                 __strong id delegate =[sock GetMessageEventSink];
                 if(delegate !=nil) {

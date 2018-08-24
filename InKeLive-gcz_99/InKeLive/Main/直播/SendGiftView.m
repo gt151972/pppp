@@ -153,7 +153,7 @@
         //设置礼物信息
         GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
 //        NSLog(@"pic == %@",model.pic_thumb);
-        [cell setGiftInfo:model.giftId GiftImage:model.pic_thumb GiftName:model.name GiftPrice:model.price];
+        [cell setGiftInfo:model.giftId GiftImage:model.pic_original GiftName:model.name GiftPrice:model.price];
         [cell.hitButton setTitle:[NSString stringWithFormat:@"%d",model.price] forState:UIControlStateNormal];
         if (_reuse == indexPath.row) {
             cell.hitButton.hidden = NO;
@@ -179,6 +179,7 @@
 //        self.senderButton.backgroundColor = RGB(36, 215, 200);
         self.senderButton.enabled = YES;
         _reuse = indexPath.row;
+        _giftNum ++;
     } else {
         cell.hitButton.hidden = YES;
         //未有选中，禁用发送按钮

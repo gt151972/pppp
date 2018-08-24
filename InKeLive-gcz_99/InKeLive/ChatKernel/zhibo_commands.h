@@ -96,7 +96,7 @@
 
 #define MXP_SUBCMD_VIDEOCHAT_USERACCOUNT_REQ       1066    //获取用户账户请求
 #define MXP_SUBCMD_VIDEOCHAT_USERACCOUNT_RESP      1067
-#define MXP_SUBCMD_VIDEOCHAT_USERACCOUNT_NOTY      1068
+#define MXP_SUBCMD_VIDEOCHAT_USERACCOUNT_NOTY      1068    //刷新金币金额
 
 #define MXP_SUBCMD_VIDEOCHAT_ROOMADDMUTEUSER_REQ   1069    //房间增加禁言用户
 #define MXP_SUBCMD_VIDEOCHAT_ROOMADDMUTEUSER_RESP  1070
@@ -274,6 +274,7 @@ typedef struct _tag_HBCMD_VideoChat_JoinRoom_Resp
     uint32  userRoomState;
     int64   user_nk;
     int64   user_nb;
+    int8    ngende;     //性别
 }HBCMD_VideoChat_JoinRoom_Resp_t;
 
 //房间基本信息

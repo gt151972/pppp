@@ -9,6 +9,7 @@ pod 'MBProgressHUD', '~> 1.0.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FMDB'
 pod 'YYKit'
+pod 'pop'
 
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'

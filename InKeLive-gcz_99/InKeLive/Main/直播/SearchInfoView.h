@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SearchInfoView : UIView
-
+- (void)popView;
+- (void)hide;
 @end

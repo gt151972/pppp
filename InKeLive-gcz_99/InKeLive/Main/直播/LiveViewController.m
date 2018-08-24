@@ -1372,6 +1372,10 @@ UIAlertViewDelegate >
             [self bottomToolPosition];
         }];
         
+        [userView setPrivateChatBlock:^(int userId, NSString *userName, NSString *imgPath) {
+            
+        }];
+        
     }
     return _userView;
 }
