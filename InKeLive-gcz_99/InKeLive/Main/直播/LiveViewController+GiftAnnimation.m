@@ -17,6 +17,8 @@
 @implementation LiveViewController (GiftAnnimation)
 
 - (void)chooseGift:(NSInteger)tag{
+//    NSLog(@"giftArr == %@",self.giftView);
+//     [self.presentView insertPresentMessages:@[self.giftArr[0]] showShakeAnimation:YES];
     switch (tag) {
         case 100:
             //鲜花

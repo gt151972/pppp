@@ -12,6 +12,7 @@
 //#import <UMSocialWechatHandler.h>
 //#import "WXApi.h"
 #import "DPK_NW_Application.h"
+#import "PresentModelAble.h"
 
 //#import <UMengUShare/UMSocialCore/UMSocialManager.h>////
 //#import <UMengUShare/UShareUI/UMSocialShareUIConfig.h>////
@@ -98,7 +99,6 @@ UIAlertViewDelegate >
 @property (nonatomic, strong) NSString *nickName;
 
 @property (nonatomic, strong) NSString *userIcon;
-
 @end
 
 @implementation LiveViewController
@@ -610,7 +610,8 @@ UIAlertViewDelegate >
     
     //送礼物，设置回调
     WEAKSELF;
-    [self.giftView setGiftClick:^(NSInteger tag) {
+
+    [self.giftView setGiftClick:^(NSInteger tag, int number) {
         //发送礼物
         NSLog(@"点击了礼物, tag=%ld, playerId=%d", (long)tag, weakSelf.playerId);
         LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
@@ -620,7 +621,7 @@ UIAlertViewDelegate >
         
         //[weakSelf chooseGift:tag + 100];
         int toId = weakSelf.giftView.userId;
-        int giftNum = weakSelf.giftView.giftNum;
+        int giftNum =number;
         if(toId == 0) {
             MessageModel *model = [[MessageModel alloc] init];
             [model setModel:@"请选择赠送对象"];
@@ -655,6 +656,13 @@ UIAlertViewDelegate >
                                         ToUserAlias:szToAlias
                                            GiftText:0];
             }
+            PresentModel *presentModel = [[PresentModel alloc] init];
+            presentModel.sender = [NSString stringWithFormat:@"%s",szSrcAlias];
+            presentModel.giftName = model.name;
+            presentModel.giftNumber = number;
+            NSArray *arrayPresent = @[presentModel];
+            _presentView = [[PresentView alloc] init];
+            [_presentView insertPresentMessages:arrayPresent showShakeAnimation:YES];
         }
         [weakSelf bottomToolShow];
     }];
@@ -863,14 +871,14 @@ UIAlertViewDelegate >
  *  cell点击事件
  */
 - (void)presentView:(PresentView *)presentView didSelectedCellOfRowAtIndex:(NSUInteger)index {
-    //GIftCell *cell = [presentView cellForRowAtIndex:index];
+    GIftCell *cell = [presentView cellForRowAtIndex:index];
 }
 
 /**
  一组连乘动画执行完成回调
  */
 - (void)presentView:(PresentView *)presentView animationCompleted:(NSInteger)shakeNumber model:(id<PresentModelAble>)model {
-    
+    NSLog(@"shakeNumber == %ld",(long)shakeNumber);
 }
 
 #pragma 点击事件

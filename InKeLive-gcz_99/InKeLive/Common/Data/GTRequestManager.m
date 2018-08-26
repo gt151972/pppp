@@ -9,6 +9,7 @@
 #import "GTRequestManager.h"
 #import "AppDelegate.h"
 #import <AFNetworking.h>
+#import "LogonViewController.h"
 
 @implementation GTRequestManager
 +(GTRequestManager *)shareSingletonClasss{
@@ -162,9 +163,9 @@
     
     NSString * str = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     if ([str isEqualToString:@"令牌错误!"] || [str isEqualToString:@"令牌过期!"]) {
-//        LoginViewController *login = [[LoginViewController alloc]init];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:login];
-//        [VC presentViewController:nav animated:YES completion:nil];
+        LogonViewController *login = [[LogonViewController alloc]init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:login];
+        [VC presentViewController:nav animated:YES completion:nil];
         return;
     }
 }

@@ -19,6 +19,8 @@
 @property (nonatomic,strong)UILabel* giftNameView;
 //礼物价格
 @property (nonatomic,strong)UILabel* giftPriceView;
+//选中的背景框
+@property (nonatomic, strong)UIView *viewBgCase;
 
 -(void) setGiftInfo:(int)giftId GiftImage:(NSString*)giftImage GiftName:(NSString*)giftName GiftPrice:(int)giftPrice;
 

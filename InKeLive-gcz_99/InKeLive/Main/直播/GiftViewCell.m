@@ -24,21 +24,24 @@
 }
 
 - (void)setSubViews{
+    [self addSubview:self.viewBgCase];
     [self addSubview:self.giftImageView];
     [self addSubview:self.hitButton]; //连击标志
     [self addSubview:self.giftNameView];
 //    [self addSubview:self.giftPriceView];
     //和自己一样大
-    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@8);
-        make.width.equalTo(@35);
-        make.top.right.equalTo(self.giftImageView);
-    }];
+    
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(13);
         make.right.equalTo(self).offset(-13);
         make.top.equalTo(self).offset (9);
         make.bottom.equalTo(self).offset(-23);
+    }];
+    [self.viewBgCase mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(8);
+        make.right.equalTo(self).offset(- 8);
+        make.centerY.equalTo(_giftImageView.mas_centerY);
+        make.height.equalTo(_giftImageView.mas_width).offset(10);
     }];
 //
     [self.giftNameView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -46,6 +49,11 @@
         make.height.equalTo(@12);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
+    }];
+    [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@8);
+        make.width.equalTo(@35);
+        make.top.right.equalTo(self.viewBgCase).offset(5);
     }];
 //    [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.mas_bottom).offset(-18);
@@ -82,6 +90,18 @@
     }
     self.giftPriceView.text = strGiftPrice;
 }
+- (UIView *)viewBgCase{
+    if (!_viewBgCase) {
+        _viewBgCase = [[UIView alloc] init];
+        _viewBgCase .backgroundColor = [UIColor clearColor];
+        _viewBgCase.layer.borderColor = MAIN_COLOR.CGColor;
+        _viewBgCase.layer.borderWidth = 2.0f;
+        _viewBgCase.layer.cornerRadius = 2.0f;
+        _viewBgCase.layer.masksToBounds = YES;
+    }
+    return _viewBgCase;
+}
+
 - (UIImageView *)giftImageView{
     if (!_giftImageView) {
         _giftImageView = [[UIImageView alloc]init];
