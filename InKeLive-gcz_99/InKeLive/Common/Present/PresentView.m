@@ -67,7 +67,6 @@
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
-    
     //初始值
     self.showTime = 3;
     
@@ -86,6 +85,7 @@
         [self addSubview:cell];
         [self.showCells addObject:cell];
     }
+//    NSLog(@"self.showCells.count == %lu",(unsigned long)self.showCells.count);
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -113,6 +113,7 @@
  */
 - (void)insertShowShakeAnimationMessages:(NSArray<id<PresentModelAble>> *)models
 {
+    NSLog(@"model == %@",models);
     for (int index = 0; index < models.count; index++) {
         id<PresentModelAble> obj = models[index];
         PresentViewCell *cell = [self examinePresentingCell:obj];
@@ -238,6 +239,7 @@
 
 - (void)insertPresentMessages:(NSArray<id<PresentModelAble>> *)models showShakeAnimation:(BOOL)flag
 {
+    [self drawRect:CGRectMake(0,150, SCREEN_WIDTH/2, 285)];
     NSArray *siftArray = [self checkElementOfModels:models];
     if (!siftArray.count) return;
     if (flag) {
@@ -249,6 +251,7 @@
 
 - (PresentViewCell *)cellForRowAtIndex:(NSUInteger)index
 {
+    NSLog(@"self.showCells.count == %lu",(unsigned long)self.showCells.count);
     if (index < self.showCells.count)
     {
         return self.showCells[index];

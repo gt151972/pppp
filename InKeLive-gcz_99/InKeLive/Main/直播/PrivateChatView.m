@@ -11,11 +11,17 @@
 #import "MessageFrame.h"
 #import "NSString+Extension.h"
 #import "UILabel+WidthAndHeight.h"
+#import "ClientUserModel.h"
 
 @interface PrivateChatView()<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnBg;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldChat;
+
+@property (nonatomic, strong)NSMutableDictionary *dicMessage;//所有数据
+
+@property (nonatomic, assign) int lastRow;//记录上次点击的行数
+
 
 @property (weak, nonatomic) NSMutableArray *arrMessageFrame;
 
@@ -41,6 +47,20 @@
 }
 -(void)awakeFromNib {
     [super awakeFromNib];
+}
+
+- (NSMutableDictionary *)dicMessage{
+    if (!_dicMessage) {
+        _dicMessage = [NSMutableDictionary dictionary];
+    }
+    return _dicMessage;
+}
+
+- (NSMutableArray *)arrUserInfo{
+    if (!_arrUserInfo) {
+        _arrUserInfo = [NSMutableArray array];
+    }
+    return _arrUserInfo;
 }
 
 
@@ -97,6 +117,7 @@
     _chatTableView.delegate = self;
     _chatTableView.dataSource = self;
     _chatTableView.backgroundColor = RGBA(50, 50, 50, 0.5);
+    _chatTableView.allowsSelection = NO;
     return _chatTableView;
 }
 
@@ -135,6 +156,13 @@
  @param sender <#sender description#>
  */
 - (IBAction)btnSendClicked:(id)sender {
+    if (_textFieldChat.text.length > 0) {
+        if (_delegate && [_delegate respondsToSelector:@selector(SendPrivateMessage:receiverId:)]) {
+            ClientUserModel *model = [_arrUserInfo lastObject];
+            [_delegate SendPrivateMessage:_textFieldChat.text receiverId:model.userId];
+        }
+        _textFieldChat.text = @"";
+    }
 }
 
 
@@ -157,7 +185,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
         }
-        cell.textLabel.text = @"头像";
+//        cell.textLabel.text = @"头像";
         cell.backgroundColor = [UIColor clearColor];
         UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 4, 32, 32)];
         imgHead.layer.masksToBounds = YES;
@@ -208,8 +236,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView == _HeadTableView) {
+        ClientUserModel *userModel = [_arrUserInfo objectAtIndex:indexPath.row];
+        //保持左列表排序始终按_arrUserInfo倒叙
+        [_arrUserInfo removeObjectAtIndex:indexPath.row];
+        [_arrUserInfo addObject:userModel];
+        
+        
         [_chatTableView reloadData];
+    }else if (tableView == _chatTableView){
+        
     }
 }
 

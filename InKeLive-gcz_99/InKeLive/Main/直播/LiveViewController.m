@@ -42,7 +42,8 @@ KeyBoardInputViewDelegate,
 PresentViewDelegate,
 UITableViewDataSource, UITableViewDelegate,
 DPKRoomMessageSink,
-UIAlertViewDelegate >
+UIAlertViewDelegate,
+privateChatViewDelegate>
 {
     bool use_cap_;
     UITapGestureRecognizer *tapGesture;
@@ -617,9 +618,9 @@ UIAlertViewDelegate >
         LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
         NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
         const char* szSrcAlias = (const char*)[userData.userName cStringUsingEncoding:enc];
+        DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
         
-        
-        //[weakSelf chooseGift:tag + 100];
         int toId = weakSelf.giftView.userId;
         int giftNum =number;
         if(toId == 0) {
@@ -643,8 +644,8 @@ UIAlertViewDelegate >
                 sprintf(szToAlias, "%d", toId);
             }
             
-            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-            GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
+//            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+//            GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
             if(model !=nil) {
                 [weakSelf.socketObj SendRoomGiftReq:weakSelf.roomObj.roomId
                                               SrcID:userData.userID
@@ -656,15 +657,19 @@ UIAlertViewDelegate >
                                         ToUserAlias:szToAlias
                                            GiftText:0];
             }
-            PresentModel *presentModel = [[PresentModel alloc] init];
-            presentModel.sender = [NSString stringWithFormat:@"%s",szSrcAlias];
-            presentModel.giftName = model.name;
-            presentModel.giftNumber = number;
-            NSArray *arrayPresent = @[presentModel];
-            _presentView = [[PresentView alloc] init];
-            [_presentView insertPresentMessages:arrayPresent showShakeAnimation:YES];
+            
         }
         [weakSelf bottomToolShow];
+        PresentModel *presentModel = [[PresentModel alloc] init];
+        presentModel.sender = [NSString stringWithFormat:@"%s",szSrcAlias];
+        presentModel.giftName = model.name;
+        presentModel.icon = userData.userSmallHeadPic;
+        presentModel.giftImageName = model.pic_original;
+        //        presentModel.giftNumber = number;
+        for (int index = 0; index < number; index ++ ) {
+            [weakSelf.giftArr addObject:presentModel];
+        }
+        [weakSelf chooseGift:tag + 100];
     }];
     //显示底部工具栏
     [self.giftView setGrayClick:^{
@@ -804,6 +809,26 @@ UIAlertViewDelegate >
 //        }
 //    }];
 //}
+#pragma mark privateChatViewDelegate
+- (void)SendPrivateMessage:(NSString *)message receiverId:(int)receiverId{
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
+    int srcuserid =[DPK_NW_Application sharedInstance].localUserModel.userID;
+    ClientUserModel* srcUserObj = [self.roomObj findMember:srcuserid];
+    int touserid = receiverId;
+    const char* sz_srcalias = [srcUserObj.userAlias cStringUsingEncoding:enc];
+    int msgType = 2;
+    const char* sz_message = [message cStringUsingEncoding:enc];
+    int len_message = (int)strlen(sz_message);
+    //
+    [self.socketObj SendRoomChatMsgReq:self.roomObj.roomId
+                                 SrcID:srcuserid
+                                  ToID:touserid
+                               MsgType:msgType
+                               TextLen:len_message
+                          SrcUserAlias:sz_srcalias
+                           ToUserAlias:nil
+                            MsgContent:sz_message];
+}
 
 #pragma KeyBoardInputViewDelegate
 - (void)keyBoardSendMessage:(NSString*)message withDanmu:(BOOL)danmu {
@@ -820,7 +845,7 @@ UIAlertViewDelegate >
             item.thumUrl = self.userIcon;
             item.content = message;
             [self.danmuView setModel:item];
-            //TODO:发送网络消息
+//            TODO:发送网络消息
         }
     }else{
         // 发送普通消息
@@ -1110,16 +1135,16 @@ UIAlertViewDelegate >
 
 - (NSMutableArray *)giftArr {
     if (!_giftArr) {
+//        _giftArr = [NSMutableArray array];
+//        PresentModel *model0 = [PresentModel modelWithSender:@"游客A" giftName:@"鲜花" icon:@"" giftImageName:@"live_emoji_meigui"];
+//        [_giftArr addObject:model0];
+//
+//        PresentModel *model1 = [PresentModel modelWithSender:@"游客B" giftName:@"泰迪熊" icon:@"" giftImageName:@"bear0@2x"];
+//        [_giftArr addObject:model1];
+//
+//        PresentModel *model2 = [PresentModel modelWithSender:@"游客C" giftName:@"游轮" icon:@"" giftImageName:@"ship_body"];
+//        [_giftArr addObject:model2];
         _giftArr = [NSMutableArray array];
-        PresentModel *model0 = [PresentModel modelWithSender:@"游客A" giftName:@"鲜花" icon:@"" giftImageName:@"live_emoji_meigui"];
-        [_giftArr addObject:model0];
-        
-        PresentModel *model1 = [PresentModel modelWithSender:@"游客B" giftName:@"泰迪熊" icon:@"" giftImageName:@"bear0@2x"];
-        [_giftArr addObject:model1];
-        
-        PresentModel *model2 = [PresentModel modelWithSender:@"游客C" giftName:@"游轮" icon:@"" giftImageName:@"ship_body"];
-        [_giftArr addObject:model2];
-        
     }
     return _giftArr;
 }

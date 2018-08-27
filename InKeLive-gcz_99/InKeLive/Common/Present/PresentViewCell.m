@@ -60,9 +60,9 @@
 {
     PresentLable *lable   = [[PresentLable alloc] init];
     lable.backgroundColor = [UIColor clearColor];
-    lable.borderColor     = [UIColor yellowColor];
-    lable.textColor       = [UIColor greenColor];
-    lable.font            = [UIFont systemFontOfSize:17.0];
+    lable.borderColor     = [UIColor whiteColor];
+    lable.textColor       = MAIN_COLOR;
+    lable.font            = [UIFont systemFontOfSize:16.0];
     lable.textAlignment   = NSTextAlignmentCenter;
     lable.alpha           = 0.0;
     CGFloat w             = 60;

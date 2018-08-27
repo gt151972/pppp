@@ -14,7 +14,7 @@
 @property (strong, nonatomic) PresentModel *presentmodel;
 
 //背景圆角
-@property(nonatomic,strong)UIView *backView;
+@property(nonatomic,strong)UIImageView *imgBg;
 
 //送礼物者头像
 @property (nonatomic,strong)UIImageView *iconImageView;

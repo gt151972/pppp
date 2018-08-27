@@ -7,6 +7,8 @@
 //
 
 #import "GIftCell.h"
+#import "LocalUserModel.h"
+#import "DPK_NW_Application.h"
 
 @implementation GIftCell
 
@@ -18,13 +20,13 @@
 }
 
 - (void)creatUI{
-    [self addSubview:self.backView];
-    [self.backView addSubview:self.iconImageView];
-    [self.backView addSubview:self.giftImageView];
-    [self.backView addSubview:self.senderLabel];
-    [self.backView addSubview:self.lineLabel];
+    [self addSubview:self.imgBg];
+    [self.imgBg addSubview:self.iconImageView];
+    [self.imgBg addSubview:self.giftImageView];
+    [self.imgBg addSubview:self.senderLabel];
+    [self.imgBg addSubview:self.lineLabel];
     
-    [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.imgBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
     
@@ -61,8 +63,8 @@
         _iconImageView = [[UIImageView alloc]init];
         _iconImageView.layer.cornerRadius = 16;
         _iconImageView.layer.masksToBounds = YES;
-        NSString *urlStr = [NSString stringWithFormat:@"http://img2.inke.cn/MTQ4MjI4NDA3NjYyOCM2NjIjanBn.jpg"];
-        [_iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+//        [_iconImageView sd_setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>]
+//        [_iconImageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
     }
     return _iconImageView;
 }
@@ -70,7 +72,7 @@
 - (UILabel *)lineLabel{
     if (!_giftLabel) {
         _giftLabel = [[UILabel alloc]init];
-        _giftLabel.textColor = [UIColor orangeColor];
+        _giftLabel.textColor = MAIN_COLOR;
         _giftLabel.textAlignment = NSTextAlignmentLeft;
         _giftLabel.font = [UIFont systemFontOfSize:12];
     }
@@ -82,9 +84,8 @@
     if (!_senderLabel) {
         _senderLabel = [[UILabel alloc]init];
         _senderLabel.textColor = [UIColor whiteColor];
-        _senderLabel.text = @"Aync";
         _senderLabel.textAlignment = NSTextAlignmentLeft;
-        _senderLabel.font = [UIFont systemFontOfSize:12];
+        _senderLabel.font = [UIFont systemFontOfSize:10];
     }
     return _senderLabel;
 }
@@ -96,23 +97,42 @@
     return _giftImageView;
 }
 
-- (UIView *)backView{
-    if (!_backView) {
-        _backView = [[UIView alloc]init];
-        _backView.backgroundColor = RGBA(0, 0, 0, 0.3);
-        //圆角
-        _backView.layer.cornerRadius = 20;
-        _backView.clipsToBounds = YES;
+- (UIImageView *)imgBg{
+    if (!_imgBg) {
+        _imgBg = [[UIImageView alloc]init];
+        _imgBg.image = [UIImage imageNamed:@"giftBackground"];
+//        _imgBg.backgroundColor = RGBA(0, 0, 0, 0.3);
+//        //圆角
+//        _imgBg.layer.cornerRadius = 20;
+//        _imgBg.clipsToBounds = YES;
     }
-    return _backView;
+    return _imgBg;
 }
 
 
 - (void)setPresentmodel:(PresentModel *)presentmodel{
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     _presentmodel = presentmodel;
+    NSLog(@"userData == %@",userData.userSmallHeadPic);
+    
+    NSURL *url =[NSURL URLWithString:userData.userSmallHeadPic];
+    [self.iconImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     self.senderLabel.text = presentmodel.sender;
-    self.giftLabel.text = [NSString stringWithFormat:@"送了一个%@",presentmodel.giftName];
-    self.giftImageView.image = [UIImage imageNamed:presentmodel.giftImageName];
+    
+    NSLog(@"giftImageName == %@",presentmodel.giftImageName);
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+//    NSArray*array2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+//    NSString*cachePath2 = array[0];
+    NSString*filePathName2 = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+    NSDictionary *dicUser = [NSDictionary dictionaryWithContentsOfFile:filePathName2];
+    self.giftLabel.text = [NSString stringWithFormat:@"送给%@",[dicUser objectForKey:@"userAlias"]];
+    //    NSURL *url = [NSURL URLWithString:giftImage];
+    NSString *strUrl = [NSString stringWithFormat:@"%@gift/%@",[dict objectForKey:@"res"],presentmodel.giftImageName];
+    NSURL *urlGiftImage =[NSURL URLWithString:strUrl];
+    [self.giftImageView sd_setImageWithURL:urlGiftImage];
 }
 
 
