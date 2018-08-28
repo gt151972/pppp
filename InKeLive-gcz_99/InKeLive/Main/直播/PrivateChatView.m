@@ -309,13 +309,13 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     CGFloat offset = (self.textFieldChat.frame.origin.y + self.textFieldChat.frame.size.height + 216 + 61) - self.frame.size.height;
-    
+
     [UIView animateWithDuration:0.3 animations:^{
-        self.topMargin.constant -= offset;
+        self.topMargin.constant += offset;
         //提前载入layout，形成动画效果
         [self layoutIfNeeded];
     }];
-    
+
 }
 
 @end

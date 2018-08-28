@@ -23,14 +23,14 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z86-bq-8T8">
-                    <rect key="frame" x="0.0" y="332.5" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="380" width="375" height="1"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="xvz-28-H0B"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7vB-yK-lAC">
-                    <rect key="frame" x="0.0" y="332.5" width="375" height="334.5"/>
+                    <rect key="frame" x="0.0" y="380" width="375" height="287"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RzK-kC-kSj">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
@@ -52,10 +52,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y0M-tg-dLD">
-                            <rect key="frame" x="0.0" y="35" width="51" height="299.5"/>
+                            <rect key="frame" x="0.0" y="35" width="51" height="252"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="40" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="KKZ-xD-1mQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="51" height="299.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="51" height="252"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </tableView>
@@ -70,10 +70,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cf9-R1-p3p">
-                            <rect key="frame" x="51" y="35" width="324" height="260"/>
+                            <rect key="frame" x="51" y="35" width="324" height="212"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="psz-Yb-kFQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="324" height="260"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="324" height="212"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 </tableView>
                             </subviews>
@@ -86,7 +86,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SPP-Mu-Edp">
-                            <rect key="frame" x="51" y="294.5" width="324" height="40"/>
+                            <rect key="frame" x="51" y="247" width="324" height="40"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FgN-1n-JF1">
                                     <rect key="frame" x="259" y="3.5" width="60" height="33"/>
@@ -153,8 +153,8 @@
                 <constraint firstItem="Z86-bq-8T8" firstAttribute="top" secondItem="7vB-yK-lAC" secondAttribute="top" id="3fC-LV-Hwh"/>
                 <constraint firstAttribute="trailing" secondItem="Z86-bq-8T8" secondAttribute="trailing" id="8Qq-Wn-HfF"/>
                 <constraint firstItem="q4h-pX-feq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FVI-Ya-cgm"/>
-                <constraint firstItem="Z86-bq-8T8" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="IGB-13-FlX"/>
                 <constraint firstAttribute="bottom" secondItem="7vB-yK-lAC" secondAttribute="bottom" id="Iee-MK-fyI"/>
+                <constraint firstAttribute="bottom" secondItem="Z86-bq-8T8" secondAttribute="bottom" constant="286" id="KJb-7q-3NG"/>
                 <constraint firstAttribute="bottom" secondItem="q4h-pX-feq" secondAttribute="bottom" id="Kqg-6H-QbP"/>
                 <constraint firstItem="Z86-bq-8T8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="N3e-Cw-R0D"/>
                 <constraint firstItem="q4h-pX-feq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NdJ-Rc-knY"/>
@@ -170,7 +170,7 @@
                 <outlet property="chatTableView" destination="psz-Yb-kFQ" id="fwm-FG-8T5"/>
                 <outlet property="labNameAndID" destination="nXU-7z-4kM" id="UZ9-uG-g1Q"/>
                 <outlet property="textFieldChat" destination="AZv-dK-M7J" id="pEw-bz-gJc"/>
-                <outlet property="topMargin" destination="3fC-LV-Hwh" id="00B-NO-Jn7"/>
+                <outlet property="topMargin" destination="KJb-7q-3NG" id="mwb-6x-Jea"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
