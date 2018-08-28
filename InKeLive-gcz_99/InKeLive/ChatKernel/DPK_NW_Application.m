@@ -995,13 +995,31 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
             case MXP_SUBCMD_WEB_USERPAY_REQ:{
                 NSLog(@"MXP_SUBCMD_WEB_USERPAY_REQ");
             }
+                break;
             case MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ:{
                 NSLog(@"MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ");
                 [self loadGiftVersion];
             }
-                
-            default:
-            {
+                break;
+            case MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ:{//1168
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ");
+
+            }
+                break;
+            case MXP_SUBCMD_VIDEOCHAT_USERATTENTION_RESP:{//1169
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_USERATTENTION_RESP");
+                HBCMD_VIDEOCHAT_UserAttention_Resp_t* pResp =(HBCMD_VIDEOCHAT_UserAttention_Resp_t*)data;
+                __strong id delegate =[sock GetMessageEventSink];
+                if(delegate != nil) {
+                    [delegate OnNetMsg_UserAttentionResp:pResp->nRet
+                                                   nFlag:pResp->nFlag
+                                                 nUserID:pResp->nUserID
+                                                 nRoomID:pResp->nRoomID
+                                                 nSinger:pResp->nSinger];
+                }
+            }
+                break;
+            default:{
                 NSLog(@"收到未知的SubCommand消息,subCmd=%d", sub_cmd);
             }
                 break;
@@ -1012,7 +1030,6 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
         
     }
 }
-
 
 
 @end

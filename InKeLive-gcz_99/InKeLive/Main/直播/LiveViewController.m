@@ -100,6 +100,8 @@ privateChatViewDelegate>
 @property (nonatomic, strong) NSString *nickName;
 
 @property (nonatomic, strong) NSString *userIcon;
+
+//私聊
 @end
 
 @implementation LiveViewController
@@ -606,7 +608,6 @@ privateChatViewDelegate>
         make.right.equalTo(self.view).offset(-10);
         make.width.height.equalTo(@40);
     }];
-    
     [self registerForKeyboardNotifications];
     
     //送礼物，设置回调
@@ -694,14 +695,26 @@ privateChatViewDelegate>
     [self.view addGestureRecognizer:tapGesture];
 }
 
+
+
 // 键盘弹起
-- (void)keyboardWasShown:(NSNotification*)notification {
+- (void)keyboardWasShown:(NSNotification*)notification{
+    NSLog(@"notification == %@",notification.userInfo);
     NSDictionary *info = [notification userInfo];
     CGRect keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    if (self.privateChatView == nil) {
+        NSLog(@"12e3");
+    }
+    NSLog(@"self.privateChatView == %@",self.privateChatView.superview);
+    
+    if (self.privateChatView.chatBgView) {
+        self.privateChatView.chatBgView.frame =CGRectMake(self.privateChatView.frame.origin.x, CGRectGetMaxY(self.view.frame)-CGRectGetHeight(self.privateChatView.frame)-keyboardRect.size.height, CGRectGetWidth(self.privateChatView.frame), CGRectGetHeight(self.privateChatView.frame));
+        NSLog(@"frame == %@",NSStringFromCGRect(self.privateChatView.chatBgView.frame));
+    }
     if (self.keyBoardView) {
         self.keyBoardView.frame = CGRectMake(self.keyBoardView.frame.origin.x, CGRectGetMaxY(self.view.frame)-CGRectGetHeight(self.keyBoardView.frame)-keyboardRect.size.height, CGRectGetWidth(self.keyBoardView.frame), CGRectGetHeight(self.keyBoardView.frame));
     }
-    
     if (self.messageTableView) {
         self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-CGRectGetHeight(self.keyBoardView.frame)-keyboardRect.size.height - CGRectGetHeight(self.messageTableView.frame) -10, CGRectGetWidth(self.messageTableView.frame), 120);
     }
@@ -758,7 +771,6 @@ privateChatViewDelegate>
 //                        [weakSelf.keyBoardView editBeginTextField];
 //                    }
                     [self showPrivateChatView];
-\
                 }
                 break;
                 case 151: //礼物
@@ -1259,6 +1271,16 @@ privateChatViewDelegate>
     return _keyBoardView;
 }
 
+- (PrivateChatView *)privateChatView{
+    if (!_privateChatView) {
+        _privateChatView = [[PrivateChatView alloc] init];
+        _privateChatView.backgroundColor = [UIColor clearColor];
+//        _privateChatView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame), self.view.bounds.size.width, SCREEN_HEIGHT);
+        _privateChatView.delegate = self;
+    }
+    return _privateChatView;
+}
+
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
         _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-180, CGRectGetWidth(self.view.frame)/3*2, 120)];
@@ -1405,8 +1427,15 @@ privateChatViewDelegate>
             [self bottomToolPosition];
         }];
         
-        [userView setPrivateChatBlock:^(int userId, NSString *userName, NSString *imgPath) {
-            
+        [userView setPrivateChatBlock:^() {
+            //关闭回调函数
+            [UIView animateWithDuration:0 animations:^{
+                self.userView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            } completion:^(BOOL finished) {
+                [self.userView removeFromSuperview];
+                self.userView = nil;
+            }];
+            [self showPrivateChatView];
         }];
         
     }
@@ -1441,6 +1470,7 @@ privateChatViewDelegate>
     }
     self.keyBoardView.delegate = nil;
     self.presentView.delegate = nil;
+    self.privateChatView.delegate = nil;
 }
 
 #pragma mark - 推流端
@@ -1782,7 +1812,18 @@ privateChatViewDelegate>
 
 - (void)showPrivateChatView{
     PrivateChatView *chatView = [[[NSBundle mainBundle] loadNibNamed:@"PrivateChatView" owner:nil options:nil] lastObject] ;
-    chatView.labNameAndID.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",_livingItem.topic,_livingItem.hosterId];
+//    chatView.delegate = self;
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    if (dict) {
+        [chatView.arrUserInfo addObject:dict];
+        chatView.labNameAndID.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
+    }else{
+        chatView.labNameAndID.text = @"悄悄说";
+    }
+    
     [chatView popShow];
 }
 

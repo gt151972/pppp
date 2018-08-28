@@ -22,6 +22,7 @@
 
 #import "DPK_NW_Application.h"
 #import "SDCycleScrollView.h"
+#import "CommonAPIDefines.h"
 
 
 @interface MainViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -35,6 +36,7 @@
 @property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
 @property (nonatomic,strong) UIView *headView;
 @property (nonatomic, strong)NSArray *array;
+@property (nonatomic, strong)NSArray *arrayBanner;
 @end
 
 @implementation MainViewController
@@ -138,9 +140,34 @@
     }];
 }
 
+- (void) getBanner{
+    // 获得请求管理者
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    
+    // 设置请求格式
+    session.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = CMD_REQUEST_BANNER;
+    parameters[@"flag"] = IOS_REQUEST_FLAG;
+    NSString* strAPIUrl = URL_GiftInfo;
+    NSLog(@"url:%@", strAPIUrl);
+    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
+    [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSLog(@"Success: %@", responseObject);
+        NSLog(@"task: %@",task);
+        NSDictionary *appDic =(NSDictionary*)responseObject;
+        if ([appDic[@"code"] intValue] == 0) {
+            _arrayBanner = [NSArray arrayWithArray:appDic[@"List"]];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error: %@", error);
+    }];
+}
+
 - (void)loadData{
     //刷新数据
-     [self getData];
+    [self getData];
+    [self getBanner];
     
 }
 
@@ -284,11 +311,16 @@
  @return <#return value description#>
  */
 - (NSArray *)imagesURLStrings{
-    return @[
-             @"http://b.hiphotos.baidu.com/image/pic/item/d52a2834349b033bda94010519ce36d3d439bdd5.jpg",
-             @"http://h.hiphotos.baidu.com/image/pic/item/5243fbf2b2119313b705987069380cd790238daf.jpg",
-             @"http://h.hiphotos.baidu.com/image/pic/item/267f9e2f07082838304837cfb499a9014d08f1a0.jpg"
-             ];
+    NSMutableArray *array = [NSMutableArray array];
+    NSArray*array2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array2[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    for (int index = 0; index < _arrayBanner.count; index ++ ) {
+        NSString *strImagePath = [NSString stringWithFormat:@"%@web/%@",[dict objectForKey:@"res"], [[_arrayBanner objectAtIndex:index] objectForKey:@"img"]];
+        [array addObject:strImagePath];
+    }
+    return array;
 }
 
 - (void)viewWillAppear:(BOOL)animated{

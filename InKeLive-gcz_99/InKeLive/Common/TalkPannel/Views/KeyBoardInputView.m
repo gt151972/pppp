@@ -96,7 +96,7 @@
         _sendButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
         [_sendButton addTarget:self action:@selector(sendButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
-        _sendButton.backgroundColor = [UIColor colorWithHexString:@"2fcf6f"];
+        _sendButton.backgroundColor = MAIN_COLOR;
         [self addSubview:_sendButton];
         
         [_customSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -135,7 +135,7 @@
         _sendButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [_sendButton addTarget:self action:@selector(sendButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
         [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
-        _sendButton.backgroundColor = [UIColor colorWithHexString:@"2fcf6f"];
+        _sendButton.backgroundColor = MAIN_COLOR;
         [self addSubview:_sendButton];
         
         [_textField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -184,7 +184,11 @@
     textField.text = @"";
     return YES;
 }
-
+-(void)textFieldDidBeginEditing:(UITextField*)textField
+{
+    [textField resignFirstResponder];
+    
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

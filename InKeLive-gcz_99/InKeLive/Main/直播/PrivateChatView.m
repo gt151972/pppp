@@ -16,11 +16,12 @@
 @interface PrivateChatView()<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnBg;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topMargin;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldChat;
 
 @property (nonatomic, strong)NSMutableDictionary *dicMessage;//所有数据
 
-@property (nonatomic, assign) int lastRow;//记录上次点击的行数
+@property (nonatomic, assign) int theUserId;//当前聊天页的id
 
 
 @property (weak, nonatomic) NSMutableArray *arrMessageFrame;
@@ -158,8 +159,19 @@
 - (IBAction)btnSendClicked:(id)sender {
     if (_textFieldChat.text.length > 0) {
         if (_delegate && [_delegate respondsToSelector:@selector(SendPrivateMessage:receiverId:)]) {
-            ClientUserModel *model = [_arrUserInfo lastObject];
-            [_delegate SendPrivateMessage:_textFieldChat.text receiverId:model.userId];
+            NSDictionary *dict = [_arrUserInfo lastObject];
+            int receiverId = [[dict objectForKey:@"userId"]intValue];
+            [_delegate SendPrivateMessage:_textFieldChat.text receiverId: receiverId];
+            //存储至dic
+            NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:_textFieldChat.text,@"messageInfo",
+                                 @"1", @"isMe",
+                                 nil];
+            NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[_dicMessage objectForKey:[NSString stringWithFormat:@"%d", receiverId]]];
+            [arr addObject:dic];
+            [_dicMessage setObject:arr forKey:[NSString  stringWithFormat:@"%d",receiverId]];
+            //列表中显示
+            [_chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+            [_chatTableView reloadData];
         }
         _textFieldChat.text = @"";
     }
@@ -171,9 +183,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == _HeadTableView) {
-        return _arrHead.count;
+        return _arrUserInfo.count;
     }else{
-        return _arrChatMessage.count;
+        NSArray *array = [NSArray arrayWithArray:[_dicMessage objectForKey:[NSString stringWithFormat:@"%d",_theUserId]]];
+        return array.count;
     }
 }
 
@@ -190,7 +203,8 @@
         UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 4, 32, 32)];
         imgHead.layer.masksToBounds = YES;
         imgHead.layer.cornerRadius = 16;
-        [imgHead sd_setImageWithURL:[NSURL URLWithString:[_arrHead objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"default_head"]];
+        NSDictionary *dic = [_arrUserInfo objectAtIndex:indexPath.row];
+        [imgHead sd_setImageWithURL:[NSURL URLWithString:[dic objectForKey:@"userSmallHeadPic"]] placeholderImage:[UIImage imageNamed:@"default_head"]];
         [cell.contentView addSubview:imgHead];
         return cell;
     }else{
@@ -210,7 +224,8 @@
             labMessage.font = MessageFont;
             labMessage.numberOfLines = 0;
             labMessage.textAlignment = NSTextAlignmentLeft;
-            labMessage.text = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"message"];
+//            labMessage.text = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"message"];
+            labMessage.text = [[_dicMessage objectForKey:[NSString stringWithFormat:@"%d",_theUserId]] objectAtIndex:indexPath.row];
             CGFloat height = [UILabel getHeightByWidth:labMessage.frame.size.width title:labMessage.text font:labMessage.font];
             labMessage.tag = 6000+indexPath.row;
             NSLog(@"height == %f",height);
@@ -238,12 +253,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView == _HeadTableView) {
-        ClientUserModel *userModel = [_arrUserInfo objectAtIndex:indexPath.row];
+        NSDictionary *dic = [_arrUserInfo objectAtIndex:indexPath.row];
+        _theUserId = [[dic objectForKey:@"userId"] intValue];
         //保持左列表排序始终按_arrUserInfo倒叙
         [_arrUserInfo removeObjectAtIndex:indexPath.row];
-        [_arrUserInfo addObject:userModel];
-        
-        
+        [_arrUserInfo addObject:dic];
         [_chatTableView reloadData];
     }else if (tableView == _chatTableView){
         
@@ -260,17 +274,48 @@
 }
 #pragma mark textField
 - (UITextField *)textFieldChat{
+    _textFieldChat.delegate = self;
     return _textFieldChat;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-    NSString*cachePath = array[0];
-    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"Message.plist"];
-    NSDictionary*dict =@{@"message":textField.text,@"isMine":@"1"};
-    [dict writeToFile:filePathName atomically:YES];
+    //    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    //    NSString*cachePath = array[0];
+    //    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"Message.plist"];
+    //    NSDictionary*dict =@{@"message":textField.text,@"isMine":@"1"};
+    //    [dict writeToFile:filePathName atomically:YES];
     
-//    socket传输
+    //    socket传输
+    if (_textFieldChat.text.length > 0) {
+        if (_delegate && [_delegate respondsToSelector:@selector(SendPrivateMessage:receiverId:)]) {
+            NSDictionary *dict = [_arrUserInfo lastObject];
+            int receiverId = [[dict objectForKey:@"userId"]intValue];
+            [_delegate SendPrivateMessage:_textFieldChat.text receiverId: receiverId];
+            //存储至dic
+            NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:_textFieldChat.text,@"messageInfo",
+                                 @"1", @"isMe",
+                                 nil];
+            NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:[_dicMessage objectForKey:[NSString stringWithFormat:@"%d", receiverId]]];
+            [arr addObject:dic];
+            [_dicMessage setObject:arr forKey:[NSString  stringWithFormat:@"%d",receiverId]];
+            //列表中显示
+            [_chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+            [_chatTableView reloadData];
+        }
+        _textFieldChat.text = @"";
+    }
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField resignFirstResponder];
+    CGFloat offset = (self.textFieldChat.frame.origin.y + self.textFieldChat.frame.size.height + 216 + 61) - self.frame.size.height;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.topMargin.constant -= offset;
+        //提前载入layout，形成动画效果
+        [self layoutIfNeeded];
+    }];
+    
 }
 
 @end

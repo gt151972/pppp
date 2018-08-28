@@ -92,7 +92,7 @@
  */
 - (IBAction)btnPrivateChatClicked:(id)sender {
     if (self.privateChatBlock) {
-//        self.privateChatBlock(<#int userId#>, <#NSString *userName#>, <#NSString *imgPath#>);
+        self.privateChatBlock();
     }
 }
 

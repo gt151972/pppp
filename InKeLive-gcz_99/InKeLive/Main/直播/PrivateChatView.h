@@ -23,6 +23,7 @@
 
 @interface PrivateChatView : UIView
 @property (nonatomic,weak)id<privateChatViewDelegate>delegate;
+@property (weak, nonatomic) IBOutlet UIView *chatBgView;
 @property (weak, nonatomic) IBOutlet UILabel *labNameAndID;
 @property (weak, nonatomic) IBOutlet UITableView *HeadTableView;
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;

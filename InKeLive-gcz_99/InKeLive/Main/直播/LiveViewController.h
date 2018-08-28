@@ -95,6 +95,8 @@
 //聊天输入框
 @property (nonatomic, strong) KeyBoardInputView *keyBoardView;
 
+@property (nonatomic, strong) PrivateChatView *privateChatView;
+
 // 聊天面板
 @property (nonatomic, strong) MessageTableView *messageTableView;
 

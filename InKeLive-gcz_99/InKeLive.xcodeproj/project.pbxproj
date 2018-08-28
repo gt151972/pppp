@@ -297,6 +297,8 @@
 		644B18402114319100939E76 /* RoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644B183E2114319100939E76 /* RoomViewController.xib */; };
 		644B1844211431B400939E76 /* ServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B1842211431B400939E76 /* ServiceViewController.m */; };
 		644B1845211431B400939E76 /* ServiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644B1843211431B400939E76 /* ServiceViewController.xib */; };
+		644CD61621353EB600BB1EF2 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644CD61421353EB600BB1EF2 /* HistoryViewController.m */; };
+		644CD61721353EB600BB1EF2 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644CD61521353EB600BB1EF2 /* HistoryViewController.xib */; };
 		64513C482121806800539CDD /* TEXTVIEW.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C472121806800539CDD /* TEXTVIEW.m */; };
 		64513C4A2121807800539CDD /* TEXTVIEW.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64513C492121807800539CDD /* TEXTVIEW.xib */; };
 		64513C4D2121872200539CDD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C4C2121872200539CDD /* Message.m */; };
@@ -819,6 +821,9 @@
 		644B1841211431B400939E76 /* ServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceViewController.h; sourceTree = "<group>"; };
 		644B1842211431B400939E76 /* ServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceViewController.m; sourceTree = "<group>"; };
 		644B1843211431B400939E76 /* ServiceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServiceViewController.xib; sourceTree = "<group>"; };
+		644CD61321353EB600BB1EF2 /* HistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		644CD61421353EB600BB1EF2 /* HistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
+		644CD61521353EB600BB1EF2 /* HistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
 		64513C462121806800539CDD /* TEXTVIEW.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TEXTVIEW.h; sourceTree = "<group>"; };
 		64513C472121806800539CDD /* TEXTVIEW.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TEXTVIEW.m; sourceTree = "<group>"; };
 		64513C492121807800539CDD /* TEXTVIEW.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TEXTVIEW.xib; sourceTree = "<group>"; };
@@ -1429,6 +1434,9 @@
 			children = (
 				63402F0B1E1247F2002F6661 /* HomeViewController.h */,
 				63402F0C1E1247F2002F6661 /* HomeViewController.m */,
+				644CD61321353EB600BB1EF2 /* HistoryViewController.h */,
+				644CD61421353EB600BB1EF2 /* HistoryViewController.m */,
+				644CD61521353EB600BB1EF2 /* HistoryViewController.xib */,
 				63402F0D1E1247F2002F6661 /* LiveViewController.h */,
 				63402F0E1E1247F2002F6661 /* LiveViewController.m */,
 				63402F0F1E1247F2002F6661 /* LiveViewController+GiftAnnimation.h */,
@@ -2242,6 +2250,7 @@
 				6302FE111E1B9DD9007122D3 /* yipitiezhi016 16-51-33-704.png in Resources */,
 				6302FE071E1B9DD9007122D3 /* yipitiezhi011 16-51-33-705.png in Resources */,
 				6302FDF41E1B9DD9007122D3 /* yipitiezhi001.png in Resources */,
+				644CD61721353EB600BB1EF2 /* HistoryViewController.xib in Resources */,
 				6302FE041E1B9DD9007122D3 /* yipitiezhi009.png in Resources */,
 				6302FE1F1E1B9DD9007122D3 /* yipitiezhi023 16-51-33-706.png in Resources */,
 				63A334FF1E026B3100027174 /* 1.png in Resources */,
@@ -2542,6 +2551,7 @@
 				1AAD2FD31F3EE42E00FBB894 /* PersonHeadView2.m in Sources */,
 				6304832D1E1F416D004837C5 /* TabBar.m in Sources */,
 				63A335321E0277EE00027174 /* ShipViews.m in Sources */,
+				644CD61621353EB600BB1EF2 /* HistoryViewController.m in Sources */,
 				633D8D9B1E0796010087BD77 /* MessageCell.m in Sources */,
 				637D2D161E003FDB004F1873 /* CameraView.m in Sources */,
 				647F33F521250AA800D06FD5 /* GTLocationManager.m in Sources */,

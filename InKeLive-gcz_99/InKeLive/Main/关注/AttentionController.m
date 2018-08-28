@@ -9,6 +9,7 @@
 #import "AttentionController.h"
 #import "EmptyView.h"
 
+
 @interface AttentionController ()
 
 @property (nonatomic,strong)EmptyView *emptyView;
@@ -17,10 +18,16 @@
 
 @implementation AttentionController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   
     [self.view addSubview:self.emptyView];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -294,6 +294,13 @@
                              Text:(NSString*)text;
 
 
+//用户关注回包
+-(void)OnNetMsg_UserAttentionResp:(int)nRet
+                            nFlag:(int)nFlag
+                          nUserID:(int)nUserID
+                          nRoomID:(int)nRoomID
+                          nSinger:(int)nSinger;
+
 @end
 
 ///////////////////////////////////////////////////////////////////
@@ -415,7 +422,11 @@
 -(int)SendRoomKeeplive:(int)roomId
                 UserID:(int)userId;
 
-
+//用户关注请求
+-(void)SendUserAttentionReq:(int)nFlag
+                    uUserID:(int)nUserID
+                    nRoomID:(int)nRoomID
+                    nSinger:(int)nSinger;
 @end
 
 ///////////////////////////////////////////////////////////////////

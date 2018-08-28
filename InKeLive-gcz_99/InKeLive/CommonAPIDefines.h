@@ -19,6 +19,11 @@
 
 //cmd
 #define CMD_REQUEST_SEARCH @"21006"   //搜索接口cmd
+#define CMD_ATTENTION_ROOM_LIST @"21007" //请求关注房间列表({"cmd":21007,"uid":11})
+#define CMD_ENTER_ROOM_RECORD @"21014" //进房记录({"cmd":21014,"uid":11})
+#define CMD_REQUEST_BANNER @"21019" //首页请求banner接口({"cmd":21019,"flag":2} img 实际路径为 res+web+img)
+
+#define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 
 #define URL_GiftInfo   @"http://em.aa1258.com/E/Api" //礼物状态和分组列表
 #endif /* CommonAPIDefines_h */

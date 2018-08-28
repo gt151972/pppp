@@ -26,6 +26,7 @@
 typedef NS_ENUM(NSInteger,KeyBoardInputViewType){
     KeyBoardInputViewTypeNomal,
     KeyBoardInputViewTypeNoDanMu,
+    keyBoardInputViewTypePrivate,
 };
 
 //聊天视图框

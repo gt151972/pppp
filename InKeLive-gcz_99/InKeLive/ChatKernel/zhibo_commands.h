@@ -186,7 +186,8 @@
 #define MXP_SUBCMD_WEB_USERPAY_REQ                    1166        //用户充值通知
 #define MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ          1167        //礼物版本号变动通知
 
-
+#define MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ            1168        //用户关注请求
+#define MXP_SUBCMD_VIDEOCHAT_USERATTENTION_RESP            1169        //用户关注回包
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -359,6 +360,7 @@ typedef struct _tag_HBCMD_VideoChat_RoomUserInfo
     int32  param_02;           //pubMicRemainTime,MicGiftNum
     char   userName[NAMELEN];  //用户呢称
     char   userHeadPic[MD5LEN];//用户头像,可能有
+    int8   ngender;            //用户性别
     
 }HBCMD_VideoChat_RoomUserInfo_t;
 
@@ -1162,6 +1164,24 @@ typedef struct _tag_HBCMD_VideoChat_RoomOnMicUserInfo
     char   TLMeidauri2[T64LEN];   //pull_addr_1
 }HBCMD_VideoChat_RoomOnMicUserInfo_t;
 
+
+//用户关注请求
+typedef struct _tag_HBCMD_VIDEOCHAT_UserAttention_Req
+{
+    uint8    nFlag;        //1标识增加，2表示删除
+    uint32    nUserID;     //用户ID
+    uint32    nRoomID;        //房间ID
+    uint32    nSinger;        //歌手ID
+}HBCMD_VIDEOCHAT_UserAttention_Req_t;
+
+typedef struct _tag_HBCMD_VIDEOCHAT_UserAttention_Resp
+{
+    uint8    nRet;        //操作返回标识，0标识成功
+    uint8    nFlag;        //1标识增加，2表示删除
+    uint32    nUserID;     //用户ID
+    uint32    nRoomID;        //房间ID
+    uint32    nSinger;        //歌手ID
+}HBCMD_VIDEOCHAT_UserAttention_Resp_t;
 
 #pragma pack()
 //////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@
 #import "ServiceViewController.h"
 #import "BaseViewController.h"
 #import "SearchViewController.h"
-
+#import "HistoryViewController.h"
 
 
 
@@ -40,7 +40,7 @@
     
     UIImage *rightImg = [UIImage imageNamed:@"home_record"];
     rightImg = [rightImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:rightImg style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:rightImg style:UIBarButtonItemStylePlain target:self action:@selector(btnHistoryClicked)];
     
     [self.view addSubview:self.homeScrollView];
     [self searchView];
@@ -92,6 +92,11 @@
 
 - (void)enterSearchClick{
     [_searchView popToView];
+}
+
+- (void)btnHistoryClicked{
+    HistoryViewController *historyVC = [[HistoryViewController alloc] init];
+    [self.navigationController pushViewController:historyVC animated:YES];
 }
 
 
