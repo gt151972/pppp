@@ -30,6 +30,7 @@
 
 #import "GTGiftListModel.h"
 #import "GTGiftGroupModel.h"
+#import "ChatPrivateView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -101,6 +102,7 @@ privateChatViewDelegate>
 
 @property (nonatomic, strong) NSString *userIcon;
 
+@property (nonatomic, strong) ChatPrivateView *chatPrivateView;
 //私聊
 @end
 
@@ -702,16 +704,8 @@ privateChatViewDelegate>
     NSLog(@"notification == %@",notification.userInfo);
     NSDictionary *info = [notification userInfo];
     CGRect keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+
     
-    if (self.privateChatView == nil) {
-        NSLog(@"12e3");
-    }
-    NSLog(@"self.privateChatView == %@",self.privateChatView.superview);
-    
-    if (self.privateChatView.chatBgView) {
-        self.privateChatView.chatBgView.frame =CGRectMake(self.privateChatView.frame.origin.x, CGRectGetMaxY(self.view.frame)-CGRectGetHeight(self.privateChatView.frame)-keyboardRect.size.height, CGRectGetWidth(self.privateChatView.frame), CGRectGetHeight(self.privateChatView.frame));
-        NSLog(@"frame == %@",NSStringFromCGRect(self.privateChatView.chatBgView.frame));
-    }
     if (self.keyBoardView) {
         self.keyBoardView.frame = CGRectMake(self.keyBoardView.frame.origin.x, CGRectGetMaxY(self.view.frame)-CGRectGetHeight(self.keyBoardView.frame)-keyboardRect.size.height, CGRectGetWidth(self.keyBoardView.frame), CGRectGetHeight(self.keyBoardView.frame));
     }
@@ -1271,14 +1265,21 @@ privateChatViewDelegate>
     return _keyBoardView;
 }
 
-- (PrivateChatView *)privateChatView{
-    if (!_privateChatView) {
-        _privateChatView = [[PrivateChatView alloc] init];
-        _privateChatView.backgroundColor = [UIColor clearColor];
-//        _privateChatView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame), self.view.bounds.size.width, SCREEN_HEIGHT);
-        _privateChatView.delegate = self;
+//- (PrivateChatView *)privateChatView{
+//    if (!_privateChatView) {
+//        _privateChatView = [[PrivateChatView alloc] init];
+//        _privateChatView.backgroundColor = [UIColor clearColor];
+////        _privateChatView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame), self.view.bounds.size.width, SCREEN_HEIGHT);
+//        _privateChatView.delegate = self;
+//    }
+//    return _privateChatView;
+//}
+
+- (ChatPrivateView *)chatPrivateView{
+    if (!_chatPrivateView) {
+        _chatPrivateView = [[ChatPrivateView alloc] init];
     }
-    return _privateChatView;
+    return _chatPrivateView;
 }
 
 - (MessageTableView*)messageTableView {
@@ -1779,6 +1780,7 @@ privateChatViewDelegate>
     [view popShow];
 }
 
+
 -(void)showSelectGiftUserView {
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SelectGiftUserView* view = [[SelectGiftUserView alloc] initWithFrame:frame];
@@ -1811,20 +1813,42 @@ privateChatViewDelegate>
 }
 
 - (void)showPrivateChatView{
-    PrivateChatView *chatView = [[[NSBundle mainBundle] loadNibNamed:@"PrivateChatView" owner:nil options:nil] lastObject] ;
-//    chatView.delegate = self;
+//    PrivateChatView *chatView = [[[NSBundle mainBundle] loadNibNamed:@"PrivateChatView" owner:nil options:nil] lastObject] ;
+////    chatView.delegate = self;
+//    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+//    NSString*cachePath = array[0];
+//    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+//    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+//    if (dict) {
+//        [chatView.arrUserInfo addObject:dict];
+//        chatView.labNameAndID.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
+//    }else{
+//        chatView.labNameAndID.text = @"悄悄说";
+//    }
+//
+//    [chatView popShow];
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+//    ChatPrivateView *chatView = [[ChatPrivateView alloc] initWithFrame:frame];
+    _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
+    //    chatView.delegate = self;
     NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
     if (dict) {
-        [chatView.arrUserInfo addObject:dict];
-        chatView.labNameAndID.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
+        [_chatPrivateView.arrUserInfo addObject:dict];
+        _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
+        _chatPrivateView.theUserId = [[dict objectForKey:@"userId"] intValue];
     }else{
-        chatView.labNameAndID.text = @"悄悄说";
+        _chatPrivateView.labNameAndId.text = @"悄悄说";
     }
     
-    [chatView popShow];
+    [_chatPrivateView popShow];
+     WEAKSELF;
+    [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
+        [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
+    }];
+    
 }
 
 #pragma mark - UIAlertViewDelegate protocol
@@ -2420,12 +2444,19 @@ privateChatViewDelegate>
                     ToUserAlias:(NSString*)toUserAlias
                     ChatContent:(NSString*)chatContent
 {
+    NSLog(@"msgType == %d",msgType);
     //聊天区域显示
-    NSString* chatContent2 = [NSString filterHTML:chatContent];
+    if (msgType != 2) {
+        NSString* chatContent2 = [NSString filterHTML:chatContent];
+        
+        MessageModel *model = [[MessageModel alloc] init];
+        [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2];
+        [self.messageTableView sendMessage:model];
+    }else{
+//        ChatPrivateView *chat = [[ChatPrivateView alloc] init];
+        [_chatPrivateView sendMessage:chatContent sendID:srcId receiverID:toId];
+    }
     
-    MessageModel *model = [[MessageModel alloc] init];
-    [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2];
-    [self.messageTableView sendMessage:model];
 
 }
 

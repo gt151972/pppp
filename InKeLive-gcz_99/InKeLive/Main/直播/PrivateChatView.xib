@@ -116,6 +116,9 @@
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <action selector="textFieldPrivate:" destination="iN0-l3-epB" eventType="editingDidEnd" id="3GJ-ac-DSd"/>
+                                    </connections>
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -169,7 +172,7 @@
                 <outlet property="chatBgView" destination="7vB-yK-lAC" id="NDa-3S-tlS"/>
                 <outlet property="chatTableView" destination="psz-Yb-kFQ" id="fwm-FG-8T5"/>
                 <outlet property="labNameAndID" destination="nXU-7z-4kM" id="UZ9-uG-g1Q"/>
-                <outlet property="textFieldChat" destination="AZv-dK-M7J" id="pEw-bz-gJc"/>
+                <outlet property="textFieldChat" destination="AZv-dK-M7J" id="jcs-pE-A6g"/>
                 <outlet property="topMargin" destination="KJb-7q-3NG" id="mwb-6x-Jea"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>

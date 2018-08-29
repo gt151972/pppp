@@ -12,7 +12,7 @@
 #import "LocalUserModel.h"
 #import "DPK_NW_Application.h"
 
-@interface HistoryViewController ()
+@interface HistoryViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSArray *arrData;
 @end
 
@@ -22,6 +22,10 @@
     [super viewDidLoad];
     [self getData];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)addView{
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
 }
 
 - (void) getData{

@@ -29,6 +29,7 @@
     _arrTitle = @[@"我的收益", @"安全中心", @"积分兑换", @"活动中心", @"设置"];
     BOOL bLogon = [DPK_NW_Application sharedInstance].isLogon;
     _userModel = [DPK_NW_Application sharedInstance].localUserModel;
+    
     [self.tableView reloadData];
 }
 
@@ -46,6 +47,7 @@
     [self.view addSubview:_headView];
     
 }
+
 
 - (void)mainVCReload{
     if (self.tableView != nil) {

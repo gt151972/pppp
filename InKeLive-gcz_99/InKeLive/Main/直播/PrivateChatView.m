@@ -12,6 +12,7 @@
 #import "NSString+Extension.h"
 #import "UILabel+WidthAndHeight.h"
 #import "ClientUserModel.h"
+#import <KeyboardToolBar.h>
 
 @interface PrivateChatView()<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnBg;
@@ -124,6 +125,22 @@
 
 - (UILabel *)labNameAndID{
     return _labNameAndID;
+}
+- (IBAction)textFieldPrivate:(UITextField *)sender {
+    CGRect frame = sender.frame;
+    
+    //在这里我多加了62，（加上了输入中文选择文字的view高度）这个依据自己需求而定
+    int offset = (frame.origin.y+62)-(SCREEN_HEIGHT-216.0);//键盘高度216
+    
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    
+    [UIView setAnimationDuration:0.30f];//动画持续时间
+    
+    if (offset>0) {
+        //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+        self.frame = CGRectMake(0.0f, -offset, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+    [UIView commitAnimations];
 }
 
 
@@ -275,6 +292,8 @@
 #pragma mark textField
 - (UITextField *)textFieldChat{
     _textFieldChat.delegate = self;
+    _textFieldChat.tag = 2003;
+    [_textFieldChat becomeFirstResponder];
     return _textFieldChat;
 }
 
@@ -305,16 +324,27 @@
         _textFieldChat.text = @"";
     }
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    [textField resignFirstResponder];
-    CGFloat offset = (self.textFieldChat.frame.origin.y + self.textFieldChat.frame.size.height + 216 + 61) - self.frame.size.height;
-
-    [UIView animateWithDuration:0.3 animations:^{
-        self.topMargin.constant += offset;
-        //提前载入layout，形成动画效果
-        [self layoutIfNeeded];
-    }];
+//    [textField resignFirstResponder];
+    CGRect frame = textField.frame;
+    
+    //在这里我多加了62，（加上了输入中文选择文字的view高度）这个依据自己需求而定
+    int offset = (frame.origin.y+62)-(SCREEN_HEIGHT-216.0);//键盘高度216
+    
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    
+    [UIView setAnimationDuration:0.30f];//动画持续时间
+    
+    if (offset>0) {
+        //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+        self.frame = CGRectMake(0.0f, -offset, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+    [UIView commitAnimations];
 
 }
 

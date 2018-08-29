@@ -749,6 +749,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 __strong id delegate =[sock GetMessageEventSink];
                 if(delegate !=nil) {
                     HBCMD_VideoChat_RoomChatMsg_t* pNoty =(HBCMD_VideoChat_RoomChatMsg_t*)data;
+                    NSLog(@"%s",data);
                     NSString* strSrcAlias = [[NSString alloc] initWithCString:pNoty->srcName encoding:enc];
                     //NSString* strToAlias = [[NSString alloc] initWithCString:pNoty->toUserName encoding:enc];
                     NSString* strToAlias =@"";

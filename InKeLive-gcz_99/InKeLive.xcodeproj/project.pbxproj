@@ -298,7 +298,6 @@
 		644B1844211431B400939E76 /* ServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B1842211431B400939E76 /* ServiceViewController.m */; };
 		644B1845211431B400939E76 /* ServiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644B1843211431B400939E76 /* ServiceViewController.xib */; };
 		644CD61621353EB600BB1EF2 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644CD61421353EB600BB1EF2 /* HistoryViewController.m */; };
-		644CD61721353EB600BB1EF2 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644CD61521353EB600BB1EF2 /* HistoryViewController.xib */; };
 		64513C482121806800539CDD /* TEXTVIEW.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C472121806800539CDD /* TEXTVIEW.m */; };
 		64513C4A2121807800539CDD /* TEXTVIEW.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64513C492121807800539CDD /* TEXTVIEW.xib */; };
 		64513C4D2121872200539CDD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C4C2121872200539CDD /* Message.m */; };
@@ -319,6 +318,7 @@
 		647219AC212A685D0064CBDB /* YYTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219AB212A685D0064CBDB /* YYTableView.m */; };
 		647219B0212A69760064CBDB /* WBStatusTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219AF212A69760064CBDB /* WBStatusTimelineViewController.m */; };
 		647219B3212A6A120064CBDB /* WBStatusLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219B2212A6A120064CBDB /* WBStatusLayout.m */; };
+		64742ABB21363D22005210CB /* ChatPrivateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64742ABA21363D22005210CB /* ChatPrivateView.m */; };
 		647A09902117D9650026722B /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A098F2117D9650026722B /* libAFNetworking.a */; };
 		647A09922117DAB50026722B /* libSDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A09912117DAB50026722B /* libSDWebImage.a */; };
 		647A09942117DABD0026722B /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A09932117DABD0026722B /* libGPUImage.a */; };
@@ -823,7 +823,6 @@
 		644B1843211431B400939E76 /* ServiceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServiceViewController.xib; sourceTree = "<group>"; };
 		644CD61321353EB600BB1EF2 /* HistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		644CD61421353EB600BB1EF2 /* HistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
-		644CD61521353EB600BB1EF2 /* HistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
 		64513C462121806800539CDD /* TEXTVIEW.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TEXTVIEW.h; sourceTree = "<group>"; };
 		64513C472121806800539CDD /* TEXTVIEW.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TEXTVIEW.m; sourceTree = "<group>"; };
 		64513C492121807800539CDD /* TEXTVIEW.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TEXTVIEW.xib; sourceTree = "<group>"; };
@@ -863,6 +862,8 @@
 		647219AF212A69760064CBDB /* WBStatusTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBStatusTimelineViewController.m; sourceTree = "<group>"; };
 		647219B1212A6A120064CBDB /* WBStatusLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBStatusLayout.h; sourceTree = "<group>"; };
 		647219B2212A6A120064CBDB /* WBStatusLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBStatusLayout.m; sourceTree = "<group>"; };
+		64742AB921363D22005210CB /* ChatPrivateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPrivateView.h; sourceTree = "<group>"; };
+		64742ABA21363D22005210CB /* ChatPrivateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatPrivateView.m; sourceTree = "<group>"; };
 		647A098F2117D9650026722B /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A09912117DAB50026722B /* libSDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDWebImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A09932117DABD0026722B /* libGPUImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGPUImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1419,6 +1420,8 @@
 				6421A3D421214F20009E2874 /* PrivateChatView.h */,
 				6421A3D521214F20009E2874 /* PrivateChatView.m */,
 				6421A3D721214F5D009E2874 /* PrivateChatView.xib */,
+				64742AB921363D22005210CB /* ChatPrivateView.h */,
+				64742ABA21363D22005210CB /* ChatPrivateView.m */,
 				64513C462121806800539CDD /* TEXTVIEW.h */,
 				64513C472121806800539CDD /* TEXTVIEW.m */,
 				64513C492121807800539CDD /* TEXTVIEW.xib */,
@@ -1436,7 +1439,6 @@
 				63402F0C1E1247F2002F6661 /* HomeViewController.m */,
 				644CD61321353EB600BB1EF2 /* HistoryViewController.h */,
 				644CD61421353EB600BB1EF2 /* HistoryViewController.m */,
-				644CD61521353EB600BB1EF2 /* HistoryViewController.xib */,
 				63402F0D1E1247F2002F6661 /* LiveViewController.h */,
 				63402F0E1E1247F2002F6661 /* LiveViewController.m */,
 				63402F0F1E1247F2002F6661 /* LiveViewController+GiftAnnimation.h */,
@@ -2250,7 +2252,6 @@
 				6302FE111E1B9DD9007122D3 /* yipitiezhi016 16-51-33-704.png in Resources */,
 				6302FE071E1B9DD9007122D3 /* yipitiezhi011 16-51-33-705.png in Resources */,
 				6302FDF41E1B9DD9007122D3 /* yipitiezhi001.png in Resources */,
-				644CD61721353EB600BB1EF2 /* HistoryViewController.xib in Resources */,
 				6302FE041E1B9DD9007122D3 /* yipitiezhi009.png in Resources */,
 				6302FE1F1E1B9DD9007122D3 /* yipitiezhi023 16-51-33-706.png in Resources */,
 				63A334FF1E026B3100027174 /* 1.png in Resources */,
@@ -2530,6 +2531,7 @@
 				633D8D771E0791B20087BD77 /* TYImageCache.m in Sources */,
 				649A07AE212A8D0600639EE7 /* YYControl.m in Sources */,
 				630483251E1F3B0E004837C5 /* RecommendModel.m in Sources */,
+				64742ABB21363D22005210CB /* ChatPrivateView.m in Sources */,
 				6304832C1E1F416D004837C5 /* BaseTabBarController.m in Sources */,
 				633D8D741E0791B20087BD77 /* NSMutableAttributedString+TY.m in Sources */,
 				63402F121E1247F2002F6661 /* LiveViewController.m in Sources */,

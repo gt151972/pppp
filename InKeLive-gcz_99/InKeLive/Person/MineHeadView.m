@@ -7,6 +7,7 @@
 //
 
 #import "MineHeadView.h"
+#import "DPK_NW_Application.h"
 
 @implementation MineHeadView
 
@@ -30,6 +31,12 @@
 - (IBAction)btnRechangeClicked:(id)sender {
 }
 - (IBAction)btnEditClicked:(id)sender {
+}
+
+- (UILabel *)labName{
+    NSString *str = [DPK_NW_Application sharedInstance].localUserModel.userName;
+    _labName.text = str;
+    return _labName;
 }
 
 - (UIImageView *)imgHead{

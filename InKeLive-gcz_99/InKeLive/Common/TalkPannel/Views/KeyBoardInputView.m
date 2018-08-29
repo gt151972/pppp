@@ -86,6 +86,7 @@
         _textField.backgroundColor = [UIColor whiteColor];
         _textField.layer.cornerRadius = 4;
         _textField.delegate = self;
+        _textField.tag = 2001;
         _textField.returnKeyType = UIReturnKeySend;
         _textField.font = [UIFont systemFontOfSize:14];
         _textField.placeholder = @"和大家说点什么";
@@ -125,6 +126,7 @@
         _textField.backgroundColor = [UIColor whiteColor];
         _textField.layer.cornerRadius = 4;
         _textField.delegate = self;
+        _textField.tag = 2002;
         _textField.returnKeyType = UIReturnKeySend;
         _textField.font = [UIFont systemFontOfSize:14];
         _textField.placeholder = @"和大家说点什么";
