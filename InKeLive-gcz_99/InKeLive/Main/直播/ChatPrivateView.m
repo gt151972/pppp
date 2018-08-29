@@ -236,7 +236,7 @@
             CGSize maximumLabelSize = CGSizeMake(SCREEN_WIDTH - 118, 9999);//labelsize的最大值
             CGSize expectSize = [labMessage sizeThatFits:maximumLabelSize];
             labMessage.frame = CGRectMake(8, 10, expectSize.width, expectSize.height);
-            NSLog(@"%@",[[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"isMee"]);
+            NSLog(@"%@",[[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"isMe"]);
             if ([[[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"isMe"] intValue] == 1) {
                 viewBg.backgroundColor = MAIN_COLOR;
                 viewBg.frame = CGRectMake(SCREEN_WIDTH - 71 - expectSize.width , 4, expectSize.width + 16, expectSize.height + 20);

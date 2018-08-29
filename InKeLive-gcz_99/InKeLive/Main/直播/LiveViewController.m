@@ -2444,7 +2444,11 @@ privateChatViewDelegate>
                     ToUserAlias:(NSString*)toUserAlias
                     ChatContent:(NSString*)chatContent
 {
+    NSLog(@"srcId == %d",srcId);
+    NSLog(@"toId == %d",toId);
     NSLog(@"msgType == %d",msgType);
+    NSLog(@"chatContent == %@",chatContent);
+
     //聊天区域显示
     if (msgType != 2) {
         NSString* chatContent2 = [NSString filterHTML:chatContent];
@@ -2454,6 +2458,10 @@ privateChatViewDelegate>
         [self.messageTableView sendMessage:model];
     }else{
 //        ChatPrivateView *chat = [[ChatPrivateView alloc] init];
+        NSDictionary *dict= [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias,@"userAlias", nil];
+        [_chatPrivateView.arrUserInfo addObject:dict];
+        _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%d)",srcUserAlias,srcId];
+        _chatPrivateView.theUserId = [[dict objectForKey:@"userId"] intValue];
         [_chatPrivateView sendMessage:chatContent sendID:srcId receiverID:toId];
     }
     
