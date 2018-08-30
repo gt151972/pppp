@@ -209,6 +209,7 @@
     joinRoomInfo.lookUserId = model.userId;
     joinRoomInfo.roomName = model.roomName;
     joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
+    NSLog(@"dicRoomInfo == %@",joinRoomInfo.dicRoomInfo);
     [joinRoomInfo setGateAddr:model.gateAddr]; //6位地址
     
     //测试代码 testcode

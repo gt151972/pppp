@@ -31,6 +31,8 @@
 @property (nonatomic, strong)NSMutableArray *arrayAll;
 @property (nonatomic, assign)NSInteger  LastSelect;
 @property (nonatomic, strong)UIView *pageBgView;
+
+@property (nonatomic, assign)int type;
 @end
 
 @implementation SendGiftView
@@ -206,7 +208,7 @@
             return;
         }
         _LastSelect = indexPath.row;
-        _reuse=indexPath.row;
+//        _reuse=indexPath.row;
     }else{
         if (!cell.hitButton.selected){
             _giftNum = 1;
@@ -342,6 +344,7 @@
         [btn setSelected:NO];
     }
     UIButton *button = btnType;
+    _type = (int)button.tag - 1000;
     [button setSelected:YES];
     _arrayCollect = [NSArray arrayWithArray:[_arrayAll objectAtIndex:btnType.tag - 1000]];
     NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
@@ -377,8 +380,13 @@
 - (UIButton *)senderButton{
     if (!_senderButton) {
         _senderButton = [MyControlTool buttonWithText:@"发送" textColor:[UIColor whiteColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
+            NSLog(@"list == %@",[_arrayAll objectAtIndex:_type]);
+            GTGiftListModel* model = [[_arrayAll objectAtIndex:_type] objectAtIndex:_reuse];
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:model.name, @"name", model.pic_original, @"imageName", model.pic_thumb, @"image",[NSString stringWithFormat:@"%d",model.giftId], @"giftId", nil];
+            NSLog(@"dic == %@",dic);
             if (self.giftClick) {
-                self.giftClick(_reuse, _giftNum);
+                self.giftClick(dic, _giftNum);
+                NSLog(@"_reuse == %ld", (long)_reuse);
                 [self hide];
             }
         }];

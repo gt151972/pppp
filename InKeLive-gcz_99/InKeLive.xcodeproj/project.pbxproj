@@ -319,6 +319,8 @@
 		647219B0212A69760064CBDB /* WBStatusTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219AF212A69760064CBDB /* WBStatusTimelineViewController.m */; };
 		647219B3212A6A120064CBDB /* WBStatusLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219B2212A6A120064CBDB /* WBStatusLayout.m */; };
 		64742ABB21363D22005210CB /* ChatPrivateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64742ABA21363D22005210CB /* ChatPrivateView.m */; };
+		647933F52137F02C00029CE8 /* EditNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 647933F32137F02C00029CE8 /* EditNameViewController.m */; };
+		647933F62137F02C00029CE8 /* EditNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 647933F42137F02C00029CE8 /* EditNameViewController.xib */; };
 		647A09902117D9650026722B /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A098F2117D9650026722B /* libAFNetworking.a */; };
 		647A09922117DAB50026722B /* libSDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A09912117DAB50026722B /* libSDWebImage.a */; };
 		647A09942117DABD0026722B /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 647A09932117DABD0026722B /* libGPUImage.a */; };
@@ -337,7 +339,6 @@
 		647F33FD212548F000D06FD5 /* GTGiftGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F33FC212548F000D06FD5 /* GTGiftGroupModel.m */; };
 		647F34002125490C00D06FD5 /* GTGiftListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F33FF2125490C00D06FD5 /* GTGiftListModel.m */; };
 		6480BC8A212BFB6E00A08911 /* EditInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6480BC88212BFB6E00A08911 /* EditInfoViewController.m */; };
-		6480BC8B212BFB6E00A08911 /* EditInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6480BC89212BFB6E00A08911 /* EditInfoViewController.xib */; };
 		6489CAEB2123BF14007F6F3C /* UILabel+WidthAndHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAEA2123BF14007F6F3C /* UILabel+WidthAndHeight.m */; };
 		6489CAEF2123D66A007F6F3C /* PrivateChat.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAEE2123D66A007F6F3C /* PrivateChat.plist */; };
 		6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAF42123F226007F6F3C /* MineHeadView.m */; };
@@ -864,6 +865,9 @@
 		647219B2212A6A120064CBDB /* WBStatusLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBStatusLayout.m; sourceTree = "<group>"; };
 		64742AB921363D22005210CB /* ChatPrivateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPrivateView.h; sourceTree = "<group>"; };
 		64742ABA21363D22005210CB /* ChatPrivateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatPrivateView.m; sourceTree = "<group>"; };
+		647933F22137F02C00029CE8 /* EditNameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditNameViewController.h; sourceTree = "<group>"; };
+		647933F32137F02C00029CE8 /* EditNameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditNameViewController.m; sourceTree = "<group>"; };
+		647933F42137F02C00029CE8 /* EditNameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditNameViewController.xib; sourceTree = "<group>"; };
 		647A098F2117D9650026722B /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A09912117DAB50026722B /* libSDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDWebImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		647A09932117DABD0026722B /* libGPUImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGPUImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -892,7 +896,6 @@
 		647F33FF2125490C00D06FD5 /* GTGiftListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTGiftListModel.m; sourceTree = "<group>"; };
 		6480BC87212BFB6E00A08911 /* EditInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditInfoViewController.h; sourceTree = "<group>"; };
 		6480BC88212BFB6E00A08911 /* EditInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditInfoViewController.m; sourceTree = "<group>"; };
-		6480BC89212BFB6E00A08911 /* EditInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditInfoViewController.xib; sourceTree = "<group>"; };
 		6489CAE92123BF14007F6F3C /* UILabel+WidthAndHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+WidthAndHeight.h"; sourceTree = "<group>"; };
 		6489CAEA2123BF14007F6F3C /* UILabel+WidthAndHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+WidthAndHeight.m"; sourceTree = "<group>"; };
 		6489CAEE2123D66A007F6F3C /* PrivateChat.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivateChat.plist; sourceTree = "<group>"; };
@@ -1569,7 +1572,9 @@
 				6489CAF62123F235007F6F3C /* MineHeadView.xib */,
 				6480BC87212BFB6E00A08911 /* EditInfoViewController.h */,
 				6480BC88212BFB6E00A08911 /* EditInfoViewController.m */,
-				6480BC89212BFB6E00A08911 /* EditInfoViewController.xib */,
+				647933F22137F02C00029CE8 /* EditNameViewController.h */,
+				647933F32137F02C00029CE8 /* EditNameViewController.m */,
+				647933F42137F02C00029CE8 /* EditNameViewController.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -2370,6 +2375,7 @@
 				1AEED2D61F5BAC7300A545BA /* halfchecked.png in Resources */,
 				644B18402114319100939E76 /* RoomViewController.xib in Resources */,
 				63D3A0041E01AD300073F07C /* refresh_fly_0019.png in Resources */,
+				647933F62137F02C00029CE8 /* EditNameViewController.xib in Resources */,
 				6302FE141E1B9DD9007122D3 /* yipitiezhi017.png in Resources */,
 				63A3350A1E026E7500027174 /* porche-f2.png in Resources */,
 				64C022C3212A991800116F7F /* weibo_2.json in Resources */,
@@ -2412,7 +2418,6 @@
 				63D39FF31E01AD300073F07C /* refresh_fly_002.png in Resources */,
 				6302FE121E1B9DD9007122D3 /* yipitiezhi016.png in Resources */,
 				63D3A0031E01AD300073F07C /* refresh_fly_0018.png in Resources */,
-				6480BC8B212BFB6E00A08911 /* EditInfoViewController.xib in Resources */,
 				63A3350C1E026E7500027174 /* porche-f4.png in Resources */,
 				63A334FD1E0269C600027174 /* CarsViews.xib in Resources */,
 				6332823C1E024CB400EC018B /* meteor_after_17.png in Resources */,
@@ -2628,6 +2633,7 @@
 				1A9D1CFE1F43483A0003EA13 /* MBProgressHUD+MJ.m in Sources */,
 				632CCB531E0B74840040B9EB /* PresentModel.m in Sources */,
 				1A9F16CE1F6EBFA80072D1A7 /* SelectGiftUserView.m in Sources */,
+				647933F52137F02C00029CE8 /* EditNameViewController.m in Sources */,
 				1AE89ED31F41CD680001C5D8 /* RoomOnMicUsersView.m in Sources */,
 				64C022B5212A977200116F7F /* WBEmoticonInputView.m in Sources */,
 				644B1844211431B400939E76 /* ServiceViewController.m in Sources */,

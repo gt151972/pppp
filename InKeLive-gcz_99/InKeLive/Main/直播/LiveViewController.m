@@ -615,14 +615,16 @@ privateChatViewDelegate>
     //送礼物，设置回调
     WEAKSELF;
 
-    [self.giftView setGiftClick:^(NSInteger tag, int number) {
+    [self.giftView setGiftClick:^(NSDictionary *dic, int number) {
         //发送礼物
-        NSLog(@"点击了礼物, tag=%ld, playerId=%d", (long)tag, weakSelf.playerId);
+        NSLog(@"dic == %@",dic);
+        int giftID = [[dic objectForKey:@"giftId"] intValue];
+        NSLog(@"点击了礼物, tag=%d, playerId=%d", giftID, weakSelf.playerId);
         LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
         NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
         const char* szSrcAlias = (const char*)[userData.userName cStringUsingEncoding:enc];
-        DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
+//        DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+//        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
         
         int toId = weakSelf.giftView.userId;
         int giftNum =number;
@@ -649,30 +651,21 @@ privateChatViewDelegate>
             
 //            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
 //            GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
-            if(model !=nil) {
+//            if(model !=nil) {
                 [weakSelf.socketObj SendRoomGiftReq:weakSelf.roomObj.roomId
                                               SrcID:userData.userID
                                                ToID:toId
-                                             GiftID:model.giftId
+                                             GiftID:giftID
                                             GiftNum:giftNum
                                             TextLen:0
                                        SrcUserAlias:szSrcAlias
                                         ToUserAlias:szToAlias
                                            GiftText:0];
-            }
+//            }
             
         }
         [weakSelf bottomToolShow];
-        PresentModel *presentModel = [[PresentModel alloc] init];
-        presentModel.sender = [NSString stringWithFormat:@"%s",szSrcAlias];
-        presentModel.giftName = model.name;
-        presentModel.icon = userData.userSmallHeadPic;
-        presentModel.giftImageName = model.pic_original;
-        //        presentModel.giftNumber = number;
-        for (int index = 0; index < number; index ++ ) {
-            [weakSelf.giftArr addObject:presentModel];
-        }
-        [weakSelf chooseGift:tag + 100];
+        
     }];
     //显示底部工具栏
     [self.giftView setGrayClick:^{
@@ -2493,9 +2486,11 @@ privateChatViewDelegate>
                         GiftText:(NSString*)giftText
 {
     //聊天区域和礼物区域显示
+    NSLog(@"giftID == %d",giftId);
     MessageModel *model = [[MessageModel alloc] init];
     NSString* strSrcId = [NSString stringWithFormat:@"%d", srcId];
     GTGiftListModel* giftInfo = [[DPK_NW_Application sharedInstance] findGiftConfig:giftId];
+    NSLog(@"giftInfo == %@",giftInfo);
     NSString* strGiftId = [NSString stringWithFormat:@"%d", giftId];
     NSString* strGiftName = [NSString stringWithFormat:@"未知礼物(%d)", giftId];
     NSString* strGiftNum =[NSString stringWithFormat:@"%d", giftNum];
@@ -2522,6 +2517,17 @@ privateChatViewDelegate>
     
     [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName];
     [self.messageTableView sendMessage:model];
+    WEAKSELF;
+    PresentModel *presentModel = [[PresentModel alloc] init];
+    presentModel.sender = srcUserAlias;
+    presentModel.giftName = strGiftName;
+    presentModel.icon = giftInfo.pic_thumb;
+    presentModel.giftImageName = giftInfo.pic_original;
+    presentModel.giftNumber = giftNum;
+    for (int index = 0; index < giftNum; index ++ ) {
+        [weakSelf.giftArr addObject:presentModel];
+    }
+    [weakSelf chooseGift:0];
 }
 
 //获取用户帐户信息响应

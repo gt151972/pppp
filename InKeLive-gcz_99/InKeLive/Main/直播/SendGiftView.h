@@ -43,7 +43,7 @@
 //页面指示器
 @property (nonatomic,strong)UIPageControl *pageControl;
 
-@property (nonatomic,copy)void (^giftClick)(NSInteger tag, int number);
+@property (nonatomic,copy)void (^giftClick)(NSDictionary *dic, int number);
 @property (nonatomic,copy)void (^grayClick)();
 @property (nonatomic,copy)void (^selectGiftUser)();
 
