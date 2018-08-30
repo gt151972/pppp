@@ -371,6 +371,8 @@
 		64C022CE212AC02700116F7F /* SendDynamicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C022CC212AC02700116F7F /* SendDynamicViewController.xib */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
+		7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBEC2138295F00F44320 /* SignatureViewController.m */; };
+		7441DBEF2138295F00F44320 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7441DBED2138295F00F44320 /* SignatureViewController.xib */; };
 		D625F1BB0A18D8AEBB1A58AB /* libPods-InKeLive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE17B114013C22152C4C9264 /* libPods-InKeLive.a */; };
 /* End PBXBuildFile section */
 
@@ -945,6 +947,9 @@
 		64D07BDA211C19E8001C864F /* RoomInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RoomInfo.plist; sourceTree = "<group>"; };
 		64D07BDC211C2406001C864F /* TopToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopToolView.h; sourceTree = "<group>"; };
 		64D07BDD211C2406001C864F /* TopToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopToolView.m; sourceTree = "<group>"; };
+		7441DBEB2138295F00F44320 /* SignatureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
+		7441DBEC2138295F00F44320 /* SignatureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignatureViewController.m; sourceTree = "<group>"; };
+		7441DBED2138295F00F44320 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
 		B6D595258B4A4B86BBA509C4 /* Pods-InKeLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InKeLive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InKeLive/Pods-InKeLive.debug.xcconfig"; sourceTree = "<group>"; };
 		DE17B114013C22152C4C9264 /* libPods-InKeLive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InKeLive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1575,6 +1580,9 @@
 				647933F22137F02C00029CE8 /* EditNameViewController.h */,
 				647933F32137F02C00029CE8 /* EditNameViewController.m */,
 				647933F42137F02C00029CE8 /* EditNameViewController.xib */,
+				7441DBEB2138295F00F44320 /* SignatureViewController.h */,
+				7441DBEC2138295F00F44320 /* SignatureViewController.m */,
+				7441DBED2138295F00F44320 /* SignatureViewController.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -2377,6 +2385,7 @@
 				63D3A0041E01AD300073F07C /* refresh_fly_0019.png in Resources */,
 				647933F62137F02C00029CE8 /* EditNameViewController.xib in Resources */,
 				6302FE141E1B9DD9007122D3 /* yipitiezhi017.png in Resources */,
+				7441DBEF2138295F00F44320 /* SignatureViewController.xib in Resources */,
 				63A3350A1E026E7500027174 /* porche-f2.png in Resources */,
 				64C022C3212A991800116F7F /* weibo_2.json in Resources */,
 				63402F221E125128002F6661 /* live_empty_bg@3x.png in Resources */,
@@ -2651,6 +2660,7 @@
 				6462E7DA2117F44E005EF737 /* UIView+SDExtension.m in Sources */,
 				63402F011E124738002F6661 /* MJAnimHeader.m in Sources */,
 				633D8D5E1E0790AF0087BD77 /* DanmuLaunchView.m in Sources */,
+				7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */,
 				630483301E1F42B6004837C5 /* MoreViewController.m in Sources */,
 				6357A5D61DFE32B2001E77AF /* main.m in Sources */,
 				6357A61F1DFE4C9F001E77AF /* PersonViewController.m in Sources */,

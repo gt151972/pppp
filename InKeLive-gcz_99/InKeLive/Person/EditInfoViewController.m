@@ -10,6 +10,7 @@
 #import "TakePhoto.h"
 #import "DPK_NW_Application.h"
 #import "EditNameViewController.h"
+#import "SignatureViewController.h"
 
 @interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) NSArray *arrayTitle;
@@ -189,6 +190,8 @@
         [self.navigationController pushViewController:editNameVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 2){
         //个性签名
+        SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
+        [self.navigationController pushViewController:signatureVC animated:YES];
     }
 }
 
