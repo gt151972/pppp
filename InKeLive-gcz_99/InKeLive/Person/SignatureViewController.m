@@ -7,7 +7,7 @@
 //
 
 #import "SignatureViewController.h"
-
+#import "MBProgressHUD+MJ.h"
 @interface SignatureViewController ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labTextNum;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -79,7 +79,11 @@
 }
 - (void)textViewDidChange:(UITextView *)textView{
     int num = [[NSString stringWithFormat:@"%lu",(unsigned long)[self unicodeLengthOfString:textView.text] ] intValue];
-    _labTextNum.text =  [NSString stringWithFormat:@"您最多还能输入%d个字",50-num];
+    if (num<0) {
+        [MBProgressHUD showAlertMessage:@"长度超出限制"];
+        num = 0;
+    }
+        _labTextNum.text =  [NSString stringWithFormat:@"您最多还能输入%d个字",50-num];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -41,7 +41,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
-    _tableView.separatorColor = [UIColor clearColor];
+    _tableView.separatorColor = RGB(239, 239, 239);
+    _tableView.allowsSelection = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,10 +67,17 @@
     btnQQ.layer.cornerRadius = 3;
     btnQQ.layer.masksToBounds = YES;
     [btnQQ setTitle:@"QQ交流" forState:UIControlStateNormal];
+    btnQQ.titleLabel.font = [UIFont systemFontOfSize:12];
     [btnQQ setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnQQ setImage:[UIImage imageNamed:@"btn_qq_icon_white"] forState:UIControlStateNormal];
     [btnQQ setTag:200+indexPath.row];
     [cell.contentView addSubview:btnQQ];
+    [btnQQ mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@75);
+        make.height.equalTo(@27);
+        make.right.equalTo(cell.contentView).offset(-13);
+        make.centerY.equalTo(cell.contentView);
+    }];
     
     if (indexPath.row == 3) {
         btnQQ.hidden = YES;
@@ -113,6 +121,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
+}
+
+#pragma mark  Action
+- (void)btnBackClicked{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

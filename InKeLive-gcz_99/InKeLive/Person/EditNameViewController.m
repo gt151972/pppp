@@ -33,6 +33,7 @@
     _btnSure.layer.cornerRadius = 20;
     _btnSure.layer.masksToBounds = YES;
     _textFieldNewName.delegate = self;
+    _tableView.allowsSelection = NO;
 }
 
 - (void)btnBackClicked{

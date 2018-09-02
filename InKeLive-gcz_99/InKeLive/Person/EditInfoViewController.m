@@ -49,6 +49,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorColor = RGB(243, 243, 243);
+    _tableView.allowsSelection = NO;
     [self.view addSubview:self.tableView];
 }
 

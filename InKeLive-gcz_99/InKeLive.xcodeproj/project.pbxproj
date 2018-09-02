@@ -377,6 +377,8 @@
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
 		7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBEC2138295F00F44320 /* SignatureViewController.m */; };
 		7441DBEF2138295F00F44320 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7441DBED2138295F00F44320 /* SignatureViewController.xib */; };
+		7441DBF3213948BE00F44320 /* ChangePwdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBF1213948BE00F44320 /* ChangePwdViewController.m */; };
+		7441DBF4213948BE00F44320 /* ChangePwdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7441DBF2213948BE00F44320 /* ChangePwdViewController.xib */; };
 		D625F1BB0A18D8AEBB1A58AB /* libPods-InKeLive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE17B114013C22152C4C9264 /* libPods-InKeLive.a */; };
 /* End PBXBuildFile section */
 
@@ -960,6 +962,9 @@
 		7441DBEB2138295F00F44320 /* SignatureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
 		7441DBEC2138295F00F44320 /* SignatureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignatureViewController.m; sourceTree = "<group>"; };
 		7441DBED2138295F00F44320 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
+		7441DBF0213948BE00F44320 /* ChangePwdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePwdViewController.h; sourceTree = "<group>"; };
+		7441DBF1213948BE00F44320 /* ChangePwdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangePwdViewController.m; sourceTree = "<group>"; };
+		7441DBF2213948BE00F44320 /* ChangePwdViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangePwdViewController.xib; sourceTree = "<group>"; };
 		B6D595258B4A4B86BBA509C4 /* Pods-InKeLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InKeLive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InKeLive/Pods-InKeLive.debug.xcconfig"; sourceTree = "<group>"; };
 		DE17B114013C22152C4C9264 /* libPods-InKeLive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InKeLive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1599,6 +1604,9 @@
 				6482B5582138D8CC009E6747 /* SettingViewController.h */,
 				6482B5592138D8CC009E6747 /* SettingViewController.m */,
 				6482B55A2138D8CC009E6747 /* SettingViewController.xib */,
+				7441DBF0213948BE00F44320 /* ChangePwdViewController.h */,
+				7441DBF1213948BE00F44320 /* ChangePwdViewController.m */,
+				7441DBF2213948BE00F44320 /* ChangePwdViewController.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -2419,6 +2427,7 @@
 				6302FDFD1E1B9DD9007122D3 /* yipitiezhi06.png in Resources */,
 				6302FDF91E1B9DD9007122D3 /* yipitiezhi04.png in Resources */,
 				6339727C1E14A82C0047DA13 /* PersonHeadView.xib in Resources */,
+				7441DBF4213948BE00F44320 /* ChangePwdViewController.xib in Resources */,
 				6302FE211E1B9DD9007122D3 /* yipitiezhi024 16-51-33-686.png in Resources */,
 				633D8D9F1E0796010087BD77 /* onBtn.png in Resources */,
 				64C022C5212A991800116F7F /* weibo_4.json in Resources */,
@@ -2679,6 +2688,7 @@
 				6462E7DA2117F44E005EF737 /* UIView+SDExtension.m in Sources */,
 				63402F011E124738002F6661 /* MJAnimHeader.m in Sources */,
 				633D8D5E1E0790AF0087BD77 /* DanmuLaunchView.m in Sources */,
+				7441DBF3213948BE00F44320 /* ChangePwdViewController.m in Sources */,
 				7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */,
 				630483301E1F42B6004837C5 /* MoreViewController.m in Sources */,
 				6357A5D61DFE32B2001E77AF /* main.m in Sources */,

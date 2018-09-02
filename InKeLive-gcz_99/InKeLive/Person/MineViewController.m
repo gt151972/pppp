@@ -11,6 +11,7 @@
 #import "DPK_NW_Application.h"
 #import "LocalUserModel.h"
 #import "EditInfoViewController.h"
+#import "SettingViewController.h"
 
 #define BG_COLOR RGB(239, 239, 239)
 
@@ -67,6 +68,7 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.tableHeaderView.userInteractionEnabled = YES;
+    _tableView.allowsSelection = NO;
     return _tableView;
 }
 
@@ -107,7 +109,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (indexPath.row == 4) {
+        //设置
+        SettingViewController *settingVC = [[SettingViewController alloc] init];
+        [self.navigationController pushViewController:settingVC animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

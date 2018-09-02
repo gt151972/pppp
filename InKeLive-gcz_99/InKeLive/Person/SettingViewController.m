@@ -7,11 +7,13 @@
 //
 
 #import "SettingViewController.h"
+#import "ServideViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSArray *arrayTitle;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *btnExitLogin;
 
 @end
 
@@ -20,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        arrayTitle = @[@[@"隐身进入",@"点赞消息通知",@"点赞消息通知"],@[@"清理缓存",@"客服中心",@"检查更新",@"关于我们"]];
+        arrayTitle = @[@[@"隐身进入",@"点赞消息通知",@"评论消息通知"],@[@"清理缓存",@"客服中心",@"检查更新",@"关于我们"]];
     }
     
     return self;
@@ -28,6 +30,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = NO;
     self.title = @"设置";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
     self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
@@ -39,7 +42,12 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
-    _tableView.separatorColor = [UIColor clearColor];
+    _tableView.separatorColor = RGB(239, 239, 239);
+    _tableView.allowsSelection = NO;
+    
+    _btnExitLogin.layer.cornerRadius = 5;
+    _btnExitLogin.layer.masksToBounds = YES;
+    
 }
 
 #pragma mark UITableViewDelegate
@@ -58,9 +66,9 @@
         UISwitch *switch0 = [[UISwitch alloc] init];
         switch0.onTintColor= MAIN_COLOR;
         switch0.transform= CGAffineTransformMakeScale(1.0,1.0);
-        switch0.frame=CGRectMake(SCREEN_WIDTH - 50, 10, 50, 20);
-        switch0.tintColor=RGB(169, 169, 169);
-        switch0.thumbTintColor=[UIColor whiteColor];
+        switch0.frame=CGRectMake(SCREEN_WIDTH - 65, 10, 50, 20);
+//        switch0.tintColor=RGB(169, 169, 169);
+//        switch0.thumbTintColor=[UIColor whiteColor];
         [switch0 addTarget:self action:@selector(getValueForSwitch:) forControlEvents:UIControlEventValueChanged];
         [cell.contentView addSubview:switch0];
         
@@ -91,7 +99,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            //清理缓存
+            
+        }else if (indexPath.row == 1){
+            //客服中心
+            ServideViewController *servideVC = [[ServideViewController alloc] init];
+            [self.navigationController pushViewController:servideVC animated:YES];
+        }else if (indexPath.row == 2){
+            //检查更新
+        }else if (indexPath.row == 3){
+            //关于我们
+        }
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -119,6 +140,12 @@
 #pragma mark Action
 - (void)getValueForSwitch: (UISwitch *)swi{
     
+}
+- (IBAction)btnExitLoginClicked:(id)sender {
+}
+
+- (void)btnBackClicked{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
