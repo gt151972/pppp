@@ -19,8 +19,7 @@
 //连麦按钮(换成关注按钮)
 @property (nonatomic,strong)UIButton *payButton;
 
-@property (nonatomic, copy) void (^anchorClick)();
-
+@property (nonatomic, copy) void (^anchorClick)(int flag); ////1标识增加，2表示删除
 //设置主播信息和重置信息
 -(void) setAnchorInfo:(int)userId UserName:(NSString*)userName UserHeadPic:(NSString*)userHeadPic;
 -(void) reset;

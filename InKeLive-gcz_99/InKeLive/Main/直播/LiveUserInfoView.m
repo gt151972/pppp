@@ -80,7 +80,7 @@
  */
 - (IBAction)btnPublicChatClicked:(id)sender {
     if (self.publicChatBlock) {
-        self.publicChatBlock();
+        self.publicChatBlock(userId, UserAlias);
     }
 }
 

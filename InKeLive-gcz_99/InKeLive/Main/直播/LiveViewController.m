@@ -31,6 +31,7 @@
 #import "GTGiftListModel.h"
 #import "GTGiftGroupModel.h"
 #import "ChatPrivateView.h"
+#import "ChatPublicView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -101,9 +102,14 @@ privateChatViewDelegate>
 @property (nonatomic, strong) NSString *nickName;
 
 @property (nonatomic, strong) NSString *userIcon;
-
-@property (nonatomic, strong) ChatPrivateView *chatPrivateView;
 //私聊
+@property (nonatomic, strong) ChatPrivateView *chatPrivateView;
+//公聊
+@property (nonatomic, strong) ChatPublicView *chatPublicView;
+
+
+//公聊数据
+@property (nonatomic, strong) NSArray *arrPubChat;
 @end
 
 @implementation LiveViewController
@@ -127,6 +133,8 @@ privateChatViewDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
+    _arrPubChat = [[NSArray alloc] initWithObjects:dic, nil];
     [self creatUI];
     
     //创建聊天室对象和Socket对象
@@ -610,7 +618,7 @@ privateChatViewDelegate>
         make.right.equalTo(self.view).offset(-10);
         make.width.height.equalTo(@40);
     }];
-    [self registerForKeyboardNotifications];
+//    [self registerForKeyboardNotifications];
     
     //送礼物，设置回调
     WEAKSELF;
@@ -752,12 +760,12 @@ privateChatViewDelegate>
         WEAKSELF;
         [_bottomTool setButtonClick:^(NSInteger tag) {
             switch (tag) {
-                case 150: //发送消息/弹幕
+                case 150: //私聊
                 {
 //                    if (weakSelf.keyBoardView) {
 //                        [weakSelf.keyBoardView editBeginTextField];
 //                    }
-                    [self showPrivateChatView];
+                    [weakSelf showPrivateChatView];
                 }
                 break;
                 case 151: //礼物
@@ -779,14 +787,18 @@ privateChatViewDelegate>
 //                    }];
                 }
                 break;
-                case 100:{
-                    if (weakSelf.keyBoardView) {
-                       [weakSelf.keyBoardView editBeginTextField];
-                   }
-                }
+//                case 100:{
+//                    if (weakSelf.keyBoardView) {
+//                       [weakSelf.keyBoardView editBeginTextField];
+//                   }
+//                }
                 default:
                 break;
             }
+        }];
+        
+        [_bottomTool setTextFieldChangeClick:^{
+            [weakSelf showPublicChatView:0 userName:@""];
         }];
     }
     return _bottomTool;
@@ -1293,8 +1305,13 @@ privateChatViewDelegate>
     if (!_anchorView) {
         _anchorView = [[AnchorView alloc]initWithFrame:CGRectMake(4, 30, 150, 36)];
         WEAKSELF;
-        [_anchorView setAnchorClick:^{
-            //TODO:点击事件
+        
+        [_anchorView setAnchorClick:^(int flag) {
+            //Singer是等级在21<=level<=25
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
+                [weakSelf SendUserAttentionReq:flag uUserID:model.userID nRoomID:_roomObj.roomId nSinger:_userObj.userId];
+            }
         }];
     }
     return _anchorView;
@@ -1432,6 +1449,17 @@ privateChatViewDelegate>
             [self showPrivateChatView];
         }];
         
+        WEAKSELF;
+        [userView setPublicChatBlock:^(int userId, NSString *userName) {
+            [UIView animateWithDuration:0 animations:^{
+                self.userView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            } completion:^(BOOL finished) {
+                [self.userView removeFromSuperview];
+                self.userView = nil;
+            }];
+            [weakSelf showPublicChatView:userId userName:userName];
+        }];
+       
     }
     return _userView;
 }
@@ -1842,6 +1870,20 @@ privateChatViewDelegate>
         [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
     }];
     
+}
+
+#pragma mark 公聊接口
+- (void)showPublicChatView: (int)userId userName: (NSString *)userName{
+     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    _chatPublicView = [[ChatPublicView alloc] initWithFrame:frame];
+    if (userId != 0) {
+        _chatPublicView.arrayUser = [NSMutableArray arrayWithArray:_arrPubChat];
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"userId"], @"userId", userName, @"userName", nil];
+        [_chatPublicView.arrayUser addObject:dic];
+        _arrPubChat = [NSArray arrayWithArray:_chatPublicView.arrayUser];
+    }
+    
+    [_chatPublicView popShow];
 }
 
 #pragma mark - UIAlertViewDelegate protocol
@@ -2445,7 +2487,6 @@ privateChatViewDelegate>
     //聊天区域显示
     if (msgType != 2) {
         NSString* chatContent2 = [NSString filterHTML:chatContent];
-        
         MessageModel *model = [[MessageModel alloc] init];
         [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2];
         [self.messageTableView sendMessage:model];
@@ -2758,6 +2799,14 @@ privateChatViewDelegate>
                              Text:(NSString*)text
 {
     //TODO:
+}
+
+//用户关注请求
+-(void)SendUserAttentionReq:(int)nFlag
+                    uUserID:(int)nUserID
+                    nRoomID:(int)nRoomID
+                    nSinger:(int)nSinger{
+    
 }
 
 @end

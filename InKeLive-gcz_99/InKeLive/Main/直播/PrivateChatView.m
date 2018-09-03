@@ -190,7 +190,7 @@
             [_chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
             [_chatTableView reloadData];
         }
-        _textFieldChat.text = @"";
+        [_textFieldChat setText:@""];
     }
 }
 

@@ -42,7 +42,8 @@
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(239, 239, 239);
-    _tableView.allowsSelection = NO;
+    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,6 +59,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [arrayTitle objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
     cell.textLabel.font = [UIFont systemFontOfSize:13];
@@ -112,7 +114,19 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (indexPath.row == 0) {
+        
+    }else if (indexPath.row == 1){
+        
+    }else if (indexPath.row == 2){
+        
+    }else if (indexPath.row == 3){
+//        NSURL *url = [NSURL URLWithString:@"telprompt://15125821546"];
+//        [[UIApplication sharedApplication] openURL:url];
+        UIWebView *webView = [[UIWebView alloc]init];
+        NSURL *url = [NSURL URLWithString:@"tel://15125821546"];
+        [webView loadRequest:[NSURLRequest requestWithURL:url ]];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

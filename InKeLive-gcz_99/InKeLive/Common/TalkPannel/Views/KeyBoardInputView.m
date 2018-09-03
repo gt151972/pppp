@@ -103,21 +103,24 @@
         [_customSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).offset(0);
             make.top.equalTo(self.mas_top).offset(DownUpSpace);
-            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+//            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+            make.bottom.equalTo(self.mas_bottom);
             make.width.equalTo(_customSwitch.mas_height).multipliedBy(1.65);
         }];
         
         [_textField mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_customSwitch.mas_right).offset(BetweenSpace);
             make.top.equalTo(self.mas_top).offset(DownUpSpace);
-            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+//            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+            make.bottom.equalTo(self.mas_bottom);
             make.right.equalTo(_sendButton.mas_left).offset(-BetweenSpace);
             
         }];
         [_sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_right).offset(0);
             make.top.equalTo(self.mas_top).offset(DownUpSpace);
-            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+//            make.bottom.equalTo(self.mas_bottom).offset(-DownUpSpace);
+            make.bottom.equalTo(self.mas_bottom);
             make.width.equalTo(_customSwitch.mas_width);
         }];
     }else if(Showtype == KeyBoardInputViewTypeNoDanMu){

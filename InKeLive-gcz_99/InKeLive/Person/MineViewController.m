@@ -68,7 +68,6 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.tableHeaderView.userInteractionEnabled = YES;
-    _tableView.allowsSelection = NO;
     return _tableView;
 }
 
@@ -98,6 +97,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     UIView *viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 1)];
     viewLine.backgroundColor = BG_COLOR;
     [cell.contentView addSubview:viewLine];

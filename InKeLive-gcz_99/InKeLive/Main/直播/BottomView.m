@@ -7,6 +7,9 @@
 //底部工具栏
 
 #import "BottomView.h"
+@interface BottomView()<UITextFieldDelegate>
+
+@end
 
 @implementation BottomView
 
@@ -34,6 +37,7 @@
     textField.font = [UIFont systemFontOfSize:12];
     textField.tag = 100;
     textField.textColor = [UIColor whiteColor];
+    textField.delegate = self;
     textField.backgroundColor = RGBA(0, 0, 0, 0.2);
     [self addSubview:textField];
 }
@@ -51,6 +55,13 @@
         _imageArr = @[@"living_private_chat",@"living_gift"];
     }
     return _imageArr;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField resignFirstResponder];
+    if (self.textFieldChangeClick) {
+        self.textFieldChangeClick();
+    }
 }
 
 @end

@@ -60,7 +60,11 @@
 //连麦按钮
 - (void)payButtonClick{
     if (self.anchorClick) {
-        self.anchorClick();
+        if (_payButton.selected) {
+            self.anchorClick(1);
+        }else{
+            self.anchorClick(2);
+        }
     }
 }
 
@@ -99,6 +103,7 @@
         //_payButton.layer.masksToBounds = YES;
         [_payButton setImage:[UIImage imageNamed:@"living_attention"] forState:UIControlStateNormal];
         [_payButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_payButton setTitle:@"取消关注" forState:UIControlStateSelected];
         [_payButton addTarget:self action:@selector(payButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _payButton;

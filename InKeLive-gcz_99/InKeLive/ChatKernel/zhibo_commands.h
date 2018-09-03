@@ -1142,9 +1142,9 @@ typedef struct _tag_HBCMD_VideoChat_SetMBTLStatus_Resp
 
 typedef struct _tag_HBCMD_VideoChat_SetMBTLStatus_Noty
 {
-    uint32 userId;
-    uint32 vcbId;
-    int8   TLStatus;  //rtmp流状态
+    uint32 userId;      //用户ID
+    uint32 vcbId;       //房间ID
+    int8   TLStatus;    //rtmp流状态
 }HBCMD_VideoChat_SetMBTLStatus_Noty_t;
 
 //在麦用户(列表)信息

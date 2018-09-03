@@ -279,8 +279,6 @@
 		63FB93AB1E037A4D00C8A84A /* plane-tail.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A61E037A4D00C8A84A /* plane-tail.png */; };
 		63FB93AC1E037A4D00C8A84A /* plane-head.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A71E037A4D00C8A84A /* plane-head.png */; };
 		63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */; };
-		6421A3D621214F20009E2874 /* PrivateChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6421A3D521214F20009E2874 /* PrivateChatView.m */; };
-		6421A3D821214F5D009E2874 /* PrivateChatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6421A3D721214F5D009E2874 /* PrivateChatView.xib */; };
 		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
 		644B18082114244800939E76 /* AttentionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B18072114244800939E76 /* AttentionController.m */; };
@@ -359,6 +357,7 @@
 		64AA3D622112C8EB00111B80 /* ForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */; };
 		64AA3D662112C91700111B80 /* RegisteredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D642112C91700111B80 /* RegisteredViewController.m */; };
 		64AA3D672112C91700111B80 /* RegisteredViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D652112C91700111B80 /* RegisteredViewController.xib */; };
+		64B7673A213D0F1F00D61A0E /* ChatPublicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B76739213D0F1F00D61A0E /* ChatPublicView.m */; };
 		64C022AF212A969F00116F7F /* YYSimpleWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */; };
 		64C022B2212A96F100116F7F /* WBStatusComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022B1212A96F100116F7F /* WBStatusComposeViewController.m */; };
 		64C022B5212A977200116F7F /* WBEmoticonInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022B3212A977100116F7F /* WBEmoticonInputView.m */; };
@@ -800,9 +799,6 @@
 		63FB93A71E037A4D00C8A84A /* plane-head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane-head.png"; sourceTree = "<group>"; };
 		63FEFF7C1DFE74BF0059D460 /* NetWorkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTools.h; sourceTree = "<group>"; };
 		63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTools.m; sourceTree = "<group>"; };
-		6421A3D421214F20009E2874 /* PrivateChatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrivateChatView.h; sourceTree = "<group>"; };
-		6421A3D521214F20009E2874 /* PrivateChatView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PrivateChatView.m; sourceTree = "<group>"; };
-		6421A3D721214F5D009E2874 /* PrivateChatView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrivateChatView.xib; sourceTree = "<group>"; };
 		6423C9EB2126631D00801996 /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppInfo.plist; sourceTree = "<group>"; };
 		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
 		6431960F2113FCB600D97682 /* libSocialOfficialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocialOfficialWeChat.a; path = Pods/UMengUShare/UShareSDK/SocialLibraries/WeChat/WechatSDK/libSocialOfficialWeChat.a; sourceTree = "<group>"; };
@@ -937,6 +933,8 @@
 		64AA3D632112C91700111B80 /* RegisteredViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisteredViewController.h; sourceTree = "<group>"; };
 		64AA3D642112C91700111B80 /* RegisteredViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisteredViewController.m; sourceTree = "<group>"; };
 		64AA3D652112C91700111B80 /* RegisteredViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisteredViewController.xib; sourceTree = "<group>"; };
+		64B76738213D0F1F00D61A0E /* ChatPublicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPublicView.h; sourceTree = "<group>"; };
+		64B76739213D0F1F00D61A0E /* ChatPublicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatPublicView.m; sourceTree = "<group>"; };
 		64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSimpleWebViewController.m; sourceTree = "<group>"; };
 		64C022AE212A969F00116F7F /* YYSimpleWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSimpleWebViewController.h; sourceTree = "<group>"; };
 		64C022B0212A96F100116F7F /* WBStatusComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBStatusComposeViewController.h; sourceTree = "<group>"; };
@@ -1440,11 +1438,10 @@
 				1A9F16D01F6EBFC80072D1A7 /* SelectGiftCountView.m */,
 				64D07BDC211C2406001C864F /* TopToolView.h */,
 				64D07BDD211C2406001C864F /* TopToolView.m */,
-				6421A3D421214F20009E2874 /* PrivateChatView.h */,
-				6421A3D521214F20009E2874 /* PrivateChatView.m */,
-				6421A3D721214F5D009E2874 /* PrivateChatView.xib */,
 				64742AB921363D22005210CB /* ChatPrivateView.h */,
 				64742ABA21363D22005210CB /* ChatPrivateView.m */,
+				64B76738213D0F1F00D61A0E /* ChatPublicView.h */,
+				64B76739213D0F1F00D61A0E /* ChatPublicView.m */,
 				64513C462121806800539CDD /* TEXTVIEW.h */,
 				64513C472121806800539CDD /* TEXTVIEW.m */,
 				64513C492121807800539CDD /* TEXTVIEW.xib */,
@@ -2439,7 +2436,6 @@
 				63A3350B1E026E7500027174 /* porche-f3.png in Resources */,
 				64C022C2212A991800116F7F /* weibo_3.json in Resources */,
 				6302FDFA1E1B9DD9007122D3 /* yipitiezhi004.png in Resources */,
-				6421A3D821214F5D009E2874 /* PrivateChatView.xib in Resources */,
 				633282351E024CB400EC018B /* meteor_after_10.png in Resources */,
 				63D3A00D1E01AD300073F07C /* refresh_fly_0028.png in Resources */,
 				633282391E024CB400EC018B /* meteor_after_14.png in Resources */,
@@ -2561,7 +2557,6 @@
 				64513C482121806800539CDD /* TEXTVIEW.m in Sources */,
 				643196132114027F00D97682 /* Time.m in Sources */,
 				1A9D1CF51F42AB7A0003EA13 /* LiveUserInfoView.m in Sources */,
-				6421A3D621214F20009E2874 /* PrivateChatView.m in Sources */,
 				630E755F1E00017D00AF5EAF /* BaseViewController.m in Sources */,
 				1A9D1D0C1F43DD960003EA13 /* DPKTCPSocket.m in Sources */,
 				644B1815211424B700939E76 /* StateViewController.m in Sources */,
@@ -2588,6 +2583,7 @@
 				6304831C1E1F3B01004837C5 /* RecommendCell.m in Sources */,
 				633D8D9A1E0796010087BD77 /* KeyBoardInputView.m in Sources */,
 				633D8D971E0796010087BD77 /* RegexKitLite.m in Sources */,
+				64B7673A213D0F1F00D61A0E /* ChatPublicView.m in Sources */,
 				63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */,
 				630483211E1F3B01004837C5 /* TableViewCell.m in Sources */,
 				1A498EC11F4D89DF0007E7BE /* ClientGiftModel.m in Sources */,

@@ -311,7 +311,9 @@
     if (self.privateChatSend) {
         if (_textField.text.length > 0) {
             self.privateChatSend(_textField.text, self.theUserId);
+//            _arrChatMessage setObject:<#(nonnull id)#> atIndexedSubscript:<#(NSUInteger)#>
         }
+        _textField.text = @"";
     }
 }
 

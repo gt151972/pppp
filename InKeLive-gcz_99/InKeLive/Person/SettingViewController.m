@@ -43,7 +43,6 @@
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(239, 239, 239);
-    _tableView.allowsSelection = NO;
     
     _btnExitLogin.layer.cornerRadius = 5;
     _btnExitLogin.layer.masksToBounds = YES;

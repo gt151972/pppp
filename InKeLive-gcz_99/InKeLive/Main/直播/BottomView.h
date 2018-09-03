@@ -21,6 +21,8 @@
 
 @property (nonatomic, copy) void (^buttonClick)(NSInteger tag);
 
+@property (nonatomic, copy) void (^textFieldChangeClick)();
+
 @property (nonatomic,strong)NSArray *imageArr;
 
 @end
