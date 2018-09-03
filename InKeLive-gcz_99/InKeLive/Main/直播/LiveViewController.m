@@ -1880,6 +1880,8 @@ privateChatViewDelegate>
         _chatPublicView.arrayUser = [NSMutableArray arrayWithArray:_arrPubChat];
         NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"userId"], @"userId", userName, @"userName", nil];
         [_chatPublicView.arrayUser addObject:dic];
+        _chatPublicView.strNanme = userName;
+        _chatPublicView.userId = userId;
         _arrPubChat = [NSArray arrayWithArray:_chatPublicView.arrayUser];
     }
     
