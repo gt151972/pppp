@@ -15,11 +15,13 @@
 @property (nonatomic, copy)NSString *strNanme;
 @property (nonatomic, assign)int userId;
 
-@property (nonatomic,copy)void (^publicChatSend)(NSString *messageInfo, int toId);
+@property (nonatomic, strong) UIButton *btnUserChoose;
+
+@property (nonatomic,copy)void (^publicChatSend)(NSString *messageInfo, int toId ,NSString *toUserAlias);
 @property (nonatomic,copy)void (^chooseUserClick)(NSArray *array);
 
 
-- (void)sendMessage:(NSString *)strInfo sendID:(int)sendId receiverID:(int)receiverId;
+- (void)sendMessage:(NSString *)strInfo receiverID:(int)receiverId ToUserAlias: (NSString *)ToUserAlias;
 
 
 //弹出窗口

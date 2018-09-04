@@ -357,6 +357,8 @@
 		64AA3D622112C8EB00111B80 /* ForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */; };
 		64AA3D662112C91700111B80 /* RegisteredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D642112C91700111B80 /* RegisteredViewController.m */; };
 		64AA3D672112C91700111B80 /* RegisteredViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D652112C91700111B80 /* RegisteredViewController.xib */; };
+		64ADB23A213E6DBE0065C1D5 /* FlyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64ADB239213E6DBE0065C1D5 /* FlyView.m */; };
+		64ADB23C213E79790065C1D5 /* JhtMarquee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64ADB23B213E79780065C1D5 /* JhtMarquee.framework */; };
 		64B7673A213D0F1F00D61A0E /* ChatPublicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B76739213D0F1F00D61A0E /* ChatPublicView.m */; };
 		64C022AF212A969F00116F7F /* YYSimpleWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */; };
 		64C022B2212A96F100116F7F /* WBStatusComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022B1212A96F100116F7F /* WBStatusComposeViewController.m */; };
@@ -933,6 +935,9 @@
 		64AA3D632112C91700111B80 /* RegisteredViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisteredViewController.h; sourceTree = "<group>"; };
 		64AA3D642112C91700111B80 /* RegisteredViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisteredViewController.m; sourceTree = "<group>"; };
 		64AA3D652112C91700111B80 /* RegisteredViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisteredViewController.xib; sourceTree = "<group>"; };
+		64ADB238213E6DBE0065C1D5 /* FlyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyView.h; sourceTree = "<group>"; };
+		64ADB239213E6DBE0065C1D5 /* FlyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyView.m; sourceTree = "<group>"; };
+		64ADB23B213E79780065C1D5 /* JhtMarquee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JhtMarquee.framework; sourceTree = "<group>"; };
 		64B76738213D0F1F00D61A0E /* ChatPublicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPublicView.h; sourceTree = "<group>"; };
 		64B76739213D0F1F00D61A0E /* ChatPublicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatPublicView.m; sourceTree = "<group>"; };
 		64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSimpleWebViewController.m; sourceTree = "<group>"; };
@@ -978,6 +983,7 @@
 				647A099E2117DAE30026722B /* libMJRefresh.a in Frameworks */,
 				647A099C2117DADD0026722B /* libMJExtension.a in Frameworks */,
 				647A099A2117DAD80026722B /* libMBProgressHUD.a in Frameworks */,
+				64ADB23C213E79790065C1D5 /* JhtMarquee.framework in Frameworks */,
 				647A09982117DAC90026722B /* libMasonry.a in Frameworks */,
 				647A09962117DAC30026722B /* liblibksygpulive.a in Frameworks */,
 				647A09942117DABD0026722B /* libGPUImage.a in Frameworks */,
@@ -1407,6 +1413,8 @@
 			children = (
 				63402EFA1E12470F002F6661 /* AnchorView.h */,
 				63402EF91E12470F002F6661 /* AnchorView.m */,
+				64ADB238213E6DBE0065C1D5 /* FlyView.h */,
+				64ADB239213E6DBE0065C1D5 /* FlyView.m */,
 				63402F031E12474A002F6661 /* TopTitleView.h */,
 				63402F021E12474A002F6661 /* TopTitleView.m */,
 				63402F161E124805002F6661 /* BottomView.h */,
@@ -2007,6 +2015,7 @@
 		644B182321142CDC00939E76 /* thirthPath */ = {
 			isa = PBXGroup;
 			children = (
+				64ADB23B213E79780065C1D5 /* JhtMarquee.framework */,
 				6462E7C92117F44E005EF737 /* SDCycleScrollView */,
 			);
 			path = thirthPath;
@@ -2687,6 +2696,7 @@
 				7441DBF3213948BE00F44320 /* ChangePwdViewController.m in Sources */,
 				7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */,
 				630483301E1F42B6004837C5 /* MoreViewController.m in Sources */,
+				64ADB23A213E6DBE0065C1D5 /* FlyView.m in Sources */,
 				6357A5D61DFE32B2001E77AF /* main.m in Sources */,
 				6357A61F1DFE4C9F001E77AF /* PersonViewController.m in Sources */,
 				644B183521142E3C00939E76 /* RecommendViewController.m in Sources */,
@@ -2858,6 +2868,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/InKeLive",
 					"$(PROJECT_DIR)/InKeLive/RTMPCHybirdEngine",
+					"$(PROJECT_DIR)/InKeLive/thirthPath",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/InKeLive/InKeLive.pch";
 				INFOPLIST_FILE = InKeLive/Info.plist;
@@ -2932,6 +2943,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/InKeLive",
 					"$(PROJECT_DIR)/InKeLive/RTMPCHybirdEngine",
+					"$(PROJECT_DIR)/InKeLive/thirthPath",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/InKeLive/InKeLive.pch";
 				INFOPLIST_FILE = InKeLive/Info.plist;

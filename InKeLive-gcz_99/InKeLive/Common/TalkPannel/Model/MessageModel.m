@@ -187,7 +187,7 @@
     _unColoredMsg = msg;
     _textContainer = container;
 }
-- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message
+- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId
 {
     userID = userID?userID:@"";
     name = name?name:@"";
@@ -203,7 +203,12 @@
     switch (type) {
         case CellNewChatMessageType:  //新聊天消息
         {
-            allMessage = [NSString stringWithFormat:@"%@:%@",name,message];
+            if (toId == 0) {
+                allMessage = [NSString stringWithFormat:@"%@:%@",name,message];
+            }else{
+                allMessage = [NSString stringWithFormat:@"%@:@%@ %@",name,toUserAlias,message];
+            }
+            
             
             // 属性文本生成器
             container.text = allMessage;

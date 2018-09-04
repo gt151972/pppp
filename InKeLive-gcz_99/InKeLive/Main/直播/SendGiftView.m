@@ -23,7 +23,9 @@
 #define Collor_Deep RGBA(0, 0, 0, 0.6)
 
 #define typeCount 6
-@interface SendGiftView()
+@interface SendGiftView(){
+    NSArray *pickerArray;//礼物数量数组
+}
 @property (nonatomic, strong) UIView *topClassifyView;//顶部分类栏
 @property (nonatomic, strong)NSArray *arrGroupTitle;
 @property (nonatomic, strong)UIButton *btnSelect;
@@ -46,6 +48,7 @@
         self.giftNum = 1;
         self.userName = @"";
         _reuse = -1;
+        pickerArray = @[@"1",@"18",@"99",@"199",@"520",@"666",@"888",@"920",@"1314",@"9999"];
     }
     return self;
 }
@@ -189,7 +192,14 @@
             }
             cell.hitButton.hidden = NO;
             cell.viewBgCase.hidden = NO;
-            _giftNum ++;
+            for (int index = 0 ; index < pickerArray.count; index ++) {
+                if (_giftNum == 9999){
+                    _giftNum = 1;
+                }else if (_giftNum == [pickerArray[index] intValue] && _giftNum < 9999) {
+                    _giftNum = [[pickerArray objectAtIndex:index+1] intValue];
+                    break;
+                }
+            }
             [cell.hitButton setTitle:[NSString stringWithFormat:@"X%d",_giftNum] forState:UIControlStateNormal];
             //可以发送礼物
             //        self.senderButton.backgroundColor = RGB(36, 215, 200);
@@ -231,6 +241,7 @@
         }
         
     }
+    NSLog(@"num == %d",_giftNum);
 }
 
 -(CGFloat )collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section

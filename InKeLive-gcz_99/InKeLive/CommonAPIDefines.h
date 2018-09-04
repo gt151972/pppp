@@ -24,6 +24,7 @@
 #define CMD_REQUEST_BANNER @"21019" //首页请求banner接口({"cmd":21019,"flag":2} img 实际路径为 res+web+img)
 #define CMD_REQUEST_ADDTESS @"20002"  //根据rid请求房间名和房间地址 ("cmd":20001,"rid":100000)
 #define CMD_REQUEST_WEB_ADDRESS @"20001"//请求网页url链接 ({"cmd":20001,"flag":2})
+#define CMD_DELETE_ATTENTION @"21008"//删除关注{"cmd":21008,"uid":12345,"pid":12} pid为删除对象
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 

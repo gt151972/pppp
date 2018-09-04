@@ -30,6 +30,7 @@
 #import "RoomOnMicUsersView.h"
 #import "LiveUserInfoView.h"
 #import "SelectGiftUserView.h"
+#import "FlyView.h"
 
 @interface LiveViewController : UIViewController
 
@@ -59,6 +60,9 @@
 
 //顶部区域
 @property (nonatomic,strong)AnchorView *anchorView;    //主播信息区
+
+//跑道
+@property (nonatomic, strong)FlyView *flyView;
 
 //RTMP推流和拉流状态信息去
 @property (nonatomic, strong) UIView * KSYstreamerStatusBK;

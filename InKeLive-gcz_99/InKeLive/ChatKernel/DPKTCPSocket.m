@@ -215,8 +215,16 @@ DataLen:(int)data_len
                               MainCommand:header->mainCmd
                                SubCommand:header->subCmd
                                      Data:header->content
-                                  DataLen:header->length - sizeof(HBNetHead_t)
-         ];
+                                     time:header->ntime
+                                   roomID:header->nRoomID
+                                   userID:header->nUserID
+                                  DataLen:header->length - sizeof(HBNetHead_t)];
+//        [_socketSink OnEventTCPSocketRead:self
+//                              MainCommand:header->mainCmd
+//                               SubCommand:header->subCmd
+//                                     Data:header->content
+//                                  DataLen:header->length - sizeof(HBNetHead_t)
+//         ];
     }
     return 0;
     
@@ -380,8 +388,8 @@ DataLen:(int)data_len
     req->textLen = strlen(msgContent)+1;
     if(srcUserAlias != 0)
         strcpy(req->srcName, srcUserAlias);
-    //if(toUserAlias != 0)
-    //    strcpy(req->toUserName, toUserAlias);
+    if(toUserAlias != 0)
+        strcpy(req->vcbName, toUserAlias);
     if(msgContent !=0)
         strcpy(req->text, msgContent);
     if(_isConnected == 1) {
@@ -431,6 +439,47 @@ DataLen:(int)data_len
     }
     return -2;
 }
+//
+////进房间跑道消息通知
+//-(void)OnNetMsg_trackInfoNoty:(int)roomId
+//                        srcId:(int)scrId
+//                         toId:(int)toId
+//                       giftId:(int)giftId
+//                      giftNum:(int)giftNum
+//                        flyId:(int)flyId
+//                     castMode:(int)castMode
+//                   serverMode:(int)serverMode
+//                     hideMode:(int)hideMode
+//                     sendType:(int)sendType
+//                   nextAction:(int)nextAction
+//                      textLen:(int)textLen
+//                    reserve01:(int)reserve01
+//                      srcName:(NSString *)srcName
+//                       toName:(NSString *)toName
+//                      vcbName:(NSString *)vcbName
+//                         text:(NSString *)text{
+//    char szBuffer[SOCKET_TCP_BUFFER_SIZE];
+//    memset(szBuffer, 0, sizeof(szBuffer));
+//    HBCMD_VideoChat_GiftRecord_t* req = (HBCMD_VideoChat_GiftRecord_t*)szBuffer;
+//    req->errorCode = 0;
+//    req->vcbId = roomId;
+//    req->srcId = scrId;
+//    req->toId = toId;
+//    req->giftId = giftId;
+//    req->giftNum = giftNum;
+//    req->flyId = flyId;
+//    req->castMode = castMode;
+//    req->serverMode = serverMode;
+//    req->hideMode = hideMode;
+//    req->sendType = sendType;
+//    req->nextAction = nextAction;
+//    req->textLen = textLen;
+//    req->reserve01 =reserve01;
+//    if(text !=0)
+//        req->textLen = strlen(textLen)+1;
+//    if(srcName !=0)
+//        strcpy(req->srcName, srcName);
+//}
 
 //发送房间请求用户账户信息请求
 -(int)SendGetUserAccountReq:(int)roomId

@@ -7,9 +7,11 @@
 //
 
 #import "ChatPublicView.h"
+#import "MBProgressHUD+MJ.h"
+#import "DPK_NW_Application.h"
 @interface ChatPublicView()<UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UIButton *viewBK;
-@property (nonatomic, strong) UIButton *btnUserChoose;
+
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIButton *btnSend;
 @property (nonatomic, strong) UITableView *tableView;
@@ -147,7 +149,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [_btnUserChoose setTitle:[_arrayUser objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+    [_btnUserChoose setTitle:[NSString stringWithFormat:@"@%@",[[_arrayUser objectAtIndex:indexPath.row] objectForKey:@"userName"]] forState:UIControlStateNormal];
+    self.strNanme = [[_arrayUser objectAtIndex:indexPath.row] objectForKey:@"userName"];
+    self.userId = [[[_arrayUser objectAtIndex:indexPath.row] objectForKey:@"userId"] intValue];
     [_tableView setHidden:YES];
 }
 
@@ -190,7 +194,14 @@
 }
 
 - (void)btnSendClicked{
-    
+    if (_textField.text.length <= 0) {
+        [MBProgressHUD showAlertMessage:@"不能发送空内容"];
+    }else{
+        if (self.publicChatSend) {
+            self.publicChatSend(_textField.text, self.userId, self.strNanme);
+        }
+        _textField.text = @"";
+    }
 }
 
 @end

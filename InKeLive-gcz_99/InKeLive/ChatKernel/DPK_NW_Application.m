@@ -402,10 +402,12 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
     }
 }
 
-- (void)OnEventTCPSocketRead:(DPKTCPSocket*)sock MainCommand:(int)main_cmd
-                  SubCommand:(int)sub_cmd
-                        Data:(char*)data
-                     DataLen:(int)data_len
+- (void)OnEventTCPSocketRead:(DPKTCPSocket *)sock MainCommand:(int)main_cmd SubCommand:(int)sub_cmd Data:(char *)data time:(int)time roomID:(int)roomID userID:(int)userID DataLen:(int)data_len
+
+//- (void)OnEventTCPSocketRead:(DPKTCPSocket*)sock MainCommand:(int)main_cmd
+//                  SubCommand:(int)sub_cmd
+//                        Data:(char*)data
+//                     DataLen:(int)data_len
 {
     //TODO:
     NSLog(@"OnEventTCPSocketRead...");
@@ -708,7 +710,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 break;
             case MXP_SUBCMD_VIDEOCHAT_FLYGIFTRECORD_NOTY:
             {
-                //TODO:
+                //跑道
             }
                 break;
             case MXP_SUBCMD_VIDEOCHAT_SIEGE_INFO:
@@ -751,8 +753,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                     HBCMD_VideoChat_RoomChatMsg_t* pNoty =(HBCMD_VideoChat_RoomChatMsg_t*)data;
                     NSLog(@"%s",data);
                     NSString* strSrcAlias = [[NSString alloc] initWithCString:pNoty->srcName encoding:enc];
-                    //NSString* strToAlias = [[NSString alloc] initWithCString:pNoty->toUserName encoding:enc];
-                    NSString* strToAlias =@"";
+                    NSString* strToAlias = [[NSString alloc] initWithCString:pNoty->vcbName encoding:enc];
                     NSString* strMsgText = [[NSString alloc] initWithCString:pNoty->text encoding:enc];
                     [delegate OnNetMsg_RoomChatMsgNoty:pNoty->vcbId
                                                  SrcID:pNoty->srcId
@@ -1000,6 +1001,38 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
             case MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ:{
                 NSLog(@"MXP_SUBCMD_WEB_GIFTVERSIONMODIFY_REQ");
                 [self loadGiftVersion];
+            }
+                break;
+            case MXP_SUBCMD_VIDEOCHAT_FLYGIFT_INFO:{
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_FLYGIFT_INFO");
+                //跑道
+                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
+                __strong id delegate =[sock GetMessageEventSink];
+                if(delegate != nil) {
+                    HBCMD_VideoChat_GiftRecord_t* pNoty=(HBCMD_VideoChat_GiftRecord_t*)data;
+                    NSString* strSrcAlias =[[NSString alloc] initWithCString:pNoty->srcName encoding:enc];
+                    NSString* strToAlias =[[NSString alloc] initWithCString:pNoty->toName encoding:enc];
+                    NSString* strGiftText = [[NSString alloc] initWithCString:pNoty->text encoding:enc];
+                    NSString* strVcdName = [[NSString alloc] initWithCString:pNoty->vcbName encoding:enc];
+                    [delegate OnNetMsg_trackInfoNoty:pNoty->vcbId
+                                               srcId:pNoty->srcId
+                                                toId:pNoty->toId
+                                              giftId:pNoty->giftId
+                                             giftNum:pNoty->giftNum
+                                               flyId:pNoty->flyId
+                                            castMode:pNoty->castMode
+                                          serverMode:pNoty->serverMode
+                                            hideMode:pNoty->hideMode
+                                            sendType:pNoty->sendType
+                                          nextAction:pNoty->nextAction
+                                             textLen:pNoty->textLen
+                                           reserve01:pNoty->reserve01
+                                             srcName:strSrcAlias
+                                              toName:strToAlias
+                                             vcbName:strVcdName
+                                                text:strGiftText];
+                }
+
             }
                 break;
             case MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ:{//1168

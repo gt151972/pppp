@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger,CellType){
 
 - (void)setModelFromStirng:(NSString *)string;
 
-- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message;
+- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId;
 
 //设置系统提示:系统:xxxx
 -(void) setModel:(NSString*)sysTipText;

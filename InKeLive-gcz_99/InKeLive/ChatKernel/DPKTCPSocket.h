@@ -16,6 +16,9 @@
 - (void)OnEventTCPSocketRead:(DPKTCPSocket*)sock MainCommand:(int)main_cmd
                   SubCommand:(int)sub_cmd
                         Data:(char*)data
+                        time:(int)time
+                      roomID:(int)roomID
+                      userID:(int)userID
                      DataLen:(int)data_len;
 @end //DPKTCPSocketSink
 
@@ -202,6 +205,26 @@
                     SrcUserAlias:(NSString*)srcUserAlias
                      ToUserAlias:(NSString*)toUserAlias
                         GiftText:(NSString*)giftText;
+
+//进房间跑道消息通知
+-(void)OnNetMsg_trackInfoNoty:(int)roomId
+                        srcId:(int)scrId
+                         toId:(int)toId
+                       giftId:(int)giftId
+                      giftNum:(int)giftNum
+                        flyId:(int)flyId
+                     castMode:(int)castMode
+                   serverMode:(int)serverMode
+                     hideMode:(int)hideMode
+                     sendType:(int)sendType
+                   nextAction:(int)nextAction
+                      textLen:(int)textLen
+                    reserve01:(int)reserve01
+                      srcName:(NSString *)srcName
+                       toName:(NSString *)toName
+                      vcbName:(NSString *)vcbName
+                         text:(NSString *)text;
+
 
 //获取用户帐户信息响应
 -(void)OnNetMsg_GetUserAccoutResp:(int)error_code;

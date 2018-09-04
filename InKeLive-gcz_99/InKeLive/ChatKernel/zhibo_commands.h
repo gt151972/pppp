@@ -374,7 +374,7 @@ typedef struct _tag_HBCMD_VideoChat_RoomChatMsg
     int8    chatTypeId;       //消息模式(<10),1-公聊,2-私聊,3-房间公告
     uint16  textLen;          //聊天文字长度
     char    srcName[NAMELEN]; //发送人的呢称
-    char    vcbName[NAMELEN]; //发送人所在房间名称
+    char    vcbName[NAMELEN]; //接收人的昵称
     char    text[0];
 }HBCMD_VideoChat_RoomChatMsg_t;
 

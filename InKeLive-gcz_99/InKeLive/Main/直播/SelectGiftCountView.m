@@ -76,9 +76,10 @@
 
     ////
     frame = CGRectMake(0, SCREEN_HEIGHT/2 + 50, SCREEN_WIDTH, SCREEN_HEIGHT - (SCREEN_HEIGHT/2 + 40));
-    pickerArray = [[NSArray alloc]initWithObjects:@"1",@"11",@"111",@"438",@"520",
-                   @"888",@"999",@"1314",@"8888",@"9999",@"88888",@"99999",
-                   @"888888",@"999999",@"1314520",@"8888888",@"9999999", nil];
+//    pickerArray = [[NSArray alloc]initWithObjects:@"1",@"11",@"111",@"438",@"520",
+//                   @"888",@"999",@"1314",@"8888",@"9999",@"88888",@"99999",
+//                   @"888888",@"999999",@"1314520",@"8888888",@"9999999", nil];
+    pickerArray = @[@"1",@"18",@"99",@"199",@"520",@"666",@"888",@"920",@"1314",@"9999"];
     
     myPickerView = [[UIPickerView alloc]init];
     myPickerView.frame =frame;

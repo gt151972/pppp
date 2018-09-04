@@ -33,6 +33,7 @@
 #import "ChatPrivateView.h"
 #import "ChatPublicView.h"
 
+
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
 #define USER_NEXTACTION_CREATEMBROOM  2
@@ -109,7 +110,7 @@ privateChatViewDelegate>
 
 
 //公聊数据
-@property (nonatomic, strong) NSArray *arrPubChat;
+@property (nonatomic, strong) NSMutableArray *arrPubChat;
 @end
 
 @implementation LiveViewController
@@ -134,7 +135,7 @@ privateChatViewDelegate>
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
-    _arrPubChat = [[NSArray alloc] initWithObjects:dic, nil];
+    _arrPubChat = [[NSMutableArray alloc] initWithObjects:dic, nil];
     [self creatUI];
     
     //创建聊天室对象和Socket对象
@@ -598,6 +599,7 @@ privateChatViewDelegate>
     [self.view addSubview:self.closeButton];
     
     [self.view addSubview:self.anchorView];//主播信息
+    [self.view addSubview:self.flyView];//跑道
     [self.topSideView addSubview:self.bottomTool];//底部工具栏
     [self.topSideView addSubview:self.topToolView];//顶部工具栏
 //    [self.topSideView addSubview:self.membersHeadView];//观众头像(弃用)
@@ -841,6 +843,31 @@ privateChatViewDelegate>
                             MsgContent:sz_message];
 }
 
+#pragma mark PublicChatViewDelegate
+- (void)sendMessage:(NSString *)strInfo receiverID:(int)receiverId ToUserAlias:(NSString *)ToUserAlias{
+    
+    NSLog(@"ToUserAlias == %@",ToUserAlias);
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
+    int srcuserid =[DPK_NW_Application sharedInstance].localUserModel.userID;
+    ClientUserModel* srcUserObj = [self.roomObj findMember:srcuserid];
+    int touserid = receiverId;
+    const char* sz_srcalias = [srcUserObj.userAlias cStringUsingEncoding:enc];
+    int msgType = 1;//公聊
+    const char* sz_message = [strInfo cStringUsingEncoding:enc];
+    const char* tousername = [ToUserAlias cStringUsingEncoding:enc];
+    int len_message = (int)strlen(sz_message);
+    //
+    [self.socketObj SendRoomChatMsgReq:self.roomObj.roomId
+                                 SrcID:srcuserid
+                                  ToID:touserid
+                               MsgType:msgType
+                               TextLen:len_message
+                          SrcUserAlias:sz_srcalias
+                           ToUserAlias:tousername
+                            MsgContent:sz_message];
+    
+}
+
 #pragma KeyBoardInputViewDelegate
 - (void)keyBoardSendMessage:(NSString*)message withDanmu:(BOOL)danmu {
     if (message.length == 0) {
@@ -918,7 +945,7 @@ privateChatViewDelegate>
 }
 
 #pragma 点击事件
-//隐藏工具栏
+//隐藏工具栏,显示礼物界面
 - (void)bottomToolPosition {
     //动画隐藏
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
@@ -930,6 +957,14 @@ privateChatViewDelegate>
     //0.5秒后执行
     [self performSelector:@selector(popShowGiftView) withObject:nil afterDelay:0.5];
 }
+//- (void)bottomToolHidden{
+//    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+//    anim.duration = 0.3f;
+//    anim.removedOnCompletion = NO;
+//    anim.fillMode = kCAFillModeForwards;
+//    anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
+//    [self.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
+//}
 
 //显示工具栏
 - (void)bottomToolShow {
@@ -1315,6 +1350,13 @@ privateChatViewDelegate>
         }];
     }
     return _anchorView;
+}
+
+- (FlyView *)flyView{
+    if (!_flyView) {
+        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH, 18)];
+    }
+    return _flyView;
 }
 
 -(UIView*) KSYstreamerStatusBK {
@@ -1834,20 +1876,6 @@ privateChatViewDelegate>
 }
 
 - (void)showPrivateChatView{
-//    PrivateChatView *chatView = [[[NSBundle mainBundle] loadNibNamed:@"PrivateChatView" owner:nil options:nil] lastObject] ;
-////    chatView.delegate = self;
-//    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-//    NSString*cachePath = array[0];
-//    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
-//    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-//    if (dict) {
-//        [chatView.arrUserInfo addObject:dict];
-//        chatView.labNameAndID.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
-//    }else{
-//        chatView.labNameAndID.text = @"悄悄说";
-//    }
-//
-//    [chatView popShow];
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 //    ChatPrivateView *chatView = [[ChatPrivateView alloc] initWithFrame:frame];
     _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
@@ -1863,7 +1891,7 @@ privateChatViewDelegate>
     }else{
         _chatPrivateView.labNameAndId.text = @"悄悄说";
     }
-    
+//    [self bottomToolHidden];
     [_chatPrivateView popShow];
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
@@ -1877,15 +1905,30 @@ privateChatViewDelegate>
      CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _chatPublicView = [[ChatPublicView alloc] initWithFrame:frame];
     if (userId != 0) {
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",userId], @"userId", userName, @"userName", nil];
+        for (int index = 0; index < _arrPubChat.count; index ++ ) {
+            if ([[_arrPubChat[index] objectForKey:@"userId"] isEqualToString: [dic objectForKey:@"userId"]]) {
+                [_arrPubChat removeObjectAtIndex:index];
+            }
+        }
         _chatPublicView.arrayUser = [NSMutableArray arrayWithArray:_arrPubChat];
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"userId"], @"userId", userName, @"userName", nil];
         [_chatPublicView.arrayUser addObject:dic];
         _chatPublicView.strNanme = userName;
         _chatPublicView.userId = userId;
-        _arrPubChat = [NSArray arrayWithArray:_chatPublicView.arrayUser];
+        _arrPubChat = [NSMutableArray arrayWithArray:_chatPublicView.arrayUser];
+        [_chatPublicView.btnUserChoose setTitle:[NSString stringWithFormat:@"@%@",[[_arrPubChat lastObject] objectForKey:@"userName"]] forState:UIControlStateNormal];
+    }else{
+        _chatPublicView.strNanme = userName;
+        _chatPublicView.userId = userId;
+        _chatPublicView.arrayUser = [NSMutableArray arrayWithArray:_arrPubChat];
+        [_chatPublicView.btnUserChoose setTitle:[NSString stringWithFormat:@"@%@",[[_arrPubChat firstObject] objectForKey:@"userName"]] forState:UIControlStateNormal];
     }
-    
+//    [self bottomToolHidden];
     [_chatPublicView popShow];
+    WEAKSELF;
+    [_chatPublicView setPublicChatSend:^(NSString *messageInfo, int toId, NSString *toUserAlias) {
+        [weakSelf sendMessage:messageInfo receiverID:toId ToUserAlias:toUserAlias];
+    }];
 }
 
 #pragma mark - UIAlertViewDelegate protocol
@@ -2481,18 +2524,27 @@ privateChatViewDelegate>
                     ToUserAlias:(NSString*)toUserAlias
                     ChatContent:(NSString*)chatContent
 {
-    NSLog(@"srcId == %d",srcId);
-    NSLog(@"toId == %d",toId);
-    NSLog(@"msgType == %d",msgType);
-    NSLog(@"chatContent == %@",chatContent);
+//    NSLog(@"srcId == %d",srcId);
+//    NSLog(@"toId == %d",toId);
+//    NSLog(@"msgType == %d",msgType);
+//    NSLog(@"chatContent == %@",chatContent);
+//    NSLog(@"toUserAlias == %@",toUserAlias);
+    
+    NSArray *arrName = self.roomObj.memberList;
+    for (int i = 0; i<arrName.count; i++) {
+        ClientUserModel *model = [arrName objectAtIndex:i];
+        if (toId == model.userId) {
+            toUserAlias = model.userAlias;
+        }
+    }
 
     //聊天区域显示
-    if (msgType != 2) {
+    if (msgType == 1) {//公聊
         NSString* chatContent2 = [NSString filterHTML:chatContent];
         MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2];
+        [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2 toUserAlias:toUserAlias toId:toId];
         [self.messageTableView sendMessage:model];
-    }else{
+    }else if(msgType == 2){//私聊
 //        ChatPrivateView *chat = [[ChatPrivateView alloc] init];
         NSDictionary *dict= [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias,@"userAlias", nil];
         [_chatPrivateView.arrUserInfo addObject:dict];
@@ -2808,6 +2860,39 @@ privateChatViewDelegate>
                     uUserID:(int)nUserID
                     nRoomID:(int)nRoomID
                     nSinger:(int)nSinger{
+    
+}
+
+//进房间跑道消息通知
+-(void)OnNetMsg_trackInfoNoty:(int)roomId
+                        srcId:(int)scrId
+                         toId:(int)toId
+                       giftId:(int)giftId
+                      giftNum:(int)giftNum
+                        flyId:(int)flyId
+                     castMode:(int)castMode
+                   serverMode:(int)serverMode
+                     hideMode:(int)hideMode
+                     sendType:(int)sendType
+                   nextAction:(int)nextAction
+                      textLen:(int)textLen
+                    reserve01:(int)reserve01
+                      srcName:(NSString *)srcName
+                       toName:(NSString *)toName
+                      vcbName:(NSString *)vcbName
+                         text:(NSString *)text{
+    
+    _flyView.strToName = toName;
+    _flyView.strSrcName = srcName;
+    NSArray *array = [NSArray arrayWithArray:[DPK_NW_Application sharedInstance].giftList];
+    for (int index = 0; index < array.count; index ++ ) {
+        GTGiftListModel *model = array[index];
+        if (model.giftId == giftId) {
+            _flyView.strGiftName = model.name;
+            break;
+        }
+    }
+    _flyView.giftNum = giftNum;
     
 }
 

@@ -8,7 +8,7 @@
 
 #import "PresentViewCell.h"
 
-#define Duration 0.3
+#define Duration 2
 
 @interface PresentViewCell ()
 
@@ -91,6 +91,7 @@
     _state                 = AnimationStateShaking;
     self.shakeLable.text   = [NSString stringWithFormat:@"X%ld", self.number];
     __weak typeof(self) ws = self;
+    number = 1;
     [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
         if (number > 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

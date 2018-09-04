@@ -26,6 +26,9 @@ typedef struct _tag_HBNetHead {
 	uint16 mainCmd;
 	uint16 subCmd;
 	uint32 xcode;
+    int32 ntime;
+    int32 nRoomID;
+    uint32 nUserID;
 	char   content[0];
 }HBNetHead_t;
 
