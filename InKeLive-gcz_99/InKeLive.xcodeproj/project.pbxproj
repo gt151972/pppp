@@ -374,6 +374,8 @@
 		64C022C9212A991800116F7F /* weibo_0.json in Resources */ = {isa = PBXBuildFile; fileRef = 64C022C1212A991800116F7F /* weibo_0.json */; };
 		64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022CB212AC02700116F7F /* SendDynamicViewController.m */; };
 		64C022CE212AC02700116F7F /* SendDynamicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C022CC212AC02700116F7F /* SendDynamicViewController.xib */; };
+		64CF3FBC213F6DEB0060261B /* FlyGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CF3FBB213F6DEB0060261B /* FlyGiftModel.m */; };
+		64CF3FBF213F85460060261B /* AnchorListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CF3FBE213F85460060261B /* AnchorListView.m */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
 		7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBEC2138295F00F44320 /* SignatureViewController.m */; };
@@ -959,6 +961,10 @@
 		64C022CA212AC02700116F7F /* SendDynamicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendDynamicViewController.h; sourceTree = "<group>"; };
 		64C022CB212AC02700116F7F /* SendDynamicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendDynamicViewController.m; sourceTree = "<group>"; };
 		64C022CC212AC02700116F7F /* SendDynamicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendDynamicViewController.xib; sourceTree = "<group>"; };
+		64CF3FBA213F6DEB0060261B /* FlyGiftModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyGiftModel.h; sourceTree = "<group>"; };
+		64CF3FBB213F6DEB0060261B /* FlyGiftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyGiftModel.m; sourceTree = "<group>"; };
+		64CF3FBD213F85460060261B /* AnchorListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnchorListView.h; sourceTree = "<group>"; };
+		64CF3FBE213F85460060261B /* AnchorListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnchorListView.m; sourceTree = "<group>"; };
 		64D07BDA211C19E8001C864F /* RoomInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RoomInfo.plist; sourceTree = "<group>"; };
 		64D07BDC211C2406001C864F /* TopToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopToolView.h; sourceTree = "<group>"; };
 		64D07BDD211C2406001C864F /* TopToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopToolView.m; sourceTree = "<group>"; };
@@ -1415,6 +1421,8 @@
 				63402EF91E12470F002F6661 /* AnchorView.m */,
 				64ADB238213E6DBE0065C1D5 /* FlyView.h */,
 				64ADB239213E6DBE0065C1D5 /* FlyView.m */,
+				64CF3FBD213F85460060261B /* AnchorListView.h */,
+				64CF3FBE213F85460060261B /* AnchorListView.m */,
 				63402F031E12474A002F6661 /* TopTitleView.h */,
 				63402F021E12474A002F6661 /* TopTitleView.m */,
 				63402F161E124805002F6661 /* BottomView.h */,
@@ -1484,6 +1492,8 @@
 				6489CAEE2123D66A007F6F3C /* PrivateChat.plist */,
 				64513C4E21226EAE00539CDD /* MessageFrame.h */,
 				64513C4F21226EAE00539CDD /* MessageFrame.m */,
+				64CF3FBA213F6DEB0060261B /* FlyGiftModel.h */,
+				64CF3FBB213F6DEB0060261B /* FlyGiftModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2610,6 +2620,7 @@
 				6462E7DE2117F44E005EF737 /* TAAnimatedDotView.m in Sources */,
 				63402F111E1247F2002F6661 /* HomeViewController.m in Sources */,
 				633D8D9C1E0796010087BD77 /* MessageTableView.m in Sources */,
+				64CF3FBC213F6DEB0060261B /* FlyGiftModel.m in Sources */,
 				633D8D7B1E0791B20087BD77 /* TYTextContainer.m in Sources */,
 				1AE89EC41F41C6D90001C5D8 /* TempJoinRoomInfo.m in Sources */,
 				630483101E1F3AC2004837C5 /* SearchViewController.m in Sources */,
@@ -2667,6 +2678,7 @@
 				1A9D1CF81F4321B80003EA13 /* ClientConfigParam.m in Sources */,
 				6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */,
 				633D8D981E0796010087BD77 /* MessageModel.m in Sources */,
+				64CF3FBF213F85460060261B /* AnchorListView.m in Sources */,
 				6379986D1E10EB0A00016B48 /* MyControlTool.m in Sources */,
 				64513C54212273D900539CDD /* NSString+Extension.m in Sources */,
 				6462E7DD2117F44E005EF737 /* TAPageControl.m in Sources */,

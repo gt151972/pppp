@@ -7,65 +7,60 @@
 //
 
 #import "FlyView.h"
-#import <JhtMarquee/JhtHorizontalMarquee.h>
 
-@interface FlyView(){
-    JhtHorizontalMarquee *_horizontalMarquee;
-    // 是否暂停了纵向 跑马灯
-    BOOL _isPauseV;
-}
+@interface FlyView()
 @end
 
 @implementation FlyView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-//        self.backgroundColor = RGBA(0, 0, 0, 0.2); //背景透明
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = RGBA(0, 0, 0, 0.2); //背景透明
+//        self.backgroundColor = [UIColor redColor];
         [self creatUI];
     }
     return self;
 }
 
 - (void)creatUI{
-    // 添加 横向 跑马灯
-    [self addHorizontalMarquee];
-    // 开启跑马灯
-    [_horizontalMarquee marqueeOfSettingWithState:MarqueeStart_H];
+   
+//    // 添加 横向 跑马灯
+//    [self addHorizontalMarquee];
+//    // 开启跑马灯
+//    [self.horizontalMarquee marqueeOfSettingWithState:MarqueeStart_H];
     
 }
-
-#pragma mark 横向 跑马灯
-/** 添加 横向 跑马灯 */
-- (void)addHorizontalMarquee {
-    self.horizontalMarquee.text = @" 这是一个跑马灯View，测试一下好不好用，哈哈哈，😁👌😀 😁👌😀 😁👌😀 😁👌😀 哈哈哈哈！ ";
-    [self addSubview:self.horizontalMarquee];
-}
-
-#pragma mark - Get
-/** 横向 跑马灯 */
-- (JhtHorizontalMarquee *)horizontalMarquee {
-    if (!_horizontalMarquee) {
-        _horizontalMarquee = [[JhtHorizontalMarquee alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 18) withSingleScrollDuration:10.0];
-        
-        _horizontalMarquee.tag = 100;
-        // 添加点击手势
-//        UITapGestureRecognizer *htap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(marqueeTapGes:)];
-//        [_horizontalMarquee addGestureRecognizer:htap];
-    }
+-(void)paomadeng{
     
-    return _horizontalMarquee;
+    UILabel *aUILabel=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 500, 50)];
+    aUILabel.font = [UIFont systemFontOfSize:15];
+    NSString *strInfo= [NSString stringWithFormat:@"%@送给%@%d个%@",_strSrcName,_strToName,_giftNum,_strGiftName];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, _strSrcName.length)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(_strSrcName.length, 2)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(_strSrcName.length + 2, _strToName.length)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(_strToName.length+_strSrcName.length+2, attrStr.length - (_strToName.length+_strSrcName.length+2))];
+    [aUILabel setAttributedText:attrStr];
+    [aUILabel sizeToFit];
+    [self addSubview:aUILabel];
+    //取消所有的动画
+    
+//    [self.aUILabel.layer removeAllAnimations];
+    //计算实际text大小
+    CGSize  textSize =  [aUILabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15]}];
+    //保存label的frame
+    CGRect lframe =aUILabel.frame;
+    //用计算出来的text的width更改frame的原始width
+    lframe.size.width= textSize.width;//从屏幕最右边向左边移
+    lframe.origin.x=SCREEN_WIDTH; //用新值更改label的原frame值
+    aUILabel.frame= lframe;
+    //计算动画x移动的最大偏移：屏幕width+text的width
+    float offset = textSize.width+self.bounds.size.width;
+    [UIView animateWithDuration:10.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState//动画重复的主开关
+     |UIViewAnimationOptionCurveLinear//动画的时间曲
+                    animations:^{aUILabel.transform=CGAffineTransformMakeTranslation(-offset,0);} completion:^(BOOL finished) {
+                    }
+     ];
 }
-
-#pragma mark Get Method
-/** 点击 滚动跑马灯 触发方法 */
-- (void)marqueeTapGes:(UITapGestureRecognizer *)ges {
-    if (ges.view.tag == 100) {
-        NSLog(@"点击__水平__滚动的跑马灯啦！！！");
-        
-    }
-}
-
-
 
 @end

@@ -2,16 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "chaoguan.gif",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "上拉小箭头@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "上拉小箭头@3x.png",
       "scale" : "3x"
     }
   ],

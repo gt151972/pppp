@@ -206,8 +206,8 @@
         UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 4, 32, 32)];
         imgHead.layer.masksToBounds = YES;
         imgHead.layer.cornerRadius = 16;
-        NSDictionary *dic = [_arrUserInfo objectAtIndex:indexPath.row];
-        [imgHead sd_setImageWithURL:[NSURL URLWithString:[dic objectForKey:@"userSmallHeadPic"]] placeholderImage:[UIImage imageNamed:@"default_head"]];
+        NSString *strImage = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"image"];
+        [imgHead sd_setImageWithURL:[NSURL URLWithString:strImage] placeholderImage:[UIImage imageNamed:@"default_head"]];
         [cell.contentView addSubview:imgHead];
         return cell;
     }else{
@@ -255,7 +255,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == _userTableView) {
-        return _arrUserInfo.count;
+        return _arrChatMessage.count;
     }else{
         NSArray *array = [NSArray arrayWithArray:[_dicMessage objectForKey:[NSString stringWithFormat:@"%d",_theUserId]]];
         return array.count;

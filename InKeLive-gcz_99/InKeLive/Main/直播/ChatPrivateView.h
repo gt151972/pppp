@@ -14,6 +14,7 @@
 @property (nonatomic, assign) int theUserId;//当前聊天页的id
 @property (nonatomic, strong) NSMutableArray *arrChatMessage;
 @property (nonatomic, strong) UILabel *labNameAndId;
+@property (nonatomic, assign) int nowRow;
 
 @property (nonatomic,copy)void (^privateChatSend)(NSString *messageInfo, int toId);
 - (void)sendMessage:(NSString *)strInfo sendID:(int)sendId receiverID: (int)receiverId;

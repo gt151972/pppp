@@ -232,7 +232,7 @@
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
             nameTextStorage.range = [allMessage rangeOfString:name];
-            nameTextStorage.textColor = RGBA(30, 153, 247, 1);
+            nameTextStorage.textColor = MAIN_COLOR;
             nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
             [container addTextStorage:nameTextStorage];
             
@@ -298,17 +298,17 @@
         }
     }];
     
-    //用户名字的颜色和文字大小
+    //用户名字的颜色和文字大小(系统)
     TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
     nameTextStorage.range = [allMessage rangeOfString:name];
-    nameTextStorage.textColor = RGBA(30, 153, 247, 1);
+    nameTextStorage.textColor = GREEN_COLOR;
     nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:nameTextStorage];
     
     //聊天格式
     TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
     deserveTextStorage.range = [allMessage rangeOfString:message];
-    deserveTextStorage.textColor = RGBA(30, 153, 247, 1);
+    deserveTextStorage.textColor = GREEN_COLOR;
     deserveTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:deserveTextStorage];
     
@@ -355,35 +355,35 @@
     //礼物:
     TYTextStorage *text1TextStorage = [[TYTextStorage alloc]init];
     text1TextStorage.range = [allMessage rangeOfString:strText1];
-    text1TextStorage.textColor = RGBA(30, 153, 247, 1);
+    text1TextStorage.textColor = GREEN_COLOR;
     text1TextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:text1TextStorage];
     
     //用户名字的颜色和文字大小
     TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
     nameTextStorage.range = [allMessage rangeOfString:name];
-    nameTextStorage.textColor = RGBA(255, 255, 255, 1);
+    nameTextStorage.textColor = MAIN_COLOR;
     nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:nameTextStorage];
     
     //送给
     TYTextStorage *actionTextStorage = [[TYTextStorage alloc]init];
     actionTextStorage.range = [allMessage rangeOfString:strAction];
-    actionTextStorage.textColor = RGBA(255, 0, 0, 1);
+    actionTextStorage.textColor = [UIColor whiteColor];
     actionTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:actionTextStorage];
     
     //XXX
     TYTextStorage *toUserTextStorage = [[TYTextStorage alloc]init];
     toUserTextStorage.range = [allMessage rangeOfString:strToName];
-    toUserTextStorage.textColor = RGBA(255, 255, 255, 1);
+    toUserTextStorage.textColor = MAIN_COLOR;
     toUserTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:toUserTextStorage];
     
     //礼物格式
     TYTextStorage *giftInfoTextStorage = [[TYTextStorage alloc]init];
     giftInfoTextStorage.range = [allMessage rangeOfString:strGiftInfo];
-    giftInfoTextStorage.textColor = RGBA(255, 0, 0, 1);
+    giftInfoTextStorage.textColor = [UIColor whiteColor];
     giftInfoTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:giftInfoTextStorage];
     

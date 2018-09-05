@@ -137,7 +137,7 @@ privateChatViewDelegate>
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
     _arrPubChat = [[NSMutableArray alloc] initWithObjects:dic, nil];
     [self creatUI];
-    
+    _arrPrivate = [NSMutableArray array];
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
@@ -596,30 +596,31 @@ privateChatViewDelegate>
     [self.view addSubview:self.showView];
     [self.showView addSubview:self.backdropView];
     [self.view insertSubview:self.topSideView aboveSubview:self.showView];
-    [self.view addSubview:self.closeButton];
+//    [self.view addSubview:self.closeButton];
     
     [self.view addSubview:self.anchorView];//主播信息
     [self.view addSubview:self.flyView];//跑道
+    [self.view addSubview:self.anchorListView];//在麦主播列表
     [self.topSideView addSubview:self.bottomTool];//底部工具栏
     [self.topSideView addSubview:self.topToolView];//顶部工具栏
 //    [self.topSideView addSubview:self.membersHeadView];//观众头像(弃用)
-    [self.topSideView addSubview:self.onMicUsersHeadView];//右侧主播头像
+//    [self.topSideView addSubview:self.onMicUsersHeadView];//右侧主播头像
     
     [self.topSideView addSubview:self.keyBoardView];
     [self.topSideView addSubview:self.messageTableView];
     [self.topSideView addSubview:self.presentView];
     
-    [self.topSideView addSubview:self.KSYstreamerStatusBK];
-    [self.topSideView addSubview:self.KSYstreamerStatusLabel];
+//    [self.topSideView addSubview:self.KSYstreamerStatusBK];
+//    [self.topSideView addSubview:self.KSYstreamerStatusLabel];
     
     [self.view addSubview:self.danmuView];
 
     //设置关闭按钮的约束
-    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(-14);
-        make.right.equalTo(self.view).offset(-10);
-        make.width.height.equalTo(@40);
-    }];
+//    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(self.view).offset(-14);
+//        make.right.equalTo(self.view).offset(-10);
+//        make.width.height.equalTo(@40);
+//    }];
 //    [self registerForKeyboardNotifications];
     
     //送礼物，设置回调
@@ -1359,6 +1360,17 @@ privateChatViewDelegate>
     return _flyView;
 }
 
+- (AnchorListView *)anchorListView{
+    if (!_anchorListView) {
+        _anchorListView = [[AnchorListView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 95, SCREEN_WIDTH/4, SCREEN_WIDTH + 20)];
+        NSLog(@"_roomObj.roomName == %@",_dicInfo);
+        [_anchorListView.btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
+        _anchorListView.dicAnchor = self.dicInfo;
+//        [_anchorListView.labRoomId setText:[NSString stringWithFormat:@"ID: %@",[_dicInfo objectForKey:@"room_id"]]];
+    }
+    return _anchorListView;
+}
+
 -(UIView*) KSYstreamerStatusBK {
     if(!_KSYstreamerStatusBK) {
         CGRect rcFrame = CGRectMake(0, 70, SCREEN_WIDTH, 24);
@@ -1885,6 +1897,10 @@ privateChatViewDelegate>
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
     if (dict) {
+        ClientUserModel* userObj = [self.roomObj findMember:[[dict objectForKey:@"userId"] intValue]];
+        NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"userId"], @"userId", [dict objectForKey:@"userAlias"], @"userAlias", userObj.userSmallHeadPic, "image", nil];
+        [_arrPrivate addObject:dicAll];
+        _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         [_chatPrivateView.arrUserInfo addObject:dict];
         _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
         _chatPrivateView.theUserId = [[dict objectForKey:@"userId"] intValue];
@@ -2314,15 +2330,19 @@ privateChatViewDelegate>
                           TLMediaUrl2:(NSString*)tlMediaUrl2
 {
     ClientUserModel* userObj = [self.roomObj findMember:userId];
-    if(userObj != nil)
-    {
-        userObj.inRoomState = userRoomState;
-        userObj.mbTLstatus = tlStatus;
-        userObj.pushStreamUrl = tlMediaUrl1;
-        userObj.pullStreamUrl = tlMediaUrl2;
-        
-        [self.roomObj addOnMicUser:userObj];
-    }
+    [_arrAmchorList addObject:userObj];
+    [_anchorListView.tableView reloadData];
+//    if(userObj != nil)
+//    {
+//        userObj.inRoomState = userRoomState;
+//        userObj.mbTLstatus = tlStatus;
+//        userObj.pushStreamUrl = tlMediaUrl1;
+//        userObj.pullStreamUrl = tlMediaUrl2;
+//
+//        [self.roomObj addOnMicUser:userObj];
+//    }
+    
+    
 }
 
 -(void)OnNetMsg_RoomOnMicUserListEnd
@@ -2537,7 +2557,6 @@ privateChatViewDelegate>
             toUserAlias = model.userAlias;
         }
     }
-
     //聊天区域显示
     if (msgType == 1) {//公聊
         NSString* chatContent2 = [NSString filterHTML:chatContent];
@@ -2545,7 +2564,68 @@ privateChatViewDelegate>
         [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2 toUserAlias:toUserAlias toId:toId];
         [self.messageTableView sendMessage:model];
     }else if(msgType == 2){//私聊
-//        ChatPrivateView *chat = [[ChatPrivateView alloc] init];
+        //userId:
+        //userAlias:
+        //message(arr):
+                //msg:
+                //isMe:
+        LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+        int myId = model.userID;
+        int count = -1;
+        if (myId == srcId) {//isMe == 1
+            for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                int userId = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                if (toId == userId) {
+                    count = index;
+                    break;
+                }
+            }
+            ClientUserModel* userObj = [self.roomObj findMember:toId];
+            if (count == -1) {
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
+                NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
+                
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                [_arrPrivate addObject:dicAll];
+                _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
+            }else{
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
+                NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
+                [arrMsg addObject:dic];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
+                _nowRow = count;
+
+            }
+        }else if (myId == toId){
+            for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                int userId = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                if (toId == userId) {
+                    count = index;
+                    break;
+                }
+            }
+            ClientUserModel* userObj = [self.roomObj findMember:srcId];
+            if (count == -1) {
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
+                NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                [_arrPrivate addObject:dicAll];
+                _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
+            }else{
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
+                NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
+                [arrMsg addObject:dic];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
+                _nowRow = count;
+            }
+        }
+        NSLog(@"arr == %@",_arrPrivate);
+        
+        _chatPrivateView.nowRow = self.nowRow;
+        _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
+        
         NSDictionary *dict= [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias,@"userAlias", nil];
         [_chatPrivateView.arrUserInfo addObject:dict];
         _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%d)",srcUserAlias,srcId];
@@ -2575,54 +2655,73 @@ privateChatViewDelegate>
                             ToID:(int)toId
                           GiftID:(int)giftId
                          GiftNum:(int)giftNum
+                           flyId:(int)flyId
                          TextLen:(int)textLen
                     SrcUserAlias:(NSString*)srcUserAlias
                      ToUserAlias:(NSString*)toUserAlias
                         GiftText:(NSString*)giftText
 {
-    //聊天区域和礼物区域显示
-    NSLog(@"giftID == %d",giftId);
-    MessageModel *model = [[MessageModel alloc] init];
-    NSString* strSrcId = [NSString stringWithFormat:@"%d", srcId];
-    GTGiftListModel* giftInfo = [[DPK_NW_Application sharedInstance] findGiftConfig:giftId];
-    NSLog(@"giftInfo == %@",giftInfo);
-    NSString* strGiftId = [NSString stringWithFormat:@"%d", giftId];
-    NSString* strGiftName = [NSString stringWithFormat:@"未知礼物(%d)", giftId];
-    NSString* strGiftNum =[NSString stringWithFormat:@"%d", giftNum];
-    if(giftInfo !=nil) {
-        strGiftName = giftInfo.name;
+    if (flyId >= 0) {
+        //跑道显示
+        _flyView.strToName = toUserAlias;
+        _flyView.strSrcName = srcUserAlias;
+        NSArray *array = [NSArray arrayWithArray:[DPK_NW_Application sharedInstance].giftList];
+        for (int index = 0; index < array.count; index ++ ) {
+            GTGiftListModel *model = array[index];
+            if (model.giftId == giftId) {
+                _flyView.strGiftName = model.name;
+                break;
+            }
+        }
+        _flyView.giftNum = giftNum;
+        [_flyView paomadeng];
+    }else{
+        //聊天框显示
+        //聊天区域和礼物区域显示
+        NSLog(@"giftID == %d",giftId);
+        MessageModel *model = [[MessageModel alloc] init];
+        NSString* strSrcId = [NSString stringWithFormat:@"%d", srcId];
+        GTGiftListModel* giftInfo = [[DPK_NW_Application sharedInstance] findGiftConfig:giftId];
+        NSLog(@"giftInfo == %@",giftInfo);
+        NSString* strGiftId = [NSString stringWithFormat:@"%d", giftId];
+        NSString* strGiftName = [NSString stringWithFormat:@"未知礼物(%d)", giftId];
+        NSString* strGiftNum =[NSString stringWithFormat:@"%d", giftNum];
+        if(giftInfo !=nil) {
+            strGiftName = giftInfo.name;
+        }
+        
+        NSString* strToId = [NSString stringWithFormat:@"%d", srcId];
+        NSString* strToName = [NSString stringWithFormat:@"%d", toId];
+        if(toId == 0)
+            strToName = @"大家";
+        ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
+        if(srcUserObj !=nil) {
+            strToName = srcUserObj.userAlias;
+        }
+        ClientUserModel* toUserObj = [self.roomObj findMember:toId];
+        if(toUserObj !=nil) {
+            strToName = toUserObj.userAlias;
+        }
+        
+        LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+        if(userData.userID == toId)
+            strToName = @"你";
+        
+        [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName];
+        [self.messageTableView sendMessage:model];
+        WEAKSELF;
+        PresentModel *presentModel = [[PresentModel alloc] init];
+        presentModel.sender = srcUserAlias;
+        presentModel.giftName = strGiftName;
+        presentModel.icon = giftInfo.pic_thumb;
+        presentModel.giftImageName = giftInfo.pic_original;
+        presentModel.giftNumber = giftNum;
+        for (int index = 0; index < giftNum; index ++ ) {
+            [weakSelf.giftArr addObject:presentModel];
+        }
+        [weakSelf chooseGift:0];
     }
     
-    NSString* strToId = [NSString stringWithFormat:@"%d", srcId];
-    NSString* strToName = [NSString stringWithFormat:@"%d", toId];
-    if(toId == 0)
-        strToName = @"大家";
-    ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
-    if(srcUserObj !=nil) {
-        strToName = srcUserObj.userAlias;
-    }
-    ClientUserModel* toUserObj = [self.roomObj findMember:toId];
-    if(toUserObj !=nil) {
-        strToName = toUserObj.userAlias;
-    }
-    
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    if(userData.userID == toId)
-        strToName = @"你";
-    
-    [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName];
-    [self.messageTableView sendMessage:model];
-    WEAKSELF;
-    PresentModel *presentModel = [[PresentModel alloc] init];
-    presentModel.sender = srcUserAlias;
-    presentModel.giftName = strGiftName;
-    presentModel.icon = giftInfo.pic_thumb;
-    presentModel.giftImageName = giftInfo.pic_original;
-    presentModel.giftNumber = giftNum;
-    for (int index = 0; index < giftNum; index ++ ) {
-        [weakSelf.giftArr addObject:presentModel];
-    }
-    [weakSelf chooseGift:0];
 }
 
 //获取用户帐户信息响应
@@ -2893,7 +2992,7 @@ privateChatViewDelegate>
         }
     }
     _flyView.giftNum = giftNum;
-    
+    [_flyView paomadeng];
 }
 
 @end

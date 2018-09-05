@@ -402,13 +402,22 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
     }
 }
 
-- (void)OnEventTCPSocketRead:(DPKTCPSocket *)sock MainCommand:(int)main_cmd SubCommand:(int)sub_cmd Data:(char *)data time:(int)time roomID:(int)roomID userID:(int)userID DataLen:(int)data_len
+- (void)OnEventTCPSocketRead:(DPKTCPSocket *)sock
+                 MainCommand:(int)main_cmd
+                  SubCommand:(int)sub_cmd
+                        Data:(char *)data
+                        time:(int)time
+                      roomID:(int)roomID
+                      userID:(int)userID
+                     DataLen:(int)data_len
 
 //- (void)OnEventTCPSocketRead:(DPKTCPSocket*)sock MainCommand:(int)main_cmd
 //                  SubCommand:(int)sub_cmd
 //                        Data:(char*)data
 //                     DataLen:(int)data_len
 {
+    
+    
     //TODO:
     NSLog(@"OnEventTCPSocketRead...");
     
@@ -555,6 +564,11 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
             case MXP_SUBCMD_VIDEOCHAT_JOINROOM_RESP:
             {
                 NSLog(@"MXP_SUBCMD_VIDEOCHAT_JOINROOM_RESP");
+                NSArray *array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+                NSString *cachePath = array[0];
+                NSString *filePathName = [cachePath stringByAppendingPathComponent:@"SocketVerify.plist"];
+                NSArray*dataArray =[NSArray arrayWithObjects:[NSString stringWithFormat:@"%d",time], [NSString stringWithFormat:@"%d",roomID], [NSString stringWithFormat:@"%d",userID], nil];
+                [dataArray writeToFile:filePathName atomically:YES];
                 HBCMD_VideoChat_JoinRoom_Resp_t* pResp = (HBCMD_VideoChat_JoinRoom_Resp_t*)data;
                 NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
                 NSString* strRoomName = [[NSString alloc] initWithCString:pResp->vcbName encoding:enc];
@@ -792,6 +806,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                    ToID:pNoty->toId
                                                  GiftID:pNoty->giftId
                                                 GiftNum:pNoty->giftNum
+                                                  flyId:pNoty->flyId
                                                 TextLen:pNoty->textLen
                                            SrcUserAlias:strSrcAlias
                                             ToUserAlias:strToAlias

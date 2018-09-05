@@ -31,6 +31,7 @@
 #import "LiveUserInfoView.h"
 #import "SelectGiftUserView.h"
 #import "FlyView.h"
+#import "AnchorListView.h"
 
 @interface LiveViewController : UIViewController
 
@@ -63,6 +64,11 @@
 
 //跑道
 @property (nonatomic, strong)FlyView *flyView;
+
+//在麦主播
+@property (nonatomic, strong) AnchorListView *anchorListView;
+@property (nonatomic, strong) NSMutableArray *arrAmchorList;//在麦主播
+@property (nonatomic, assign) int nowRow;//当前选中User行
 
 //RTMP推流和拉流状态信息去
 @property (nonatomic, strong) UIView * KSYstreamerStatusBK;
@@ -100,7 +106,8 @@
 @property (nonatomic, strong) KeyBoardInputView *keyBoardView;
 
 @property (nonatomic, strong) PrivateChatView *privateChatView;
-
+@property (nonatomic, strong) NSMutableDictionary *dicPrivate;
+@property (nonatomic, strong) NSMutableArray *arrPrivate;
 // 聊天面板
 @property (nonatomic, strong) MessageTableView *messageTableView;
 

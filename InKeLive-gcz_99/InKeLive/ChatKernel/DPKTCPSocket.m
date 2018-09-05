@@ -158,11 +158,18 @@
 
 - (int)SendData:(int)main_cmd SubCommand:(int)sub_cmd
 {
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"SocketVerify.plist"];
+    NSArray*dataArray = [NSArray arrayWithContentsOfFile:filePathName];
     char szBuffer[256];
     HBNetHead_t* header = (HBNetHead_t*)szBuffer;
     header->mainCmd = main_cmd;
     header->subCmd = sub_cmd;
     header->xcode = 0;
+    header->ntime = [dataArray[0] intValue];
+    header->nRoomID = [dataArray[1] intValue];
+    header->nUserID = [dataArray[2] intValue];
     header->length = sizeof(HBNetHead_t);
     if(_isConnected == 1 && _asyncSocket != nil)
     {
@@ -177,11 +184,18 @@
 Data:(const char*)pdata
 DataLen:(int)data_len
 {
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"SocketVerify.plist"];
+    NSArray*dataArray = [NSArray arrayWithContentsOfFile:filePathName];
     char szBuffer[SOCKET_TCP_BUFFER_SIZE];
     HBNetHead_t* header =(HBNetHead_t*)szBuffer;
     header->mainCmd = main_cmd;
     header->subCmd = sub_cmd;
     header->xcode = 0;
+    header->ntime = [dataArray[0] intValue];
+    header->nRoomID = [dataArray[1] intValue];
+    header->nUserID = [dataArray[2] intValue];
     memcpy(header->content, pdata, data_len);
     header->length = sizeof(HBNetHead_t) + data_len;
     if(_isConnected == 1&& _asyncSocket != nil)
@@ -210,7 +224,7 @@ DataLen:(int)data_len
     }
     //other message process
     if(_socketSink) {
-        NSLog(@"处理消息数据: mainCmd=%d,subCmd=%d,dataLen=%d", header->mainCmd, header->subCmd,data_len);
+        NSLog(@"处理消息数据: mainCmd=%d,subCmd=%d,dataLen=%d time = %d, room = %d, user = %d", header->mainCmd, header->subCmd,data_len,header->ntime,header->nRoomID,header->nUserID);
         [_socketSink OnEventTCPSocketRead:self
                               MainCommand:header->mainCmd
                                SubCommand:header->subCmd

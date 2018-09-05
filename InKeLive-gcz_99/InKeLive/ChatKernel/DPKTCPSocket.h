@@ -201,6 +201,7 @@
                             ToID:(int)toId
                           GiftID:(int)giftId
                          GiftNum:(int)giftNum
+                           flyId:(int)flyId
                          TextLen:(int)textLen
                     SrcUserAlias:(NSString*)srcUserAlias
                      ToUserAlias:(NSString*)toUserAlias

@@ -39,6 +39,11 @@
     textField.textColor = [UIColor whiteColor];
     textField.delegate = self;
     textField.backgroundColor = RGBA(0, 0, 0, 0.2);
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"  一起来聊天吧" attributes:
+                                      @{NSForegroundColorAttributeName:[UIColor whiteColor],
+                                        NSFontAttributeName:textField.font
+                                        }];
+    textField.attributedPlaceholder = attrString;
     [self addSubview:textField];
 }
 
