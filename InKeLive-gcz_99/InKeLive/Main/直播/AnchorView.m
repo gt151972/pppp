@@ -60,6 +60,7 @@
 //连麦按钮
 - (void)payButtonClick{
     if (self.anchorClick) {
+
         if (_payButton.selected) {
             self.anchorClick(1);
         }else{

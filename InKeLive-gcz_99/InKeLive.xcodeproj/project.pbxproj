@@ -436,8 +436,6 @@
 		1A9D1D061F43DD960003EA13 /* msg_commands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_commands.h; sourceTree = "<group>"; };
 		1A9D1D071F43DD960003EA13 /* msg_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_defines.h; sourceTree = "<group>"; };
 		1A9D1D081F43DD960003EA13 /* mxpbase_commands.h */ = {isa = PBXFileReference; fileEncoding = 2147486000; lastKnownFileType = sourcecode.c.h; path = mxpbase_commands.h; sourceTree = "<group>"; };
-		1A9D1D091F43DD960003EA13 /* yc_datatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yc_datatypes.h; sourceTree = "<group>"; };
-		1A9D1D0A1F43DD960003EA13 /* yc_defines.h */ = {isa = PBXFileReference; fileEncoding = 2147486000; lastKnownFileType = sourcecode.c.h; path = yc_defines.h; sourceTree = "<group>"; };
 		1A9F16CC1F6EBFA80072D1A7 /* SelectGiftUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGiftUserView.h; sourceTree = "<group>"; };
 		1A9F16CD1F6EBFA80072D1A7 /* SelectGiftUserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectGiftUserView.m; sourceTree = "<group>"; };
 		1A9F16CF1F6EBFC80072D1A7 /* SelectGiftCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectGiftCountView.h; sourceTree = "<group>"; };
@@ -940,6 +938,8 @@
 		64ADB238213E6DBE0065C1D5 /* FlyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyView.h; sourceTree = "<group>"; };
 		64ADB239213E6DBE0065C1D5 /* FlyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyView.m; sourceTree = "<group>"; };
 		64ADB23B213E79780065C1D5 /* JhtMarquee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JhtMarquee.framework; sourceTree = "<group>"; };
+		64B5C0D921411C71001279A0 /* yc_dataType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yc_dataType.h; sourceTree = "<group>"; };
+		64B5C0DA21411C9F001279A0 /* yc_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yc_define.h; sourceTree = "<group>"; };
 		64B76738213D0F1F00D61A0E /* ChatPublicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPublicView.h; sourceTree = "<group>"; };
 		64B76739213D0F1F00D61A0E /* ChatPublicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatPublicView.m; sourceTree = "<group>"; };
 		64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSimpleWebViewController.m; sourceTree = "<group>"; };
@@ -1035,6 +1035,8 @@
 		1AAD2FDD1F3F025D00FBB894 /* ChatKernel */ = {
 			isa = PBXGroup;
 			children = (
+				64B5C0D921411C71001279A0 /* yc_dataType.h */,
+				64B5C0DA21411C9F001279A0 /* yc_define.h */,
 				1A9D1D021F43DD960003EA13 /* DPKTCPSocket.h */,
 				1A9D1D031F43DD960003EA13 /* DPKTCPSocket.m */,
 				1A9D1D041F43DD960003EA13 /* GCDAsyncSocket.h */,
@@ -1042,8 +1044,6 @@
 				1A9D1D061F43DD960003EA13 /* msg_commands.h */,
 				1A9D1D071F43DD960003EA13 /* msg_defines.h */,
 				1A9D1D081F43DD960003EA13 /* mxpbase_commands.h */,
-				1A9D1D091F43DD960003EA13 /* yc_datatypes.h */,
-				1A9D1D0A1F43DD960003EA13 /* yc_defines.h */,
 				1AAD2FE51F3FE75800FBB894 /* LocalUserModel.h */,
 				1AAD2FE61F3FE75800FBB894 /* LocalUserModel.m */,
 				1AAD2FDE1F3F028900FBB894 /* DPK_NW_Application.h */,

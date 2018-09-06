@@ -48,6 +48,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.backgroundView = [UIColor clearColor];
     UIImageView *imgHead = [[UIImageView alloc] init];
     imgHead.layer.cornerRadius = SCREEN_WIDTH/8 - 15;
     imgHead.layer.masksToBounds = YES;
@@ -76,10 +77,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-  
+    _model = [_arrayAnchor objectAtIndex:indexPath.row];
+    NSLog(@"arr = %@",_model.pullStreamUrl);
+    NSLog(@"arr = %@",_model.pushStreamUrl);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSLog(@"_arrayAnchor.count == %lu",(unsigned long)_arrayAnchor.count);
     return _arrayAnchor.count;
 }
 

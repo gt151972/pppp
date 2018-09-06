@@ -11,7 +11,6 @@
 #import "DPK_NW_Application.h"
 @interface ChatPrivateView()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 @property (nonatomic, strong) UIButton* viewBK;
-
 @property (nonatomic, strong) UITableView* userTableView;
 @property (nonatomic, strong) UITableView *messageTableView;
 @property (nonatomic, strong) UITextField *textField;
@@ -85,8 +84,18 @@
     viewTopBg.backgroundColor = RGBA(0, 0, 0, 0.8);
     [viewBg addSubview:viewTopBg];
     [viewTopBg addSubview:self.labNameAndId];
-    
+    _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
+    _userTableView.dataSource = self;
+    _userTableView.delegate = self;
+    _userTableView.rowHeight = 44;
+    _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
+    _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
     [viewBg addSubview:self.userTableView ];
+    _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
+    _messageTableView.dataSource = self;
+    _messageTableView.delegate = self;
+    _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
+    _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
     [viewBg addSubview:self.messageTableView];
     
     UIView *viewButtonBg = [[UIView alloc] initWithFrame:CGRectMake(51, SCREEN_HEIGHT/2-40, SCREEN_WIDTH - 51, 40)];
@@ -143,28 +152,28 @@
     return _labNameAndId;
 }
 
-- (UITableView *)userTableView{
-    if (_userTableView == nil) {
-        _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
-        _userTableView.dataSource = self;
-        _userTableView.delegate = self;
-        _userTableView.rowHeight = 44;
-        _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
-        _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
-    }
-    return _userTableView;
-}
-
-- (UITableView *)messageTableView{
-    if (_messageTableView == nil) {
-        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
-        _messageTableView.dataSource = self;
-        _messageTableView.delegate = self;
-        _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
-        _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
-    }
-    return _messageTableView;
-}
+//- (UITableView *)userTableView{
+//    if (_userTableView == nil) {
+//        _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
+//        _userTableView.dataSource = self;
+//        _userTableView.delegate = self;
+//        _userTableView.rowHeight = 44;
+//        _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
+//        _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
+//    }
+//    return _userTableView;
+//}
+//
+//- (UITableView *)messageTableView{
+//    if (_messageTableView == nil) {
+//        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
+//        _messageTableView.dataSource = self;
+//        _messageTableView.delegate = self;
+//        _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
+//        _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
+//    }
+//    return _messageTableView;
+//}
 
 - (UITextField *)textField{
     if (_textField == nil) {
@@ -195,6 +204,48 @@
 #pragma mark UITableViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"_arrChatMessage == %@",_arrChatMessage);
+    if(tableView == self.messageTableView){
+        static NSString *CellWithIdentifier = @"messageTableViewCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
+        }
+        cell.backgroundColor = [UIColor clearColor];
+        //        cell.backgroundColor = [UIColor redColor];
+        if (_arrChatMessage) {
+            if ([[[_arrChatMessage objectAtIndex:_nowRow] allKeys] containsObject:@"message"]) {
+                NSArray *arr = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+                UIView *viewBg = [[UIView alloc] init];
+                viewBg.layer.cornerRadius = 3;
+                viewBg.layer.masksToBounds = YES;
+                
+                UILabel *labMessage = [[UILabel alloc] init];
+                labMessage.font = MessageFont;
+                labMessage.numberOfLines = 0;
+                labMessage.textAlignment = NSTextAlignmentLeft;
+                labMessage.text = [[arr objectAtIndex:indexPath.row] objectForKey:@"msg"];
+                CGFloat height = [UILabel getHeightByWidth:labMessage.frame.size.width title:labMessage.text font:labMessage.font];
+                labMessage.tag = 6000+indexPath.row;
+                NSLog(@"height == %f",height);
+                labMessage.frame = CGRectMake(10, 30, SCREEN_WIDTH - 118, height);
+                CGSize maximumLabelSize = CGSizeMake(SCREEN_WIDTH - 118, 9999);//labelsize的最大值
+                CGSize expectSize = [labMessage sizeThatFits:maximumLabelSize];
+                labMessage.frame = CGRectMake(8, 10, expectSize.width, expectSize.height);
+                NSLog(@"%@",[[arr objectAtIndex:indexPath.row] objectForKey:@"isMe"]);
+                if ([[[arr objectAtIndex:indexPath.row] objectForKey:@"isMe"] intValue] == 1) {
+                    viewBg.backgroundColor = MAIN_COLOR;
+                    viewBg.frame = CGRectMake(SCREEN_WIDTH - 71 - expectSize.width , 4, expectSize.width + 16, expectSize.height + 20);
+                }else{
+                    viewBg.backgroundColor = [UIColor whiteColor];
+                    viewBg.frame = CGRectMake(4, 4, expectSize.width + 16, expectSize.height + 20);
+                }
+                [cell.contentView addSubview:viewBg];
+                [viewBg addSubview:labMessage];
+            }
+        }
+        return cell;
+    }
     if (tableView == _userTableView) {
         static NSString *CellWithIdentifier = @"userTableViewCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
@@ -209,70 +260,40 @@
         NSString *strImage = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"image"];
         [imgHead sd_setImageWithURL:[NSURL URLWithString:strImage] placeholderImage:[UIImage imageNamed:@"default_head"]];
         [cell.contentView addSubview:imgHead];
-        return cell;
-    }else{
-        static NSString *CellWithIdentifier = @"messageTableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
-        }
-        cell.backgroundColor = [UIColor clearColor];
-        //        cell.backgroundColor = [UIColor redColor];
-        if (_arrChatMessage) {
-            UIView *viewBg = [[UIView alloc] init];
-            viewBg.layer.cornerRadius = 3;
-            viewBg.layer.masksToBounds = YES;
-            
-            UILabel *labMessage = [[UILabel alloc] init];
-            labMessage.font = MessageFont;
-            labMessage.numberOfLines = 0;
-            labMessage.textAlignment = NSTextAlignmentLeft;
-            //            labMessage.text = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"message"];
-            labMessage.text = [[[_dicMessage objectForKey:[NSString stringWithFormat:@"%d",_theUserId]] objectAtIndex:indexPath.row] objectForKey:@"messageInfo"];
-            CGFloat height = [UILabel getHeightByWidth:labMessage.frame.size.width title:labMessage.text font:labMessage.font];
-            labMessage.tag = 6000+indexPath.row;
-            NSLog(@"height == %f",height);
-            labMessage.frame = CGRectMake(10, 30, SCREEN_WIDTH - 118, height);
-            CGSize maximumLabelSize = CGSizeMake(SCREEN_WIDTH - 118, 9999);//labelsize的最大值
-            CGSize expectSize = [labMessage sizeThatFits:maximumLabelSize];
-            labMessage.frame = CGRectMake(8, 10, expectSize.width, expectSize.height);
-            NSLog(@"%@",[[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"isMe"]);
-            if ([[[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"isMe"] intValue] == 1) {
-                viewBg.backgroundColor = MAIN_COLOR;
-                viewBg.frame = CGRectMake(SCREEN_WIDTH - 71 - expectSize.width , 4, expectSize.width + 16, expectSize.height + 20);
-            }else{
-                viewBg.backgroundColor = [UIColor whiteColor];
-                viewBg.frame = CGRectMake(4, 4, expectSize.width + 16, expectSize.height + 20);
-            }
-            [cell.contentView addSubview:viewBg];
-            [viewBg addSubview:labMessage];
-        }
+        
+//        UIButton *btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(30, 4, 12, 12)];
+//        btnDelete setImage:[UIImage imageNamed:@""] forState:<#(UIControlState)#>
         return cell;
     }
+    
     
     return nil;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     if (tableView == _userTableView) {
         return _arrChatMessage.count;
     }else{
-        NSArray *array = [NSArray arrayWithArray:[_dicMessage objectForKey:[NSString stringWithFormat:@"%d",_theUserId]]];
-        return array.count;
+        if ([[[_arrChatMessage objectAtIndex:_nowRow] allKeys] containsObject:@"message"]) {
+            NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+            NSLog(@"array == %lu",(unsigned long)array.count);
+            return array.count;
+        }else{
+            return 0;
+        }
+        
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView == _userTableView) {
-        NSDictionary *dic = [_arrUserInfo objectAtIndex:indexPath.row];
-        _theUserId = [[dic objectForKey:@"userId"] intValue];
-        //保持左列表排序始终按_arrUserInfo倒叙
-//        [_arrUserInfo removeObjectAtIndex:indexPath.row];
-//        [_arrUserInfo addObject:dic];
-//        [_messageTableView reloadData];
-    }else if (tableView == _messageTableView){
         
+        _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
+        _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
+        [_messageTableView reloadData];
+    }else if (tableView == _messageTableView){
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -292,6 +313,7 @@
 //    [self.messageTableView reloadData];
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
+    NSLog(@"_arrChatMessage == %@",_arrChatMessage);
 }
 
 -(void)hide {
@@ -334,5 +356,10 @@
          self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
      }
  }
+
+- (void)reloadDateForTableView{
+    [_userTableView reloadData];
+    [_messageTableView reloadData];
+}
 
 @end

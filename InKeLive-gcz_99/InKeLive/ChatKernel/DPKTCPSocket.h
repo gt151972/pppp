@@ -447,7 +447,7 @@
                 UserID:(int)userId;
 
 //用户关注请求
--(void)SendUserAttentionReq:(int)nFlag
+-(int)SendUserAttentionReq:(int)nFlag
                     uUserID:(int)nUserID
                     nRoomID:(int)nRoomID
                     nSinger:(int)nSinger;

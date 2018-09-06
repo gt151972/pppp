@@ -634,4 +634,25 @@ DataLen:(int)data_len
     return -2;
 }
 
+//用户关注请求
+-(int)SendUserAttentionReq:(int)nFlag
+                    uUserID:(int)nUserID
+                    nRoomID:(int)nRoomID
+                    nSinger:(int)nSinge{
+    HBCMD_VIDEOCHAT_UserAttention_Req_t req;
+    memset(&req, 0, sizeof(req));
+    req.nFlag = nFlag;
+    req.nUserID = nUserID;
+    req.nRoomID = nRoomID;
+    req.nSinger = nSinge;
+    if(_isConnected == 1) {
+        int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand:MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ Data:(char*)&req DataLen:sizeof(HBCMD_VIDEOCHAT_UserAttention_Req_t)];
+    }
+    else if(_isConnecting == 1) {
+        return -1;
+    }
+    return -2;
+    
+}
+
 @end

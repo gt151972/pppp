@@ -138,6 +138,7 @@ privateChatViewDelegate>
     _arrPubChat = [[NSMutableArray alloc] initWithObjects:dic, nil];
     [self creatUI];
     _arrPrivate = [NSMutableArray array];
+    _arrAmchorList = [NSMutableArray array];
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
@@ -193,6 +194,11 @@ privateChatViewDelegate>
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
     
+    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 81, SCREEN_WIDTH/4, 33)];
+    [self.view addSubview:viewOnMic];
+    
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 33)];
+    [viewOnMic addSubview:btn];
 }
 
 //- (void)getAdress{
@@ -600,11 +606,11 @@ privateChatViewDelegate>
     
     [self.view addSubview:self.anchorView];//主播信息
     [self.view addSubview:self.flyView];//跑道
-    [self.view addSubview:self.anchorListView];//在麦主播列表
+//    [self.view addSubview:self.anchorListView];//在麦主播列表
     [self.topSideView addSubview:self.bottomTool];//底部工具栏
     [self.topSideView addSubview:self.topToolView];//顶部工具栏
 //    [self.topSideView addSubview:self.membersHeadView];//观众头像(弃用)
-//    [self.topSideView addSubview:self.onMicUsersHeadView];//右侧主播头像
+    [self.topSideView addSubview:self.onMicUsersHeadView];//右侧主播头像
     
     [self.topSideView addSubview:self.keyBoardView];
     [self.topSideView addSubview:self.messageTableView];
@@ -866,6 +872,17 @@ privateChatViewDelegate>
                           SrcUserAlias:sz_srcalias
                            ToUserAlias:tousername
                             MsgContent:sz_message];
+    
+}
+
+-(void)sendAttention:(int)flag roomId:(int)roomId singerId:(int)singerId{
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    int srcuserid =[DPK_NW_Application sharedInstance].localUserModel.userID;
+    [self.socketObj SendUserAttentionReq:flag
+                                 uUserID:srcuserid
+                                 nRoomID:roomId
+                                 nSinger:singerId];
+    
     
 }
 
@@ -1341,12 +1358,15 @@ privateChatViewDelegate>
     if (!_anchorView) {
         _anchorView = [[AnchorView alloc]initWithFrame:CGRectMake(4, 30, 150, 36)];
         WEAKSELF;
-        
+        NSLog(@"userId == %d",_userObj.userId);
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
-            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+//            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            
             if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
-                [weakSelf SendUserAttentionReq:flag uUserID:model.userID nRoomID:_roomObj.roomId nSinger:_userObj.userId];
+                [weakSelf sendAttention:flag roomId:_roomObj.roomId singerId:_userObj.userId];
+            }else{
+                [MBProgressHUD showAlertMessage:@"只能关注主播"];
             }
         }];
     }
@@ -1898,12 +1918,27 @@ privateChatViewDelegate>
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
     if (dict) {
         ClientUserModel* userObj = [self.roomObj findMember:[[dict objectForKey:@"userId"] intValue]];
-        NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"userId"], @"userId", [dict objectForKey:@"userAlias"], @"userAlias", userObj.userSmallHeadPic, "image", nil];
-        [_arrPrivate addObject:dicAll];
-        _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
-        [_chatPrivateView.arrUserInfo addObject:dict];
+        BOOL isAdd = YES;
+        if (_arrPrivate.count > 0) {
+            for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                if (userObj.userId == userID) {
+                    isAdd = NO;
+                    _nowRow = index;
+                    break;
+                }
+            }
+        }
+        if (isAdd) {
+            NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
+                                     @"userAlias":userObj.userAlias,
+                                     @"image":userObj.userSmallHeadPic
+                                     };
+            [_arrPrivate addObject:dicAll];
+            _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
+            _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+        }
         _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
-        _chatPrivateView.theUserId = [[dict objectForKey:@"userId"] intValue];
     }else{
         _chatPrivateView.labNameAndId.text = @"悄悄说";
     }
@@ -2330,17 +2365,19 @@ privateChatViewDelegate>
                           TLMediaUrl2:(NSString*)tlMediaUrl2
 {
     ClientUserModel* userObj = [self.roomObj findMember:userId];
-    [_arrAmchorList addObject:userObj];
-    [_anchorListView.tableView reloadData];
-//    if(userObj != nil)
-//    {
-//        userObj.inRoomState = userRoomState;
-//        userObj.mbTLstatus = tlStatus;
-//        userObj.pushStreamUrl = tlMediaUrl1;
-//        userObj.pullStreamUrl = tlMediaUrl2;
-//
-//        [self.roomObj addOnMicUser:userObj];
-//    }
+//    [_arrAmchorList addObject:userObj];
+//    _anchorListView.arrayAnchor = _arrAmchorList;
+//    NSLog(@"_arrAmchorList == %@",_arrAmchorList);
+//    [_anchorListView.tableView reloadData];
+    if(userObj != nil)
+    {
+        userObj.inRoomState = userRoomState;
+        userObj.mbTLstatus = tlStatus;
+        userObj.pushStreamUrl = tlMediaUrl1;
+        userObj.pullStreamUrl = tlMediaUrl2;
+
+        [self.roomObj addOnMicUser:userObj];
+    }
     
     
 }
@@ -2584,15 +2621,14 @@ privateChatViewDelegate>
             if (count == -1) {
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
                 NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
-                
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
                 [_arrPrivate addObject:dicAll];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
             }else{
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
                 NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
                 [arrMsg addObject:dic];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
                 [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
                 _nowRow = count;
 
@@ -2625,12 +2661,7 @@ privateChatViewDelegate>
         
         _chatPrivateView.nowRow = self.nowRow;
         _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
-        
-        NSDictionary *dict= [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias,@"userAlias", nil];
-        [_chatPrivateView.arrUserInfo addObject:dict];
-        _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%d)",srcUserAlias,srcId];
-        _chatPrivateView.theUserId = [[dict objectForKey:@"userId"] intValue];
-        [_chatPrivateView sendMessage:chatContent sendID:srcId receiverID:toId];
+        [_chatPrivateView reloadDateForTableView];
     }
     
 
@@ -2954,12 +2985,26 @@ privateChatViewDelegate>
     //TODO:
 }
 
-//用户关注请求
--(void)SendUserAttentionReq:(int)nFlag
-                    uUserID:(int)nUserID
-                    nRoomID:(int)nRoomID
-                    nSinger:(int)nSinger{
-    
+//用户关注回包
+-(void)OnNetMsg_UserAttentionResp:(int)nRet
+                            nFlag:(int)nFlag
+                          nUserID:(int)nUserID
+                          nRoomID:(int)nRoomID
+                          nSinger:(int)nSinger{
+    if (nRet == 0) {
+        //操作成功
+        if (nFlag == 1) {
+            _anchorView.payButton.selected = YES;
+        }else{
+            _anchorView.payButton.selected = NO;
+        }
+    }else{
+        if (nFlag ==1) {
+            [MBProgressHUD showAlertMessage:@"关注未成功"];
+        }else{
+            [MBProgressHUD showAlertMessage:@"关注未成功"];
+        }
+    }
 }
 
 //进房间跑道消息通知

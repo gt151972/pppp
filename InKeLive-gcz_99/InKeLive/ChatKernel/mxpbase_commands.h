@@ -2,8 +2,8 @@
 #ifndef __MXP_BASE_COMMANDS_HH__
 #define __MXP_BASE_COMMANDS_HH__
 
-#include "yc_datatypes.h"
-#include "yc_defines.h"
+#include "yc_dataType.h"
+#include "yc_define.h"
 
 #define MAX_HB_MESSAGE_SIZE   16*1024
 

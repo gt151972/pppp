@@ -12,4 +12,9 @@
 @property (nonatomic, strong)UILabel *labName;
 @property (nonatomic, strong)UILabel *labID;
 @property (nonatomic, strong)UIImageView *imgViewUP;
+
+@property (nonatomic, strong) UIButton *btnRoomName;//房间名按钮
+@property (nonatomic, strong) UILabel *labRoomId;
+
+@property (nonatomic,copy)void (^btnRoomNameClicked)(BOOL isSpread);
 @end
