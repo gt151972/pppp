@@ -53,7 +53,7 @@
     
     //主播名字
     _labAnchorName = [[UILabel alloc] init];
-    _labAnchorName.frame = CGRectMake(0, 0, 71, 10);
+    _labAnchorName.frame = CGRectMake(0, 0, SCREEN_WIDTH/4, 10);
     _labAnchorName.textAlignment = NSTextAlignmentCenter;
     _labAnchorName.font = [UIFont systemFontOfSize:10];
     _labAnchorName.textColor = [UIColor whiteColor];

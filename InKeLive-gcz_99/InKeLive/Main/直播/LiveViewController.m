@@ -193,12 +193,28 @@ privateChatViewDelegate>
     is_ksystream_pull_autoconnect_ = NO;
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
-    
-    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 81, SCREEN_WIDTH/4, 33)];
+    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 90, SCREEN_WIDTH/4, 33)];
     [self.view addSubview:viewOnMic];
-    
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 33)];
-    [viewOnMic addSubview:btn];
+    UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 17)];
+    [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_up"] forState:UIControlStateNormal];
+    [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_down"] forState:UIControlStateSelected];
+    [btnRoomName setBackgroundColor:[UIColor clearColor]];
+    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
+    [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [btnRoomName addTarget:self action:@selector(btnSpreadClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [viewOnMic addSubview:btnRoomName];
+    UILabel *labRoomId = [[UILabel alloc] initWithFrame:CGRectMake(0, 17, SCREEN_WIDTH/4, 12)];
+    labRoomId.text = [NSString stringWithFormat:@"ID: %@",[_dicInfo objectForKey:@"room_id"]];
+    labRoomId.textColor = [UIColor whiteColor];
+    labRoomId.textAlignment = NSTextAlignmentCenter;
+    labRoomId.font = [UIFont systemFontOfSize:12];
+    [viewOnMic addSubview:labRoomId];
+}
+
+- (void)btnSpreadClicked:(UIButton *)button{
+    button.selected = !button.selected;
+    self.onMicUsersHeadView.hidden = button.selected;
 }
 
 //- (void)getAdress{
@@ -774,7 +790,7 @@ privateChatViewDelegate>
 //                    if (weakSelf.keyBoardView) {
 //                        [weakSelf.keyBoardView editBeginTextField];
 //                    }
-                    [weakSelf showPrivateChatView];
+                    [weakSelf showPrivateChatView:0];
                 }
                 break;
                 case 151: //礼物
@@ -1452,9 +1468,9 @@ privateChatViewDelegate>
 
 -(RoomOnMicUsersView*)onMicUsersHeadView {
     if(!_onMicUsersHeadView) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH -91, 79, 91, SCREEN_HEIGHT -108-64);
+        CGRect frame = CGRectMake(SCREEN_WIDTH/4*3, 123, SCREEN_WIDTH/4, SCREEN_WIDTH);
         _onMicUsersHeadView = [[RoomOnMicUsersView alloc]initWithFrame:frame style:UITableViewStylePlain];
-        _onMicUsersHeadView.backgroundColor = MAIN_COLOR;
+        _onMicUsersHeadView.backgroundColor = [UIColor clearColor];
         _onMicUsersHeadView.dataSource =self;
         _onMicUsersHeadView.delegate=self;
     }
@@ -1512,7 +1528,7 @@ privateChatViewDelegate>
             [self bottomToolPosition];
         }];
         
-        [userView setPrivateChatBlock:^() {
+        [userView setPrivateChatBlock:^(int userId, NSString *userName) {
             //关闭回调函数
             [UIView animateWithDuration:0 animations:^{
                 self.userView.transform = CGAffineTransformMakeScale(0.01, 0.01);
@@ -1520,7 +1536,7 @@ privateChatViewDelegate>
                 [self.userView removeFromSuperview];
                 self.userView = nil;
             }];
-            [self showPrivateChatView];
+            [self showPrivateChatView:userId];
         }];
         
         WEAKSELF;
@@ -1761,7 +1777,7 @@ privateChatViewDelegate>
 //    }
 //    else
     if(tableView == _onMicUsersHeadView) {
-        return 70; //64+6
+        return SCREEN_WIDTH/4; //64+6
     }
     
     NSLog(@"[ERROR] unkown tableView !!!!!!");
@@ -1907,29 +1923,44 @@ privateChatViewDelegate>
     [view popShow];
 }
 
-- (void)showPrivateChatView{
+- (void)showPrivateChatView:(int)userId{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//    ChatPrivateView *chatView = [[ChatPrivateView alloc] initWithFrame:frame];
     _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
-    //    chatView.delegate = self;
-    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-    NSString*cachePath = array[0];
-    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
-    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-    if (dict) {
-        ClientUserModel* userObj = [self.roomObj findMember:[[dict objectForKey:@"userId"] intValue]];
-        BOOL isAdd = YES;
-        if (_arrPrivate.count > 0) {
-            for (int index = 0; index < _arrPrivate.count; index ++ ) {
-                int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
-                if (userObj.userId == userID) {
-                    isAdd = NO;
-                    _nowRow = index;
-                    break;
+    if (_arrPrivate.count > 0) {
+        if (userId == 0) {
+            //直接点击私聊:1 _arrPrivate.count>0
+            _chatPrivateView.nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
+        }else{
+            //直接跳入userId的私聊页面(判断是否替换)
+            ClientUserModel* userObj = [self.roomObj findMember:userId];
+            BOOL isAdd = YES;
+            if (_arrPrivate.count > 0) {
+                for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                    int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                    if (userObj.userId == userID) {
+                        isAdd = NO;
+                        _nowRow = index;
+                        break;
+                    }
                 }
             }
+            if (isAdd) {
+                NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
+                                         @"userAlias":userObj.userAlias,
+                                         @"image":userObj.userSmallHeadPic
+                                         };
+                [_arrPrivate addObject:dicAll];
+                _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
+                _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+            }
+            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
         }
-        if (isAdd) {
+    }else{
+        if (userId == 0) {
+            _chatPrivateView.labNameAndId.text = @"悄悄说";
+            _chatPrivateView.nowRow = -1;
+        }else{
+             ClientUserModel* userObj = [self.roomObj findMember:userId];
             NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
                                      @"userAlias":userObj.userAlias,
                                      @"image":userObj.userSmallHeadPic
@@ -1937,18 +1968,18 @@ privateChatViewDelegate>
             [_arrPrivate addObject:dicAll];
             _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
             _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
+            _chatPrivateView.nowRow = 0;
         }
-        _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[dict objectForKey:@"userAlias"],[dict objectForKey:@"userId"]];
-    }else{
-        _chatPrivateView.labNameAndId.text = @"悄悄说";
     }
-//    [self bottomToolHidden];
     [_chatPrivateView popShow];
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
         [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
     }];
-    
+    [_chatPrivateView setDeteleChatUser:^(int row) {
+        [weakSelf.arrPrivate removeObjectAtIndex:row];
+    }];
 }
 
 #pragma mark 公聊接口

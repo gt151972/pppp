@@ -18,6 +18,7 @@
 @property (nonatomic, assign) int nowRow;
 
 @property (nonatomic,copy)void (^privateChatSend)(NSString *messageInfo, int toId);
+@property (nonatomic,copy)void (^deteleChatUser)(int row);
 - (void)sendMessage:(NSString *)strInfo sendID:(int)sendId receiverID: (int)receiverId;
 - (void)reloadDateForTableView;
 //弹出窗口

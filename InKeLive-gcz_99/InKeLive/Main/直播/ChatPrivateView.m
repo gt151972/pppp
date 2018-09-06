@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UITableView *messageTableView;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIButton *btnSend;
+@property (nonatomic, strong)UIButton *btnDelete;
 @property (weak, nonatomic) NSMutableArray *arrMessageFrame;
 @end
 @implementation ChatPrivateView
@@ -96,6 +97,7 @@
     _messageTableView.delegate = self;
     _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
     _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
+//    [_messageTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
     [viewBg addSubview:self.messageTableView];
     
     UIView *viewButtonBg = [[UIView alloc] initWithFrame:CGRectMake(51, SCREEN_HEIGHT/2-40, SCREEN_WIDTH - 51, 40)];
@@ -214,7 +216,15 @@
         cell.backgroundColor = [UIColor clearColor];
         //        cell.backgroundColor = [UIColor redColor];
         if (_arrChatMessage) {
-            if ([[[_arrChatMessage objectAtIndex:_nowRow] allKeys] containsObject:@"message"]) {
+            BOOL haveKey = NO;
+            NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
+            for (int index = 0; index < arrKey.count; index ++) {
+                if ([arrKey[index] isEqualToString:@"message"]) {
+                    haveKey = YES;
+                    break;
+                }
+            }
+            if (haveKey) {
                 NSArray *arr = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
                 UIView *viewBg = [[UIView alloc] init];
                 viewBg.layer.cornerRadius = 3;
@@ -244,6 +254,7 @@
                 [viewBg addSubview:labMessage];
             }
         }
+
         return cell;
     }
     if (tableView == _userTableView) {
@@ -260,40 +271,59 @@
         NSString *strImage = [[_arrChatMessage objectAtIndex:indexPath.row] objectForKey:@"image"];
         [imgHead sd_setImageWithURL:[NSURL URLWithString:strImage] placeholderImage:[UIImage imageNamed:@"default_head"]];
         [cell.contentView addSubview:imgHead];
-        
-//        UIButton *btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(30, 4, 12, 12)];
-//        btnDelete setImage:[UIImage imageNamed:@""] forState:<#(UIControlState)#>
+        _btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(30, 4, 12, 12)];
+        [_btnDelete setImage:[UIImage imageNamed:@"living_chat_private_delete"] forState:UIControlStateNormal];
+        [_btnDelete addTarget:self action:@selector(btnUserDeleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:_btnDelete];
+        _btnDelete.hidden = YES;
+        if (indexPath.row == _nowRow) {
+            cell.backgroundColor = RGB(67, 67, 67);
+            _btnDelete.hidden = NO;
+        }
+       
         return cell;
     }
     
     
     return nil;
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (tableView == _userTableView) {
+        NSLog(@"_arrChatMessage.count == %lu",(unsigned long)_arrChatMessage.count);
         return _arrChatMessage.count;
-    }else{
-        if ([[[_arrChatMessage objectAtIndex:_nowRow] allKeys] containsObject:@"message"]) {
-            NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
-            NSLog(@"array == %lu",(unsigned long)array.count);
-            return array.count;
-        }else{
-            return 0;
-        }
         
+    }else{
+        BOOL haveKey = NO;
+        if (_nowRow<0) {
+            return 0;
+        }else{
+            NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
+            for (int index = 0; index < arrKey.count; index ++) {
+                if ([arrKey[index] isEqualToString:@"message"]) {
+                    haveKey = YES;
+                    break;
+                }
+            }
+            if (haveKey) {
+                NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+                NSLog(@"array == %lu",(unsigned long)array.count);
+                return array.count;
+            }else{
+                return 0;
+            }
+        }
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (tableView == _userTableView) {
-        
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
-        [_messageTableView reloadData];
+        [self reloadDateForTableView];
     }else if (tableView == _messageTableView){
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -332,10 +362,18 @@
 -(void)btnSendClicked{
     if (self.privateChatSend) {
         if (_textField.text.length > 0) {
-            self.privateChatSend(_textField.text, self.theUserId);
-//            _arrChatMessage setObject:<#(nonnull id)#> atIndexedSubscript:<#(NSUInteger)#>
+            NSLog(@"_nowRow == %d",_nowRow);
+            self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
         }
         _textField.text = @"";
+    }
+}
+
+- (void)btnUserDeleteClicked: (UIButton *)button{
+    [_arrChatMessage removeObjectAtIndex:_nowRow];
+    [self reloadDateForTableView];
+    if (self.deteleChatUser) {
+        self.deteleChatUser(_nowRow);
     }
 }
 
@@ -358,6 +396,10 @@
  }
 
 - (void)reloadDateForTableView{
+//    if (_nowRow >0) {
+//        [_messageTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    }
+    
     [_userTableView reloadData];
     [_messageTableView reloadData];
 }
