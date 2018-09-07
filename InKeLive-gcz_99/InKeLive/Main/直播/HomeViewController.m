@@ -21,7 +21,7 @@
 
 
 @interface HomeViewController ()<UIScrollViewDelegate>
-@property (nonatomic, strong)UIViewController *currentVC;
+//@property (nonatomic, strong)UIViewController *currentVC;
 
 @end
 
@@ -68,7 +68,7 @@
     
     //客服
     ServiceViewController *serviceVC = [[ServiceViewController alloc] init];
-    
+    [self addChildViewController:serviceVC];
     _arr = [NSMutableArray arrayWithObjects:recommendVC,mobileVC,roomVC,serviceVC,nil];
     for (NSInteger i=0; i<self.childViewControllers.count; i++) {
         //调成子VC中view(root_view)的位置，然后都加入到scrollView中
@@ -76,7 +76,6 @@
         cls.view.frame = CGRectMake(SCREEN_WIDTH*i, 0, SCREEN_WIDTH, SCREEN_HEIGHT-49 - 64);
         [self.homeScrollView addSubview:cls.view];
     }
-    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -110,6 +109,7 @@
             
             [weakSelf.homeScrollView setContentOffset:point animated:YES];
         }];
+        
     }
     return _titleView;
 }

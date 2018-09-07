@@ -202,15 +202,14 @@
 typedef struct _tag_HBCMD_VideoChat_UserLogon_Req
 {
     uint32  userId;
+    char    szAccount[32];
     uint32  maskCode;            //session-mask
     char    userPwd[PWDLEN];
-    uint8   isMobile;            //是否是手机登陆, 1-android,2-ios
+    uint8   isMobile;            //1 PC手机登录  2 PC用户ID登录，3 android手机登录 4 android用户ID登录 5 IOS手机登录 6 IOS用户ID登录
     char    szIpAddr[IPADDRLEN];
     char    szSoftSerialMd5[MD5LEN];
     char    szMacAddrMd5[MD5LEN];
-    
 }HBCMD_VideoChat_UserLogon_Req_t;
-
 //用户登录响应
 typedef struct _tag_HBCMD_VideoChat_UserLogon_Resp
 {

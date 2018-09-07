@@ -359,6 +359,12 @@
 		64AA3D672112C91700111B80 /* RegisteredViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D652112C91700111B80 /* RegisteredViewController.xib */; };
 		64ADB23A213E6DBE0065C1D5 /* FlyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64ADB239213E6DBE0065C1D5 /* FlyView.m */; };
 		64ADB23C213E79790065C1D5 /* JhtMarquee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64ADB23B213E79780065C1D5 /* JhtMarquee.framework */; };
+		64B3325121424864009D28CC /* RemoveBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B3324F21424864009D28CC /* RemoveBindingViewController.m */; };
+		64B3325221424864009D28CC /* RemoveBindingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B3325021424864009D28CC /* RemoveBindingViewController.xib */; };
+		64B3325621425259009D28CC /* BindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B3325421425259009D28CC /* BindingViewController.m */; };
+		64B3325721425259009D28CC /* BindingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B3325521425259009D28CC /* BindingViewController.xib */; };
+		64B3325B21425528009D28CC /* SecurityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B3325921425528009D28CC /* SecurityViewController.m */; };
+		64B3325C21425528009D28CC /* SecurityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B3325A21425528009D28CC /* SecurityViewController.xib */; };
 		64B7673A213D0F1F00D61A0E /* ChatPublicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B76739213D0F1F00D61A0E /* ChatPublicView.m */; };
 		64C022AF212A969F00116F7F /* YYSimpleWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022AD212A969E00116F7F /* YYSimpleWebViewController.m */; };
 		64C022B2212A96F100116F7F /* WBStatusComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022B1212A96F100116F7F /* WBStatusComposeViewController.m */; };
@@ -938,6 +944,15 @@
 		64ADB238213E6DBE0065C1D5 /* FlyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyView.h; sourceTree = "<group>"; };
 		64ADB239213E6DBE0065C1D5 /* FlyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyView.m; sourceTree = "<group>"; };
 		64ADB23B213E79780065C1D5 /* JhtMarquee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JhtMarquee.framework; sourceTree = "<group>"; };
+		64B3324E21424864009D28CC /* RemoveBindingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoveBindingViewController.h; sourceTree = "<group>"; };
+		64B3324F21424864009D28CC /* RemoveBindingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoveBindingViewController.m; sourceTree = "<group>"; };
+		64B3325021424864009D28CC /* RemoveBindingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveBindingViewController.xib; sourceTree = "<group>"; };
+		64B3325321425259009D28CC /* BindingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BindingViewController.h; sourceTree = "<group>"; };
+		64B3325421425259009D28CC /* BindingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BindingViewController.m; sourceTree = "<group>"; };
+		64B3325521425259009D28CC /* BindingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BindingViewController.xib; sourceTree = "<group>"; };
+		64B3325821425528009D28CC /* SecurityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecurityViewController.h; sourceTree = "<group>"; };
+		64B3325921425528009D28CC /* SecurityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecurityViewController.m; sourceTree = "<group>"; };
+		64B3325A21425528009D28CC /* SecurityViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecurityViewController.xib; sourceTree = "<group>"; };
 		64B5C0D921411C71001279A0 /* yc_dataType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yc_dataType.h; sourceTree = "<group>"; };
 		64B5C0DA21411C9F001279A0 /* yc_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yc_define.h; sourceTree = "<group>"; };
 		64B76738213D0F1F00D61A0E /* ChatPublicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatPublicView.h; sourceTree = "<group>"; };
@@ -1622,6 +1637,15 @@
 				7441DBF0213948BE00F44320 /* ChangePwdViewController.h */,
 				7441DBF1213948BE00F44320 /* ChangePwdViewController.m */,
 				7441DBF2213948BE00F44320 /* ChangePwdViewController.xib */,
+				64B3324E21424864009D28CC /* RemoveBindingViewController.h */,
+				64B3324F21424864009D28CC /* RemoveBindingViewController.m */,
+				64B3325021424864009D28CC /* RemoveBindingViewController.xib */,
+				64B3325321425259009D28CC /* BindingViewController.h */,
+				64B3325421425259009D28CC /* BindingViewController.m */,
+				64B3325521425259009D28CC /* BindingViewController.xib */,
+				64B3325821425528009D28CC /* SecurityViewController.h */,
+				64B3325921425528009D28CC /* SecurityViewController.m */,
+				64B3325A21425528009D28CC /* SecurityViewController.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -2372,6 +2396,7 @@
 				63D3A0001E01AD300073F07C /* refresh_fly_0015.png in Resources */,
 				6302FE1D1E1B9DD9007122D3 /* yipitiezhi022 16-51-33-689.png in Resources */,
 				6482B55C2138D8CC009E6747 /* SettingViewController.xib in Resources */,
+				64B3325721425259009D28CC /* BindingViewController.xib in Resources */,
 				635587331E29C62900D1A209 /* person.png in Resources */,
 				6332820E1E024BBA00EC018B /* heart4@2x.png in Resources */,
 				633E2DF81E1CA1EA0049C9E8 /* index.plist in Resources */,
@@ -2484,6 +2509,7 @@
 				633D8DA01E0796010087BD77 /* onBtnBg.png in Resources */,
 				6302FDFE1E1B9DD9007122D3 /* yipitiezhi006.png in Resources */,
 				64AA3D622112C8EB00111B80 /* ForgetPasswordViewController.xib in Resources */,
+				64B3325221424864009D28CC /* RemoveBindingViewController.xib in Resources */,
 				633282321E024CB400EC018B /* meteor_after_7.png in Resources */,
 				63FB93911E0375C000C8A84A /* bear0@2x.png in Resources */,
 				6302FDF71E1B9DD9007122D3 /* yipitiezhi03.png in Resources */,
@@ -2493,6 +2519,7 @@
 				633282301E024CB400EC018B /* meteor_after_5.png in Resources */,
 				633282431E024CB400EC018B /* meteor_after_24.png in Resources */,
 				63D39FFD1E01AD300073F07C /* refresh_fly_0012.png in Resources */,
+				64B3325C21425528009D28CC /* SecurityViewController.xib in Resources */,
 				633281FA1E02452100EC018B /* Assets.xcassets in Resources */,
 				63D3A0021E01AD300073F07C /* refresh_fly_0017.png in Resources */,
 				6302FDF81E1B9DD9007122D3 /* yipitiezhi003.png in Resources */,
@@ -2678,6 +2705,7 @@
 				1A9D1CF81F4321B80003EA13 /* ClientConfigParam.m in Sources */,
 				6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */,
 				633D8D981E0796010087BD77 /* MessageModel.m in Sources */,
+				64B3325621425259009D28CC /* BindingViewController.m in Sources */,
 				64CF3FBF213F85460060261B /* AnchorListView.m in Sources */,
 				6379986D1E10EB0A00016B48 /* MyControlTool.m in Sources */,
 				64513C54212273D900539CDD /* NSString+Extension.m in Sources */,
@@ -2690,6 +2718,7 @@
 				647933F52137F02C00029CE8 /* EditNameViewController.m in Sources */,
 				1AE89ED31F41CD680001C5D8 /* RoomOnMicUsersView.m in Sources */,
 				64C022B5212A977200116F7F /* WBEmoticonInputView.m in Sources */,
+				64B3325B21425528009D28CC /* SecurityViewController.m in Sources */,
 				644B1844211431B400939E76 /* ServiceViewController.m in Sources */,
 				647C78D0212CF5F100C5EAAA /* TakePhoto.m in Sources */,
 				647219B0212A69760064CBDB /* WBStatusTimelineViewController.m in Sources */,
@@ -2717,6 +2746,7 @@
 				63402F1F1E124ADD002F6661 /* EmptyView.m in Sources */,
 				633E2E0B1E1CF9050049C9E8 /* GiftViewCell.m in Sources */,
 				633D8D781E0791B20087BD77 /* TYImageStorage.m in Sources */,
+				64B3325121424864009D28CC /* RemoveBindingViewController.m in Sources */,
 				630483051E1F345A004837C5 /* AutoCommon.m in Sources */,
 				1AE89ED01F41CD580001C5D8 /* RoomMembersView.m in Sources */,
 				1AAD2FE01F3F028900FBB894 /* DPK_NW_Application.m in Sources */,

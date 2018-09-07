@@ -31,6 +31,11 @@
 
 @implementation LogonViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController.navigationBar setHidden:YES];

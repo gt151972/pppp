@@ -27,9 +27,9 @@
             }];
             [self addSubview:buttons];
             
-            if (i == 1) {
+            if (i == 0) {
                 [buttons.titleLabel sizeToFit];
-                self.lineImageView.frame = CGRectMake(bWidth, 40, buttons.titleLabel.width, 3);
+                self.lineImageView.frame = CGRectMake(0, 40, buttons.titleLabel.width, 3);
                 self.lineImageView.centerX = buttons.centerX;
                 [self addSubview:self.lineImageView];
             }

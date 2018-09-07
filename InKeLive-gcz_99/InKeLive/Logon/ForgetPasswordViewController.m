@@ -17,10 +17,17 @@
 @end
 
 @implementation ForgetPasswordViewController
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = NO;
+    self.title = @"忘记密码";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
+    self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setHidden:NO];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -45,9 +52,12 @@
  @param sender <#sender description#>
  */
 - (IBAction)btnGetCodeClicked:(id)sender {
-    [Time setTheCountdownButton:sender startWithTime:45 title:@"获取验证码" countDownTitle:@"s" mainColor:[UIColor redColor] countColor:[UIColor redColor]];
+    [Time setTheCountdownButton:sender startWithTime:45 title:@"获取验证码" countDownTitle:@"s" mainColor:MAIN_COLOR countColor:MAIN_COLOR];
 }
 
+-(void)btnBackClicked{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 
