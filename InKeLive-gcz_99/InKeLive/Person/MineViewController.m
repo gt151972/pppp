@@ -7,16 +7,16 @@
 //
 
 #import "MineViewController.h"
-#import "MineHeadView.h"
 #import "DPK_NW_Application.h"
 #import "LocalUserModel.h"
 #import "EditInfoViewController.h"
 #import "SettingViewController.h"
+#import "SecurityViewController.h"
+#import "LevelGrade.h"
 
 #define BG_COLOR RGB(239, 239, 239)
 
 @interface MineViewController ()<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, strong) MineHeadView *headView;
 @property (nonatomic, strong)NSArray *arrTitle;
 @property (nonatomic, strong)NSArray *arrVC;
 @property (nonatomic, strong) LocalUserModel *userModel;
@@ -48,9 +48,7 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     self.view.backgroundColor = BG_COLOR;
-    
     [self initData];
-    [self.view addSubview:_headView];
     
 }
 
@@ -109,7 +107,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 4) {
+    if (indexPath.row == 0) {
+        //收益
+    }else if (indexPath.row == 1){
+        //安全中心
+        SecurityViewController *securityVC = [[SecurityViewController alloc] init];
+        [self.navigationController pushViewController:securityVC animated:YES];
+    }else if (indexPath.row == 2){
+        //积分兑换
+    }else if (indexPath.row == 3){
+        //活动中心
+    }else if (indexPath.row == 4){
         //设置
         SettingViewController *settingVC = [[SettingViewController alloc] init];
         [self.navigationController pushViewController:settingVC animated:YES];
@@ -161,15 +169,20 @@
     labName.font = [UIFont systemFontOfSize:15];
     [imgInfo addSubview:labName];
     
-    UILabel *labLevel = [[UILabel alloc] initWithFrame:CGRectMake(84, 117, 38, 15)];
-    labLevel.backgroundColor = MAIN_COLOR;
-    labLevel.textAlignment = NSTextAlignmentCenter;
-    labLevel.textColor = [UIColor whiteColor];
-    labLevel.font = [UIFont systemFontOfSize:10];
-    labLevel.text = [NSString stringWithFormat:@"level%d",model.viplevel];
-    [imgInfo addSubview:labLevel];
+//    UILabel *labLevel = [[UILabel alloc] initWithFrame:CGRectMake(84, 117, 38, 15)];
+//    labLevel.backgroundColor = MAIN_COLOR;
+//    labLevel.textAlignment = NSTextAlignmentCenter;
+//    labLevel.textColor = [UIColor whiteColor];
+//    labLevel.font = [UIFont systemFontOfSize:10];
+//    labLevel.text = [NSString stringWithFormat:@"level%d",model.viplevel];
+//    [imgInfo addSubview:labLevel];
     
-    UILabel *labID = [[UILabel alloc] initWithFrame:CGRectMake(133, 119, 100, 12)];
+    UIImageView *imgLevel = [[UIImageView alloc] initWithFrame:CGRectMake(84, 117, 16, 16)];
+    [imgInfo addSubview:imgLevel];
+    
+    [imgLevel addSubview:[[LevelGrade shareInstance] greadImage:model.viplevel]];
+    
+    UILabel *labID = [[UILabel alloc] initWithFrame:CGRectMake(105, 119, 100, 12)];
     labID.text = [NSString stringWithFormat:@"ID:%d",model.userID];
     labID.textAlignment = NSTextAlignmentLeft;
     labID.textColor = [UIColor whiteColor];
@@ -233,14 +246,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -21,6 +21,7 @@
 - (void)creatUI{
     UIButton *btnSpecialEffects = [[UIButton alloc] init];
     [btnSpecialEffects setImage:[UIImage imageNamed:@"living_special_effects"] forState:UIControlStateNormal];
+    [btnSpecialEffects setImage:[UIImage imageNamed:@"living_special_turndown"] forState:UIControlStateSelected];
     [btnSpecialEffects addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [btnSpecialEffects setTag:511];
     [self addSubview:btnSpecialEffects];

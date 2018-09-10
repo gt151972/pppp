@@ -337,14 +337,36 @@
 		647F33FD212548F000D06FD5 /* GTGiftGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F33FC212548F000D06FD5 /* GTGiftGroupModel.m */; };
 		647F34002125490C00D06FD5 /* GTGiftListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F33FF2125490C00D06FD5 /* GTGiftListModel.m */; };
 		6480BC8A212BFB6E00A08911 /* EditInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6480BC88212BFB6E00A08911 /* EditInfoViewController.m */; };
+		6481F8542146092A007264AB /* GTAlertTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 6481F8532146092A007264AB /* GTAlertTool.m */; };
+		6481F86E21464BC4007264AB /* zhanzhang.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85921464BC4007264AB /* zhanzhang.gif */; };
+		6481F86F21464BC4007264AB /* ptyh.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85A21464BC4007264AB /* ptyh.gif */; };
+		6481F87021464BC4007264AB /* tianhuang.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85B21464BC4007264AB /* tianhuang.gif */; };
+		6481F87121464BC4007264AB /* vip.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85C21464BC4007264AB /* vip.gif */; };
+		6481F87221464BC4007264AB /* chaoguan.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85D21464BC4007264AB /* chaoguan.gif */; };
+		6481F87321464BC4007264AB /* 4xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85E21464BC4007264AB /* 4xing.gif */; };
+		6481F87421464BC4007264AB /* 5xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F85F21464BC4007264AB /* 5xing.gif */; };
+		6481F87521464BC4007264AB /* youke.png in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86021464BC4007264AB /* youke.png */; };
+		6481F87621464BC4007264AB /* 1xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86121464BC4007264AB /* 1xing.gif */; };
+		6481F87721464BC4007264AB /* cjzc.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86221464BC4007264AB /* cjzc.gif */; };
+		6481F87821464BC4007264AB /* zun.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86321464BC4007264AB /* zun.gif */; };
+		6481F87921464BC4007264AB /* 3xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86421464BC4007264AB /* 3xing.gif */; };
+		6481F87A21464BC4007264AB /* kefu.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86521464BC4007264AB /* kefu.gif */; };
+		6481F87B21464BC4007264AB /* caizhu.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86621464BC4007264AB /* caizhu.gif */; };
+		6481F87C21464BC4007264AB /* desktop.ini in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86721464BC4007264AB /* desktop.ini */; };
+		6481F87D21464BC4007264AB /* hdaili.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86821464BC4007264AB /* hdaili.gif */; };
+		6481F87E21464BC4007264AB /* fuhao.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86921464BC4007264AB /* fuhao.gif */; };
+		6481F87F21464BC4007264AB /* tianzuin.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86A21464BC4007264AB /* tianzuin.gif */; };
+		6481F88021464BC4007264AB /* 2xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86B21464BC4007264AB /* 2xing.gif */; };
+		6481F88121464BC4007264AB /* gly.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86C21464BC4007264AB /* gly.gif */; };
+		6481F88221464BC4007264AB /* guanliyuan.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86D21464BC4007264AB /* guanliyuan.gif */; };
+		6481F88521464EB7007264AB /* LevelGrade.m in Sources */ = {isa = PBXBuildFile; fileRef = 6481F88421464EB7007264AB /* LevelGrade.m */; };
+		6481F888214669F0007264AB /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6481F887214669F0007264AB /* WebViewController.m */; };
 		6482B5562138CC4E009E6747 /* ServideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6482B5542138CC4E009E6747 /* ServideViewController.m */; };
 		6482B5572138CC4E009E6747 /* ServideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6482B5552138CC4E009E6747 /* ServideViewController.xib */; };
 		6482B55B2138D8CC009E6747 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6482B5592138D8CC009E6747 /* SettingViewController.m */; };
 		6482B55C2138D8CC009E6747 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6482B55A2138D8CC009E6747 /* SettingViewController.xib */; };
 		6489CAEB2123BF14007F6F3C /* UILabel+WidthAndHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAEA2123BF14007F6F3C /* UILabel+WidthAndHeight.m */; };
 		6489CAEF2123D66A007F6F3C /* PrivateChat.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAEE2123D66A007F6F3C /* PrivateChat.plist */; };
-		6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAF42123F226007F6F3C /* MineHeadView.m */; };
-		6489CAF72123F235007F6F3C /* MineHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAF62123F235007F6F3C /* MineHeadView.xib */; };
 		6489CAFA212404C8007F6F3C /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAF9212404C8007F6F3C /* MineViewController.m */; };
 		6489CAFC21240514007F6F3C /* MineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAFB21240514007F6F3C /* MineViewController.xib */; };
 		649A079D212A6F0B00639EE7 /* WBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A079B212A6F0B00639EE7 /* WBModel.m */; };
@@ -908,6 +930,33 @@
 		647F33FF2125490C00D06FD5 /* GTGiftListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTGiftListModel.m; sourceTree = "<group>"; };
 		6480BC87212BFB6E00A08911 /* EditInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditInfoViewController.h; sourceTree = "<group>"; };
 		6480BC88212BFB6E00A08911 /* EditInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditInfoViewController.m; sourceTree = "<group>"; };
+		6481F8522146092A007264AB /* GTAlertTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAlertTool.h; sourceTree = "<group>"; };
+		6481F8532146092A007264AB /* GTAlertTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAlertTool.m; sourceTree = "<group>"; };
+		6481F85921464BC4007264AB /* zhanzhang.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = zhanzhang.gif; sourceTree = "<group>"; };
+		6481F85A21464BC4007264AB /* ptyh.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ptyh.gif; sourceTree = "<group>"; };
+		6481F85B21464BC4007264AB /* tianhuang.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = tianhuang.gif; sourceTree = "<group>"; };
+		6481F85C21464BC4007264AB /* vip.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = vip.gif; sourceTree = "<group>"; };
+		6481F85D21464BC4007264AB /* chaoguan.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaoguan.gif; sourceTree = "<group>"; };
+		6481F85E21464BC4007264AB /* 4xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 4xing.gif; sourceTree = "<group>"; };
+		6481F85F21464BC4007264AB /* 5xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 5xing.gif; sourceTree = "<group>"; };
+		6481F86021464BC4007264AB /* youke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = youke.png; sourceTree = "<group>"; };
+		6481F86121464BC4007264AB /* 1xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1xing.gif; sourceTree = "<group>"; };
+		6481F86221464BC4007264AB /* cjzc.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = cjzc.gif; sourceTree = "<group>"; };
+		6481F86321464BC4007264AB /* zun.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = zun.gif; sourceTree = "<group>"; };
+		6481F86421464BC4007264AB /* 3xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3xing.gif; sourceTree = "<group>"; };
+		6481F86521464BC4007264AB /* kefu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = kefu.gif; sourceTree = "<group>"; };
+		6481F86621464BC4007264AB /* caizhu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = caizhu.gif; sourceTree = "<group>"; };
+		6481F86721464BC4007264AB /* desktop.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = desktop.ini; sourceTree = "<group>"; };
+		6481F86821464BC4007264AB /* hdaili.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = hdaili.gif; sourceTree = "<group>"; };
+		6481F86921464BC4007264AB /* fuhao.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = fuhao.gif; sourceTree = "<group>"; };
+		6481F86A21464BC4007264AB /* tianzuin.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = tianzuin.gif; sourceTree = "<group>"; };
+		6481F86B21464BC4007264AB /* 2xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2xing.gif; sourceTree = "<group>"; };
+		6481F86C21464BC4007264AB /* gly.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gly.gif; sourceTree = "<group>"; };
+		6481F86D21464BC4007264AB /* guanliyuan.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = guanliyuan.gif; sourceTree = "<group>"; };
+		6481F88321464EB7007264AB /* LevelGrade.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelGrade.h; sourceTree = "<group>"; };
+		6481F88421464EB7007264AB /* LevelGrade.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LevelGrade.m; sourceTree = "<group>"; };
+		6481F886214669F0007264AB /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		6481F887214669F0007264AB /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		6482B5532138CC4E009E6747 /* ServideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServideViewController.h; sourceTree = "<group>"; };
 		6482B5542138CC4E009E6747 /* ServideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServideViewController.m; sourceTree = "<group>"; };
 		6482B5552138CC4E009E6747 /* ServideViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServideViewController.xib; sourceTree = "<group>"; };
@@ -917,9 +966,6 @@
 		6489CAE92123BF14007F6F3C /* UILabel+WidthAndHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+WidthAndHeight.h"; sourceTree = "<group>"; };
 		6489CAEA2123BF14007F6F3C /* UILabel+WidthAndHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+WidthAndHeight.m"; sourceTree = "<group>"; };
 		6489CAEE2123D66A007F6F3C /* PrivateChat.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivateChat.plist; sourceTree = "<group>"; };
-		6489CAF32123F226007F6F3C /* MineHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineHeadView.h; sourceTree = "<group>"; };
-		6489CAF42123F226007F6F3C /* MineHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineHeadView.m; sourceTree = "<group>"; };
-		6489CAF62123F235007F6F3C /* MineHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MineHeadView.xib; sourceTree = "<group>"; };
 		6489CAF8212404C8007F6F3C /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		6489CAF9212404C8007F6F3C /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		6489CAFB21240514007F6F3C /* MineViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MineViewController.xib; sourceTree = "<group>"; };
@@ -1617,9 +1663,6 @@
 				6489CAF8212404C8007F6F3C /* MineViewController.h */,
 				6489CAF9212404C8007F6F3C /* MineViewController.m */,
 				6489CAFB21240514007F6F3C /* MineViewController.xib */,
-				6489CAF32123F226007F6F3C /* MineHeadView.h */,
-				6489CAF42123F226007F6F3C /* MineHeadView.m */,
-				6489CAF62123F235007F6F3C /* MineHeadView.xib */,
 				6480BC87212BFB6E00A08911 /* EditInfoViewController.h */,
 				6480BC88212BFB6E00A08911 /* EditInfoViewController.m */,
 				647933F22137F02C00029CE8 /* EditNameViewController.h */,
@@ -1713,6 +1756,12 @@
 				6357A6251DFE4DB1001E77AF /* UIView-Frame */,
 				647C78CE212CF5F100C5EAAA /* TakePhoto.h */,
 				647C78CF212CF5F100C5EAAA /* TakePhoto.m */,
+				6481F8522146092A007264AB /* GTAlertTool.h */,
+				6481F8532146092A007264AB /* GTAlertTool.m */,
+				6481F88321464EB7007264AB /* LevelGrade.h */,
+				6481F88421464EB7007264AB /* LevelGrade.m */,
+				6481F886214669F0007264AB /* WebViewController.h */,
+				6481F887214669F0007264AB /* WebViewController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2049,6 +2098,7 @@
 		644B182321142CDC00939E76 /* thirthPath */ = {
 			isa = PBXGroup;
 			children = (
+				6481F85821464BC4007264AB /* levelIcon */,
 				64ADB23B213E79780065C1D5 /* JhtMarquee.framework */,
 				6462E7C92117F44E005EF737 /* SDCycleScrollView */,
 			);
@@ -2132,6 +2182,34 @@
 				647C78D5212D0D7E00C5EAAA /* GTBaseRequest.m */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		6481F85821464BC4007264AB /* levelIcon */ = {
+			isa = PBXGroup;
+			children = (
+				6481F85921464BC4007264AB /* zhanzhang.gif */,
+				6481F85A21464BC4007264AB /* ptyh.gif */,
+				6481F85B21464BC4007264AB /* tianhuang.gif */,
+				6481F85C21464BC4007264AB /* vip.gif */,
+				6481F85D21464BC4007264AB /* chaoguan.gif */,
+				6481F85E21464BC4007264AB /* 4xing.gif */,
+				6481F85F21464BC4007264AB /* 5xing.gif */,
+				6481F86021464BC4007264AB /* youke.png */,
+				6481F86121464BC4007264AB /* 1xing.gif */,
+				6481F86221464BC4007264AB /* cjzc.gif */,
+				6481F86321464BC4007264AB /* zun.gif */,
+				6481F86421464BC4007264AB /* 3xing.gif */,
+				6481F86521464BC4007264AB /* kefu.gif */,
+				6481F86621464BC4007264AB /* caizhu.gif */,
+				6481F86721464BC4007264AB /* desktop.ini */,
+				6481F86821464BC4007264AB /* hdaili.gif */,
+				6481F86921464BC4007264AB /* fuhao.gif */,
+				6481F86A21464BC4007264AB /* tianzuin.gif */,
+				6481F86B21464BC4007264AB /* 2xing.gif */,
+				6481F86C21464BC4007264AB /* gly.gif */,
+				6481F86D21464BC4007264AB /* guanliyuan.gif */,
+			);
+			path = levelIcon;
 			sourceTree = "<group>";
 		};
 		649A07A4212A8AA600639EE7 /* Helper */ = {
@@ -2330,6 +2408,7 @@
 				6302FE071E1B9DD9007122D3 /* yipitiezhi011 16-51-33-705.png in Resources */,
 				6302FDF41E1B9DD9007122D3 /* yipitiezhi001.png in Resources */,
 				6302FE041E1B9DD9007122D3 /* yipitiezhi009.png in Resources */,
+				6481F87221464BC4007264AB /* chaoguan.gif in Resources */,
 				6302FE1F1E1B9DD9007122D3 /* yipitiezhi023 16-51-33-706.png in Resources */,
 				63A334FF1E026B3100027174 /* 1.png in Resources */,
 				6302FE101E1B9DD9007122D3 /* yipitiezhi015.png in Resources */,
@@ -2341,7 +2420,6 @@
 				6302FE051E1B9DD9007122D3 /* yipitiezhi010 16-51-33-688.png in Resources */,
 				6302FE171E1B9DD9007122D3 /* yipitiezhi019 16-51-33-528.png in Resources */,
 				6489CAFC21240514007F6F3C /* MineViewController.xib in Resources */,
-				6489CAF72123F235007F6F3C /* MineHeadView.xib in Resources */,
 				635587341E29C62900D1A209 /* search.jpg in Resources */,
 				633282381E024CB400EC018B /* meteor_after_13.png in Resources */,
 				6302FE021E1B9DD9007122D3 /* yipitiezhi008.png in Resources */,
@@ -2350,6 +2428,7 @@
 				633282371E024CB400EC018B /* meteor_after_12.png in Resources */,
 				63FB93921E0375C000C8A84A /* bear1@2x.png in Resources */,
 				64513C4A2121807800539CDD /* TEXTVIEW.xib in Resources */,
+				6481F87021464BC4007264AB /* tianhuang.gif in Resources */,
 				6332823D1E024CB400EC018B /* meteor_after_18.png in Resources */,
 				63A3350D1E026E7500027174 /* porche-f1.png in Resources */,
 				63D39FF21E01AD300073F07C /* refresh_fly_001.png in Resources */,
@@ -2366,12 +2445,14 @@
 				6423C9EC2126631D00801996 /* AppInfo.plist in Resources */,
 				6332823B1E024CB400EC018B /* meteor_after_16.png in Resources */,
 				6304831F1E1F3B01004837C5 /* RecommendView.xib in Resources */,
+				6481F87521464BC4007264AB /* youke.png in Resources */,
 				633282421E024CB400EC018B /* meteor_after_23.png in Resources */,
 				63A335121E026ECC00027174 /* porche-b3.png in Resources */,
 				63D39FF91E01AD300073F07C /* refresh_fly_008.png in Resources */,
 				64C022C6212A991800116F7F /* weibo_7.json in Resources */,
 				63FB93A91E037A4D00C8A84A /* plane-screw-1-3.png in Resources */,
 				64C022C8212A991800116F7F /* weibo_1.json in Resources */,
+				6481F87421464BC4007264AB /* 5xing.gif in Resources */,
 				63D3A0061E01AD300073F07C /* refresh_fly_0021.png in Resources */,
 				1AEED2D91F5BAC7300A545BA /* unradio.png in Resources */,
 				6302FDFC1E1B9DD9007122D3 /* yipitiezhi005.png in Resources */,
@@ -2386,17 +2467,20 @@
 				1A9D1CFD1F43483A0003EA13 /* MBProgressHUD.bundle in Resources */,
 				6489CAEF2123D66A007F6F3C /* PrivateChat.plist in Resources */,
 				633282361E024CB400EC018B /* meteor_after_11.png in Resources */,
+				6481F86F21464BC4007264AB /* ptyh.gif in Resources */,
 				6304831D1E1F3B01004837C5 /* RecommendCell.xib in Resources */,
 				63D39FFE1E01AD300073F07C /* refresh_fly_0013.png in Resources */,
 				6332820A1E024BBA00EC018B /* heart0@2x.png in Resources */,
 				64C022C4212A991800116F7F /* weibo_5.json in Resources */,
 				6332820F1E024BBA00EC018B /* heart5@2x.png in Resources */,
 				63A3352B1E02767F00027174 /* rocket-fire-2.png in Resources */,
+				6481F87C21464BC4007264AB /* desktop.ini in Resources */,
 				63D39FFC1E01AD300073F07C /* refresh_fly_0011.png in Resources */,
 				63D3A0001E01AD300073F07C /* refresh_fly_0015.png in Resources */,
 				6302FE1D1E1B9DD9007122D3 /* yipitiezhi022 16-51-33-689.png in Resources */,
 				6482B55C2138D8CC009E6747 /* SettingViewController.xib in Resources */,
 				64B3325721425259009D28CC /* BindingViewController.xib in Resources */,
+				6481F88121464BC4007264AB /* gly.gif in Resources */,
 				635587331E29C62900D1A209 /* person.png in Resources */,
 				6332820E1E024BBA00EC018B /* heart4@2x.png in Resources */,
 				633E2DF81E1CA1EA0049C9E8 /* index.plist in Resources */,
@@ -2436,6 +2520,7 @@
 				63A335111E026ECC00027174 /* porche-b2.png in Resources */,
 				63D3A00B1E01AD300073F07C /* refresh_fly_0026.png in Resources */,
 				6302FE001E1B9DD9007122D3 /* yipitiezhi007.png in Resources */,
+				6481F87D21464BC4007264AB /* hdaili.gif in Resources */,
 				63D3A0011E01AD300073F07C /* refresh_fly_0016.png in Resources */,
 				63FB93981E0378E500C8A84A /* NHPlaneViews.xib in Resources */,
 				6302FE1E1E1B9DD9007122D3 /* yipitiezhi022.png in Resources */,
@@ -2443,33 +2528,42 @@
 				630483221E1F3B01004837C5 /* TableViewCell.xib in Resources */,
 				63D3A00C1E01AD300073F07C /* refresh_fly_0027.png in Resources */,
 				6332823E1E024CB400EC018B /* meteor_after_19.png in Resources */,
+				6481F87821464BC4007264AB /* zun.gif in Resources */,
 				63D39FFA1E01AD300073F07C /* refresh_fly_009.png in Resources */,
 				1AAD2FD51F3EE45000FBB894 /* PersonHeadView2.xib in Resources */,
 				64C022C9212A991800116F7F /* weibo_0.json in Resources */,
 				63D3A0051E01AD300073F07C /* refresh_fly_0020.png in Resources */,
 				1AEED2D61F5BAC7300A545BA /* halfchecked.png in Resources */,
+				6481F87E21464BC4007264AB /* fuhao.gif in Resources */,
 				644B18402114319100939E76 /* RoomViewController.xib in Resources */,
 				63D3A0041E01AD300073F07C /* refresh_fly_0019.png in Resources */,
 				647933F62137F02C00029CE8 /* EditNameViewController.xib in Resources */,
 				6302FE141E1B9DD9007122D3 /* yipitiezhi017.png in Resources */,
 				7441DBEF2138295F00F44320 /* SignatureViewController.xib in Resources */,
 				63A3350A1E026E7500027174 /* porche-f2.png in Resources */,
+				6481F87321464BC4007264AB /* 4xing.gif in Resources */,
+				6481F87121464BC4007264AB /* vip.gif in Resources */,
+				6481F86E21464BC4007264AB /* zhanzhang.gif in Resources */,
 				64C022C3212A991800116F7F /* weibo_2.json in Resources */,
 				63402F221E125128002F6661 /* live_empty_bg@3x.png in Resources */,
 				644B1845211431B400939E76 /* ServiceViewController.xib in Resources */,
 				6302FE1A1E1B9DD9007122D3 /* yipitiezhi020.png in Resources */,
+				6481F87B21464BC4007264AB /* caizhu.gif in Resources */,
 				6302FE0F1E1B9DD9007122D3 /* yipitiezhi015 16-51-33-687.png in Resources */,
 				6461D084212EABB1006927D1 /* SearchInfoView.xib in Resources */,
+				6481F87F21464BC4007264AB /* tianzuin.gif in Resources */,
 				6302FD921E1B89BD007122D3 /* yipitiezhiNormal.bundle in Resources */,
 				63FB93A81E037A4D00C8A84A /* plane-screw-1-2.png in Resources */,
 				6302FE0D1E1B9DD9007122D3 /* yipitiezhi014 16-51-33-559.png in Resources */,
 				63402F231E125128002F6661 /* live_empty_bg@2x.png in Resources */,
 				6332823F1E024CB400EC018B /* meteor_after_20.png in Resources */,
 				6302FDFD1E1B9DD9007122D3 /* yipitiezhi06.png in Resources */,
+				6481F87A21464BC4007264AB /* kefu.gif in Resources */,
 				6302FDF91E1B9DD9007122D3 /* yipitiezhi04.png in Resources */,
 				6339727C1E14A82C0047DA13 /* PersonHeadView.xib in Resources */,
 				7441DBF4213948BE00F44320 /* ChangePwdViewController.xib in Resources */,
 				6302FE211E1B9DD9007122D3 /* yipitiezhi024 16-51-33-686.png in Resources */,
+				6481F88021464BC4007264AB /* 2xing.gif in Resources */,
 				633D8D9F1E0796010087BD77 /* onBtn.png in Resources */,
 				64C022C5212A991800116F7F /* weibo_4.json in Resources */,
 				64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */,
@@ -2491,6 +2585,7 @@
 				6302FE091E1B9DD9007122D3 /* yipitiezhi012 16-51-33-685.png in Resources */,
 				644B183B21142F1800939E76 /* MobileViewController.xib in Resources */,
 				63D3A0071E01AD300073F07C /* refresh_fly_0022.png in Resources */,
+				6481F87921464BC4007264AB /* 3xing.gif in Resources */,
 				63D39FF31E01AD300073F07C /* refresh_fly_002.png in Resources */,
 				6302FE121E1B9DD9007122D3 /* yipitiezhi016.png in Resources */,
 				63D3A0031E01AD300073F07C /* refresh_fly_0018.png in Resources */,
@@ -2513,13 +2608,16 @@
 				633282321E024CB400EC018B /* meteor_after_7.png in Resources */,
 				63FB93911E0375C000C8A84A /* bear0@2x.png in Resources */,
 				6302FDF71E1B9DD9007122D3 /* yipitiezhi03.png in Resources */,
+				6481F88221464BC4007264AB /* guanliyuan.gif in Resources */,
 				63D39FFF1E01AD300073F07C /* refresh_fly_0014.png in Resources */,
 				63A335231E02764E00027174 /* rocket.png in Resources */,
 				6302FE081E1B9DD9007122D3 /* yipitiezhi011.png in Resources */,
+				6481F87621464BC4007264AB /* 1xing.gif in Resources */,
 				633282301E024CB400EC018B /* meteor_after_5.png in Resources */,
 				633282431E024CB400EC018B /* meteor_after_24.png in Resources */,
 				63D39FFD1E01AD300073F07C /* refresh_fly_0012.png in Resources */,
 				64B3325C21425528009D28CC /* SecurityViewController.xib in Resources */,
+				6481F87721464BC4007264AB /* cjzc.gif in Resources */,
 				633281FA1E02452100EC018B /* Assets.xcassets in Resources */,
 				63D3A0021E01AD300073F07C /* refresh_fly_0017.png in Resources */,
 				6302FDF81E1B9DD9007122D3 /* yipitiezhi003.png in Resources */,
@@ -2623,6 +2721,7 @@
 				6462E7D92117F44E005EF737 /* SDCycleScrollView.m in Sources */,
 				1A9F16D11F6EBFC80072D1A7 /* SelectGiftCountView.m in Sources */,
 				633D8D791E0791B20087BD77 /* TYLinkTextStorage.m in Sources */,
+				6481F8542146092A007264AB /* GTAlertTool.m in Sources */,
 				1AEED2E21F5BB40100A545BA /* WBRadioGroup.m in Sources */,
 				630483201E1F3B01004837C5 /* SearchView.m in Sources */,
 				1AAD2FEB1F403F0100FBB894 /* LZBRecordVideoTool.m in Sources */,
@@ -2694,6 +2793,7 @@
 				633D8D5C1E0790AF0087BD77 /* DanmuItem.m in Sources */,
 				63402EF11E124611002F6661 /* NearModel.m in Sources */,
 				647219AC212A685D0064CBDB /* YYTableView.m in Sources */,
+				6481F888214669F0007264AB /* WebViewController.m in Sources */,
 				635B5E671E00D04D00E62E7A /* UIButton+ImageTitleSpacing.m in Sources */,
 				63A334FB1E0269AF00027174 /* CarsViews.m in Sources */,
 				64513C5021226EAE00539CDD /* MessageFrame.m in Sources */,
@@ -2703,7 +2803,6 @@
 				6357A61C1DFE4C91001E77AF /* CameraViewController.m in Sources */,
 				632CCB501E0B74710040B9EB /* PresentViewCell.m in Sources */,
 				1A9D1CF81F4321B80003EA13 /* ClientConfigParam.m in Sources */,
-				6489CAF52123F226007F6F3C /* MineHeadView.m in Sources */,
 				633D8D981E0796010087BD77 /* MessageModel.m in Sources */,
 				64B3325621425259009D28CC /* BindingViewController.m in Sources */,
 				64CF3FBF213F85460060261B /* AnchorListView.m in Sources */,
@@ -2733,6 +2832,7 @@
 				63A3353D1E02A2F100027174 /* ASHUD.m in Sources */,
 				6462E7DA2117F44E005EF737 /* UIView+SDExtension.m in Sources */,
 				63402F011E124738002F6661 /* MJAnimHeader.m in Sources */,
+				6481F88521464EB7007264AB /* LevelGrade.m in Sources */,
 				633D8D5E1E0790AF0087BD77 /* DanmuLaunchView.m in Sources */,
 				7441DBF3213948BE00F44320 /* ChangePwdViewController.m in Sources */,
 				7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */,

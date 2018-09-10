@@ -8,6 +8,11 @@
 
 #import "SettingViewController.h"
 #import "ServideViewController.h"
+#import "AppDelegate.h"
+#import "DPK_NW_Application.h"
+#import "MBProgressHUD+MJ.h"
+#import <AFNetworking.h>
+#import "CommonAPIDefines.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSArray *arrayTitle;
@@ -110,6 +115,7 @@
             //检查更新
         }else if (indexPath.row == 3){
             //关于我们
+            [self requestData];
         }
     }
 }
@@ -141,6 +147,13 @@
     
 }
 - (IBAction)btnExitLoginClicked:(id)sender {
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == YES) {
+        [appDelegate logout];
+        return;
+    }else {
+        [MBProgressHUD showAlertMessage:@"用户未登陆"];
+    }
 }
 
 - (void)btnBackClicked{
@@ -151,14 +164,30 @@
     [super didReceiveMemoryWarning];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)requestData{
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    // 设置请求格式
+    session.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = CMD_REQUEST_WEB_ADDRESS;
+    parameters[@"flag"] = IOS_REQUEST_FLAG;
+    NSString* strAPIUrl = URL_GiftInfo;
+    NSLog(@"url:%@", strAPIUrl);
+    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
+    [session POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"Success: %@", responseObject);
+        NSLog(@"task: %@",task);
+        NSDictionary *appDic =(NSDictionary*)responseObject;
+        if (appDic[@"code"] == 0) {
+            
+        }else{
+            NSLog(@"%@",appDic[@"msg"]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error: %@", error);
+    }];
 }
-*/
 
 @end

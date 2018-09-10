@@ -129,6 +129,11 @@
     
     //发出重新加载个人信息通知
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];
+    
+    //用户登录窗口
+    LogonViewController* logonVC =[[LogonViewController alloc] init];
+    BaseViewController* naviVC = [[BaseViewController alloc]initWithRootViewController:logonVC];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:naviVC animated:YES completion:nil];
 }
 
 -(void) doLogon

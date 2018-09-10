@@ -41,6 +41,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
+    _tableView.sectionIndexColor = [UIColor whiteColor];
     _tableView.separatorColor = RGB(239, 239, 239);
     
 
@@ -114,6 +115,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.row == 0) {
         
     }else if (indexPath.row == 1){
@@ -121,11 +123,10 @@
     }else if (indexPath.row == 2){
         
     }else if (indexPath.row == 3){
-//        NSURL *url = [NSURL URLWithString:@"telprompt://15125821546"];
-//        [[UIApplication sharedApplication] openURL:url];
         UIWebView *webView = [[UIWebView alloc]init];
         NSURL *url = [NSURL URLWithString:@"tel://15125821546"];
         [webView loadRequest:[NSURLRequest requestWithURL:url ]];
+        [[UIApplication sharedApplication].keyWindow addSubview:webView];
     }
 }
 

@@ -44,7 +44,7 @@
     
     CGFloat tabBarItemWidth = self.width / 5;
     //NSLog(@"tabbar width:%f,tabbar item width:%f", self.width, tabBarItemWidth);
-    self.cameraButton.centerY = self.height * 0.125;
+    self.cameraButton.centerY = self.height * 0.5;
     self.cameraButton.centerX= self.width * 0.5;
     //NSLog(@"camerNtm frame:%@", NSStringFromCGRect([self.cameraButton frame]));
     

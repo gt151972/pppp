@@ -85,18 +85,18 @@
     viewTopBg.backgroundColor = RGBA(0, 0, 0, 0.8);
     [viewBg addSubview:viewTopBg];
     [viewTopBg addSubview:self.labNameAndId];
-    _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
-    _userTableView.dataSource = self;
-    _userTableView.delegate = self;
-    _userTableView.rowHeight = 44;
-    _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
-    _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
+//    _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
+//    _userTableView.dataSource = self;
+//    _userTableView.delegate = self;
+//    _userTableView.rowHeight = 44;
+//    _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
+//    _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
     [viewBg addSubview:self.userTableView ];
-    _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
-    _messageTableView.dataSource = self;
-    _messageTableView.delegate = self;
-    _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
-    _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
+//    _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
+//    _messageTableView.dataSource = self;
+//    _messageTableView.delegate = self;
+//    _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
+//    _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
 //    [_messageTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
     [viewBg addSubview:self.messageTableView];
     
@@ -154,28 +154,28 @@
     return _labNameAndId;
 }
 
-//- (UITableView *)userTableView{
-//    if (_userTableView == nil) {
-//        _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
-//        _userTableView.dataSource = self;
-//        _userTableView.delegate = self;
-//        _userTableView.rowHeight = 44;
-//        _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
-//        _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
-//    }
-//    return _userTableView;
-//}
-//
-//- (UITableView *)messageTableView{
-//    if (_messageTableView == nil) {
-//        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
-//        _messageTableView.dataSource = self;
-//        _messageTableView.delegate = self;
-//        _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
-//        _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
-//    }
-//    return _messageTableView;
-//}
+- (UITableView *)userTableView{
+    if (_userTableView == nil) {
+        _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
+        _userTableView.dataSource = self;
+        _userTableView.delegate = self;
+        _userTableView.rowHeight = 44;
+        _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
+        _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
+    }
+    return _userTableView;
+}
+
+- (UITableView *)messageTableView{
+    if (_messageTableView == nil) {
+        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
+        _messageTableView.dataSource = self;
+        _messageTableView.delegate = self;
+        _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
+        _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
+    }
+    return _messageTableView;
+}
 
 - (UITextField *)textField{
     if (_textField == nil) {
@@ -264,6 +264,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
         }
         //        cell.textLabel.text = @"头像";
+        cell.tag = indexPath.row + 500;
         cell.backgroundColor = [UIColor clearColor];
         UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 4, 32, 32)];
         imgHead.layer.masksToBounds = YES;
@@ -274,6 +275,7 @@
         _btnDelete = [[UIButton alloc] initWithFrame:CGRectMake(30, 4, 12, 12)];
         [_btnDelete setImage:[UIImage imageNamed:@"living_chat_private_delete"] forState:UIControlStateNormal];
         [_btnDelete addTarget:self action:@selector(btnUserDeleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_btnDelete setTag:400+indexPath.row];
         [cell.contentView addSubview:_btnDelete];
         _btnDelete.hidden = YES;
         if (indexPath.row == _nowRow) {
@@ -319,9 +321,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (tableView == _userTableView) {
+        UIButton *btn1 = (UIButton *)[_userTableView viewWithTag:_nowRow + 400];
+        btn1.hidden = YES;
+        UIButton *btn2 = (UIButton *)[_userTableView viewWithTag:indexPath.row + 400];
+        btn2.hidden = NO;
+        UITableViewCell *cell1 = (UITableViewCell *)[_userTableView viewWithTag:_nowRow + 500];
+        cell1.backgroundColor = [UIColor clearColor];
+        UITableViewCell *cell2 = (UITableViewCell *)[_userTableView viewWithTag:indexPath.row + 500];
+        cell2.backgroundColor = RGB(67, 67, 67);
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
-        [self reloadDateForTableView];
+        [_messageTableView reloadData];
     }else if (tableView == _messageTableView){
 //        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -401,7 +411,9 @@
 //    }
     
     [_userTableView reloadData];
+    [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
     [_messageTableView reloadData];
+    
 }
 
 @end

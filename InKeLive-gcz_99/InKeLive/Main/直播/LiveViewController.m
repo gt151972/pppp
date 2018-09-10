@@ -54,6 +54,8 @@ privateChatViewDelegate>
     bool is_ksystream_pull_connecting_;     //拉流器的状态,是否连接中
     bool is_ksystream_pull_connected_;      //拉流器的状态,是否连接成功
     bool is_ksystream_pull_autoconnect_;    //拉流器的状态,是否自动连接
+    
+    BOOL isAnimation; //是否显示礼物特效
 }
 
 @property(nonatomic, strong) MBProgressHUD* hud;
@@ -143,7 +145,7 @@ privateChatViewDelegate>
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
     [self.socketObj SetMessageEventSink:self];
-    
+    isAnimation = YES;
     //创建keeplive心跳线程
     self.closeThreadFlag = 0;
     self.keepliveThread = [[NSThread alloc] initWithTarget:self selector:@selector(threadRoomKeeplive) object:nil];
@@ -1449,17 +1451,20 @@ privateChatViewDelegate>
     if (!_topToolView) {
         CGRect frame = CGRectMake(170, 30, SCREEN_WIDTH - 174, 33);
         _topToolView = [[TopToolView alloc] initWithFrame:frame];
+        WEAKSELF;
         [_topToolView setToolClicked: ^(UIButton *btn) {
             if (btn.tag == 511) {
                 //特效
+                isAnimation = btn.selected;
+                btn.selected = !btn.selected;
             }else if (btn.tag == 512){
                 //分享
             }else if (btn.tag == 513){
                 //用户列表
-                [self showSelectGiftUserView];
+                [weakSelf showSelectGiftUserView];
             }else if (btn.tag == 514){
                 //关闭
-                [self closeRoom];
+                [weakSelf closeRoom];
             }
         }];
     }
@@ -1926,22 +1931,24 @@ privateChatViewDelegate>
 - (void)showPrivateChatView:(int)userId{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
+    NSLog(@"_arrPrivate == %@",_arrPrivate);
     if (_arrPrivate.count > 0) {
         if (userId == 0) {
             //直接点击私聊:1 _arrPrivate.count>0
             _chatPrivateView.nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
+            NSString *strUserId = [[_arrPrivate lastObject] objectForKey:@"userId"];
+            NSString *strUserName = [[_arrPrivate lastObject] objectForKey:@"userAlias"];
+            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",strUserId, strUserName];
         }else{
             //直接跳入userId的私聊页面(判断是否替换)
             ClientUserModel* userObj = [self.roomObj findMember:userId];
             BOOL isAdd = YES;
-            if (_arrPrivate.count > 0) {
-                for (int index = 0; index < _arrPrivate.count; index ++ ) {
-                    int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
-                    if (userObj.userId == userID) {
-                        isAdd = NO;
-                        _nowRow = index;
-                        break;
-                    }
+            for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                if (userObj.userId == userID) {
+                    isAdd = NO;
+                    _nowRow = index;
+                    break;
                 }
             }
             if (isAdd) {
@@ -1950,14 +1957,15 @@ privateChatViewDelegate>
                                          @"image":userObj.userSmallHeadPic
                                          };
                 [_arrPrivate addObject:dicAll];
-                _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
             }
+            
             _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
         }
+        _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
     }else{
         if (userId == 0) {
-            _chatPrivateView.labNameAndId.text = @"悄悄说";
+            _chatPrivateView.labNameAndId.text = @"  悄悄说";
             _chatPrivateView.nowRow = -1;
         }else{
              ClientUserModel* userObj = [self.roomObj findMember:userId];
@@ -2781,7 +2789,7 @@ privateChatViewDelegate>
         for (int index = 0; index < giftNum; index ++ ) {
             [weakSelf.giftArr addObject:presentModel];
         }
-        [weakSelf chooseGift:0];
+        [weakSelf chooseGift:0 isAnimation:isAnimation];
     }
     
 }

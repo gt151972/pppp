@@ -16,10 +16,12 @@
 
 @implementation LiveViewController (GiftAnnimation)
 
-- (void)chooseGift:(NSInteger)tag{
+- (void)chooseGift:(NSInteger)tag isAnimation:(BOOL)isAnimation{
 //    NSLog(@"giftArr == %@",self.giftView);
-     [self.presentView insertPresentMessages:self.giftArr showShakeAnimation:YES];
-    [self.giftArr removeAllObjects];
+    if (isAnimation) {
+        [self.presentView insertPresentMessages:self.giftArr showShakeAnimation:isAnimation];
+        [self.giftArr removeAllObjects];
+    }
 //    switch (tag) {
 //        case 100:
 //            //鲜花
