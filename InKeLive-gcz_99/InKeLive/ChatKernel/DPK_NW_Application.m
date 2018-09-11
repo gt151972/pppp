@@ -233,14 +233,6 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
         NSLog(@"task: %@",task);
         NSDictionary *appDic =(NSDictionary*)responseObject;
         if(1){
-//            NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
-//            NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
-//            NSLog(@"%@",dataDic);//直接打印数据
-//            dataDic[@"imageUrl"] = [appDic objectForKey:@"res"];
-//            dataDic[@"uDown"] = [appDic objectForKey:@"uDown"];
-//            dataDic[@"uUp"] = [appDic objectForKey:@"uUp"];
-//            dataDic[@"version"] = [appDic objectForKey:@"GiftVersion"];
-//            [dataDic writeToFile:plistPath atomically:YES];
             NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
             NSString*cachePath = array[0];
             NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
@@ -279,9 +271,10 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
         {
             [self.giftList removeAllObjects];
             [self.giftGroup removeAllObjects];
-            NSString* url_giftpic_prefix = appDic[@"urlGiftPicPrefix"];
+//            NSString* url_giftpic_prefix = appDic[@"urlGiftPicPrefix"];
             NSArray* giftconflist = (NSArray*)appDic[@"GiftList"];
             NSArray* giftGroup = (NSArray*)appDic[@"GiftGroup"];
+            NSDictionary* webAddress = (NSDictionary *)appDic[@"mConfig"];
             for(NSDictionary* giftItem in giftconflist) {
                 GTGiftListModel* model = [[GTGiftListModel alloc] init];
                 model.ctype = [giftItem[@"ctype"] intValue];
@@ -300,6 +293,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 model.stype = [giftItem[@"tprice"] intValue];
                 [self.giftList addObject:model];
             }
+            NSLog(@"NSArray* giftconflist == %@",giftconflist);
             for (NSDictionary *giftItem in giftGroup) {
                 GTGiftGroupModel* model = [[GTGiftGroupModel alloc] init];
                 model.giftId = [giftItem[@"Id"] intValue];
@@ -309,6 +303,21 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 model.list = giftItem[@"list"];
                 [self.giftGroup addObject:model];
             }
+            NSLog(@"webAddress == %@",webAddress);
+            NSArray *arrKey = [webAddress allKeys];
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            for (int index = 0; index < arrKey.count; index ++) {
+                NSString *string = [webAddress objectForKey:arrKey[index]];
+                string = [string stringByReplacingOccurrencesOfString:@"{uid}"withString:[NSString stringWithFormat:@"%d",_localUserModel.userID]];
+                string = [string stringByReplacingOccurrencesOfString:@"{sid}"withString:@"0"];
+                [dic setValue:string forKey:arrKey[index]];
+            }
+            NSLog(@"dic == %@",dic);
+            NSLog(@"_localUserModel.userID == %d",_localUserModel.userID);
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+            [dic writeToFile:filePathName atomically:YES];
         }
         NSLog(@"load gift-config, gift count=%lu", (unsigned long)self.giftList.count);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

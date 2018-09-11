@@ -46,6 +46,7 @@
 @property (nonatomic,copy)void (^giftClick)(NSDictionary *dic, int number);
 @property (nonatomic,copy)void (^grayClick)();
 @property (nonatomic,copy)void (^selectGiftUser)();
+@property (nonatomic,copy)void (^changeScore)();
 
 //@property (nonatomic,strong)NSMutableArray *dataArr;  //数据
 

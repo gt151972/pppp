@@ -32,6 +32,7 @@
 #import "GTGiftGroupModel.h"
 #import "ChatPrivateView.h"
 #import "ChatPublicView.h"
+#import "ChangeScore.h"
 
 
 #define USER_NEXTACTION_IDEL          0
@@ -109,7 +110,7 @@ privateChatViewDelegate>
 @property (nonatomic, strong) ChatPrivateView *chatPrivateView;
 //公聊
 @property (nonatomic, strong) ChatPublicView *chatPublicView;
-
+@property (nonatomic, strong) ChangeScore *changeScore;
 
 //公聊数据
 @property (nonatomic, strong) NSMutableArray *arrPubChat;
@@ -710,6 +711,10 @@ privateChatViewDelegate>
     //选择赠送用户
     [self.giftView setSelectGiftUser:^{
         [weakSelf showSelectGiftUserView];
+    }];
+    //兑换
+    [self.giftView setChangeScore:^{
+        [weakSelf showChangeScoreView];
     }];
 }
 
@@ -1409,6 +1414,13 @@ privateChatViewDelegate>
     return _anchorListView;
 }
 
+- (ChangeScore *)changeScore{
+    if (!_changeScore) {
+        _changeScore = [[ChangeScore alloc] init];
+    }
+    return _changeScore;
+}
+
 -(UIView*) KSYstreamerStatusBK {
     if(!_KSYstreamerStatusBK) {
         CGRect rcFrame = CGRectMake(0, 70, SCREEN_WIDTH, 24);
@@ -1451,7 +1463,7 @@ privateChatViewDelegate>
     if (!_topToolView) {
         CGRect frame = CGRectMake(170, 30, SCREEN_WIDTH - 174, 33);
         _topToolView = [[TopToolView alloc] initWithFrame:frame];
-        WEAKSELF;
+//        WEAKSELF;
         [_topToolView setToolClicked: ^(UIButton *btn) {
             if (btn.tag == 511) {
                 //特效
@@ -1461,10 +1473,10 @@ privateChatViewDelegate>
                 //分享
             }else if (btn.tag == 513){
                 //用户列表
-                [weakSelf showSelectGiftUserView];
+                [self showSelectGiftUserView];
             }else if (btn.tag == 514){
                 //关闭
-                [weakSelf closeRoom];
+                [self closeRoom];
             }
         }];
     }
@@ -1928,6 +1940,14 @@ privateChatViewDelegate>
     [view popShow];
 }
 
+- (void)showChangeScoreView{
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    _changeScore = [[ChangeScore alloc] initWithFrame:frame];
+    _changeScore.nowGold = 100;
+    _changeScore.nowScore = 1000;
+    [_changeScore popShow];
+}
+
 - (void)showPrivateChatView:(int)userId{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
@@ -2122,6 +2142,7 @@ privateChatViewDelegate>
                        MediaAddr:(NSString*)mediaAddr
                       ServerPort:(int)serverPort
 {
+    NSLog(@"OnNetMsg_CreateRoomResp");
     self.lastCreateRoomTime = 0;
     if(error_code !=0) {
         //创建房间失败,关闭loading,提示错误,退出房间
@@ -2292,6 +2313,7 @@ privateChatViewDelegate>
                            NK:(int64_t)nk
                            NB:(int64_t)nb
 {
+    NSLog(@"OnNetMsg_JoinRoomResp");
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     self.lastJoinRoomTime = 0;
     
@@ -2341,6 +2363,7 @@ privateChatViewDelegate>
 //获取房间用户列表
 -(void) OnNetMsg_RoomUserListBegin
 {
+    NSLog(@"OnNetMsg_RoomUserListBegin");
     [self.roomObj clearMember];
 //    [self.membersHeadView reloadData];
 }
@@ -2359,6 +2382,7 @@ privateChatViewDelegate>
                         UserAlias:(NSString*)userAlias
                       UserHeadPic:(NSString*)userHeadPic
 {
+    NSLog(@"OnNetMsg_RoomUserListItem");
     ClientConfigParam* clientConfig = [DPK_NW_Application sharedInstance].clientConfigParam;
     
     ClientUserModel* userObj = [[ClientUserModel alloc]init];
@@ -2382,12 +2406,14 @@ privateChatViewDelegate>
 }
 
 -(void) OnNetMsg_RoomUserListEnd {
+    NSLog(@"OnNetMsg_RoomUserListEnd");
 //    [self.membersHeadView reloadData];
 }
 
 //获取房间在麦用户列表
 -(void)OnNetMsg_RoomOnMicUserListBegin
 {
+    NSLog(@"OnNetMsg_RoomOnMicUserListBegin");
     [self.roomObj clearOnMicUser];
     [self.onMicUsersHeadView reloadData];
 }
@@ -2403,6 +2429,7 @@ privateChatViewDelegate>
                           TLMediaUrl1:(NSString*)tlMediaUrl1
                           TLMediaUrl2:(NSString*)tlMediaUrl2
 {
+    NSLog(@"OnNetMsg_RoomOnMicUserListItem");
     ClientUserModel* userObj = [self.roomObj findMember:userId];
 //    [_arrAmchorList addObject:userObj];
 //    _anchorListView.arrayAnchor = _arrAmchorList;

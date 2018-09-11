@@ -9,6 +9,7 @@
 #import "LiveUserInfoView.h"
 #import "UIImageView+WebCache.h"
 #import "SelectGiftUserView.h"
+#import "LevelGrade.h"
 
 @interface LiveUserInfoView(){
     int userId;
@@ -19,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *userIdLabel;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserId;
 @property (weak, nonatomic) IBOutlet UILabel *userLevelLable;
+@property (weak, nonatomic) IBOutlet UIView *viewLevel;
 
 //@property (weak, nonatomic) IBOutlet UILabel *zhibuNum;
 //@property (weak, nonatomic) IBOutlet UILabel *guanzhuNum;
@@ -54,6 +56,11 @@
     if(self.userModel ==nil) {
         [self updateInfo];
     }
+}
+
+- (UIView *)viewLevel{
+    
+    return _viewLevel;
 }
 
 - (IBAction)closeButtonClick:(id)sender {
@@ -121,6 +128,7 @@
     NSString *strUserId = [NSString stringWithFormat:@"ID:%@",[dict objectForKey:@"userId"]];
     userId = [[dict objectForKey:@"userId"] intValue];
     UserAlias = [dict objectForKey:@"userAlias"];
+    [_viewLevel addSubview:[[LevelGrade shareInstance] greadImage:[[dict objectForKey:@"vipLevel"]intValue]]];
 //    NSString* strUserVipLevel = [NSString stringWithFormat:@"用户等级：%d", self.userModel.vipLevel];
     
     self.userAliasLabel.text = strUserAlias;

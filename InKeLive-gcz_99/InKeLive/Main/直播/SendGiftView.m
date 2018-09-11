@@ -33,6 +33,7 @@
 @property (nonatomic, strong)NSMutableArray *arrayAll;
 @property (nonatomic, assign)NSInteger  LastSelect;
 @property (nonatomic, strong)UIView *pageBgView;
+@property (nonatomic, strong)UIButton *btnChange;
 
 @property (nonatomic, assign)int type;
 @end
@@ -65,6 +66,7 @@
     [self.rechargeView addSubview:self.userMoneyLabel];
     [self.rechargeView addSubview:self.senderButton];
     [self.rechargeView addSubview:self.selectUserButton];
+    [self.rechargeView addSubview:self.btnChange];
 //    [self.rechargeView addSubview:self.selectNumButton];
     [self addSubview:self.topClassifyView];
     
@@ -302,7 +304,7 @@
 //        [arrData writeToFile:plistPath atomically:YES];
 //        NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
 //        NSMutableArray *arr = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:GIFT_LIST];
-//        NSLog(@"arr == %@",arr);
+    NSLog(@"_arrayAll == %@",_arrayAll);
     }
     return _arrayAll;
 }
@@ -458,6 +460,18 @@
     return _selectNumButton;
 }
 
+- (UIButton *)btnChange{
+    if (!_btnChange) {
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 2, 50, 28);
+        _btnChange = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnChange.frame = frame;
+        [_btnChange setTitle:@"兑换" forState:UIControlStateNormal];
+        [_btnChange setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+        [_btnChange addTarget:self action:@selector(btnChangeClicked) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnChange;
+}
+
 //分页（放在底部工具栏里面)
 - (UIPageControl *)pageControl{
     if (!_pageControl) {
@@ -512,7 +526,11 @@
 
 }
 
-
+- (void)btnChangeClicked{
+    if (self.changeScore) {
+        self.changeScore();
+    }
+}
 
 
 

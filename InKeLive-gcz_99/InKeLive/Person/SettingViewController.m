@@ -168,26 +168,50 @@
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     // 设置请求格式
     session.requestSerializer = [AFJSONRequestSerializer serializer];
+    session.responseSerializer = [AFJSONResponseSerializer serializer];
+    [session.requestSerializer setValue:@"text/html"forHTTPHeaderField:@"Content-Type"];
+    
+    session.responseSerializer.acceptableContentTypes= [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"image/png",@"image/jpeg",nil];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     parameters[@"cmd"] = CMD_REQUEST_WEB_ADDRESS;
     parameters[@"flag"] = IOS_REQUEST_FLAG;
     NSString* strAPIUrl = URL_GiftInfo;
-    NSLog(@"url:%@", strAPIUrl);
-    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
+    NSLog(@"parameters:%@", parameters);
+//    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
     [session POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
+
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"Success: %@", responseObject);
-        NSLog(@"task: %@",task);
+
         NSDictionary *appDic =(NSDictionary*)responseObject;
-        if (appDic[@"code"] == 0) {
-            
+        NSLog(@"mConfig: %@", appDic[@"mConfig"]);
+        if (appDic[@"mConfig"] == 0) {
+
         }else{
             NSLog(@"%@",appDic[@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error: %@", error);
     }];
+    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    manager.responseSerializer= [AFHTTPResponseSerializer serializer];
+//    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+//    parameters[@"cmd"] = CMD_REQUEST_WEB_ADDRESS;
+//    parameters[@"flag"] = IOS_REQUEST_FLAG;
+//    NSString* strAPIUrl = URL_GiftInfo;
+//    [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"response == %@",responseObject);
+//
+////        NSArray *array = [responseObject objectForKey:@"List"];
+////        for (NSDictionary *dic2 in array) {
+////        }
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//
+//    }];
 }
 
 @end

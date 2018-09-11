@@ -79,7 +79,7 @@
             resource = @"kefu";
             break;
         case 207://超管
-            resource = @"hdaili";
+            resource = @"gly";
             break;
         case 210://站长
             resource = @"zhanzhang";
