@@ -17,6 +17,7 @@
 #import "LiveViewController.h"
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
+#import "HomeViewController.h"
 
 
 @interface AppDelegate ()
@@ -131,9 +132,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];
     
     //用户登录窗口
-    LogonViewController* logonVC =[[LogonViewController alloc] init];
-    BaseViewController* naviVC = [[BaseViewController alloc]initWithRootViewController:logonVC];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:naviVC animated:YES completion:nil];
+    BaseTabBarController *base = [[BaseTabBarController alloc]init];
+    self.window.rootViewController = base;
+    [self.window makeKeyAndVisible];
+    
 }
 
 -(void) doLogon

@@ -35,17 +35,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = BG_COLOR;
+    [self tableView];
     [self.view addSubview:_tableView];
     
 }
 
 - (UITableView *)tableView{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 80)];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.rowHeight = 40;
-    _tableView.separatorColor = RGB(239, 239, 239);
-    _tableView.backgroundColor = [UIColor redColor];
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 80)];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.rowHeight = 40;
+        _tableView.separatorColor = RGB(239, 239, 239);
+        _tableView.backgroundColor = [UIColor redColor];
+    }
     return _tableView;
 }
 
@@ -56,7 +60,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
-    cell.contentView.backgroundColor = MAIN_COLOR;
+//    cell.contentView.backgroundColor = MAIN_COLOR;
     cell.textLabel.text = [_arrTitle objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
     cell.textLabel.font = [UIFont systemFontOfSize:13];

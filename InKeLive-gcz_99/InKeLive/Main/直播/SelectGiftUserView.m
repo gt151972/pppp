@@ -11,6 +11,7 @@
 #import "ClientUserModel.h"
 #import "UIImageView+WebCache.h"
 #import "LiveUserInfoView.h"
+#import "LevelGrade.h"
 
 @interface SelectGiftUserView()<UITableViewDelegate, UITableViewDataSource>
 
@@ -110,20 +111,32 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellWithIdentifier = @"GiftUserCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
-    if (cell == nil) {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
     NSUInteger row = [indexPath row];
     ClientUserModel* model = [self.userArray objectAtIndex:row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@(%d)",model.userAlias,model.userId];
-//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", model.userId];
+    UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(14, 5, 40, 40)];
+    imgHead.layer.masksToBounds = YES;
+    imgHead.layer.cornerRadius = 20;
     NSURL *url =[NSURL URLWithString:model.userSmallHeadPic];
-    [cell.imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
-    
-    //cell.textLabel.text = [self.dataList objectAtIndex:row];
-    //cell.imageView.image = [UIImage imageNamed:@"green.png"];
-    //cell.detailTextLabel.text = @"详细信息";
+    [imgHead sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
+    [cell.contentView addSubview:imgHead];
+    UIView *level = [[UIView alloc] initWithFrame:CGRectMake(60, 17, 16, 16)];
+    [level addSubview:[[LevelGrade shareInstance] greadImage:model.vipLevel]];
+    [cell.contentView addSubview:level];
+    UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(80, 17, SCREEN_WIDTH - 85, 16)];
+    labTitle.textAlignment = NSTextAlignmentLeft;
+    labTitle.font = [UIFont systemFontOfSize:15];
+    NSString *strName = model.userAlias;
+    NSString *strId = [NSString stringWithFormat:@"%d",model.userId];
+    NSString *strInfo= [NSString stringWithFormat:@"%@(%@)",strName,strId];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, strName.length)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(139, 139, 139) range:NSMakeRange(strName.length, strId.length + 2)];
+    [labTitle setAttributedText:attrStr];
+    [cell.contentView addSubview:labTitle];
     return cell;
 }
 

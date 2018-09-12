@@ -9,23 +9,101 @@
 #import "WebViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface WebViewController ()<WKNavigationDelegate, WKUIDelegate>
+@interface WebViewController ()<WKNavigationDelegate, WKUIDelegate>{
+    NSString *childUrl;
+}
 @property (strong, nonatomic) WKWebView *webView;
+@property (strong, nonatomic) UIView *viewLine;
 @end
 
 @implementation WebViewController
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        childUrl = @"";
+    }
+    
+    return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if ([_strTitle isEqualToString:@"排行榜"]){
+        [self.navigationController.navigationBar setHidden:YES];
+        [self nav];
+    }else{
+        self.title = _strTitle;
+        [self.navigationController.navigationBar setHidden:NO];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
+        self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
+    }
+}
+
+- (void)nav{
+    UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+    viewBg.backgroundColor = RGB(204, 174, 235);
+    [self.view addSubview:viewBg];
+    
+    UIButton *btnBack = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, 44, 44)];
+    [btnBack setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+    [btnBack addTarget:self action:@selector(btnBackClicked) forControlEvents:UIControlEventTouchUpInside];
+    [viewBg addSubview:btnBack];
+    
+    UIButton *btnWeek = [[UIButton alloc] initWithFrame:CGRectMake(44, 20, SCREEN_WIDTH/2-22, 44)];
+    [btnWeek setTitle:@"幸运周星榜" forState:UIControlStateNormal];
+    [btnWeek setTitleColor:RGB(119, 59, 175) forState:UIControlStateSelected];
+    [btnWeek setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+    [btnWeek setTag:201];
+    btnWeek.selected = YES;
+    [btnWeek addTarget:self action:@selector(btnHeadViewClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [viewBg addSubview:btnWeek];
+    
+    UIButton *btnDay = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2+22, 20, SCREEN_WIDTH/2-22, 44)];
+    [btnDay setTitle:@"幸运日星榜" forState:UIControlStateNormal];
+    [btnDay setTitleColor:RGB(119, 59, 175) forState:UIControlStateSelected];
+    [btnDay setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+    [btnDay setTag:202];
+    [btnDay addTarget:self action:@selector(btnHeadViewClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [viewBg addSubview:btnDay];
+    
+    [btnWeek.titleLabel sizeToFit];
+    self.viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 61, btnWeek.titleLabel.width, 3)];
+    self.viewLine.backgroundColor = RGB(119, 59, 175);
+    self.viewLine.centerX = btnWeek.centerX;
+    [viewBg addSubview:self.viewLine];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
-    _webView.UIDelegate = self;
-    _webView.navigationDelegate = self;
+    [self clearWbCache];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    config.selectionGranularity = WKSelectionGranularityDynamic;
+    config.allowsInlineMediaPlayback = YES;
+    WKPreferences *preferences = [WKPreferences new];
+    //是否支持JavaScript
+    preferences.javaScriptEnabled = YES;
+    //不通过用户交互，是否可以打开窗口
+    preferences.javaScriptCanOpenWindowsAutomatically = YES;
+    config.preferences = preferences;
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) configuration:config];
     [self.view addSubview:_webView];
+    NSLog(@"url ==  %@",_strUrl);
+    /* 加载服务器url的方法*/
+    NSString *url = _strUrl;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [_webView loadRequest:request];
     
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]]];
+    _webView.navigationDelegate = self;
+    _webView.UIDelegate = self;
 
 }
 
+- (void)clearWbCache {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+}
 
 
 #pragma mark - WKNavigationDelegate
@@ -39,6 +117,8 @@
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
+    
+    
 }
 
 /**
@@ -73,6 +153,7 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     
     NSLog(@"%s", __FUNCTION__);
+    NSLog(@"%@",error);
 }
 
 /**
@@ -94,16 +175,7 @@
  *  @param decisionHandler    是否跳转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
-    
-    // 如果响应的地址是百度，则允许跳转
-    if ([navigationResponse.response.URL.host.lowercaseString isEqual:@"www.baidu.com"]) {
-        
-        // 允许跳转
-        decisionHandler(WKNavigationResponsePolicyAllow);
-        return;
-    }
-    // 不允许跳转
-    decisionHandler(WKNavigationResponsePolicyCancel);
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 /**
@@ -114,23 +186,46 @@
  *  @param decisionHandler  是否调转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    
-    // 如果请求的是百度地址，则延迟5s以后跳转
-    if ([navigationAction.request.URL.host.lowercaseString isEqual:@"www.baidu.com"]) {
+    if (![navigationAction.request.URL.absoluteString isEqualToString:_strUrl]) {
+        if (![navigationAction.request.URL.absoluteString isEqualToString:childUrl]) {
+            NSLog(@"url == %@", navigationAction.request.URL.absoluteString);
+            NSString *strUrl = [NSString stringWithFormat:@"%@",navigationAction.request.URL.absoluteString];
+            strUrl = [strUrl stringByReplacingOccurrencesOfString:@"jiujiu://Web/"withString:@""];
+            childUrl = strUrl;
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:strUrl]];
+            [webView loadRequest:request];
+            decisionHandler(WKNavigationActionPolicyCancel);
+        }else{
+            decisionHandler(WKNavigationActionPolicyAllow);
+        }
         
-        //        // 延迟5s之后跳转
-        //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //
-        //            // 允许跳转
-        //            decisionHandler(WKNavigationActionPolicyAllow);
-        //        });
-        
-        // 允许跳转
+    }else{
         decisionHandler(WKNavigationActionPolicyAllow);
-        return;
     }
-    // 不允许跳转
-    decisionHandler(WKNavigationActionPolicyCancel);
+
+}
+
+//- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
+//    [webView reload];
+//}
+
+- (void)btnBackClicked{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnHeadViewClicked: (UIButton *)button{
+    UIButton *btnWeek = (UIButton *)[self.view viewWithTag:201];
+    UIButton *btnDay = (UIButton *)[self.view viewWithTag:202];
+    if (button.tag == 201) {
+        btnWeek.selected = YES;
+        btnDay.selected = NO;
+    }else if (button.tag == 202){
+        btnWeek.selected = NO;
+        btnDay.selected = YES;
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.viewLine.centerX = button.centerX;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

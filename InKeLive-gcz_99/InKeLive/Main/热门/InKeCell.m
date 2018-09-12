@@ -75,6 +75,7 @@
 
     _coverImageView = [[UIImageView alloc]init];
     _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _coverImageView.clipsToBounds = true;
     [self.contentView addSubview:_coverImageView];
     [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_iconImageView.mas_bottom).offset(3);
@@ -82,7 +83,7 @@
         make.left.equalTo(self.contentView.mas_left).offset(7);
         make.bottom.equalTo(self.contentView).offset(-7);
     }];
-    _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+    _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     _logoImageView = [[UIImageView alloc]init];
     _logoImageView.image = [UIImage imageNamed:@"live_tag_live"];

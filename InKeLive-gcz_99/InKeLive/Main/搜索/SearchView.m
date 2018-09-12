@@ -12,6 +12,9 @@
 #import "SearchModel.h"
 #import "InKeCell.h"
 #import "InKeModel.h"
+#import "TempJoinRoomInfo.h"
+#import "AppDelegate.h"
+#import "DPK_NW_Application.h"
 @interface SearchView()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UIView *searchBarBgView;
 @property (nonatomic, strong) UITextField *textField;
@@ -191,14 +194,6 @@
         NSLog(@"response == %@",responseObject);
         NSArray *array = [responseObject objectForKey:@"List"];
         for (NSDictionary *dic2 in array) {
-//            SearchModel *model = [[SearchModel alloc] init];
-//            model.title = [dic objectForKey:@"Title"];
-//            model.img = [dic objectForKey:@"img"];
-//            model.mLevel = [[dic objectForKey:@"mLevel"] intValue];
-//            model.max = [[dic objectForKey:@"max"] intValue];
-//            model.online = [[dic objectForKey:@"online"] intValue];
-//            model.rId = [[dic objectForKey:@"rId"] intValue];
-//            model.uId = [[dic objectForKey:@"uId"] intValue];
             InKeModel* inkItem = [[InKeModel alloc]init];
             inkItem.roomId = [dic2[@"rId"] intValue];
             inkItem.userId =[dic2[@"uId"] intValue];
@@ -217,6 +212,45 @@
             [self.tableView setFrame:CGRectMake(0, 64, SCREEN_WIDTH, H)];
         }
         [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)requestAddr :(InKeModel *)model{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = CMD_REQUEST_ADDTESS;
+    parameters[@"rid"] = [NSString stringWithFormat:@"%d",model.roomId];
+    NSString* strAPIUrl = URL_GiftInfo;
+    [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"response == %@",responseObject);
+        NSDictionary *dic = [[NSDictionary alloc] initWithDictionary:responseObject];
+        if ([[dic objectForKey:@"code"] intValue] == 0) {
+            TempJoinRoomInfo* joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
+            [joinRoomInfo reset];
+            joinRoomInfo.roomId = [[dic objectForKey:@"rId"] intValue];
+            joinRoomInfo.lookUserId = model.userId;
+            joinRoomInfo.roomName = model.roomName;
+//            joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
+//            NSLog(@"dicRoomInfo == %@",joinRoomInfo.dicRoomInfo);
+            [joinRoomInfo setGateAddr:[dic objectForKey:@"GateAddr"]]; //6位地址
+            
+            //测试代码 testcode
+            NSLog(@"加入房间信息, model.roomId=%d, joinRoomInfo.roomId=%d", model.roomId, joinRoomInfo.roomId);
+            
+            AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            if([DPK_NW_Application sharedInstance].isLogon == NO) {
+                [appDelegate doLogon];
+                return;
+            }else {
+                [appDelegate showLiveRoom:NO CameraFront:YES];
+            }
+        }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
@@ -247,6 +281,11 @@
     InKeModel *model = [_arrayData objectAtIndex:indexPath.row];
     [cell updateCell:model];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    InKeModel *model = [_arrayData objectAtIndex:indexPath.row];
+    [self requestAddr:model];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

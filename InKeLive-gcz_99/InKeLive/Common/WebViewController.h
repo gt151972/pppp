@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WebViewController : UIViewController
-@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) NSString *strUrl;
+@property (nonatomic, strong) NSString *strTitle;
 @property (nonatomic, strong)UIColor *colorBg;
 @end

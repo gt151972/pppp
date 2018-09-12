@@ -42,6 +42,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _tavleView.delegate = self;
+    _tavleView.dataSource = self;
+    _tavleView.separatorColor = [UIColor clearColor];
+    _tavleView.allowsSelection = NO;
+    _btnSubmit.layer.cornerRadius = 15;
+    _btnSubmit.layer.masksToBounds = YES;
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -76,12 +82,13 @@
     cell.textLabel.text = [arrayTitle objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
     cell.textLabel.font = [UIFont systemFontOfSize:13];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     UIView *viewLine = [[UIView alloc] init];
     viewLine.backgroundColor = RGB(110, 110, 110);
     [cell.contentView addSubview:viewLine];
     [viewLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(@12);
+        make.right.mas_equalTo(-12);
         make.height.equalTo(@1);
         make.left.equalTo(cell.textLabel.mas_right).offset(7);
         make.top.equalTo(@44);

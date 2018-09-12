@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MineViewController">
             <connections>
+                <outlet property="btnExit" destination="SYG-LO-g1e" id="Zh6-Rp-tio"/>
                 <outlet property="tableView" destination="iod-E2-5je" id="F4K-er-WOC"/>
                 <outlet property="view" destination="iN0-l3-epB" id="iWJ-Jv-gv8"/>
             </connections>
@@ -21,16 +22,33 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iod-E2-5je">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="453"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="473"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="453" id="ckt-B5-Pps"/>
+                        <constraint firstAttribute="height" constant="473" id="ckt-B5-Pps"/>
                     </constraints>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYG-LO-g1e">
+                    <rect key="frame" x="12" y="483" width="351" height="45"/>
+                    <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="BJB-aM-Vc9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="退出登录">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="btnExitLoginClicked:" destination="-1" eventType="touchUpInside" id="efe-4f-MfY"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="iod-E2-5je" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="3zR-gq-lG6"/>
+                <constraint firstItem="SYG-LO-g1e" firstAttribute="top" secondItem="iod-E2-5je" secondAttribute="bottom" constant="10" id="JSI-Ol-qdL"/>
+                <constraint firstItem="SYG-LO-g1e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="WUP-zk-Eub"/>
+                <constraint firstAttribute="trailing" secondItem="SYG-LO-g1e" secondAttribute="trailing" constant="12" id="d6B-gc-Vjt"/>
                 <constraint firstItem="iod-E2-5je" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="p2T-pb-1aj"/>
                 <constraint firstAttribute="trailing" secondItem="iod-E2-5je" secondAttribute="trailing" id="q5g-1y-d8H"/>
             </constraints>

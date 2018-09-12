@@ -13,12 +13,13 @@
 #import "MBProgressHUD+MJ.h"
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
+#import "WebViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSArray *arrayTitle;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIButton *btnExitLogin;
+//@property (weak, nonatomic) IBOutlet UIButton *btnExitLogin;
 
 @end
 
@@ -49,8 +50,8 @@
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(239, 239, 239);
     
-    _btnExitLogin.layer.cornerRadius = 5;
-    _btnExitLogin.layer.masksToBounds = YES;
+//    _btnExitLogin.layer.cornerRadius = 5;
+//    _btnExitLogin.layer.masksToBounds = YES;
     
 }
 
@@ -109,13 +110,28 @@
             
         }else if (indexPath.row == 1){
             //客服中心
-            ServideViewController *servideVC = [[ServideViewController alloc] init];
-            [self.navigationController pushViewController:servideVC animated:YES];
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+            NSString *strUrl = [dict objectForKey:@"customer"];
+            WebViewController *webVC = [[WebViewController alloc] init];
+            webVC.strUrl = strUrl;
+            webVC.strTitle = @"客服中心";
+            [self.navigationController pushViewController:webVC animated:YES];
         }else if (indexPath.row == 2){
             //检查更新
         }else if (indexPath.row == 3){
             //关于我们
-            [self requestData];
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+            NSString *strUrl = [dict objectForKey:@"about"];
+            WebViewController *webVC = [[WebViewController alloc] init];
+            webVC.strUrl = strUrl;
+            webVC.strTitle = @"关于我们";
+            [self.navigationController pushViewController:webVC animated:YES];
         }
     }
 }
@@ -146,15 +162,7 @@
 - (void)getValueForSwitch: (UISwitch *)swi{
     
 }
-- (IBAction)btnExitLoginClicked:(id)sender {
-    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if([DPK_NW_Application sharedInstance].isLogon == YES) {
-        [appDelegate logout];
-        return;
-    }else {
-        [MBProgressHUD showAlertMessage:@"用户未登陆"];
-    }
-}
+
 
 - (void)btnBackClicked{
     [self.navigationController popViewControllerAnimated:YES];

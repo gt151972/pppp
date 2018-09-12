@@ -11,7 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
             <connections>
-                <outlet property="btnExitLogin" destination="lZX-u4-gr2" id="Nvh-el-T9F"/>
                 <outlet property="tableView" destination="9NX-9G-A66" id="ewL-GC-jJm"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,28 +27,11 @@
                         <constraint firstAttribute="height" constant="390" id="dYc-y2-g9d"/>
                     </constraints>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lZX-u4-gr2">
-                    <rect key="frame" x="13" y="485" width="349" height="40"/>
-                    <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="FTq-H2-dkf"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="退出登录">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="btnExitLoginClicked:" destination="-1" eventType="touchUpInside" id="SKt-nD-eq8"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="9NX-9G-A66" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="BQn-cr-Qgg"/>
                 <constraint firstAttribute="trailing" secondItem="9NX-9G-A66" secondAttribute="trailing" id="IEi-tf-rhS"/>
-                <constraint firstAttribute="trailing" secondItem="lZX-u4-gr2" secondAttribute="trailing" constant="13" id="LTT-4H-QkA"/>
-                <constraint firstItem="lZX-u4-gr2" firstAttribute="top" secondItem="9NX-9G-A66" secondAttribute="bottom" constant="21" id="SY6-1Z-K1S"/>
-                <constraint firstItem="lZX-u4-gr2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="13" id="WL5-nr-YrY"/>
                 <constraint firstItem="9NX-9G-A66" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fRd-KL-4Ji"/>
             </constraints>
         </view>

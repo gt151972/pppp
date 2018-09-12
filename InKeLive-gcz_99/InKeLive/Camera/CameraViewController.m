@@ -94,7 +94,7 @@
     [self.topView addSubview:self.closeButton];
     self.inputBackView.hidden = YES;
     
-    //
+    
     [self.inputBackView addSubview:self.roomNameTipLabel];
     [self.inputBackView addSubview:self.roomNameEdit];
     //
@@ -109,6 +109,7 @@
     //UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditingText)];
     //tap.cancelsTouchesInView =NO;
     //[self.view addGestureRecognizer:tap];
+    
 
 }
 

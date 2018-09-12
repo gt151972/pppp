@@ -13,6 +13,8 @@
 #import "SettingViewController.h"
 #import "SecurityViewController.h"
 #import "LevelGrade.h"
+#import "WebViewController.h"
+#import "AppDelegate.h"
 
 #define BG_COLOR RGB(239, 239, 239)
 
@@ -21,13 +23,14 @@
 @property (nonatomic, strong)NSArray *arrVC;
 @property (nonatomic, strong) LocalUserModel *userModel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *btnExit;
 
 
 @end
 
 @implementation MineViewController
 - (void)initData{
-    _arrTitle = @[@"我的收益", @"安全中心", @"积分兑换", @"活动中心", @"设置"];
+    _arrTitle = @[@"我的收益", @"安全中心", @"排行榜", @"活动中心", @"设置"];
     BOOL bLogon = [DPK_NW_Application sharedInstance].isLogon;
     _userModel = [DPK_NW_Application sharedInstance].localUserModel;
     
@@ -50,6 +53,9 @@
     self.view.backgroundColor = BG_COLOR;
     [self initData];
     
+    _btnExit.layer.cornerRadius = 22.5;
+    _btnExit.layer.masksToBounds = YES;
+    
 }
 
 
@@ -65,6 +71,7 @@
     _tableView.scrollEnabled =NO;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
+    _tableView.rowHeight = 44;
     _tableView.tableHeaderView.userInteractionEnabled = YES;
     return _tableView;
 }
@@ -114,8 +121,26 @@
         SecurityViewController *securityVC = [[SecurityViewController alloc] init];
         [self.navigationController pushViewController:securityVC animated:YES];
     }else if (indexPath.row == 2){
-        //积分兑换
+        //排行榜
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strUrl = [dict objectForKey:@"about"];
+        WebViewController *webVC = [[WebViewController alloc] init];
+        webVC.strUrl = strUrl;
+        webVC.strTitle = @"排行榜";
+        [self.navigationController pushViewController:webVC animated:YES];
     }else if (indexPath.row == 3){
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strUrl = [dict objectForKey:@"activity"];
+        WebViewController *webVC = [[WebViewController alloc] init];
+        webVC.strUrl = strUrl;
+        webVC.strTitle = @"活动中心";
+        [self.navigationController pushViewController:webVC animated:YES];
         //活动中心
     }else if (indexPath.row == 4){
         //设置
@@ -125,7 +150,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
+    return 44;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -207,7 +232,7 @@
     UIView *viewMoney = [[UIView alloc] initWithFrame:CGRectMake(0, 169, SCREEN_WIDTH, 255-169)];
     [viewHead addSubview:viewMoney];
     
-    UILabel *labGold = [[UILabel alloc] initWithFrame:CGRectMake(13, 12, 200, 20)];
+    UILabel *labGold = [[UILabel alloc] initWithFrame:CGRectMake(13, 33, 200, 20)];
     labGold.text = [NSString stringWithFormat:@"%lld金币",model.nk];
     labGold.textColor = RGB(23, 23, 23);
     labGold.font = [UIFont systemFontOfSize:20];
@@ -239,6 +264,18 @@
 
 -(void)btnRechargeClicked{
     
+}
+
+- (IBAction)btnExitLoginClicked:(id)sender {
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == YES) {
+        [appDelegate logout];
+        return;
+    }else {
+        [[GTAlertTool shareInstance] showAlert:@"用户未登录" message:@"" cancelTitle:@"取消" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+            
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

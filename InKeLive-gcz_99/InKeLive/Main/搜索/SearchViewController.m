@@ -158,12 +158,12 @@
     
     if (indexPath.section != self.sectionTitleArr.count) {
         
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate showLiveRoom:NO CameraFront:FALSE];
+//        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        [appDelegate showLiveRoom:NO CameraFront:FALSE];
         
-        //LiveViewController *liveVC = [[LiveViewController alloc]init];
-        //[liveVC initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];
-        //[self.navigationController pushViewController:liveVC animated:YES];
+//        LiveViewController *liveVC = [[LiveViewController alloc]init];
+//        [liveVC initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];
+//        [self.navigationController pushViewController:liveVC animated:YES];
     }
 }
 
@@ -208,6 +208,38 @@
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     parameters[@"cmd"] = CMD_REQUEST_SEARCH;
+    parameters[@"uid"] = @"1259";
+    parameters[@"sid"] = @"";
+    parameters[@"rid"] = @"0";
+    parameters[@"info"] = @"177777";
+    NSString* strAPIUrl = URL_GiftInfo;
+    [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"response == %@",responseObject);
+        NSArray *array = [responseObject objectForKey:@"List"];
+        for (NSDictionary *dic in array) {
+            SearchModel *model = [[SearchModel alloc] init];
+            model.title = [dic objectForKey:@"Title"];
+            model.img = [dic objectForKey:@"img"];
+            model.mLevel = [[dic objectForKey:@"mLevel"] intValue];
+            model.max = [[dic objectForKey:@"max"] intValue];
+            model.online = [[dic objectForKey:@"online"] intValue];
+            model.rId = [[dic objectForKey:@"rId"] intValue];
+            model.uId = [[dic objectForKey:@"uId"] intValue];
+            [_arrayInfo addObject:model];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)requestAddr{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    parameters[@"cmd"] = CMD_REQUEST_ADDTESS;
     parameters[@"uid"] = @"1259";
     parameters[@"sid"] = @"";
     parameters[@"rid"] = @"0";
