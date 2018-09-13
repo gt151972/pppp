@@ -31,9 +31,9 @@
     
 }
 -(void)paomadeng{
-    
     UILabel *aUILabel=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 500, 50)];
     aUILabel.font = [UIFont systemFontOfSize:15];
+    aUILabel.layer.masksToBounds = YES;
     NSString *strInfo= [NSString stringWithFormat:@"%@送给%@%d个%@",_strSrcName,_strToName,_giftNum,_strGiftName];
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
     [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, _strSrcName.length)];
@@ -52,10 +52,11 @@
     CGRect lframe =aUILabel.frame;
     //用计算出来的text的width更改frame的原始width
     lframe.size.width= textSize.width;//从屏幕最右边向左边移
-    lframe.origin.x=SCREEN_WIDTH; //用新值更改label的原frame值
-    aUILabel.frame= lframe;
+    lframe.origin.x=SCREEN_WIDTH/4; //用新值更改label的原frame值
+    aUILabel.frame = lframe;
     //计算动画x移动的最大偏移：屏幕width+text的width
-    float offset = textSize.width+self.bounds.size.width;
+    aUILabel.clipsToBounds = YES;
+    float offset = textSize.width+ SCREEN_WIDTH*3/4;
     [UIView animateWithDuration:10.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState//动画重复的主开关
      |UIViewAnimationOptionCurveLinear//动画的时间曲
                     animations:^{aUILabel.transform=CGAffineTransformMakeTranslation(-offset,0);} completion:^(BOOL finished) {

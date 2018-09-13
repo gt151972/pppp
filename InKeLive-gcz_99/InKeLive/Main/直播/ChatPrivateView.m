@@ -373,7 +373,11 @@
     if (self.privateChatSend) {
         if (_textField.text.length > 0) {
             NSLog(@"_nowRow == %d",_nowRow);
-            self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
+            if (_arrChatMessage.count >0) {
+                self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
+            }else{
+                self.privateChatSend(_textField.text, 0);
+            }
         }
         _textField.text = @"";
     }

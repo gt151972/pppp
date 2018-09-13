@@ -57,7 +57,12 @@
 - (NSArray *)imageArr{
     //图片数组
     if (_imageArr == nil) {
-        _imageArr = @[@"living_private_chat",@"living_gift"];
+        
+        if (_createFlag) {
+            _imageArr = @[@"living_private_chat",@"camra_preview", @"living_beauty",@"living_gift"];
+        }else{
+           _imageArr = @[@"living_private_chat",@"living_gift"];
+        }
     }
     return _imageArr;
 }

@@ -13,7 +13,10 @@ typedef NS_ENUM(NSInteger,CellType){
     CellNewChatMessageType,       // 新消息
     CellNewGiftType,              // 礼品
     CellNewUserEnterType,         // 消息进入
-    CellDeserveType,              // 
+    CellDeserveType,              //
+    CellHomType,                  // 喇叭
+    CellNoticeType,               // 公告
+    CellSystemHomType,            // 系统公告(喇叭)
 };
 
 @class TYTextContainer;

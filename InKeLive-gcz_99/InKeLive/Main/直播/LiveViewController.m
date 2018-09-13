@@ -135,6 +135,7 @@ privateChatViewDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _bottomTool.createFlag = self.createFlag;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
@@ -196,7 +197,7 @@ privateChatViewDelegate>
     is_ksystream_pull_autoconnect_ = NO;
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
-    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 90, SCREEN_WIDTH/4, 33)];
+    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH/4, 33)];
     [self.view addSubview:viewOnMic];
     UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 17)];
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_up"] forState:UIControlStateNormal];
@@ -789,6 +790,7 @@ privateChatViewDelegate>
     //下部 工具条按钮区
     if (_bottomTool == nil) {
         _bottomTool = [[BottomView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 64, SCREEN_WIDTH, 64)];
+        
         WEAKSELF;
         [_bottomTool setButtonClick:^(NSInteger tag) {
             switch (tag) {
@@ -800,12 +802,26 @@ privateChatViewDelegate>
                     [weakSelf showPrivateChatView:0];
                 }
                 break;
-                case 151: //礼物
+                case 151: //礼物or切换镜头
+                {
+                    if (weakSelf.createFlag) {
+                        //切换镜头
+                    }else{
+                        [weakSelf bottomToolPosition];
+                    }
+                }
+                break;
+                case 152: //美颜
+                {
+                   
+                }
+                    break;
+                case 153: //礼物
                 {
                     [weakSelf bottomToolPosition];
                 }
-                break;
-                case 152: //显示分享面板 (共享)
+                    break;
+                case 154: //显示分享面板 (共享)
                 {
                     //testcode
                     [weakSelf showSelectGiftUserView];
@@ -1398,14 +1414,14 @@ privateChatViewDelegate>
 
 - (FlyView *)flyView{
     if (!_flyView) {
-        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH, 18)];
+        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4, 70, SCREEN_WIDTH*3/4, 18)];
     }
     return _flyView;
 }
 
 - (AnchorListView *)anchorListView{
     if (!_anchorListView) {
-        _anchorListView = [[AnchorListView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4*3, 95, SCREEN_WIDTH/4, SCREEN_WIDTH + 20)];
+        _anchorListView = [[AnchorListView alloc] initWithFrame:CGRectMake(0, 95, SCREEN_WIDTH/4, SCREEN_WIDTH + 20)];
         NSLog(@"_roomObj.roomName == %@",_dicInfo);
         [_anchorListView.btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
         _anchorListView.dicAnchor = self.dicInfo;
@@ -1485,7 +1501,7 @@ privateChatViewDelegate>
 
 -(RoomOnMicUsersView*)onMicUsersHeadView {
     if(!_onMicUsersHeadView) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH/4*3, 123, SCREEN_WIDTH/4, SCREEN_WIDTH);
+        CGRect frame = CGRectMake(0, 103, SCREEN_WIDTH/4, SCREEN_WIDTH);
         _onMicUsersHeadView = [[RoomOnMicUsersView alloc]initWithFrame:frame style:UITableViewStylePlain];
         _onMicUsersHeadView.backgroundColor = [UIColor clearColor];
         _onMicUsersHeadView.dataSource =self;
@@ -2003,7 +2019,14 @@ privateChatViewDelegate>
     [_chatPrivateView popShow];
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
-        [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
+        if (toId == 0) {
+            [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:@"确定" titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
+                
+            }];
+        }else{
+            [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
+        }
+        
     }];
     [_chatPrivateView setDeteleChatUser:^(int row) {
         [weakSelf.arrPrivate removeObjectAtIndex:row];
@@ -2728,6 +2751,13 @@ privateChatViewDelegate>
         _chatPrivateView.nowRow = self.nowRow;
         _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         [_chatPrivateView reloadDateForTableView];
+    }else if (msgType == 3){
+        NSString *strToId = [NSString stringWithFormat:@"%d",toId];
+        NSString* chatContent2 = [NSString filterHTML:chatContent];
+        MessageModel *model = [[MessageModel alloc] init];
+        [model setModel:strToId withName:srcUserAlias withIcon:nil withType:CellNoticeType
+            withMessage:chatContent2 toUserAlias:toUserAlias toId:toId];
+        [self.messageTableView sendMessage:model];
     }
     
 
@@ -3048,7 +3078,18 @@ privateChatViewDelegate>
                          RoomName:(NSString*)roomName
                              Text:(NSString*)text
 {
-    //TODO:
+    NSString *strUserId = [NSString stringWithFormat:@"%d",srcId];
+    NSLog(@"srcName == %@\n toName == %d\n roomName == %d\n text == %@\n",srcName,srcId,chatType,text);
+    NSString* chatContent2 = [NSString filterHTML:text];
+    if (chatType == 10) {//系统公告(喇叭)
+        MessageModel *model = [[MessageModel alloc] init];
+        [model setModel:strUserId withName:srcName withIcon:nil withType:CellSystemHomType withMessage:chatContent2 toUserAlias:toName toId:toId];
+        [self.messageTableView sendMessage:model];
+    }else if (chatType ==11){//小喇叭
+        MessageModel *model = [[MessageModel alloc] init];
+        [model setModel:strUserId withName:srcName withIcon:nil withType:CellHomType withMessage:chatContent2 toUserAlias:toName toId:toId];
+        [self.messageTableView sendMessage:model];
+    }
 }
 
 //用户关注回包

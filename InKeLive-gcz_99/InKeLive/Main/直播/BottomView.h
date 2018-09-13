@@ -12,7 +12,8 @@
 //一排按钮?
 //消息弹幕
 @property (nonatomic,strong)UIButton *inforButton;
-
+//是否是主播
+@property (nonatomic,assign)BOOL createFlag;
 //礼物
 @property (nonatomic,strong)UIButton *giftButton;
 

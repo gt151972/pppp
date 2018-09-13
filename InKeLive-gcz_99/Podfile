@@ -10,7 +10,7 @@ pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FMDB'
 pod 'YYKit'
 pod 'pop'
-pod 'IQKeyboardManager'
+
 
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'

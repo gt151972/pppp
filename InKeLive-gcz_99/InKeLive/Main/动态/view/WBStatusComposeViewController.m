@@ -93,7 +93,7 @@
     _textView.font = [UIFont systemFontOfSize:17];
     _textView.textParser = [WBStatusComposeTextParser new];
     _textView.delegate = self;
-    _textView.inputAccessoryView = [UIView new];
+//    _textView.inputAccessoryView = [UIView new];
     
     WBTextLinePositionModifier *modifier = [WBTextLinePositionModifier new];
     modifier.font = [UIFont fontWithName:@"Heiti SC" size:17];

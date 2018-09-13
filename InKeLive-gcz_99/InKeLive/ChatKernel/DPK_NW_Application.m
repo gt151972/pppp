@@ -1077,6 +1077,28 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 }
             }
                 break;
+            case MXP_SUBCMD_VIDEOCHAT_GLOBALCHAT_NOTY:{//1099
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_GLOBALCHAT_NOTY");
+                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
+                __strong id delegate =[sock GetMessageEventSink];
+                if(delegate != nil) {
+                    HBCMD_VideoChat_GlobalChatMsg_t *pNoty = (HBCMD_VideoChat_GlobalChatMsg_t *)data;
+                    NSString* srcName =[[NSString alloc] initWithCString:pNoty->srcName encoding:enc];
+                    NSString* toName =[[NSString alloc] initWithCString:pNoty->toName encoding:enc];
+                    NSString* vcbName =[[NSString alloc] initWithCString:pNoty->vcbName encoding:enc];
+                    NSString* text =[[NSString alloc] initWithCString:pNoty->text encoding:enc];
+                    [delegate OnNetMsg_GlobalChatMsgNoty:pNoty->vcbId
+                                                   SrcID:pNoty->srcId
+                                                    ToID:pNoty->toId
+                                                ChatType:pNoty->chatTypeId
+                                                 TextLen:pNoty->textLen
+                                                 SrcName:srcName
+                                                  ToName:toName
+                                                RoomName:vcbName
+                                                    Text:text];
+                }
+            }
+                break;
             default:{
                 NSLog(@"收到未知的SubCommand消息,subCmd=%d", sub_cmd);
             }

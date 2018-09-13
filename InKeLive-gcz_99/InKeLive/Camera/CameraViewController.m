@@ -19,7 +19,7 @@
 
 #import "WBRadioGroup.h"
 
-@interface CameraViewController ()< UIAlertViewDelegate >
+@interface CameraViewController ()< UIAlertViewDelegate , UITextFieldDelegate>
 {
     UIAlertView *alertView;
     WBRadioGroup* _roomStyleRadioBtnGroup;   //房间类型单选按钮组
@@ -64,6 +64,9 @@
 //房间密码设置
 @property (nonatomic, strong)UITextField* roomPwdEdit;
 
+//房间密码设置
+@property (nonatomic, strong)UITextField* textField;
+
 //相机拍摄预览图层
 @property (strong,nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property (nonatomic, strong) LZBRecordVideoTool *videoTool;
@@ -87,38 +90,113 @@
 - (void)creatUI{
     [self.view addSubview:self.containerView];
     [self.view addSubview:self.topView];
-    [self.topView addSubview:self.inputBackView];
-    [self.topView addSubview:self.startButton];
-    [self.topView addSubview:self.cameraButton];
-    [self.topView addSubview:self.beautyButton];
+//    [self.topView addSubview:self.inputBackView];
+//    [self.topView addSubview:self.startButton];
+//    [self.topView addSubview:self.cameraButton];
+//    [self.topView addSubview:self.beautyButton];
     [self.topView addSubview:self.closeButton];
-    self.inputBackView.hidden = YES;
     
     
-    [self.inputBackView addSubview:self.roomNameTipLabel];
-    [self.inputBackView addSubview:self.roomNameEdit];
+//    [self.inputBackView addSubview:self.roomNameTipLabel];
+//    [self.inputBackView addSubview:self.roomNameEdit];
+//    //
+//    [self.inputBackView addSubview:self.roomStyle1Button];
+//    [self.inputBackView addSubview:self.roomStyle2Button];
+//    [self.inputBackView addSubview:self.roomStyle3Button];
+//    [self.inputBackView addSubview:self.roomStyle4Button];
+//    [self.inputBackView addSubview:self.roomPrice1Edit];
+//    [self.inputBackView addSubview:self.roomPrice2Edit];
+//    [self.inputBackView addSubview:self.roomPwdEdit];
     //
-    [self.inputBackView addSubview:self.roomStyle1Button];
-    [self.inputBackView addSubview:self.roomStyle2Button];
-    [self.inputBackView addSubview:self.roomStyle3Button];
-    [self.inputBackView addSubview:self.roomStyle4Button];
-    [self.inputBackView addSubview:self.roomPrice1Edit];
-    [self.inputBackView addSubview:self.roomPrice2Edit];
-    [self.inputBackView addSubview:self.roomPwdEdit];
-    //
-    //UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditingText)];
-    //tap.cancelsTouchesInView =NO;
-    //[self.view addGestureRecognizer:tap];
-    
 
+    
+    UIView *viewBg = [[UIView alloc] init];
+    viewBg.backgroundColor = RGBA(0, 0, 0, 0.2);
+    viewBg.layer.cornerRadius = 10;
+    [self.topView addSubview:viewBg];
+    [viewBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.right.mas_equalTo(-12);
+        make.height.mas_equalTo(SCREEN_HEIGHT/4);
+        make.top.mas_equalTo(80);
+    }];
+    
+    UILabel *labTitle = [[UILabel alloc] init];
+    labTitle.text = @"1258多人视频";
+    labTitle.textColor = [UIColor whiteColor];
+    labTitle.font = [UIFont systemFontOfSize:15];
+    labTitle.textAlignment = NSTextAlignmentLeft;
+    [viewBg addSubview:labTitle];
+    [labTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewBg.mas_left).offset(12);
+        make.top.equalTo(viewBg.mas_top).offset(12);
+        make.width.equalTo(viewBg.mas_width);
+        make.height.mas_equalTo(15);
+    }];
+    
+    UIView *viewLine = [[UIView alloc] init];
+    viewLine.backgroundColor = [UIColor blackColor];
+    [viewBg addSubview:viewLine];
+    [viewLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewBg.mas_left).offset(12);
+        make.right.equalTo(viewBg.mas_right).offset(-12);
+        make.top.equalTo(labTitle.mas_bottom).offset(12);
+        make.height.mas_equalTo(1);
+    }];
+    
+    UIImageView *imgIcon= [[UIImageView alloc] init];
+    imgIcon.image = [UIImage imageNamed:@"1258logo"];
+    imgIcon.backgroundColor = [UIColor whiteColor];
+    imgIcon.layer.cornerRadius = 10;
+    imgIcon.layer.masksToBounds = YES;
+    [viewBg addSubview:imgIcon];
+    [imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewBg.mas_left).offset(12);
+        make.bottom.equalTo(viewBg.mas_bottom).offset(-12);
+        make.top.equalTo(viewLine.mas_bottom).offset(12);
+        make.width.equalTo(imgIcon.mas_height).multipliedBy(0.82);;
+    }];
+    
+    _textField = [[UITextField alloc] init];
+    _textField.backgroundColor = [UIColor clearColor];
+    _textField.borderStyle = UITextBorderStyleNone;
+    _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"有标题的直播才能上热门哦"attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    _textField.textColor = [UIColor whiteColor];
+    _textField.textAlignment = NSTextAlignmentLeft;
+    _textField.font = [UIFont systemFontOfSize:15];
+    [viewBg addSubview:_textField];
+    [_textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imgIcon.mas_right).offset(12);
+        make.top.equalTo(viewLine.mas_bottom).offset(12);
+        make.right.equalTo(viewBg.mas_right).offset(-12);
+        make.height.equalTo(@15);
+    }];
+    
+    UIButton *btnStart = [[UIButton alloc] init];
+    [btnStart setTitle:@"开始直播" forState:UIControlStateNormal];
+    [btnStart setBackgroundColor:MAIN_COLOR];
+    [btnStart setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    btnStart.tag = 203;
+    [btnStart addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.topView addSubview:btnStart];
+    [btnStart mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(viewBg);
+        make.height.equalTo(@40);
+        make.top.equalTo(viewBg.mas_bottom).offset(10);
+    }];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditingText)];
+    tap.cancelsTouchesInView =NO;
+    [self.view addGestureRecognizer:tap];
 }
 
 -(void)endEditingText
 {
-    [self.roomNameEdit resignFirstResponder];
-    [self.roomPrice1Edit resignFirstResponder];
-    [self.roomPrice2Edit resignFirstResponder];
-    [self.roomPwdEdit resignFirstResponder];
+//    [self.roomNameEdit resignFirstResponder];
+//    [self.roomPrice1Edit resignFirstResponder];
+//    [self.roomPrice2Edit resignFirstResponder];
+//    [self.roomPwdEdit resignFirstResponder];
+    [self.textField resignFirstResponder];
 }
 
 #pragma UIAlertViewDelegate 连麦请求
@@ -214,7 +292,7 @@
 -(UIView*)topView {
     if(_topView == nil) {
         _topView = [[UIView alloc]initWithFrame:self.view.bounds];
-        _topView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+        _topView.backgroundColor = [UIColor clearColor];
     }
     return _topView;
 }

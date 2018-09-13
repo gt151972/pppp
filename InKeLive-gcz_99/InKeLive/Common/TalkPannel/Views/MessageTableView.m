@@ -133,7 +133,8 @@
         }
         //将model对象加入到信息model数组里面
         [self.data addObject:model];
-        
+        NSLog(@"self.isNeedScroll == %d",self.isNeedScroll);
+        NSLog(@"self.isRightTime == %d",self.isRightTime);
         if (self.isNeedScroll && self.isRightTime) {
             NSLog(@"scroll");
             if (self.isShowNode) {
