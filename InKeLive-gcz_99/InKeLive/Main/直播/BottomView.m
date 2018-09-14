@@ -22,6 +22,16 @@
 }
 
 - (void)creatUI{
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"createFlag.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    NSString *creat= [dict objectForKey:@"createFlag"];
+    if ([creat isEqualToString:@"1"]) {
+        _createFlag = YES;
+    }else{
+        _createFlag = NO;
+    }
     for (NSInteger i = 0; i < self.imageArr.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:self.imageArr[i]] forState:UIControlStateNormal];
@@ -57,9 +67,9 @@
 - (NSArray *)imageArr{
     //图片数组
     if (_imageArr == nil) {
-        
+        NSLog(@"_createFlag == %d",_createFlag);
         if (_createFlag) {
-            _imageArr = @[@"living_private_chat",@"camra_preview", @"living_beauty",@"living_gift"];
+            _imageArr = @[@"living_private_chat",@"living_turn_camera", @"living_beauty",@"living_gift"];
         }else{
            _imageArr = @[@"living_private_chat",@"living_gift"];
         }

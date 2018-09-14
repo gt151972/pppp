@@ -321,6 +321,8 @@ typedef struct _tag_HBCMD_VideoChat_GiftRecord
     int     errorCode;
     uint32  vcbId;
     uint32  srcId;
+    uint8   srcvipLevel;        //送礼物人等级
+    uint8   desvipLevel;        //收礼物人等级
     uint32  toId;           //散花用户=0,根据sendType判断
     uint32  giftId;         //礼物ID
     uint32  giftNum;        //礼物数量
@@ -570,6 +572,7 @@ typedef struct _tag_HBCMD_VideoChat_SetUserInfo_Req
 {
     uint32 userId;
     char   userName[NAMELEN];
+    int8   ngender ;            //用户性别
 }HBCMD_VideoChat_SetUserInfo_Req_t;
 
 //设置用户信息响应
@@ -578,6 +581,7 @@ typedef struct _tag_HBCMD_VideoChat_SetUserInfo_Resp
     int errorCode;
     uint32 userId;
     char  userName[NAMELEN];
+    int8  ngender ;            //用户性别
 }HBCMD_VideoChat_SetUserInfo_Resp_t;
 
 //增加房间管理请求

@@ -48,7 +48,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
-    cell.backgroundView = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
     UIImageView *imgHead = [[UIImageView alloc] init];
     imgHead.layer.cornerRadius = SCREEN_WIDTH/8 - 15;
     imgHead.layer.masksToBounds = YES;

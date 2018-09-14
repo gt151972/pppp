@@ -116,6 +116,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         //收益
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strUrl = [dict objectForKey:@"activity"];
+        WebViewController *webVC = [[WebViewController alloc] init];
+        webVC.strUrl = strUrl;
+        webVC.strTitle = @"我的收益";
+        [self.navigationController pushViewController:webVC animated:YES];
     }else if (indexPath.row == 1){
         //安全中心
         SecurityViewController *securityVC = [[SecurityViewController alloc] init];

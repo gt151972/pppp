@@ -33,6 +33,7 @@
 #import "ChatPrivateView.h"
 #import "ChatPublicView.h"
 #import "ChangeScore.h"
+#import "BeautyView.h"
 
 
 #define USER_NEXTACTION_IDEL          0
@@ -57,6 +58,8 @@ privateChatViewDelegate>
     bool is_ksystream_pull_autoconnect_;    //拉流器的状态,是否自动连接
     
     BOOL isAnimation; //是否显示礼物特效
+    
+    
 }
 
 @property(nonatomic, strong) MBProgressHUD* hud;
@@ -110,10 +113,17 @@ privateChatViewDelegate>
 @property (nonatomic, strong) ChatPrivateView *chatPrivateView;
 //公聊
 @property (nonatomic, strong) ChatPublicView *chatPublicView;
+//积分兑换
 @property (nonatomic, strong) ChangeScore *changeScore;
+//美颜滤镜
+@property (nonatomic, strong) BeautyView *beautyView;
+@property (nonatomic, readwrite) float grind;//磨皮
+@property (nonatomic, readwrite) float whiten;//美白
+@property (nonatomic, readwrite) float rubby;//红润
 
 //公聊数据
 @property (nonatomic, strong) NSMutableArray *arrPubChat;
+
 @end
 
 @implementation LiveViewController
@@ -135,7 +145,9 @@ privateChatViewDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _bottomTool.createFlag = self.createFlag;
+    self.grind = 0.5;
+    self.whiten = 0.5;
+    self.rubby = 0.5;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
@@ -806,6 +818,8 @@ privateChatViewDelegate>
                 {
                     if (weakSelf.createFlag) {
                         //切换镜头
+                        [weakSelf.kit switchCamera];
+                        
                     }else{
                         [weakSelf bottomToolPosition];
                     }
@@ -813,7 +827,8 @@ privateChatViewDelegate>
                 break;
                 case 152: //美颜
                 {
-                   
+                    
+                   [weakSelf showBeautyViewLWithGrind:weakSelf.grind whiten:weakSelf.whiten ruddy:weakSelf.rubby];
                 }
                     break;
                 case 153: //礼物
@@ -1401,7 +1416,7 @@ privateChatViewDelegate>
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
 //            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
-            
+            NSLog(@"_userObj.vipLevel == %d",weakSelf.userObj.vipLevel);
             if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
                 [weakSelf sendAttention:flag roomId:_roomObj.roomId singerId:_userObj.userId];
             }else{
@@ -1954,6 +1969,31 @@ privateChatViewDelegate>
     }];
     
     [view popShow];
+}
+
+- (void)showBeautyViewLWithGrind:(float)grind whiten:(float)whiten ruddy:(float)ruddy{
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    _beautyView = [[BeautyView alloc] initWithFrame:frame];
+    
+    [_beautyView.slidergrind setValue:self.grind*100];
+    [_beautyView.sliderwhiten setValue:self.whiten*100];
+    [_beautyView.sliderruddy setValue:self.rubby*100];
+    [_beautyView popShow];
+    WEAKSELF;
+    [_beautyView setSliderClick:^(float value, int slideNum) {
+        if (slideNum == 0) {
+            weakSelf.grind = value/100;
+        }else if (slideNum == 1){
+            weakSelf.whiten = value/100;
+        }else if (slideNum == 2){
+            weakSelf.rubby = value/100;
+        }
+        KSYBeautifyFaceFilter *bf = [[KSYBeautifyFaceFilter alloc] init];
+        bf.grindRatio  = [[NSString stringWithFormat:@"%.2lf",weakSelf.grind] floatValue];
+        bf.whitenRatio = [[NSString stringWithFormat:@"%.2lf",weakSelf.whiten] floatValue];
+        bf.ruddyRatio  = [[NSString stringWithFormat:@"%.2lf",weakSelf.rubby] floatValue];;
+        [weakSelf.kit setupFilter:bf];
+    }];
 }
 
 - (void)showChangeScoreView{

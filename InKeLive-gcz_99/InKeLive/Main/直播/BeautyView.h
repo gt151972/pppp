@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface BeautyView : UIView
-//@property (nonatomic, retain) float grind; //磨皮 0~1;
-//@property (nonatomic, strong)
-
-- (void)popView;
+@property(readwrite,nonatomic) float grind;//磨皮
+@property(readwrite,nonatomic) float whiten;//美白
+@property(readwrite,nonatomic) float ruddy;//红润
+@property (nonatomic, strong)UISlider *slidergrind;
+@property (nonatomic, strong)UISlider *sliderwhiten;
+@property (nonatomic, strong)UISlider *sliderruddy;
+@property (nonatomic, copy) void(^sliderClick)(float value, int slideNum);
+- (void)popShow;
 - (void)hide;
 @end

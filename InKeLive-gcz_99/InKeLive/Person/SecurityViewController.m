@@ -8,6 +8,8 @@
 
 #import "SecurityViewController.h"
 #import "ChangePwdViewController.h"
+#import "BindingViewController.h"
+#import "RemoveBindingViewController.h"
 
 @interface SecurityViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property(nonatomic, strong)  UITableView *tableView;
@@ -76,6 +78,9 @@
         [self.navigationController pushViewController:changePwdVC animated:YES];
     }else if (indexPath.row == 1){
         //找回密保
+        //绑定手机跳转解绑,未绑定跳绑定
+        BindingViewController *bindVC = [[BindingViewController alloc] init];
+        [self.navigationController pushViewController:bindVC animated:YES];
     }
 }
 

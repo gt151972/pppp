@@ -111,6 +111,18 @@
     live.caremaIsFront = isFront;//是否前置
     live.dicInfo = joinRoomInfo.dicRoomInfo;
 //    NSLog(@"createFlag == %d, caremaIsFront == %d",isCreate, isFront);
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"createFlag.plist"];
+    NSDictionary*dict;
+    if (isCreate) {
+        dict =@{@"createFlag":@"1"};
+    }else{
+        dict =@{@"createFlag":@"0"};
+    }
+    [dict writeToFile:filePathName atomically:YES];
+    
+
     BaseViewController *liveNav = [[BaseViewController alloc]initWithRootViewController:live];
     [self.tabbarVC presentViewController:liveNav animated:YES completion:nil];
 }

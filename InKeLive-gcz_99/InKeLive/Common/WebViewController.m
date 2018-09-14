@@ -190,11 +190,35 @@
         if (![navigationAction.request.URL.absoluteString isEqualToString:childUrl]) {
             NSLog(@"url == %@", navigationAction.request.URL.absoluteString);
             NSString *strUrl = [NSString stringWithFormat:@"%@",navigationAction.request.URL.absoluteString];
-            strUrl = [strUrl stringByReplacingOccurrencesOfString:@"jiujiu://Web/"withString:@""];
-            childUrl = strUrl;
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:strUrl]];
-            [webView loadRequest:request];
-            decisionHandler(WKNavigationActionPolicyCancel);
+            NSString *strWeb = @"jiujiu://Web/";
+            NSString *strQQ = @"jiujiu://QQ/";
+            NSString *strPhone = @"jiujiu://Phone/";
+            if([strUrl rangeOfString:strWeb].location != NSNotFound){
+                strUrl = [strUrl stringByReplacingOccurrencesOfString:strWeb withString:@""];
+                childUrl = strUrl;
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:strUrl]];
+                [webView loadRequest:request];
+                decisionHandler(WKNavigationActionPolicyCancel);
+            }else if ([strUrl rangeOfString:strQQ].location != NSNotFound){
+                if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"mqq://"]]) {
+                    strUrl = [strUrl stringByReplacingOccurrencesOfString:strQQ withString:@""];
+                    NSString *qq=[NSString stringWithFormat:@"mqq://im/chat?chat_type=wpa&uin=%@&version=1&src_type=web",strQQ];
+                    NSURL *url = [NSURL URLWithString:qq];
+                    [[UIApplication sharedApplication] openURL:url];
+                    decisionHandler(WKNavigationActionPolicyCancel);
+                }else{
+                    [[GTAlertTool shareInstance]showAlert:@"尚未安装QQ" message:@"请先去商店下载QQ" cancelTitle:@"确定" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                    }];
+                    decisionHandler(WKNavigationActionPolicyCancel);
+                }
+            }else if ([strUrl rangeOfString:strPhone].location != NSNotFound){
+                strUrl = [strUrl stringByReplacingOccurrencesOfString:strPhone withString:@""];
+                NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", strUrl];
+                /// 防止iOS 10及其之后，拨打电话系统弹出框延迟出现
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+                decisionHandler(WKNavigationActionPolicyCancel);
+            }
+            
         }else{
             decisionHandler(WKNavigationActionPolicyAllow);
         }

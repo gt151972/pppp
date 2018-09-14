@@ -369,6 +369,7 @@
     [self hide];
 }
 
+
 -(void)btnSendClicked{
     if (self.privateChatSend) {
         if (_textField.text.length > 0) {

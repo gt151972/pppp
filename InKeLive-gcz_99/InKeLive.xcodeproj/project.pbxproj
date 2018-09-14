@@ -376,6 +376,7 @@
 		649A07A7212A8AA600639EE7 /* WBStatusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A07A6212A8AA600639EE7 /* WBStatusHelper.m */; };
 		649A07AB212A8BEA00639EE7 /* YYPhotoGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A07AA212A8BEA00639EE7 /* YYPhotoGroupView.m */; };
 		649A07AE212A8D0600639EE7 /* YYControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A07AD212A8D0600639EE7 /* YYControl.m */; };
+		64A43524214BA3C900A2FF99 /* GTAFNData.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A43523214BA3C900A2FF99 /* GTAFNData.m */; };
 		64AA3D612112C8EB00111B80 /* ForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D5F2112C8EB00111B80 /* ForgetPasswordViewController.m */; };
 		64AA3D622112C8EB00111B80 /* ForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */; };
 		64AA3D662112C91700111B80 /* RegisteredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64AA3D642112C91700111B80 /* RegisteredViewController.m */; };
@@ -985,6 +986,8 @@
 		649A07AA212A8BEA00639EE7 /* YYPhotoGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPhotoGroupView.m; sourceTree = "<group>"; };
 		649A07AC212A8D0600639EE7 /* YYControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYControl.h; path = "InKeLive/Main/动态/view/YYControl.h"; sourceTree = SOURCE_ROOT; };
 		649A07AD212A8D0600639EE7 /* YYControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYControl.m; path = "InKeLive/Main/动态/view/YYControl.m"; sourceTree = SOURCE_ROOT; };
+		64A43522214BA3C900A2FF99 /* GTAFNData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAFNData.h; sourceTree = "<group>"; };
+		64A43523214BA3C900A2FF99 /* GTAFNData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAFNData.m; sourceTree = "<group>"; };
 		64AA3D5E2112C8EB00111B80 /* ForgetPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordViewController.h; sourceTree = "<group>"; };
 		64AA3D5F2112C8EB00111B80 /* ForgetPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordViewController.m; sourceTree = "<group>"; };
 		64AA3D602112C8EB00111B80 /* ForgetPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgetPasswordViewController.xib; sourceTree = "<group>"; };
@@ -1772,6 +1775,8 @@
 				6481F88421464EB7007264AB /* LevelGrade.m */,
 				6481F886214669F0007264AB /* WebViewController.h */,
 				6481F887214669F0007264AB /* WebViewController.m */,
+				64A43522214BA3C900A2FF99 /* GTAFNData.h */,
+				64A43523214BA3C900A2FF99 /* GTAFNData.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2714,6 +2719,7 @@
 				630E755F1E00017D00AF5EAF /* BaseViewController.m in Sources */,
 				1A9D1D0C1F43DD960003EA13 /* DPKTCPSocket.m in Sources */,
 				644B1815211424B700939E76 /* StateViewController.m in Sources */,
+				64A43524214BA3C900A2FF99 /* GTAFNData.m in Sources */,
 				6314834F1E15FFF800EB5294 /* NetUtils.m in Sources */,
 				644B183F2114319100939E76 /* RoomViewController.m in Sources */,
 				1AE89EC11F41C6CA0001C5D8 /* TempCreateRoomInfo.m in Sources */,
