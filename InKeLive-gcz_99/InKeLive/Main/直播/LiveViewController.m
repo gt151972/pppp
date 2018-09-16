@@ -2060,7 +2060,7 @@ privateChatViewDelegate>
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
         if (toId == 0) {
-            [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:@"确定" titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
+            [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
         }else{

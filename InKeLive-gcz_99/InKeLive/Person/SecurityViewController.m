@@ -10,8 +10,9 @@
 #import "ChangePwdViewController.h"
 #import "BindingViewController.h"
 #import "RemoveBindingViewController.h"
+#import "GTAFNData.h"
 
-@interface SecurityViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface SecurityViewController ()<UITableViewDelegate, UITableViewDataSource, GTAFNDataDelegate>
 @property(nonatomic, strong)  UITableView *tableView;
 @property (nonatomic, strong) NSArray *arrTitle;
 @end
@@ -79,8 +80,10 @@
     }else if (indexPath.row == 1){
         //找回密保
         //绑定手机跳转解绑,未绑定跳绑定
-        BindingViewController *bindVC = [[BindingViewController alloc] init];
-        [self.navigationController pushViewController:bindVC animated:YES];
+        GTAFNData *data = [[GTAFNData alloc] init];
+        data.delegate = self;
+        [data requestSecurityRead];
+        
     }
 }
 
@@ -95,6 +98,24 @@
 #pragma mark Action
 -(void)btnBackClicked{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString: CMD_SECURITY_READ]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            if ([[data objectForKey:@"Phone"] isEqualToString: @""]) {
+                BindingViewController *bindVC = [[BindingViewController alloc] init];
+                [self.navigationController pushViewController:bindVC animated:YES];
+            }else{
+                RemoveBindingViewController *removeBindVC = [[RemoveBindingViewController alloc] init];
+                [self.navigationController pushViewController:removeBindVC animated:YES];
+            }
+        }else{
+            [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                
+            }];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

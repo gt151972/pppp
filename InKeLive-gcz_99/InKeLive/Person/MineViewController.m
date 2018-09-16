@@ -281,7 +281,7 @@
         [appDelegate logout];
         return;
     }else {
-        [[GTAlertTool shareInstance] showAlert:@"用户未登录" message:@"" cancelTitle:@"取消" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+        [[GTAlertTool shareInstance] showAlert:@"用户未登录" message:@"" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
             
         }];
     }

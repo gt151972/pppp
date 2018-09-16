@@ -192,7 +192,7 @@
         _imagePicker.delegate = self;
         _imagePicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         _imagePicker.allowsEditing = YES;
-        [[GTAlertTool shareInstance] showAlert:@"" message:@"" cancelTitle:@"取消" viewController:self confirm:^(NSInteger buttonTag) {
+        [[GTAlertTool shareInstance] showSheet:@"" message:@"" cancelTitle:nil viewController:self confirm:^(NSInteger buttonTag) {
             if (buttonTag == 0) {
                 [self selectImageFromCamera];
             }else if (buttonTag == 1){

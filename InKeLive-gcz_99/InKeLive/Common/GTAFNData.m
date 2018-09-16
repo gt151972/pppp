@@ -7,11 +7,9 @@
 //
 
 #import "GTAFNData.h"
-#import "DPK_NW_Application.h"
-#import "CommonAPIDefines.h"
-#import <AFNetworking.h>
 
 @implementation GTAFNData
+
 + (GTAFNData *)shareInstance {
     static GTAFNData *tools = nil;
     static dispatch_once_t onceToken;
@@ -37,6 +35,7 @@
         NSMutableDictionary *appDic =(NSMutableDictionary*)responseObject;
         if ([appDic[@"code"] intValue] == 0) {
             [self requestCallBack:appDic];
+            NSLog(@"%@",appDic[@"msg"]);
         }else{
             NSLog(@"%@",appDic[@"msg"]);
         }
@@ -83,12 +82,80 @@
 /**
  手机密保读取
  
- @param uid <#uid description#>
  */
--(void)requestSecurityReadWithUid: (NSString *)uid{
+-(void)requestSecurityRead{
     currResult = CMD_SECURITY_READ;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
-    [self postData:CMD_SECURITY_READ data:dict];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 手机密保验证码
+ 
+ @param phone 手机号
+ */
+-(void)requestSecurityCodeWithPhone: (NSString *)phone{
+    currResult = CMD_SECURITY_CODE;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", phone, @"phone", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 手机密保保存
+ 
+ @param phone 手机号
+ @param code 验证码
+ */
+-(void)requestSecuritySaveWithPhone: (NSString *)phone
+                               code: (NSString *)code{
+    currResult = CMD_SECURITY_SAVE;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", phone, @"phone", code, @"code", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 注册发送验证码
+ 
+ @param phone <#phone description#>
+ @param reg <#reg description#>
+ */
+-(void)phoneMsgWithPhone:(NSString *)phone
+                     reg:(NSString *)reg{
+    currResult = CMD_REGISTER_SEND_CODE;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", reg, @"reg", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 注册
+ 
+ @param phone 手机号
+ @param code 验证码
+ @param pwd 密码
+ */
+-(void)phoneRegWithPhone: (NSString *)phone
+                    code: (NSString *)code
+                     pwd: (NSString *)pwd{
+    currResult = CMD_PASSWORD_FIND;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", code, @"code", pwd, @"pwd", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 修改密码
+ 
+ @param phone <#phone description#>
+ @param code <#code description#>
+ @param pwd <#pwd description#>
+ */
+-(void)phoneRetrieveWithPhone: (NSString *)phone
+                         code: (NSString *)code
+                          pwd: (NSString *)pwd{
+    currResult = CMD_PASSWORD_CHANGE;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", code, @"code", pwd, @"pwd", nil];
+    [self postData:currResult data:dict];
 }
 @end

@@ -207,7 +207,7 @@
                     [[UIApplication sharedApplication] openURL:url];
                     decisionHandler(WKNavigationActionPolicyCancel);
                 }else{
-                    [[GTAlertTool shareInstance]showAlert:@"尚未安装QQ" message:@"请先去商店下载QQ" cancelTitle:@"确定" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                    [[GTAlertTool shareInstance]showAlert:@"尚未安装QQ" message:@"请先去商店下载QQ" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                     }];
                     decisionHandler(WKNavigationActionPolicyCancel);
                 }

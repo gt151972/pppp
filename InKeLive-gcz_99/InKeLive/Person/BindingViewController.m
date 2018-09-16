@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textFieldCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnBinding;
+@property (nonatomic, assign) int code;
 
 @end
 
@@ -36,9 +37,7 @@
     _btnCode.layer.cornerRadius = 2;
     _btnBinding.layer.masksToBounds = YES;
     _btnBinding.layer.cornerRadius = 19;
-    GTAFNData *data = [[GTAFNData alloc] init];
-    data.delegate = self;
-    [[GTAFNData shareInstance] requestSecurityReadWithUid:@"1259"];
+    
 }
 
 - (void)btnBackClicked{
@@ -47,37 +46,24 @@
 - (IBAction)btnCodeClicked:(id)sender {
     //验证码
     [Time setTheCountdownButton:sender startWithTime:45 title:@"获取验证码" countDownTitle:@"s" mainColor:MAIN_COLOR countColor:MAIN_COLOR];
+    
+    if (_textFieldPhone.text.length == 11) {
+        GTAFNData *data = [[GTAFNData alloc] init];
+        data.delegate = self;
+        [data requestSecurityCodeWithPhone:_textFieldPhone.text];
+    }else{
+        [[GTAlertTool shareInstance] showAlert:@"手机号格式错误" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+            
+        }];
+    }
+    
 }
 - (IBAction)btnBindingClicked:(id)sender {
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data requestSecuritySaveWithPhone:_textFieldPhone.text code:_textFieldCode.text];
 }
 
--(void)requestData: (NSString *)strPhone{
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    // 获得请求管理者
-    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-    // 设置请求格式
-    session.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    parameters[@"cmd"] = CMD_SECURITY_READ;
-    parameters[@"uid"] = strPhone;
-    NSString* strAPIUrl = URL_GiftInfo;
-    NSLog(@"url:%@", strAPIUrl);
-    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
-    [session POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"Success: %@", responseObject);
-        NSLog(@"task: %@",task);
-        NSDictionary *appDic =(NSDictionary*)responseObject;
-        if (appDic[@"code"] == 0) {
-            
-        }else{
-            NSLog(@"%@",appDic[@"msg"]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error: %@", error);
-    }];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -85,7 +71,23 @@
 }
 
 -(void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
-    NSLog(@"cmd");
+    if ([cmd isEqualToString:CMD_SECURITY_CODE]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            
+        }else{
+            [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                
+            }];
+        }
+    }else if ([cmd isEqualToString:CMD_SECURITY_SAVE]){
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            
+        }else{
+            [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                
+            }];
+        }
+    }
 }
 
 @end

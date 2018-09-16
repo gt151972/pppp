@@ -28,29 +28,58 @@
 /**
  手机密保读取
 
- @param uid <#uid description#>
  */
--(void)requestSecurityReadWithUid: (NSString *)uid;
+-(void)requestSecurityRead;
 
 
 /**
  手机密保验证码
 
- @param uid <#uid description#>
  @param phone 手机号
  */
--(void)requestSecurityCodeWithUid: (NSString *)uid
-                            phone: (NSString *)phone;
+-(void)requestSecurityCodeWithPhone: (NSString *)phone;
 
 
 /**
  手机密保保存
 
- @param uid <#uid description#>
  @param phone 手机号
  @param code 验证码
  */
--(void)requestSecuritySaveWithUid: (NSString *)uid
-                            phone: (NSString *)phone
+-(void)requestSecuritySaveWithPhone: (NSString *)phone
                              code: (NSString *)code;
+
+
+/**
+ 注册发送验证码
+
+ @param phone <#phone description#>
+ @param reg <#reg description#>
+ */
+-(void)phoneMsgWithPhone: (NSString *)phone
+                     reg: (NSString *)reg;
+
+
+/**
+ 注册
+
+ @param phone 手机号
+ @param code 验证码
+ @param pwd 密码
+ */
+-(void)phoneRegWithPhone: (NSString *)phone
+                    code: (NSString *)code
+                     pwd: (NSString *)pwd;
+
+
+/**
+ 修改密码
+
+ @param phone <#phone description#>
+ @param code <#code description#>
+ @param pwd <#pwd description#>
+ */
+-(void)phoneRetrieveWithPhone: (NSString *)phone
+                         code: (NSString *)code
+                          pwd: (NSString *)pwd;
 @end
