@@ -34,7 +34,7 @@
 @property (nonatomic, assign)NSInteger  LastSelect;
 @property (nonatomic, strong)UIView *pageBgView;
 @property (nonatomic, strong)UIButton *btnChange;
-
+@property (nonatomic, strong)UIButton *btnRecharge;
 @property (nonatomic, assign)int type;
 @end
 
@@ -67,6 +67,7 @@
     [self.rechargeView addSubview:self.senderButton];
     [self.rechargeView addSubview:self.selectUserButton];
     [self.rechargeView addSubview:self.btnChange];
+    [self.rechargeView addSubview:self.btnRecharge];
 //    [self.rechargeView addSubview:self.selectNumButton];
     [self addSubview:self.topClassifyView];
     
@@ -328,7 +329,7 @@
 - (UIView *)topClassifyView{
     if (!_topClassifyView) {
         _topClassifyView = [[UIView alloc] initWithFrame:CGRectMake(0, GifGetY, SCREEN_WIDTH, 35)];
-        _topClassifyView.backgroundColor = RGBA(50, 50, 50, 0.8);
+        _topClassifyView.backgroundColor = RGBA(0, 0, 0, 0.8);
         CGFloat btnWidth = SCREEN_WIDTH/typeCount;
         DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
         for (int index = 0; index < typeCount; index ++) {
@@ -392,7 +393,7 @@
 //发送礼物按钮
 - (UIButton *)senderButton{
     if (!_senderButton) {
-        _senderButton = [MyControlTool buttonWithText:@"发送" textColor:[UIColor whiteColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
+        _senderButton = [MyControlTool buttonWithText:@"赠送" textColor:[UIColor blackColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
             NSLog(@"list == %@",[_arrayAll objectAtIndex:_type]);
             GTGiftListModel* model = [[_arrayAll objectAtIndex:_type] objectAtIndex:_reuse];
             NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:model.name, @"name", model.pic_original, @"imageName", model.pic_thumb, @"image",[NSString stringWithFormat:@"%d",model.giftId], @"giftId", nil];
@@ -400,7 +401,6 @@
             if (self.giftClick) {
                 self.giftClick(dic, _giftNum);
                 NSLog(@"_reuse == %ld", (long)_reuse);
-                [self hide];
             }
         }];
         _senderButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -465,11 +465,24 @@
         CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 2, 50, 28);
         _btnChange = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnChange.frame = frame;
+        [_btnChange.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_btnChange setTitle:@"兑换" forState:UIControlStateNormal];
         [_btnChange setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
         [_btnChange addTarget:self action:@selector(btnChangeClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnChange;
+}
+- (UIButton *)btnRecharge{
+    if (!_btnRecharge) {
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 22, 50, 28);
+        _btnRecharge = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnRecharge.frame = frame;
+        [_btnRecharge.titleLabel setFont:[UIFont systemFontOfSize:13]];
+        [_btnRecharge setTitle:@"充值" forState:UIControlStateNormal];
+        [_btnRecharge setTitleColor:GREEN_COLOR forState:UIControlStateNormal];
+        [_btnRecharge addTarget:self action:@selector(btnChangeClicked) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnRecharge;
 }
 
 //分页（放在底部工具栏里面)

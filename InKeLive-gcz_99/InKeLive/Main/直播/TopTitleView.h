@@ -10,7 +10,9 @@
 
 @interface TopTitleView : UIView
 
-@property (nonatomic,copy)void (^titleClick)(NSInteger tag);
+@property (nonatomic,assign) NSInteger lastTag;
+
+@property (nonatomic,copy)void (^titleClick)(NSInteger tag, NSInteger lastTag);
 
 @property (nonatomic,strong)UIScrollView *titleScrollView;
 

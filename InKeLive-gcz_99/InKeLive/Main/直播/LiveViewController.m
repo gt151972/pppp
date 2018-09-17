@@ -117,6 +117,8 @@ privateChatViewDelegate>
 @property (nonatomic, strong) ChangeScore *changeScore;
 //美颜滤镜
 @property (nonatomic, strong) BeautyView *beautyView;
+//分享面板
+@property (nonatomic, strong) ShareView *shareView;
 @property (nonatomic, readwrite) float grind;//磨皮
 @property (nonatomic, readwrite) float whiten;//美白
 @property (nonatomic, readwrite) float rubby;//红润
@@ -1245,6 +1247,7 @@ privateChatViewDelegate>
     if (!_presentView) {
         _presentView  = [[PresentView alloc]init];
         _presentView.frame = CGRectMake(0,150, CGRectGetWidth(self.view.frame)/2, 285);
+        _presentView.showTime = 3;
         _presentView.delegate = self;
         _presentView.backgroundColor = [UIColor clearColor];
     }
@@ -1494,7 +1497,7 @@ privateChatViewDelegate>
     if (!_topToolView) {
         CGRect frame = CGRectMake(170, 30, SCREEN_WIDTH - 174, 33);
         _topToolView = [[TopToolView alloc] initWithFrame:frame];
-//        WEAKSELF;
+        WEAKSELF;
         [_topToolView setToolClicked: ^(UIButton *btn) {
             if (btn.tag == 511) {
                 //特效
@@ -1502,12 +1505,13 @@ privateChatViewDelegate>
                 btn.selected = !btn.selected;
             }else if (btn.tag == 512){
                 //分享
+                [weakSelf showShareView];
             }else if (btn.tag == 513){
                 //用户列表
-                [self showSelectGiftUserView];
+                [weakSelf showSelectGiftUserView];
             }else if (btn.tag == 514){
                 //关闭
-                [self closeRoom];
+                [weakSelf closeRoom];
             }
         }];
     }
@@ -1937,6 +1941,11 @@ privateChatViewDelegate>
     }];
     
     [view popShow];
+}
+- (void)showShareView{
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    _shareView = [[ShareView alloc] initWithFrame:frame];
+    [_shareView popShow];
 }
 
 
@@ -2715,19 +2724,23 @@ privateChatViewDelegate>
 //    NSLog(@"msgType == %d",msgType);
 //    NSLog(@"chatContent == %@",chatContent);
 //    NSLog(@"toUserAlias == %@",toUserAlias);
-    
+    int level = 0;
     NSArray *arrName = self.roomObj.memberList;
     for (int i = 0; i<arrName.count; i++) {
         ClientUserModel *model = [arrName objectAtIndex:i];
         if (toId == model.userId) {
             toUserAlias = model.userAlias;
         }
+        if (srcId == model.userId) {
+            level = model.vipLevel;
+        }
     }
     //聊天区域显示
     if (msgType == 1) {//公聊
         NSString* chatContent2 = [NSString filterHTML:chatContent];
         MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:@"guestID" withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2 toUserAlias:toUserAlias toId:toId];
+        model.cellType = CellNewChatMessageType;
+        [model setModel:[NSString stringWithFormat:@"%d",srcId] withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withMessage:chatContent2 toUserAlias:(NSString *)toUserAlias toId:toId level:level];
         [self.messageTableView sendMessage:model];
     }else if(msgType == 2){//私聊
         //userId:
@@ -2791,12 +2804,12 @@ privateChatViewDelegate>
         _chatPrivateView.nowRow = self.nowRow;
         _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         [_chatPrivateView reloadDateForTableView];
-    }else if (msgType == 3){
+    }else if (msgType == 3){//公告
         NSString *strToId = [NSString stringWithFormat:@"%d",toId];
         NSString* chatContent2 = [NSString filterHTML:chatContent];
         MessageModel *model = [[MessageModel alloc] init];
         [model setModel:strToId withName:srcUserAlias withIcon:nil withType:CellNoticeType
-            withMessage:chatContent2 toUserAlias:toUserAlias toId:toId];
+            withMessage:chatContent2 toUserAlias:toUserAlias toId:toId level:0];
         [self.messageTableView sendMessage:model];
     }
     
@@ -2828,6 +2841,14 @@ privateChatViewDelegate>
                      ToUserAlias:(NSString*)toUserAlias
                         GiftText:(NSString*)giftText
 {
+    int level = 0;
+    NSArray *arrName = self.roomObj.memberList;
+    for (int i = 0; i<arrName.count; i++) {
+        ClientUserModel *model = [arrName objectAtIndex:i];
+        if (srcId == model.userId) {
+            level = model.vipLevel;
+        }
+    }
     if (flyId >= 0) {
         //跑道显示
         _flyView.strToName = toUserAlias;
@@ -2842,53 +2863,51 @@ privateChatViewDelegate>
         }
         _flyView.giftNum = giftNum;
         [_flyView paomadeng];
-    }else{
-        //聊天框显示
-        //聊天区域和礼物区域显示
-        NSLog(@"giftID == %d",giftId);
-        MessageModel *model = [[MessageModel alloc] init];
-        NSString* strSrcId = [NSString stringWithFormat:@"%d", srcId];
-        GTGiftListModel* giftInfo = [[DPK_NW_Application sharedInstance] findGiftConfig:giftId];
-        NSLog(@"giftInfo == %@",giftInfo);
-        NSString* strGiftId = [NSString stringWithFormat:@"%d", giftId];
-        NSString* strGiftName = [NSString stringWithFormat:@"未知礼物(%d)", giftId];
-        NSString* strGiftNum =[NSString stringWithFormat:@"%d", giftNum];
-        if(giftInfo !=nil) {
-            strGiftName = giftInfo.name;
-        }
-        
-        NSString* strToId = [NSString stringWithFormat:@"%d", srcId];
-        NSString* strToName = [NSString stringWithFormat:@"%d", toId];
-        if(toId == 0)
-            strToName = @"大家";
-        ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
-        if(srcUserObj !=nil) {
-            strToName = srcUserObj.userAlias;
-        }
-        ClientUserModel* toUserObj = [self.roomObj findMember:toId];
-        if(toUserObj !=nil) {
-            strToName = toUserObj.userAlias;
-        }
-        
-        LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-        if(userData.userID == toId)
-            strToName = @"你";
-        
-        [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewChatMessageType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName];
-        [self.messageTableView sendMessage:model];
-        WEAKSELF;
-        PresentModel *presentModel = [[PresentModel alloc] init];
-        presentModel.sender = srcUserAlias;
-        presentModel.giftName = strGiftName;
-        presentModel.icon = giftInfo.pic_thumb;
-        presentModel.giftImageName = giftInfo.pic_original;
-        presentModel.giftNumber = giftNum;
-        for (int index = 0; index < giftNum; index ++ ) {
-            [weakSelf.giftArr addObject:presentModel];
-        }
-        [weakSelf chooseGift:0 isAnimation:isAnimation];
+    }
+    //聊天框显示
+    //聊天区域和礼物区域显示
+    NSLog(@"giftID == %d",giftId);
+    MessageModel *model = [[MessageModel alloc] init];
+    NSString* strSrcId = [NSString stringWithFormat:@"%d", srcId];
+    GTGiftListModel* giftInfo = [[DPK_NW_Application sharedInstance] findGiftConfig:giftId];
+    NSLog(@"giftInfo == %@",giftInfo);
+    NSString* strGiftId = [NSString stringWithFormat:@"%d", giftId];
+    NSString* strGiftName = [NSString stringWithFormat:@"未知礼物(%d)", giftId];
+    NSString* strGiftNum =[NSString stringWithFormat:@"%d", giftNum];
+    if(giftInfo !=nil) {
+        strGiftName = giftInfo.name;
     }
     
+    NSString* strToId = [NSString stringWithFormat:@"%d", srcId];
+    NSString* strToName = [NSString stringWithFormat:@"%d", toId];
+    if(toId == 0)
+        strToName = @"大家";
+    ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
+    if(srcUserObj !=nil) {
+        strToName = srcUserObj.userAlias;
+    }
+    ClientUserModel* toUserObj = [self.roomObj findMember:toId];
+    if(toUserObj !=nil) {
+        strToName = toUserObj.userAlias;
+    }
+    
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    if(userData.userID == toId)
+        strToName = @"你";
+    
+    [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName level:level];
+    [self.messageTableView sendMessage:model];
+    WEAKSELF;
+    PresentModel *presentModel = [[PresentModel alloc] init];
+    presentModel.sender = srcUserAlias;
+    presentModel.giftName = strGiftName;
+    presentModel.icon = giftInfo.pic_thumb;
+    presentModel.giftImageName = giftInfo.pic_original;
+    presentModel.giftNumber = giftNum;
+    for (int index = 0; index < giftNum; index ++ ) {
+        [weakSelf.giftArr addObject:presentModel];
+    }
+    [weakSelf chooseGift:0 isAnimation:isAnimation];    
 }
 
 //获取用户帐户信息响应
@@ -3123,11 +3142,11 @@ privateChatViewDelegate>
     NSString* chatContent2 = [NSString filterHTML:text];
     if (chatType == 10) {//系统公告(喇叭)
         MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:strUserId withName:srcName withIcon:nil withType:CellSystemHomType withMessage:chatContent2 toUserAlias:toName toId:toId];
+        [model setModel:strUserId withName:srcName withIcon:nil withType:CellSystemHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
         [self.messageTableView sendMessage:model];
     }else if (chatType ==11){//小喇叭
         MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:strUserId withName:srcName withIcon:nil withType:CellHomType withMessage:chatContent2 toUserAlias:toName toId:toId];
+        [model setModel:strUserId withName:srcName withIcon:nil withType:CellHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
         [self.messageTableView sendMessage:model];
     }
 }

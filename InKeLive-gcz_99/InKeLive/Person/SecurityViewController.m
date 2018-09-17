@@ -108,6 +108,7 @@
                 [self.navigationController pushViewController:bindVC animated:YES];
             }else{
                 RemoveBindingViewController *removeBindVC = [[RemoveBindingViewController alloc] init];
+                removeBindVC.labPhone.text = [data objectForKey:@"Phone"];
                 [self.navigationController pushViewController:removeBindVC animated:YES];
             }
         }else{

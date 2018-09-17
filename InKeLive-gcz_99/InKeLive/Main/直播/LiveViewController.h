@@ -32,6 +32,7 @@
 #import "SelectGiftUserView.h"
 #import "FlyView.h"
 #import "AnchorListView.h"
+#import "ShareView.h"
 
 @interface LiveViewController : UIViewController
 

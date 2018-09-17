@@ -37,7 +37,6 @@
 
 @property (nonatomic) int notLookNum;
 
-
 @property (nonatomic, copy)void(^ShowNodeView)(BOOL show);
 
 @property (nonatomic, copy)void(^ShowNodeNumber)(int num);

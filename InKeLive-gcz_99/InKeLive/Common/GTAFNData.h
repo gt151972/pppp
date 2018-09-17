@@ -75,9 +75,9 @@
 /**
  修改密码
 
- @param phone <#phone description#>
- @param code <#code description#>
- @param pwd <#pwd description#>
+ @param phone 手机号
+ @param code 验证码
+ @param pwd 密码
  */
 -(void)phoneRetrieveWithPhone: (NSString *)phone
                          code: (NSString *)code

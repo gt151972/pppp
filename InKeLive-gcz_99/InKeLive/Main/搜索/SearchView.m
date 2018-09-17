@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIButton *btnSearch;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *arrayData;
+@property (nonatomic, strong) NSDictionary *dic1;
 @end
 
 @implementation SearchView
@@ -198,8 +199,15 @@
             inkItem.roomId = [dic2[@"rId"] intValue];
             inkItem.userId =[dic2[@"uId"] intValue];
             inkItem.roomUserCount = [dic2[@"online"] intValue];
-            inkItem.roomPic = dic2[@"img"];
-            inkItem.userstarPic = dic2[@"img"];
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+            NSString *strRes = [dict objectForKey:@"res"];
+            NSString *strImg = dic2[@"img"];
+            NSString *str = [NSString stringWithFormat:@"%@roompic/%@",strRes,strImg];
+            inkItem.roomPic = str;
+            inkItem.userstarPic = str;
             inkItem.roomName = dic2[@"Title"];
             [_arrayData addObject:inkItem];
         }
@@ -235,7 +243,8 @@
             joinRoomInfo.roomId = [[dic objectForKey:@"rId"] intValue];
             joinRoomInfo.lookUserId = model.userId;
             joinRoomInfo.roomName = model.roomName;
-//            joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
+            NSDictionary *dic2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"room_pic", model.roomPic, @"room_usercount", [NSString stringWithFormat:@"%d",model.roomUserCount], @"room_creatorid", [NSString stringWithFormat:@"%d",model.roomId], @"room_gateaddr", [dic objectForKey:@"GateAddr"], @"room_id", [NSString stringWithFormat:@"%d",model.roomId], @"room_name", model.roomName, nil];
+            joinRoomInfo.dicRoomInfo = [NSDictionary dictionaryWithDictionary:dic2];
 //            NSLog(@"dicRoomInfo == %@",joinRoomInfo.dicRoomInfo);
             [joinRoomInfo setGateAddr:[dic objectForKey:@"GateAddr"]]; //6位地址
             
@@ -250,7 +259,7 @@
                 [appDelegate showLiveRoom:NO CameraFront:YES];
             }
         }
-        
+        [self hide];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];

@@ -18,11 +18,13 @@
     if (self = [super initWithFrame:frame]) {
         for (NSInteger i = 0; i < self.titleArr.count; i++) {
             WEAKSELF;
-            UIButton *buttons = [MyControlTool buttonWithText:self.titleArr[i] textColor:TEXT_COLOR selectTextColor:GRAY_COLOR font:18 tag:50 + i frame:CGRectMake(i * bWidth, 0, bWidth, 44) clickBlock:^(id x) {
+            UIButton *buttons = [MyControlTool buttonWithText:self.titleArr[i] textColor:TEXT_COLOR selectTextColor:MAIN_COLOR font:18 tag:50 + i frame:CGRectMake(i * bWidth, 0, bWidth, 44) clickBlock:^(id x) {
                 UIButton *button = (UIButton *)x;
+                buttons.selected = !buttons.selected;
                 [weakSelf scrollMove:button.tag];
                 if (weakSelf.titleClick) {
-                    weakSelf.titleClick(button.tag);
+                    weakSelf.titleClick(button.tag, _lastTag);
+                    _lastTag = button.tag;
                 }
             }];
             [self addSubview:buttons];
@@ -31,6 +33,9 @@
                 [buttons.titleLabel sizeToFit];
                 self.lineImageView.frame = CGRectMake(0, 40, buttons.titleLabel.width, 3);
                 self.lineImageView.centerX = buttons.centerX;
+                UIButton *button = (UIButton *)[self viewWithTag:50];
+                button.selected = YES;
+                _lastTag = button.tag;
                 [self addSubview:self.lineImageView];
             }
         }
@@ -59,7 +64,7 @@
 - (UIImageView *)lineImageView{
     if (!_lineImageView) {
         _lineImageView = [[UIImageView alloc]init];
-        _lineImageView.backgroundColor = RGB(23, 23, 23);
+        _lineImageView.backgroundColor = MAIN_COLOR;
     }
     return _lineImageView;
 }

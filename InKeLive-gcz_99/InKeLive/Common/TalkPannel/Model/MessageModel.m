@@ -8,13 +8,13 @@
 
 #import "MessageModel.h"
 #import "RegexKitLite.h"
-
+#import "LevelGrade.h"
 #import "TYTextContainer.h"
 
 @implementation MessageModel
 
 - (void)setModelFromStirng:(NSString *)string{
-    
+    _userId = 0;
     _dataString = string;
     NSString *msg;
     TYTextContainer *container = [[TYTextContainer alloc]init];
@@ -187,8 +187,10 @@
     _unColoredMsg = msg;
     _textContainer = container;
 }
-- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId
+- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId level: (int)level
 {
+    _userId = [userID intValue];
+    self.cellType = type;
     userID = userID?userID:@"";
     name = name?name:@"";
     icon = icon?icon:@"";
@@ -204,9 +206,9 @@
         case CellNewChatMessageType:  //新聊天消息
         {
             if (toId == 0) {
-                allMessage = [NSString stringWithFormat:@"%@:%@",name,message];
+                allMessage = [NSString stringWithFormat:@" %@:%@",name,message];
             }else{
-                allMessage = [NSString stringWithFormat:@"%@:@%@ %@",name,toUserAlias,message];
+                allMessage = [NSString stringWithFormat:@" %@:@%@ %@",name,toUserAlias,message];
             }
             
             
@@ -228,7 +230,9 @@
                     [tmpArray addObject:imageStorage];
                 }
             }];
-            
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+            [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
+            [container addView:view range:NSMakeRange(0, 0)];
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
             NSString *sting = [NSString stringWithFormat:@"%@:",name];
@@ -424,6 +428,7 @@
 
 -(void) setModel:(NSString*)sysTipText
 {
+    _userId = 0;
     NSString* name = @"系统:";
     NSString* message= sysTipText;
     if (message.length==0) {
@@ -477,8 +482,9 @@
     
 }
 
--(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName
+-(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName level:(int)level
 {
+    _userId = [userId intValue];
     NSString* strText1=@"礼物:";
     NSString* strAction=@"送给";
     NSString* strGiftInfo = [NSString stringWithFormat:@"%@ 个 %@", giftNum, giftName];
@@ -488,7 +494,7 @@
     container.font = [UIFont systemFontOfSize:15];
     container.linesSpacing = 0;
     container.characterSpacing = 0;
-    NSString *allMessage= [NSString stringWithFormat:@"%@%@%@%@%@",strText1,name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"  %@%@%@%@%@",strText1,name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -508,6 +514,9 @@
             [tmpArray addObject:imageStorage];
         }
     }];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
+    [container addView:view range:NSMakeRange(0, 0)];
     
     //礼物:
     TYTextStorage *text1TextStorage = [[TYTextStorage alloc]init];

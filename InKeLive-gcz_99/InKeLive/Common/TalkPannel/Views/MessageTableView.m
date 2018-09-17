@@ -8,6 +8,8 @@
 
 #import "MessageTableView.h"
 #import "Masonry.h"
+#import "ClientUserModel.h"
+#import "LevelGrade.h"
 
 @implementation MessageNodeView
 - (id)init {
@@ -102,7 +104,7 @@
         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeToReloadData) userInfo:nil repeats:YES];
         [timer fire];
         //监听通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotification:) name:@"kReceiveMessageNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(w:) name:@"kReceiveMessageNotification" object:nil];
     
     }
     return self;

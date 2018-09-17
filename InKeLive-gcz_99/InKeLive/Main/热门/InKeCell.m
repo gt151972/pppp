@@ -114,6 +114,12 @@
 //    NSLog(@"%d 人",inKeModel.roomUserCount);
 //    _btnOnline.titleLabel.text = [NSString stringWithFormat:@"%d",inKeModel.roomUserCount];
     [_btnOnline setTitle:[NSString stringWithFormat:@"%d ",inKeModel.roomUserCount] forState:UIControlStateNormal];
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    NSString *strRes = [dict objectForKey:@"res"];
+    NSString *str = [NSString stringWithFormat:@"%@user/%@",strRes,strImage];
     [_coverImageView sd_setImageWithURL:[NSURL URLWithString:strImage] placeholderImage:[UIImage imageNamed:@"live_empty_bg"]];
 }
 

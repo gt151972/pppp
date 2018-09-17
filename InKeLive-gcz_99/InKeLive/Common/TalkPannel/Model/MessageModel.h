@@ -28,16 +28,17 @@ typedef NS_ENUM(NSInteger,CellType){
 @property (nonatomic,assign)CellType cellType;   //消息类型??
 @property (nonatomic,strong)NSArray *gift;
 @property (nonatomic,copy)NSString *dataString;
+@property (nonatomic,assign) int userId;
 
 - (void)setModelFromStirng:(NSString *)string;
 
-- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId;
+- (void)setModel:(NSString*)userID withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withMessage:(NSString*)message toUserAlias:(NSString *)toUserAlias toId:(int)toId level: (int)level;
 
 //设置系统提示:系统:xxxx
 -(void) setModel:(NSString*)sysTipText;
 
 //赠送礼物提示信息
--(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName;
+-(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName level:(int)level;
 
 
 @end

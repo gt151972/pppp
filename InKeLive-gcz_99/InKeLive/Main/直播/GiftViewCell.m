@@ -28,24 +28,25 @@
     [self addSubview:self.giftImageView];
     [self addSubview:self.hitButton]; //连击标志
     [self addSubview:self.giftNameView];
-//    [self addSubview:self.giftPriceView];
+    [self addSubview:self.giftPriceView];
     //和自己一样大
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(13);
-        make.right.equalTo(self).offset(-13);
-        make.top.equalTo(self).offset (9);
-        make.bottom.equalTo(self).offset(-23);
+        make.left.equalTo(self).offset(6);
+        make.right.equalTo(self).offset(-6);
+        make.top.equalTo(self).offset (4);
+        make.bottom.equalTo(self).offset(-28);
     }];
     [self.viewBgCase mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(8);
-        make.right.equalTo(self).offset(- 8);
+        make.left.equalTo(self).offset(4);
+        make.right.equalTo(self).offset(-4);
         make.centerY.equalTo(_giftImageView.mas_centerY);
-        make.height.equalTo(_giftImageView.mas_width).offset(10);
+        make.height.equalTo(_giftImageView.mas_height).offset(2);
     }];
 //
     [self.giftNameView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom);
+        make.top.equalTo(self.giftImageView.mas_bottom);
+//        make.bottom.equalTo(self.mas_bottom);
         make.height.equalTo(@12);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
@@ -55,12 +56,12 @@
         make.width.equalTo(@35);
         make.top.right.equalTo(self.viewBgCase).offset(5);
     }];
-//    [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.mas_bottom).offset(-18);
-//        make.height.equalTo(@18);
-//        make.left.equalTo(self.mas_left);
-//        make.right.equalTo(self.mas_right);
-//    }];
+    [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.giftNameView.mas_bottom).offset(5);
+        make.height.equalTo(@10);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+    }];
 }
 
 - (void)getDataFromPlist: (NSString *)plistName{
@@ -130,7 +131,7 @@
         _giftNameView = [[UILabel alloc]init];
         _giftNameView.backgroundColor = [UIColor clearColor];
         _giftNameView.text = @"礼物名称";
-        _giftNameView.textColor = [UIColor whiteColor];
+        _giftNameView.textColor = MAIN_COLOR;
         _giftNameView.textAlignment = NSTextAlignmentCenter;
         _giftNameView.font = [UIFont systemFontOfSize:12];
     }

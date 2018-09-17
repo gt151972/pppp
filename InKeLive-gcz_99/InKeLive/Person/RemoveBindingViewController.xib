@@ -13,7 +13,7 @@
             <connections>
                 <outlet property="btnCode" destination="lZQ-c1-gFe" id="VLE-Vy-Sqs"/>
                 <outlet property="btnSure" destination="jCC-OW-kKe" id="dbT-bX-9Kn"/>
-                <outlet property="labPhone" destination="etG-lC-AmT" id="LrF-RT-2Ww"/>
+                <outlet property="labPhone" destination="etG-lC-AmT" id="yXu-Sd-uH0"/>
                 <outlet property="textFieldCode" destination="Olo-7e-PHv" id="pQo-Id-qoq"/>
                 <outlet property="textFieldPhone" destination="L94-oU-Kzi" id="kJ2-tn-KpI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

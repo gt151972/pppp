@@ -280,6 +280,7 @@
 		63FB93AC1E037A4D00C8A84A /* plane-head.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A71E037A4D00C8A84A /* plane-head.png */; };
 		63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */; };
 		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
+		64241E63214F5139007E3F3D /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64241E62214F5138007E3F3D /* ShareView.m */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
 		644B18082114244800939E76 /* AttentionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B18072114244800939E76 /* AttentionController.m */; };
 		644B18102114249F00939E76 /* AttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B180E2114249F00939E76 /* AttentionViewController.m */; };
@@ -834,6 +835,8 @@
 		63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTools.m; sourceTree = "<group>"; };
 		6423C9EB2126631D00801996 /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppInfo.plist; sourceTree = "<group>"; };
 		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
+		64241E61214F5138007E3F3D /* ShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
+		64241E62214F5138007E3F3D /* ShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareView.m; sourceTree = "<group>"; };
 		6431960F2113FCB600D97682 /* libSocialOfficialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocialOfficialWeChat.a; path = Pods/UMengUShare/UShareSDK/SocialLibraries/WeChat/WechatSDK/libSocialOfficialWeChat.a; sourceTree = "<group>"; };
 		643196112114027F00D97682 /* Time.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		643196122114027F00D97682 /* Time.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Time.m; sourceTree = "<group>"; };
@@ -1538,6 +1541,8 @@
 				6461D083212EABB1006927D1 /* SearchInfoView.xib */,
 				64738D38214A5FFB00536B90 /* BeautyView.h */,
 				64738D39214A5FFB00536B90 /* BeautyView.m */,
+				64241E61214F5138007E3F3D /* ShareView.h */,
+				64241E62214F5138007E3F3D /* ShareView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2825,6 +2830,7 @@
 				64B3325621425259009D28CC /* BindingViewController.m in Sources */,
 				64CF3FBF213F85460060261B /* AnchorListView.m in Sources */,
 				6379986D1E10EB0A00016B48 /* MyControlTool.m in Sources */,
+				64241E63214F5139007E3F3D /* ShareView.m in Sources */,
 				64513C54212273D900539CDD /* NSString+Extension.m in Sources */,
 				6462E7DD2117F44E005EF737 /* TAPageControl.m in Sources */,
 				63402F131E1247F2002F6661 /* LiveViewController+GiftAnnimation.m in Sources */,

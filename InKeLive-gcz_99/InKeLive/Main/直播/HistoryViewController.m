@@ -90,7 +90,7 @@
 #pragma mark UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellWithIdentifier = @"historyTableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }

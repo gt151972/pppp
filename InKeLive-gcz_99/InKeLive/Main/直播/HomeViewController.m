@@ -53,14 +53,13 @@
 - (void)initChildViewControllers{
     
     //推荐
-    RecommendViewController *recommendVC = [[RecommendViewController alloc]init];
-    [self addChildViewController:recommendVC];
+    MainViewController*mainVC = [[MainViewController alloc]init];
+    [self addChildViewController:mainVC];
     
     //手机
-//    MobileViewController*mobileVC = [[MobileViewController alloc]init];
-//    [self addChildViewController:mobileVC];
-    MainViewController*mobileVC = [[MainViewController alloc]init];
+    MobileViewController*mobileVC = [[MobileViewController alloc]init];
     [self addChildViewController:mobileVC];
+    
     
     //房间
     RoomViewController *roomVC = [[RoomViewController alloc]init];
@@ -69,7 +68,7 @@
     //客服
     ServiceViewController *serviceVC = [[ServiceViewController alloc] init];
     [self addChildViewController:serviceVC];
-    _arr = [NSMutableArray arrayWithObjects:recommendVC,mobileVC,roomVC,serviceVC,nil];
+    _arr = [NSMutableArray arrayWithObjects:mainVC,mobileVC,roomVC,serviceVC,nil];
     for (NSInteger i=0; i<self.childViewControllers.count; i++) {
         //调成子VC中view(root_view)的位置，然后都加入到scrollView中
         UIViewController *cls = self.childViewControllers[i];
@@ -104,10 +103,13 @@
     if (!_titleView) {
         _titleView = [[TopTitleView alloc]initWithFrame:CGRectMake(0, 0, 240, 44)];
         WEAKSELF;
-        [_titleView setTitleClick:^(NSInteger tag) {
+        [_titleView setTitleClick:^(NSInteger tag, NSInteger lastTag) {
             CGPoint point = CGPointMake((tag - 50) * SCREEN_WIDTH ,weakSelf.homeScrollView.contentOffset.y);
-            
             [weakSelf.homeScrollView setContentOffset:point animated:YES];
+            UIButton *button1 = (UIButton *)[_titleView viewWithTag:lastTag];
+            UIButton *button2 = (UIButton *)[_titleView viewWithTag:tag];
+            button1.selected = NO;
+            button2.selected = YES;
         }];
         
     }
@@ -119,7 +121,7 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
         _homeScrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds]; //当前内容区域大小
         _homeScrollView.contentSize = CGSizeMake(4 * SCREEN_WIDTH, 0); //4个屏幕宽度
-        _homeScrollView.contentOffset = CGPointMake(SCREEN_WIDTH, 0);  //一次性移动多少??
+        _homeScrollView.contentOffset = CGPointMake(0, 0);  //一次性移动多少??
         _homeScrollView.showsHorizontalScrollIndicator = NO;
         _homeScrollView.pagingEnabled = YES;
         _homeScrollView.bounces = NO;

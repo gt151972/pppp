@@ -22,6 +22,7 @@
 
 - (UIWebView *)greadImage:(int)level{
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,16,16)];
+    webView.backgroundColor = [UIColor clearColor];
     NSString *resource;
     NSString *type = @"gif";
     

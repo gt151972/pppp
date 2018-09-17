@@ -12,6 +12,9 @@
 
 @interface MessageCell : UITableViewCell
 
+@property (nonatomic, assign)BOOL isShowLevel;
+@property (nonatomic, strong)UIView *viewLevel;
+
 @property (nonatomic, weak, readonly) TYAttributedLabel *label;
 
 @property (nonatomic,strong)MessageModel *model;

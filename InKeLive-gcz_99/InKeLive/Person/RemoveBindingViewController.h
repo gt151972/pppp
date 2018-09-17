@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RemoveBindingViewController : UIViewController
-
+@property (weak, nonatomic) IBOutlet UILabel *labPhone;
 @end
