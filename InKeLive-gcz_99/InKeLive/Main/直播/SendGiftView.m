@@ -480,7 +480,7 @@
         [_btnRecharge.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_btnRecharge setTitle:@"充值" forState:UIControlStateNormal];
         [_btnRecharge setTitleColor:GREEN_COLOR forState:UIControlStateNormal];
-        [_btnRecharge addTarget:self action:@selector(btnChangeClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_btnRecharge addTarget:self action:@selector(btnRechargeClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnRecharge;
 }
@@ -545,6 +545,10 @@
     }
 }
 
-
-
+- (void)btnRechargeClicked{
+    if (self.rechargeClick) {
+        self.rechargeClick();
+    }
+    [self hide];
+}
 @end

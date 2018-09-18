@@ -93,15 +93,20 @@
 					OPUserID05:(int)opUserId05
 					OPUserID06:(int)opUserId06
 					RoomState:(int)roomState
+                   LayoutType:(int)layoutType
+                   RoomAttrId:(int)roomAttId
+                  Reserved_01:(int)reserved_01
+                  Reserved_02:(int)reserved_02
                      RoomName:(NSString*)roomName
                   MediaServer:(NSString*)mediaServer
-				    UsedPwd:(int)usedPwd
+				    RoomIsUsedPwd:(int)roomIsUsedPwd
                      VipLevel:(int)vipLevel
                   PlayerLevel:(int)playerLevel
 				  RoomLevel:(int)roomLevel
 				  UserRoomState:(int)userRoomState
                            NK:(int64_t)nk
-                           NB:(int64_t)nb;
+                           NB:(int64_t)nb
+                       Ngende:(int)ngende;
 
 //获取房间用户列表
 -(void) OnNetMsg_RoomUserListBegin;
@@ -388,7 +393,11 @@
                RoomID:(int)roomId
                UserID:(int)userId
           SessionMask:(const char*)sessionMask
-              UserPwd:(const char*)userPwd;
+              UserPwd:(const char*)userPwd
+              RoomPwd:(const char*)roomPwd
+          IsReconnect:(int)isReconnect
+               IsHide:(int)isHide
+             isMobile:(int)isMobile;
 
 //发送房间聊天请求
 -(int)SendRoomChatMsgReq:(int)roomId

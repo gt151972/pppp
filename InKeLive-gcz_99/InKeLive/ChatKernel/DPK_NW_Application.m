@@ -597,16 +597,21 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                          OPUserID05:pResp->opUser05
                                          OPUserID06:pResp->opUser06
                                           RoomState:pResp->roomState
+                                         LayoutType:pResp->layoutType
+                                         RoomAttrId:pResp->roomAttrId
+                                        Reserved_01:pResp->reserved_01
+                                        Reserved_02:pResp->reserved_02
                                            RoomName:strRoomName
                                         MediaServer:strMediaServer
-                                            UsedPwd:pResp->vcbIsUsedPwd
+                                      RoomIsUsedPwd:pResp->vcbIsUsedPwd
                                            VipLevel:pResp->vipLevel
                                         PlayerLevel:pResp->playerLevel
                                           RoomLevel:pResp->roomLevel
                                       UserRoomState:pResp->userRoomState
                                                  NK:pResp->user_nk
                                                  NB:pResp->user_nb
-                     ];
+                                             Ngende:pResp->ngende];
+             
                 }
             }
                 break;

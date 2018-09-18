@@ -73,15 +73,16 @@
 -(void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
     if ([cmd isEqualToString:CMD_SECURITY_CODE]) {
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            
+            [[GTAlertTool shareInstance] showAlert:@"验证码发送成功" message:@"请注意查收" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
         }else{
             [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
-                
             }];
         }
     }else if ([cmd isEqualToString:CMD_SECURITY_SAVE]){
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            
+            [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:nil cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                [self btnBackClicked];
+            }];
         }else{
             [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 

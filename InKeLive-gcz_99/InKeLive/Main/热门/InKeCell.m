@@ -27,9 +27,9 @@
     _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.contentView addSubview:_iconImageView];
     [_iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).with.offset(10);
+        make.top.equalTo(self.contentView).with.offset(6);
         make.left.equalTo(self.contentView).with.offset(8);
-        make.height.width.equalTo(@36);
+        make.height.width.equalTo(@40);
     }];
     _iconImageView.layer.cornerRadius = 18;
     _iconImageView.layer.masksToBounds = YES;
@@ -108,12 +108,12 @@
     NSString* strCity = @"难道在火星？";
     
     [_iconImageView sd_setImageWithURL:[NSURL URLWithString:strImage] placeholderImage:[UIImage imageNamed:@"default_head"]];
-    
+    _iconImageView.contentMode =  UIViewContentModeScaleAspectFill;
     _nameLabel.text = [NSString stringWithFormat:@"%@(%@)",strNick,strID];
     _cityLabel.text = [NSString stringWithFormat:@"%@ >",strCity];
 //    NSLog(@"%d 人",inKeModel.roomUserCount);
 //    _btnOnline.titleLabel.text = [NSString stringWithFormat:@"%d",inKeModel.roomUserCount];
-    [_btnOnline setTitle:[NSString stringWithFormat:@"%d ",inKeModel.roomUserCount] forState:UIControlStateNormal];
+    [_btnOnline setTitle:[NSString stringWithFormat:@"  %d",inKeModel.roomUserCount] forState:UIControlStateNormal];
     NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];

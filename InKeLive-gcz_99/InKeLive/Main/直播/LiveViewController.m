@@ -34,7 +34,7 @@
 #import "ChatPublicView.h"
 #import "ChangeScore.h"
 #import "BeautyView.h"
-
+#import "WebViewController.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -144,6 +144,14 @@ privateChatViewDelegate>
     self.pushStreamUrl = [NSURL URLWithString:rtmpUrl];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -731,6 +739,18 @@ privateChatViewDelegate>
     [self.giftView setChangeScore:^{
         [weakSelf showChangeScoreView];
     }];
+    //充值
+    [self.giftView setRechargeClick:^{
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strUrl = [dict objectForKey:@"activity"];
+        WebViewController *webVC = [[WebViewController alloc] init];
+        webVC.strTitle = @"充值";
+        webVC.strUrl = strUrl;
+        [self.navigationController pushViewController:webVC animated:YES];
+    }];
 }
 
 - (void) registerForKeyboardNotifications
@@ -816,26 +836,19 @@ privateChatViewDelegate>
                     [weakSelf showPrivateChatView:0];
                 }
                 break;
-                case 151: //礼物or切换镜头
-                {
-                    if (weakSelf.createFlag) {
-                        //切换镜头
-                        [weakSelf.kit switchCamera];
-                        
-                    }else{
-                        [weakSelf bottomToolPosition];
-                    }
-                }
-                break;
-                case 152: //美颜
-                {
-                    
-                   [weakSelf showBeautyViewLWithGrind:weakSelf.grind whiten:weakSelf.whiten ruddy:weakSelf.rubby];
-                }
-                    break;
-                case 153: //礼物
+                case 151: //礼物
                 {
                     [weakSelf bottomToolPosition];
+                }
+                break;
+                case 152: //切换镜头
+                {
+                    [weakSelf.kit switchCamera];
+                }
+                    break;
+                case 153: //美颜
+                {
+                    [weakSelf showBeautyViewLWithGrind:weakSelf.grind whiten:weakSelf.whiten ruddy:weakSelf.rubby];
                 }
                     break;
                 case 154: //显示分享面板 (共享)
@@ -1621,9 +1634,9 @@ privateChatViewDelegate>
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
-    self.navigationController.navigationBarHidden = YES;
-}
+//- (void)viewWillAppear:(BOOL)animated {
+//    self.navigationController.navigationBarHidden = YES;
+//}
 
 - (void)dealloc {
     if(self.createFlag) {
@@ -1912,6 +1925,36 @@ privateChatViewDelegate>
     [alert setTag:14];
     [alert show];
 }
+
+- (void)showAlertRoomPwd{
+    [self hideLoadingHud];
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"当前房间需要密码" message:@"请输入密码" preferredStyle:UIAlertControllerStyleAlert];
+    [alertC addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"在此输入密码";
+    }];
+    [alertC addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *envirnmentNameTextField = alertC.textFields.firstObject;
+        //输出 检查是否正确无误
+        NSLog(@"你输入的文本%@",envirnmentNameTextField.text);
+        LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+        NSStringEncoding enc =CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+        const char* sessionMask =(const char*)[model.sessionMask cStringUsingEncoding:enc];
+        const char* userLogonPwd =(const char*)[model.userLogonPwd cStringUsingEncoding:enc];
+        const char* text =(const char*)[envirnmentNameTextField.text cStringUsingEncoding:enc];
+        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:0 isMobile:2];
+        
+    }]];
+    //添加一个取消按钮
+    [alertC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self closeRoom];
+    }]];
+    
+    //present出AlertView
+    [self presentViewController:alertC animated:true completion:nil];
+
+}
+
+
 - (void)showSelectSendGiftUserView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SelectGiftUserView* view = [[SelectGiftUserView alloc] initWithFrame:frame];
@@ -1969,7 +2012,8 @@ privateChatViewDelegate>
                        }];
     //=======================================
 #endif
-    view.userArray = self.roomObj.memberList;
+    NSArray *array = [self sortData:self.roomObj.memberList];
+    view.userArray = array;
 
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
         [UIView animateWithDuration:0 animations:^{
@@ -1978,6 +2022,34 @@ privateChatViewDelegate>
     }];
     
     [view popShow];
+}
+
+
+/**
+ 基于model的Array的排序
+
+ @param array <#array description#>
+ @return <#return value description#>
+ */
+- (NSArray *)sortData: (NSArray *)array{
+    NSLog(@"array == %@",array);
+    NSMutableArray *arrData = [[NSMutableArray alloc] initWithArray:array];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"vipLevel" ascending:NO];
+    [arrData sortUsingDescriptors:@[sort]];
+    // 输出排序结果
+    for (ClientUserModel *model in arrData) {
+        NSLog(@"vipLevel: %d,userId: %d userAlias: %@", model.vipLevel,model.userId, model.userAlias);
+    }
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
+    for (int index = 0; index < arrData.count; index ++ ) {
+        ClientUserModel *model = arrData[index];
+        if (model.userId == myModel.userID) {
+            [arrData insertObject:array[index] atIndex:0];
+            [arrData removeObjectAtIndex:index + 1];
+        }
+    }
+    NSArray *arr = [[NSArray alloc] initWithArray:arrData];
+    return arr;
 }
 
 - (void)showBeautyViewLWithGrind:(float)grind whiten:(float)whiten ruddy:(float)ruddy{
@@ -2163,7 +2235,8 @@ privateChatViewDelegate>
             const char* sz_sessionmask = (const char*)[dpkapp.localUserModel.sessionMask cStringUsingEncoding:enc];
             const char* sz_userpwd =(const char*)[dpkapp.localUserModel.userLogonPwd cStringUsingEncoding:NSASCIIStringEncoding];
             //发送加入房间请求
-            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd];
+            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:0 isMobile:2];
+
             //房间连接标志
             self.roomObj.isConnected = 0;
             self.lastJoinRoomTime =time(0);
@@ -2238,7 +2311,8 @@ privateChatViewDelegate>
         userData.nextAction = USER_NEXTACTION_JOINROOM;
         self.roomObj.isConnected = 0;
         self.roomObj.isJoinRoomFinished = 0;
-        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd];
+        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:0 isMobile:2];
+//        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd];
         self.lastJoinRoomTime =time(0);
     }
 }
@@ -2375,20 +2449,24 @@ privateChatViewDelegate>
                    OPUserID05:(int)opUserId05
                    OPUserID06:(int)opUserId06
                     RoomState:(int)roomState
-                     RoomName:(NSString*)roomName
-                  MediaServer:(NSString*)mediaServer
-                      UsedPwd:(int)usedPwd
+                   LayoutType:(int)layoutType
+                   RoomAttrId:(int)roomAttId
+                  Reserved_01:(int)reserved_01
+                  Reserved_02:(int)reserved_02
+                     RoomName:(NSString *)roomName
+                  MediaServer:(NSString *)mediaServer
+                RoomIsUsedPwd:(int)roomIsUsedPwd
                      VipLevel:(int)vipLevel
                   PlayerLevel:(int)playerLevel
                     RoomLevel:(int)roomLevel
                 UserRoomState:(int)userRoomState
                            NK:(int64_t)nk
                            NB:(int64_t)nb
-{
+                       Ngende:(int)ngende{
     NSLog(@"OnNetMsg_JoinRoomResp");
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     self.lastJoinRoomTime = 0;
-    
+    NSLog(@"usedPwd == %d",roomIsUsedPwd);
     NSString* strErrorMsg;
     if(error_code !=0) {
         NSLog(@"加入房间出现错误,就不用重试了,直接提示,退出!");
@@ -2400,21 +2478,26 @@ privateChatViewDelegate>
         self.isConnected = NO;
         if(error_code == 407) {
             strErrorMsg = @"内核版本错误,请安装最新客户端!";
+            [self showJoinFailedDialog:strErrorMsg];
         }
         else if(error_code == 408) {
-            strErrorMsg =@"房间密码错误!";
+            strErrorMsg =@"请输入房间密码";
+            [self showAlertRoomPwd];
         }
         else if(error_code == 402) {
             strErrorMsg = @"用户密码错误!";
+            [self showJoinFailedDialog:strErrorMsg];
         }
         else if(error_code == 404) {
             strErrorMsg = @"用户不存在!";
+            [self showJoinFailedDialog:strErrorMsg];
         }
         else {
             strErrorMsg = [NSString stringWithFormat:@"加入直播间失败(errcode=%d)!", error_code];
+            [self showJoinFailedDialog:strErrorMsg];
         }
         
-        [self showJoinFailedDialog:strErrorMsg];
+        
     }
     else {
         NSLog(@"加入房间成功!");

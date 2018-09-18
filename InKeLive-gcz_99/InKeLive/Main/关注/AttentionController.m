@@ -8,9 +8,9 @@
 
 #import "AttentionController.h"
 #import "EmptyView.h"
+#import "GTAFNData.h"
 
-
-@interface AttentionController ()<UITableViewDelegate, UITableViewDataSource>
+@interface AttentionController ()<UITableViewDelegate, UITableViewDataSource, GTAFNDataDelegate>
 @property (nonatomic, strong)UITableView *tableView;
 @property (nonatomic,strong)EmptyView *emptyView;
 
@@ -22,7 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data AttentionList];
     [self.view addSubview:self.emptyView];
     
     _tableView = [[UITableView alloc] init];
@@ -63,44 +65,9 @@
     return 1;
 }
 
-//- (void)requestDate{
-//    
-//    // 获得请求管理者
-//    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-//    
-//    // 设置请求格式
-//    session.requestSerializer = [AFJSONRequestSerializer serializer];
-//    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-//    parameters[@"cmd"] = @"20001";
-//    parameters[@"flag"] = @"0";
-//    NSString* strAPIUrl = URL_GiftInfo;
-//    NSLog(@"url:%@", strAPIUrl);
-//    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
-//    [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-//        NSLog(@"Success: %@", responseObject);
-//        NSLog(@"task: %@",task);
-//        NSDictionary *appDic =(NSDictionary*)responseObject;
-//        if(1){
-//            //            NSString *plistPath = [[NSBundle mainBundle]pathForResource:APP_info ofType:@"plist"];
-//            //            NSMutableDictionary *dataDic = [[[NSMutableDictionary alloc]initWithContentsOfFile:plistPath] objectForKey:@"giftInfo"];
-//            //            NSLog(@"%@",dataDic);//直接打印数据
-//            //            dataDic[@"imageUrl"] = [appDic objectForKey:@"res"];
-//            //            dataDic[@"uDown"] = [appDic objectForKey:@"uDown"];
-//            //            dataDic[@"uUp"] = [appDic objectForKey:@"uUp"];
-//            //            dataDic[@"version"] = [appDic objectForKey:@"GiftVersion"];
-//            //            [dataDic writeToFile:plistPath atomically:YES];
-//            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-//            NSString*cachePath = array[0];
-//            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
-//            NSDictionary*dict =@{@"res": [appDic objectForKey:@"res"],@"uDown":[appDic objectForKey:@"uDown"],@"uUp":[appDic objectForKey:@"uUp"],@"GiftVersion":[NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]]};
-//            [dict writeToFile:filePathName atomically:YES];
-//            [self loadGiftConf];
-//        }
-//        
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSLog(@"error: %@", error);
-//    }];
-//}
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

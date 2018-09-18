@@ -37,9 +37,13 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidLoad {
@@ -254,7 +258,9 @@
     [btnRecharge setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btnRecharge.layer.cornerRadius = 19;
     btnRecharge.layer.masksToBounds = YES;
+    [btnRecharge addTarget:self action:@selector(btnRechargeClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewMoney addSubview:btnRecharge];
+    
     
     
     return viewHead;
@@ -272,7 +278,15 @@
 }
 
 -(void)btnRechargeClicked{
-    
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    NSString *strUrl = [dict objectForKey:@"about"];
+    WebViewController *webVC = [[WebViewController alloc] init];
+    webVC.strUrl = strUrl;
+    webVC.strTitle = @"充值";
+    [self.navigationController pushViewController:webVC animated:YES];
 }
 
 - (IBAction)btnExitLoginClicked:(id)sender {

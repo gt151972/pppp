@@ -354,10 +354,14 @@ DataLen:(int)data_len
 
 //加入房间请求
 -(int)SendJoinRoomReq:(int)versionId
-               RoomID:(int)roomId
+              RoomID:(int)roomId
                UserID:(int)userId
           SessionMask:(const char*)sessionMask
               UserPwd:(const char*)userPwd
+              RoomPwd:(const char*)roomPwd
+          IsReconnect:(int)isReconnect
+               IsHide:(int)isHide
+             isMobile:(int)isMobile
 {
     HBCMD_VideoChat_JoinRoom_Req_t req;
     memset(&req, 0, sizeof(req));
@@ -367,8 +371,9 @@ DataLen:(int)data_len
 	req.qxFileMaskSeed = 0;
 	req.isReconnect = 0;
 	req.isHide = 0;
-	req.isMobile =1;
+	req.isMobile = 2;
 	strcpy(req.userPwd, userPwd);
+//    strcpy(req.vcbPwd, roomPwd);
     //if(sessionMask !=0)
     //    strcpy(req.sessionmask, sessionMask);
     if(_isConnected == 1) {

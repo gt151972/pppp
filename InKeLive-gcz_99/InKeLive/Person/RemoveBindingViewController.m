@@ -11,7 +11,7 @@
 #import "GTAFNData.h"
 
 @interface RemoveBindingViewController ()<GTAFNDataDelegate>
-
+@property (weak, nonatomic) IBOutlet UILabel *labPhone;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldPhone;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnCode;
@@ -30,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _labPhone.text = _strPhone;
     _btnCode.layer.masksToBounds = YES;
     _btnCode.layer.cornerRadius = 2;
     _btnSure.layer.masksToBounds = YES;
@@ -65,7 +66,7 @@
 -(void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
     if ([cmd isEqualToString:CMD_SECURITY_CODE]) {
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            
+            [[GTAlertTool shareInstance] showAlert:@"验证码发送成功" message:@"请注意查收" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
         }else{
             [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 
@@ -73,8 +74,9 @@
         }
     }else if ([cmd isEqualToString:CMD_SECURITY_SAVE]){
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            
-            [self.navigationController popViewControllerAnimated:YES];
+            [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:nil cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                [self btnBackClicked];
+            }];
         }else{
             [[GTAlertTool shareInstance] showAlert:@"网络不给力" message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 

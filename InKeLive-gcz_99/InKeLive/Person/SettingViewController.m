@@ -19,6 +19,7 @@
     NSArray *arrayTitle;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UILabel *labDetail;
 //@property (weak, nonatomic) IBOutlet UIButton *btnExitLogin;
 
 @end
@@ -50,6 +51,7 @@
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(239, 239, 239);
     
+//    [self calculateCache];
 //    _btnExitLogin.layer.cornerRadius = 5;
 //    _btnExitLogin.layer.masksToBounds = YES;
     
@@ -65,7 +67,7 @@
     }
     cell.textLabel.text = [[arrayTitle objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
-    cell.textLabel.font = [UIFont systemFontOfSize:13];
+    cell.textLabel.font = [UIFont systemFontOfSize:15];
     
     if (indexPath.section == 0) {
         UISwitch *switch0 = [[UISwitch alloc] init];
@@ -97,6 +99,20 @@
             make.height.equalTo(@17);
             make.right.equalTo(cell.contentView).offset(-13);
         }];
+        if (indexPath.row == 0) {
+            _labDetail = [[UILabel alloc] init];
+            _labDetail.text = @"正在计算...";
+            _labDetail.font = [UIFont systemFontOfSize:13];
+            _labDetail.textAlignment = NSTextAlignmentRight;
+            _labDetail.textColor = GRAY_COLOR;
+            [cell.contentView addSubview:_labDetail];
+            [_labDetail mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(btnGo.mas_left).offset(-10);
+                make.width.equalTo(@100);
+                make.centerY.equalTo(cell.contentView);
+                make.height.equalTo(@17);
+            }];
+        }
 
     }
     
@@ -107,7 +123,15 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             //清理缓存
-            
+            if ([_labDetail.text isEqualToString:@"正在计算..."]){
+                [[GTAlertTool shareInstance] showAlert:@"缓存尚未计算完" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+            }else{
+                [[GTAlertTool shareInstance] showAlert:@"确定清除本地缓存" message:nil cancelTitle:@"取消" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                    if (buttonTag == 0) {
+                        [self removeCache];
+                    }
+                }];
+            }
         }else if (indexPath.row == 1){
             //客服中心
             NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
@@ -156,6 +180,49 @@
     }else{
         return 0;
     }
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    
+    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            unsigned long long size = [SDImageCache sharedImageCache].getSize;   //CustomFile + SDWebImage 缓存
+            
+            //设置文件大小格式
+            NSString *sizeText = nil;
+            if (size >= pow(10, 9)) {
+                sizeText = [NSString stringWithFormat:@"%.2fGB", size / pow(10, 9)];
+            }else if (size >= pow(10, 6)) {
+                sizeText = [NSString stringWithFormat:@"%.2fMB", size / pow(10, 6)];
+            }else if (size >= pow(10, 3)) {
+                sizeText = [NSString stringWithFormat:@"%.2fKB", size / pow(10, 3)];
+            }else {
+                sizeText = [NSString stringWithFormat:@"%.2lluB", size];
+            }
+            _labDetail.text = sizeText;
+            
+        });
+        
+    }
+    
+}
+
+#pragma mark 计算清除缓存
+- (void)removeCache{
+    
+    [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 设置文字
+                [MBProgressHUD showAlertMessage:@"清理完毕"];
+                _labDetail.text = @"0.00MB";
+            });
+        });
+    }];
 }
 
 #pragma mark Action

@@ -8,8 +8,10 @@
 
 #import "ChangePwdViewController.h"
 #import "MBProgressHUD+MJ.h"
+#import "GTAFNData.h"
+#import "AppDelegate.h"
 
-@interface ChangePwdViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>{
+@interface ChangePwdViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GTAFNDataDelegate>{
     NSArray *arrayTitle;
     
     NSString * strOldPwd;
@@ -59,13 +61,19 @@
     UITextField *textFieldNew2 = (UITextField *)[self.view  viewWithTag:902] ;
     //新密码两次输入不统一
     if (![textFieldNew1.text isEqualToString:textFieldNew2.text]) {
-        [MBProgressHUD showAlertMessage:@"新密码两次输入不统一"];
+//        [MBProgressHUD showAlertMessage:@"新密码两次输入不统一"];
+        [[GTAlertTool shareInstance] showAlert:@"新密码两次输入不统一" message:@"请重新输入" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+        }];
     }else  if([textFieldOld.text isEqualToString:textFieldNew1.text]) {
-        [MBProgressHUD showAlertMessage:@"新老密码不能相同"];
-    }else if (textFieldNew1.text.length < 6){
-        [MBProgressHUD showAlertMessage:@"密码不能少于6位"];
-    }
-    [self btnBackClicked];
+//        [MBProgressHUD showAlertMessage:@"新老密码不能相同"];
+        [[GTAlertTool shareInstance] showAlert:@"新老密码不能相同" message:@"请重新输入" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+        }];
+    }else{
+        GTAFNData *data = [[GTAFNData alloc] init];
+        data.delegate = self;
+        [data changePwdWithOldPwd:textFieldOld.text newPwd:textFieldNew1.text];
+     }
+//    [self btnBackClicked];xxxxxxxx
 }
 
 - (void)btnBackClicked{
@@ -104,8 +112,8 @@
     textField.secureTextEntry = YES;
     [cell.contentView addSubview:textField];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(viewLine.mas_top).offset(4);
-        make.height.equalTo(@14);
+        make.bottom.equalTo(viewLine.mas_top);
+        make.top.equalTo(cell.contentView).offset(8);
         make.left.equalTo(viewLine.mas_left);
         make.width.equalTo(viewLine.mas_width);
     }];
@@ -128,19 +136,26 @@
     return 1;
 }
 
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_PASSWORD_CHANGE]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            UITextField *textFieldNew1 = (UITextField *)[self.view  viewWithTag:901] ;
+            AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            [[NSUserDefaults standardUserDefaults] setObject:textFieldNew1.text forKey:@"DPK_USERLOGONPWD"];
+            [appDelegate autoLogin];
+            [[GTAlertTool shareInstance] showAlert:@"提示" message:@"修改密码成功" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                [self btnBackClicked];
+            }];
+        }else{
+            [[GTAlertTool shareInstance] showAlert:@"提示" message:[data objectForKey:@"msg"] cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+            }];
+        }
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

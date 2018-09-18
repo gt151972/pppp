@@ -45,7 +45,7 @@
     _label = label;
     //看不明白
     NSArray *verticalContrainsts = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-3-[label]-3-|" options:0 metrics:nil views:@{@"label":_label}];
-    NSArray *horizontalCOntraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[label]-5-|" options:0 metrics:nil views:@{@"label":_label}];
+    NSArray *horizontalCOntraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[label]-5-|" options:0 metrics:nil views:@{@"label":_label}];
     //不同版本使用不一样?
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
         [NSLayoutConstraint activateConstraints:verticalContrainsts];

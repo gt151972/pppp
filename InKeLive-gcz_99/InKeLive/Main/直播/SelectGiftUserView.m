@@ -37,7 +37,6 @@
     }
     return self;
 }
-
 -(void) setSubViews {
     [self addSubview:self.viewBK ];
     [self addSubview:self.userTableView ];
@@ -137,6 +136,12 @@
     [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(139, 139, 139) range:NSMakeRange(strName.length, strId.length + 2)];
     [labTitle setAttributedText:attrStr];
     [cell.contentView addSubview:labTitle];
+    if (indexPath.row == 0) {
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, strName.length)];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(139, 139, 139) range:NSMakeRange(strName.length, strId.length + 2)];
+        [labTitle setAttributedText:attrStr];
+        [cell.contentView addSubview:labTitle];
+    }
     return cell;
 }
 

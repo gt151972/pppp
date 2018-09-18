@@ -30,16 +30,12 @@
 
  */
 -(void)requestSecurityRead;
-
-
 /**
  手机密保验证码
 
  @param phone 手机号
  */
 -(void)requestSecurityCodeWithPhone: (NSString *)phone;
-
-
 /**
  手机密保保存
 
@@ -48,8 +44,7 @@
  */
 -(void)requestSecuritySaveWithPhone: (NSString *)phone
                              code: (NSString *)code;
-
-
+#pragma mark 注册
 /**
  注册发送验证码
 
@@ -58,8 +53,6 @@
  */
 -(void)phoneMsgWithPhone: (NSString *)phone
                      reg: (NSString *)reg;
-
-
 /**
  注册
 
@@ -71,15 +64,19 @@
                     code: (NSString *)code
                      pwd: (NSString *)pwd;
 
-
 /**
  修改密码
 
- @param phone 手机号
- @param code 验证码
- @param pwd 密码
+ @param oldPwd 老密码
+ @param newPwd 新密码
  */
--(void)phoneRetrieveWithPhone: (NSString *)phone
-                         code: (NSString *)code
-                          pwd: (NSString *)pwd;
+-(void)changePwdWithOldPwd: (NSString *)oldPwd
+                        newPwd:(NSString *)newPwd;
+
+#pragma mark 关注
+
+/**
+ 关注列表
+ */
+-(void)AttentionList;
 @end

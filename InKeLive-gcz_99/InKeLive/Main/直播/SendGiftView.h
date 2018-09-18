@@ -47,6 +47,7 @@
 @property (nonatomic,copy)void (^grayClick)();
 @property (nonatomic,copy)void (^selectGiftUser)();
 @property (nonatomic,copy)void (^changeScore)();
+@property (nonatomic,copy)void (^rechargeClick)();
 
 //@property (nonatomic,strong)NSMutableArray *dataArr;  //数据
 

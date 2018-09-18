@@ -69,7 +69,7 @@
     if (_imageArr == nil) {
         NSLog(@"_createFlag == %d",_createFlag);
         if (_createFlag) {
-            _imageArr = @[@"living_private_chat",@"living_turn_camera", @"living_beauty",@"living_gift"];
+            _imageArr = @[@"living_private_chat",@"living_gift",@"living_turn_camera", @"living_beauty"];
         }else{
            _imageArr = @[@"living_private_chat",@"living_gift"];
         }

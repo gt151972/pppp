@@ -30,11 +30,11 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if ([_strTitle isEqualToString:@"排行榜"]){
-        [self.navigationController.navigationBar setHidden:YES];
+        [self.navigationController setNavigationBarHidden:YES];
         [self nav];
     }else{
         self.title = _strTitle;
-        [self.navigationController.navigationBar setHidden:NO];
+        [self.navigationController setNavigationBarHidden:NO];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
         self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
     }

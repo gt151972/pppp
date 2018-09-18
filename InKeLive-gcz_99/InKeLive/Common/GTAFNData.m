@@ -87,6 +87,7 @@
     currResult = CMD_SECURITY_READ;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
+    NSLog(@"dic == %@",dict);
     [self postData:currResult data:dict];
 }
 
@@ -147,15 +148,24 @@
 /**
  修改密码
  
- @param phone <#phone description#>
- @param code <#code description#>
- @param pwd <#pwd description#>
+ @param oldPwd 老密码
+ @param newPwd 新密码
  */
--(void)phoneRetrieveWithPhone: (NSString *)phone
-                         code: (NSString *)code
-                          pwd: (NSString *)pwd{
+-(void)changePwdWithOldPwd: (NSString *)oldPwd
+                    newPwd: (NSString *)newPwd{
     currResult = CMD_PASSWORD_CHANGE;
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", code, @"code", pwd, @"pwd", nil];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", oldPwd, @"op", newPwd, @"np", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 关注列表
+ */
+-(void)AttentionList{
+    currResult = CMD_ATTENTION_ROOM_LIST;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
     [self postData:currResult data:dict];
 }
 @end
