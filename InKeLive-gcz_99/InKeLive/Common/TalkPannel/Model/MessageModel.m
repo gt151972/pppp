@@ -485,7 +485,7 @@
 -(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName level:(int)level
 {
     _userId = [userId intValue];
-    NSString* strText1=@"礼物:";
+    NSString* strText1=@"";
     NSString* strAction=@"送给";
     NSString* strGiftInfo = [NSString stringWithFormat:@"%@ 个 %@", giftNum, giftName];
     //NSString* strToUserName = @"XXX";
@@ -494,7 +494,7 @@
     container.font = [UIFont systemFontOfSize:15];
     container.linesSpacing = 0;
     container.characterSpacing = 0;
-    NSString *allMessage= [NSString stringWithFormat:@"  %@%@%@%@%@",strText1,name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"  %@%@%@%@",name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -519,11 +519,11 @@
     [container addView:view range:NSMakeRange(0, 0)];
     
     //礼物:
-    TYTextStorage *text1TextStorage = [[TYTextStorage alloc]init];
-    text1TextStorage.range = [allMessage rangeOfString:strText1];
-    text1TextStorage.textColor = GREEN_COLOR;
-    text1TextStorage.font = [UIFont boldSystemFontOfSize:15];
-    [container addTextStorage:text1TextStorage];
+//    TYTextStorage *text1TextStorage = [[TYTextStorage alloc]init];
+//    text1TextStorage.range = [allMessage rangeOfString:strText1];
+//    text1TextStorage.textColor = GREEN_COLOR;
+//    text1TextStorage.font = [UIFont boldSystemFontOfSize:15];
+//    [container addTextStorage:text1TextStorage];
     
     //用户名字的颜色和文字大小
     TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];

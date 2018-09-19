@@ -10,6 +10,6 @@
 
 @interface LiveViewController (GiftAnnimation)
 
-- (void)chooseGift:(NSInteger)tag isAnimation:(BOOL)isAnimation;
+- (void)chooseGift:(NSInteger)tag array: (NSArray *)array isAnimation:(BOOL)isAnimation;
 
 @end

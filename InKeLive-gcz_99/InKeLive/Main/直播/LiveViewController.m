@@ -1260,7 +1260,7 @@ privateChatViewDelegate>
     if (!_presentView) {
         _presentView  = [[PresentView alloc]init];
         _presentView.frame = CGRectMake(0,150, CGRectGetWidth(self.view.frame)/2, 285);
-        _presentView.showTime = 3;
+        _presentView.showTime = 2;
         _presentView.delegate = self;
         _presentView.backgroundColor = [UIColor clearColor];
     }
@@ -1278,7 +1278,7 @@ privateChatViewDelegate>
 //
 //        PresentModel *model2 = [PresentModel modelWithSender:@"游客C" giftName:@"游轮" icon:@"" giftImageName:@"ship_body"];
 //        [_giftArr addObject:model2];
-        _giftArr = [NSMutableArray array];
+        _giftArr = [[NSMutableArray alloc] init];
     }
     return _giftArr;
 }
@@ -2980,17 +2980,18 @@ privateChatViewDelegate>
     
     [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName level:level];
     [self.messageTableView sendMessage:model];
-    WEAKSELF;
+//    WEAKSELF;
     PresentModel *presentModel = [[PresentModel alloc] init];
     presentModel.sender = srcUserAlias;
     presentModel.giftName = strGiftName;
     presentModel.icon = giftInfo.pic_thumb;
     presentModel.giftImageName = giftInfo.pic_original;
-    presentModel.giftNumber = giftNum;
-    for (int index = 0; index < giftNum; index ++ ) {
-        [weakSelf.giftArr addObject:presentModel];
-    }
-    [weakSelf chooseGift:0 isAnimation:isAnimation];    
+    presentModel.num = giftNum;
+//    for (int index = 0; index < giftNum; index ++ ) {
+//        [self.giftArr addObject:presentModel];
+//    }
+
+    [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
 }
 
 //获取用户帐户信息响应

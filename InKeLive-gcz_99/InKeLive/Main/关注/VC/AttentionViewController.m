@@ -12,17 +12,31 @@
 #import "LocalUserModel.h"
 #import "DPK_NW_Application.h"
 #import "MBProgressHUD+MJ.h"
-@interface AttentionViewController ()<UITableViewDataSource, UITableViewDelegate>
+#import "EmptyView.h"
+#import "GTAFNData.h"
+#import "AppDelegate.h"
+@interface AttentionViewController ()<UITableViewDataSource, UITableViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong) NSArray *arrData;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic,strong)EmptyView *emptyView;
 @end
 
 @implementation AttentionViewController
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = NO;
+    self.title = @"关注";
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == NO) {
+        [appDelegate doLogon];
+    }
+    self.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _arrData = [NSArray array];
     [self getData];
+    [self.view addSubview:self.emptyView];
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -85,32 +99,9 @@
 
 - (void)btnCancelAttention:(UIButton *)button{
     NSString *pid = [[_arrData objectAtIndex:button.tag - 200] objectForKey:@"pid"];
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    // 获得请求管理者
-    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-    // 设置请求格式
-    session.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    parameters[@"cmd"] = CMD_ATTENTION_DELETE;
-    parameters[@"uid"] = [NSString stringWithFormat:@"%d",userData.userID];
-    parameters[@"pid"] = pid;
-    NSString* strAPIUrl = URL_GiftInfo;
-    NSLog(@"url:%@", strAPIUrl);
-    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
-    [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        NSLog(@"Success: %@", responseObject);
-        NSLog(@"task: %@",task);
-        NSDictionary *appDic =(NSDictionary*)responseObject;
-        if ([appDic[@"code"] intValue] == 0) {
-            NSMutableArray *array = [[NSMutableArray alloc] initWithArray:_arrData];
-            [array removeObjectAtIndex:button.tag-200];
-            _arrData = [NSArray arrayWithArray:array];
-            [_tableView reloadData];
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error: %@", error);
-        [MBProgressHUD showAlertMessage:@"取消关注失败"];
-    }];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data DeteleAttentionWithPid:pid];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,30 +109,49 @@
     // Dispose of any resources that can be recreated.
 }
 - (void) getData{
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    // 获得请求管理者
-    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-    // 设置请求格式
-    session.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    parameters[@"cmd"] = CMD_ATTENTION_ROOM_LIST;
-    parameters[@"uid"] = [NSString stringWithFormat:@"%d",userData.userID];
-    NSString* strAPIUrl = URL_GiftInfo;
-    NSLog(@"url:%@", strAPIUrl);
-    [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
-    [session POST:strAPIUrl parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        NSLog(@"Success: %@", responseObject);
-        NSLog(@"task: %@",task);
-        NSDictionary *appDic =(NSDictionary*)responseObject;
-        if ([appDic[@"code"] intValue] == 0) {
-            _arrData = appDic[@"List"];
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error: %@", error);
-    }];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data AttentionList];
 }
 
-
+- (EmptyView *)emptyView{
+    if (!_emptyView) {
+        _emptyView = [[EmptyView alloc]initWithFrame:self.view.bounds];
+    }
+    return _emptyView;
+}
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_ATTENTION_ROOM_LIST]) {
+        NSLog(@"data == %@",data);
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
+            if (array.count != 0) {
+                self.arrData = array;
+                [self.emptyView setHidden:YES];
+                [self.tableView reloadData];
+            }
+        }else{
+            [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请刷新重试" cancelTitle:@"取消" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                if (buttonTag == 0) {
+                    [self getData];
+                }
+            }];
+        }
+    }else if ([cmd isEqualToString:CMD_ATTENTION_DELETE]){
+        NSLog(@"data == %@",data);
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+//            NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
+//            if (array.count != 0) {
+//                self.arrData = array;
+//
+//            }
+//            [self.tableView reloadData];
+        }else{
+            [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+            }];
+        }
+    }
+}
 /*
 #pragma mark - Navigation
 

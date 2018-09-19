@@ -104,7 +104,7 @@
         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timeToReloadData) userInfo:nil repeats:YES];
         [timer fire];
         //监听通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(w:) name:@"kReceiveMessageNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotification:) name:@"kReceiveMessageNotification" object:nil];
     
     }
     return self;
@@ -121,6 +121,7 @@
     self.isRightTime = NO;
     self.isShowNode = NO;
     self.isNeedScroll = YES;
+    
 }
 
 - (void)sendMessage:(MessageModel*)model
@@ -137,33 +138,40 @@
         [self.data addObject:model];
         NSLog(@"self.isNeedScroll == %d",self.isNeedScroll);
         NSLog(@"self.isRightTime == %d",self.isRightTime);
-        if (self.isNeedScroll && self.isRightTime) {
-            NSLog(@"scroll");
-            if (self.isShowNode) {
-                self.ShowNodeView(NO);
-            }
-            self.notLookNum = 0;
-            //将最后一个单元格滚动到表视图的底部显示
-            [self reloadData];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.data.count-1 inSection:0];
-            [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-            self.isRightTime = NO;
-            self.isShowNode = NO;
-        }else{
-             NSLog(@"Noscroll");
-            if (!self.isNeedScroll) {
-                if (!self.isShowNode) {
-                    self.ShowNodeView(YES);
-                }
-                self.isShowNode = YES;
-                  self.notLookNum+=1;
-                if (self.ShowNodeNumber) {
-                    self.ShowNodeNumber(self.notLookNum);
-                }
-            }
-          
-            
-        }
+//        if (self.isNeedScroll && self.isRightTime) {
+//            NSLog(@"scroll");
+//            if (self.isShowNode) {
+//                self.ShowNodeView(NO);
+//            }
+//            self.notLookNum = 0;
+//            //将最后一个单元格滚动到表视图的底部显示
+//            [self reloadData];
+//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.data.count-1 inSection:0];
+//            [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+//            self.isRightTime = NO;
+//            self.isShowNode = NO;
+//        }else{
+//             NSLog(@"Noscroll");
+//            if (!self.isNeedScroll) {
+//                if (!self.isShowNode) {
+//                    self.ShowNodeView(YES);
+//                }
+//                self.isShowNode = YES;
+//                  self.notLookNum+=1;
+//                if (self.ShowNodeNumber) {
+//                    self.ShowNodeNumber(self.notLookNum);
+//                }
+//            }
+//
+//
+//        }
+        self.notLookNum = 0;
+        //将最后一个单元格滚动到表视图的底部显示
+        [self reloadData];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.data.count-1 inSection:0];
+        [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        self.isRightTime = NO;
+        self.isShowNode = NO;
     }
 }
 

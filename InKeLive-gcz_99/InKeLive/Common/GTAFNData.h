@@ -64,6 +64,18 @@
                     code: (NSString *)code
                      pwd: (NSString *)pwd;
 
+
+/**
+ 找回密码
+
+ @param phone 手机号
+ @param code 验证码
+ @param pwd 新密码
+ */
+-(void)phoneRetrieveWithPhone: (NSString *)phone
+                         code: (NSString *)code
+                          pwd: (NSString *)pwd;
+
 /**
  修改密码
 
@@ -79,4 +91,11 @@
  关注列表
  */
 -(void)AttentionList;
+
+/**
+ 删除关注
+
+ @param pid 关注对象的uid
+ */
+-(void)DeteleAttentionWithPid: (NSString *)pid;
 @end

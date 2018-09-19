@@ -8,6 +8,7 @@
 
 #import "PresentViewCell.h"
 #import "PresentModel.h"
+#import "PresentViewCell.h"
 
 @interface GIftCell : PresentViewCell
 
@@ -27,5 +28,8 @@
 
 //礼物
 @property (nonatomic,strong)UIImageView *giftImageView;
+
+//礼物连乘数
+@property (nonatomic, strong) PresentLable *labNum;
 
 @end

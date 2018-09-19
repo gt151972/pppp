@@ -9,6 +9,7 @@
 #import "GIftCell.h"
 #import "LocalUserModel.h"
 #import "DPK_NW_Application.h"
+#import "PresentViewCell.h"
 
 @implementation GIftCell
 
@@ -25,6 +26,7 @@
     [self.imgBg addSubview:self.giftImageView];
     [self.imgBg addSubview:self.senderLabel];
     [self.imgBg addSubview:self.lineLabel];
+    [self.imgBg addSubview:self.labNum];
     
     [self.imgBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
@@ -38,8 +40,16 @@
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(2);
-        make.right.bottom.equalTo(self).offset(-2);
+        make.right.equalTo(self).offset(-40);
+        make.bottom.equalTo(self).offset(-2);
         make.width.height.equalTo(@32);
+    }];
+    
+    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_imgBg.mas_centerY);
+        make.right.equalTo(self).offset(20);
+        make.left.equalTo(self.giftImageView.mas_right).offset(5);
+        make.height.equalTo(@20);
     }];
     
     [self.senderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -56,7 +66,58 @@
         make.right.equalTo(self.giftImageView.mas_left).offset(-10);
         make.height.equalTo(@16);
     }];
+
 }
+
+- (void)startAnimationDuration:(NSTimeInterval)interval completion:(void (^)(BOOL finish))completion
+{
+    [UIView animateKeyframesWithDuration:interval delay:0 options:0 animations:^{
+        
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1/2.0 animations:^{
+            self.transform = CGAffineTransformMakeScale(4, 4);
+        }];
+        [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1/2.0 animations:^{
+            self.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        }];
+        
+    } completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:0.4 initialSpringVelocity:10 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        } completion:^(BOOL finished) {
+            if (completion) {
+                completion(finished);
+            }
+        }];
+        
+    }];
+}
+
+-(void)babyCoinFadeAway
+{
+    
+    //相当与两个动画  合成
+    //位置改变
+    CABasicAnimation * aniMove = [CABasicAnimation animationWithKeyPath:@"position"];
+    aniMove.fromValue = [NSValue valueWithCGPoint:_labNum.layer.position];
+    aniMove.toValue = [NSValue valueWithCGPoint:CGPointMake(500, 300)];
+    //大小改变
+    CABasicAnimation * aniScale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    aniScale.fromValue = [NSNumber numberWithFloat:3.0];
+    aniScale.toValue = [NSNumber numberWithFloat:0.5];
+    
+    CAAnimationGroup * aniGroup = [CAAnimationGroup animation];
+    aniGroup.duration = 3.0;//设置动画持续时间
+    aniGroup.repeatCount = 1;//设置动画执行次数
+//    aniGroup.delegate = self;
+    aniGroup.animations = @[aniMove,aniScale];
+    aniGroup.removedOnCompletion = NO;
+    aniGroup.fillMode = kCAFillModeForwards;  //防止动画结束后回到原位
+    //    [lable.layer removeAllAnimations];
+    [_labNum.layer addAnimation:aniGroup forKey:@"aniMove_aniScale_groupAnimation"];
+    
+}
+
 
 - (UIImageView *)iconImageView{
     if (!_iconImageView) {
@@ -79,6 +140,16 @@
     return _giftLabel;
 }
 
+- (PresentLable *)labNum{
+    if (!_labNum) {
+        _labNum = [[PresentLable alloc]init];
+        _labNum.textColor = MAIN_COLOR;
+        _labNum.borderColor = [UIColor whiteColor];
+        _labNum.textAlignment = NSTextAlignmentCenter;
+        _labNum.font = [UIFont systemFontOfSize:20];
+    }
+    return _labNum;
+}
 
 - (UILabel *)senderLabel{
     if (!_senderLabel) {
@@ -133,6 +204,7 @@
     NSString *strUrl = [NSString stringWithFormat:@"%@gift/%@",[dict objectForKey:@"res"],presentmodel.giftImageName];
     NSURL *urlGiftImage =[NSURL URLWithString:strUrl];
     [self.giftImageView sd_setImageWithURL:urlGiftImage];
+    self.labNum.text = [NSString stringWithFormat:@"x%ld",(long)presentmodel.num];
 }
 
 

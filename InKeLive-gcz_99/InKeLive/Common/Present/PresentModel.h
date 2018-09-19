@@ -16,6 +16,7 @@
 @property (copy, nonatomic) NSString *icon;
 @property (copy, nonatomic) NSString *giftImageName;
 @property (assign, nonatomic) NSInteger giftNumber;
+@property (assign, nonatomic) NSInteger num;
 
 + (instancetype)modelWithSender:(NSString *)sender
                        giftName:(NSString *)giftName

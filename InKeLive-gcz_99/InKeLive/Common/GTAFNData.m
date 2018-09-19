@@ -118,7 +118,7 @@
 }
 
 /**
- 注册发送验证码
+ 注册or忘记密码 发送验证码
  
  @param phone <#phone description#>
  @param reg <#reg description#>
@@ -140,6 +140,20 @@
 -(void)phoneRegWithPhone: (NSString *)phone
                     code: (NSString *)code
                      pwd: (NSString *)pwd{
+    currResult = CMD_REGISTER_REQUEST;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", code, @"code", pwd, @"pwd", nil];
+    [self postData:currResult data:dict];
+}
+/**
+ 找回密码
+ 
+ @param phone 手机号
+ @param code 验证码
+ @param pwd 新密码
+ */
+-(void)phoneRetrieveWithPhone: (NSString *)phone
+                         code: (NSString *)code
+                          pwd: (NSString *)pwd{
     currResult = CMD_PASSWORD_FIND;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: phone, @"phone", code, @"code", pwd, @"pwd", nil];
     [self postData:currResult data:dict];
@@ -166,6 +180,18 @@
     currResult = CMD_ATTENTION_ROOM_LIST;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
+    [self postData:currResult data:dict];
+}
+
+/**
+ 删除关注
+ 
+ @param pid 关注对象的uid
+ */
+-(void)DeteleAttentionWithPid: (NSString *)pid{
+    currResult = CMD_ATTENTION_DELETE;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", pid, @"pid", nil];
     [self postData:currResult data:dict];
 }
 @end

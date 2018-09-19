@@ -48,6 +48,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == NO) {
+        [appDelegate doLogon];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainVCReload) name:@"hzmsg_reload_me_data" object:nil];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

@@ -8,7 +8,7 @@
 
 #import "PresentViewCell.h"
 
-#define Duration 2
+#define Duration 0.3
 
 @interface PresentViewCell ()
 
@@ -25,6 +25,10 @@
  *  shake动画的缓存数组
  */
 @property (strong, nonatomic) NSMutableArray *caches;
+/**
+ shake动画模型的缓存数组
+ */
+@property (strong, nonatomic) NSMutableArray *modelCaches;
 
 @end
 
@@ -38,6 +42,14 @@
         _caches = [NSMutableArray array];
     }
     return _caches;
+}
+
+- (NSMutableArray *)modelCaches
+{
+    if (!_modelCaches) {
+        _modelCaches = [NSMutableArray array];
+    }
+    return _modelCaches;
 }
 
 #pragma mark - Initial
@@ -62,16 +74,16 @@
     lable.backgroundColor = [UIColor clearColor];
     lable.borderColor     = [UIColor whiteColor];
     lable.textColor       = MAIN_COLOR;
-    lable.font            = [UIFont systemFontOfSize:16.0];
+    lable.font            = [UIFont systemFontOfSize:17.0];
     lable.textAlignment   = NSTextAlignmentCenter;
     lable.alpha           = 0.0;
     CGFloat w             = 60;
     CGFloat h             = 20;
     CGFloat x             = CGRectGetWidth(self.frame);
-    CGFloat y             =  10;
+    CGFloat y             = - h + 5;
     lable.frame           = CGRectMake(x, y, w, h);
     self.shakeLable       = lable;
-    [self addSubview:lable];
+//    [self addSubview:lable];
 }
 
 /**
@@ -82,30 +94,20 @@
  */
 - (void)startShakeAnimationWithNumber:(NSInteger)number completion:(void (^)(BOOL finished))block
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];//取消上次的延时隐藏动画
-    [self performSelector:@selector(hiddenAnimationOfShowShake:) withObject:@(YES) afterDelay:self.showTime];
-    self.number++;
-    if ([self.gitfModel giftNumber] > 0) {
-        self.number        = [self.gitfModel giftNumber];
-    }
+    self.superview.userInteractionEnabled = YES;
     _state                 = AnimationStateShaking;
-    self.shakeLable.text   = [NSString stringWithFormat:@"X%ld", self.number];
+    self.shakeLable.text   = [NSString stringWithFormat:@"X%ld", ++self.number];
     __weak typeof(self) ws = self;
-    number = 1;
     [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
-//        if (number > 1) {
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                [ws startShakeAnimationWithNumber:(number - 1) completion:block];
-//            });
-//        }else {
-//            _state = AnimationStateShaked;
-//            if (block) {
-//                block(YES);
-//            }
-//        }
-        _state = AnimationStateShaked;
-        if (block) {
-            block(YES);
+        if (number > 1) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [ws startShakeAnimationWithNumber:(number - 1) completion:block];
+            });
+        }else {
+            _state = AnimationStateShaked;
+            if (block) {
+                block(YES);
+            }
         }
     }];
 }
@@ -114,10 +116,10 @@
 
 - (void)showAnimationWithModel:(id<PresentModelAble>)model showShakeAnimation:(BOOL)flag prepare:(void (^)(void))prepare completion:(void (^)(BOOL))completion
 {
+    _state             = AnimationStateShowing;
+    _baseModel         = model;
     _sender            = [model sender];
     _giftName          = [model giftName];
-    _gitfModel         = model;
-    _state             = AnimationStateShowing;
     self.originalFrame = self.frame;
     self.number        = 0;
     if (prepare) {
@@ -140,6 +142,8 @@
 
 - (void)shakeAnimationWithNumber:(NSInteger)number
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenAnimationOfShowShake:) object:@(YES)];
+    [self performSelector:@selector(hiddenAnimationOfShowShake:) withObject:@(YES) afterDelay:self.showTime];
     if (number > 0) [self.caches addObject:@(number)];
     if (self.caches.count > 0 && _state != AnimationStateShaking) {
         NSInteger cache        = [self.caches.firstObject integerValue];
@@ -151,23 +155,47 @@
     }
 }
 
+- (void)shakeAnimationWithModels:(NSArray<id<PresentModelAble>> *)models
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenAnimationOfShowShake:) object:@(YES)];
+    [self performSelector:@selector(hiddenAnimationOfShowShake:) withObject:@(YES) afterDelay:self.showTime];
+    if (models.count > 0) [self.modelCaches addObjectsFromArray:models];
+    if (self.modelCaches.count > 0 && _state != AnimationStateShaking) {
+        _state = AnimationStateShaking;
+        id<PresentModelAble> obj = self.modelCaches.firstObject;
+        self.shakeLable.text = [NSString stringWithFormat:@"X%ld", [obj giftNumber]];
+        [self.modelCaches removeObjectAtIndex:0];
+        __weak typeof(self) ws = self;
+        [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                _state = AnimationStateShaked;
+                if (ws.modelCaches.count > 0) {
+                    [ws shakeAnimationWithModels:nil];
+                }
+            });
+        }];
+    }
+}
+
 - (void)hiddenAnimationOfShowShake:(BOOL)flag
 {
+    self.superview.userInteractionEnabled = NO;
     _state = AnimationStateHiding;
     [UIView animateWithDuration:Duration delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self customHideAnimationOfShowShakeAnimation:flag];
     } completion:^(BOOL finished) {
+        
         //恢复cell的初始状态
         self.frame            = self.originalFrame;
         _state                = AnimationStateNone;
-        _sender               = nil;
-        _giftName             = nil;
         self.shakeLable.alpha = 0.0;
         [self.caches removeAllObjects];
+        [self.modelCaches removeAllObjects];
         
         //通知代理
         if ([self.delegate respondsToSelector:@selector(presentViewCell:showShakeAnimation:shakeNumber:)]) {
             [self.delegate presentViewCell:self showShakeAnimation:flag shakeNumber:self.number];
+            
         }
     }];
 }

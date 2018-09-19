@@ -17,34 +17,25 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.emptyImageView];
-        [self addSubview:self.skipButton];
         //对子View进行约束
         [self.emptyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.equalTo(self).offset(EmptyMargin);
-            make.right.equalTo(self).offset(-EmptyMargin);
-            make.height.width.offset(200);
+            make.centerX.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(176, 136));
+            make.top.equalTo(@89);
         }];
-        
-        [self.skipButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.emptyImageView.mas_bottom).offset(10);
-            make.left.right.width.equalTo(self.emptyImageView);
-            make.height.equalTo(@20);
+        UILabel *labEmpty = [[UILabel alloc] init];
+        labEmpty.text = @"当前界面空空如也~";
+        labEmpty.font = [UIFont systemFontOfSize:12];
+        labEmpty.textAlignment = NSTextAlignmentCenter;
+        labEmpty.textColor = RGB(32, 32, 32);
+        [self addSubview:labEmpty];
+        [labEmpty mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.emptyImageView.mas_bottom).offset(18);
+            make.width.centerX.equalTo(self);
+            make.height.equalTo(@13);
         }];
-        
-        
     }
     return self;
-}
-
-
-- (UIButton *)skipButton{
-    if (!_skipButton) {
-        _skipButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_skipButton setTitle:@"去看看最新精彩直播" forState:UIControlStateNormal];
-        [_skipButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        _skipButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    }
-    return _skipButton;
 }
 
 
@@ -52,7 +43,7 @@
     if (!_emptyImageView) {
         //创建ImageView 并加载图片
         _emptyImageView = [[UIImageView alloc]init];
-        _emptyImageView.image = [UIImage imageNamed:@"live_empty_bg@2x"];
+        _emptyImageView.image = [UIImage imageNamed:@"emptyIcon"];
     }
     return _emptyImageView;
 }

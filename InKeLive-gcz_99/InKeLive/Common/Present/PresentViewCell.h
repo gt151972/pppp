@@ -36,6 +36,10 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
  */
 @property (assign, nonatomic, readonly) AnimationState state;
 /**
+ 礼物模型
+ */
+@property (strong, nonatomic, readonly)id<PresentModelAble> baseModel;
+/**
  *  礼物发送者
  */
 @property (copy, nonatomic, readonly) NSString *sender;
@@ -43,10 +47,6 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
  *  礼物名
  */
 @property (copy, nonatomic, readonly) NSString *giftName;
-/**
- 当前礼物模型
- */
-@property (strong, nonatomic, readonly) id<PresentModelAble> gitfModel;
 
 - (instancetype)initWithRow:(NSInteger)row;
 /**
@@ -68,6 +68,13 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
  */
 - (void)shakeAnimationWithNumber:(NSInteger)number;
 /**
+ 连乘动画
+
+ @discussion  当礼物模型中拥有礼物个数时，才调用此接口
+ @param       model 礼物模型
+ */
+- (void)shakeAnimationWithModels:(NSArray<id<PresentModelAble>> *)models;
+/**
  *  隐藏cell动画
  *
  *  @param flag 是否带有连城动画
@@ -79,6 +86,8 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
 - (void)releaseVariable;
 
 @end
+
+
 
 //供子类重写的接口
 @interface PresentViewCell (OverWrite)
@@ -98,6 +107,8 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
 
 @end
 
+
+
 @interface PresentLable : UILabel
 
 /**
@@ -114,6 +125,8 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
                     completion:(void (^)(BOOL finish))completion;
 
 @end
+
+
 
 @protocol PresentViewCellDelegate <NSObject>
 

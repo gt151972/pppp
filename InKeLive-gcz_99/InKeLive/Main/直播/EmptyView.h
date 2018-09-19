@@ -13,7 +13,4 @@
 //空视图(背景图)
 @property (nonatomic,strong)UIImageView *emptyImageView;
 
-//提示跳转按钮
-@property (nonatomic,strong)UIButton *skipButton;
-
 @end

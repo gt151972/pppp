@@ -9,8 +9,9 @@
 #import "ForgetPasswordViewController.h"
 #import "Time.h"
 #import "AutoCommon.h"
+#import "GTAFNData.h"
 
-@interface ForgetPasswordViewController ()
+@interface ForgetPasswordViewController ()<GTAFNDataDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnFindPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnGetCode;
 
@@ -28,7 +29,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _textFieldPassword.secureTextEntry = YES;
+    _textFieldPassword2.secureTextEntry = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,6 +45,9 @@
  @param sender <#sender description#>
  */
 - (IBAction)btnFindPasswordClicked:(id)sender {
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data phoneRetrieveWithPhone:_textFieldPhone.text code:_textFieldCode.text pwd:_textFieldPassword.text];
 }
 
 
@@ -53,12 +58,36 @@
  */
 - (IBAction)btnGetCodeClicked:(id)sender {
     [Time setTheCountdownButton:sender startWithTime:45 title:@"获取验证码" countDownTitle:@"s" mainColor:MAIN_COLOR countColor:MAIN_COLOR];
+    if (_textFieldPhone.text.length == 11) {
+        GTAFNData *data = [[GTAFNData alloc] init];
+        data.delegate = self;
+        [data phoneMsgWithPhone:_textFieldPhone.text reg:0];
+    }else{
+        [[GTAlertTool shareInstance] showAlert:@"您输入的手机号格式有误" message:@"请重新输入" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+    }
 }
 
 -(void)btnBackClicked{
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+#pragma mark - GTAFNDataDelegate
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_REGISTER_SEND_CODE]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            [[GTAlertTool shareInstance]showAlert:@"验证码发送成功" message:@"请注意查收" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+        }else{
+            [[GTAlertTool shareInstance]showAlert:@"提示" message:[data objectForKey:@"msg"] cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+        }
+    }else if ([cmd isEqualToString:CMD_PASSWORD_FIND]){
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            [[GTAlertTool shareInstance]showAlert:@"密码修改成功" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                [self btnBackClicked];
+            }];
+        }else{
+            [[GTAlertTool shareInstance]showAlert:@"提示" message:[data objectForKey:@"msg"] cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+        }
+    }
+}
 
 
 /*
