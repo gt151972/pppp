@@ -39,10 +39,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardAction:) name:UIKeyboardWillHideNotification object:nil];
     [self addSubview:_viewBK];
     UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 40, SCREEN_WIDTH, 40)];
+    if (kIs_iPhoneX) {
+        viewBg.frame = CGRectMake(0, SCREEN_HEIGHT - 40 - 34, SCREEN_WIDTH, 40 +34);
+    }
     viewBg.backgroundColor = RGB(243, 243, 243);
     [self addSubview:viewBg];
     
     _btnUserChoose = [[UIButton alloc] initWithFrame:CGRectMake(5, 4, SCREEN_WIDTH/3-10, 33)];
+    
     [_btnUserChoose setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
     [_btnUserChoose setBackgroundColor:[UIColor whiteColor]];
     _btnUserChoose.layer.masksToBounds = YES;
@@ -178,6 +182,9 @@
     if([sender.name isEqualToString:UIKeyboardWillShowNotification]){
         //        self.toBottom.constant = [value CGRectValue].size.height;
         self.frame = CGRectMake(0, -[value CGRectValue].size.height, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (kIs_iPhoneX) {
+            self.frame = CGRectMake(0, -[value CGRectValue].size.height + 34, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
     }else{
         self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     }

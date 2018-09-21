@@ -31,7 +31,6 @@
 @implementation MineViewController
 - (void)initData{
     _arrTitle = @[@"我的收益", @"安全中心", @"排行榜", @"活动中心", @"设置"];
-    BOOL bLogon = [DPK_NW_Application sharedInstance].isLogon;
     _userModel = [DPK_NW_Application sharedInstance].localUserModel;
     
     [self.tableView reloadData];
@@ -48,10 +47,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if([DPK_NW_Application sharedInstance].isLogon == NO) {
-        [appDelegate doLogon];
-    }
+//    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    if([DPK_NW_Application sharedInstance].isLogon == NO) {
+//        [appDelegate doLogon];
+//    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainVCReload) name:@"hzmsg_reload_me_data" object:nil];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -189,6 +188,10 @@
     [viewHead addSubview:imgInfo];
     
     UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 35, SCREEN_WIDTH, 16)];
+    if (kIs_iPhoneX) {
+        labTitle.frame =CGRectMake(0, 40, SCREEN_WIDTH, 16);
+    }
+    
     labTitle.text = @"我的";
     labTitle.textColor = [UIColor whiteColor];
     labTitle.font = [UIFont systemFontOfSize:16];

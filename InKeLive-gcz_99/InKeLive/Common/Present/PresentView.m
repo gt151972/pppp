@@ -137,8 +137,8 @@
 {
     for (int index = 0; index < models.count; index++) {
         id<PresentModelAble> obj = models[index];
-//        PresentViewCell *cell = [self examinePresentingCell:obj];
-        PresentViewCell *cell = nil;
+        PresentViewCell *cell = [self examinePresentingCell:obj];
+//        PresentViewCell *cell = nil;
         if (cell) {
             if (cell.state == AnimationStateShowing) {
                 //在执行展示动画期间如果收到了连乘动画礼物消息，就将消息缓存

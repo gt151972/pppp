@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sIt-3F-IX2">
-                    <rect key="frame" x="0.0" y="74" width="375" height="106"/>
+                    <rect key="frame" x="0.0" y="30" width="375" height="106"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWV-le-Hg3">
                             <rect key="frame" x="13" y="21" width="35.5" height="14"/>
@@ -68,7 +69,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AYD-qm-tBd">
-                    <rect key="frame" x="12" y="200" width="351" height="40"/>
+                    <rect key="frame" x="12" y="156" width="351" height="40"/>
                     <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="zkg-Wx-obf"/>
@@ -86,11 +87,12 @@
             <constraints>
                 <constraint firstItem="sIt-3F-IX2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NnZ-OD-Fya"/>
                 <constraint firstAttribute="trailing" secondItem="AYD-qm-tBd" secondAttribute="trailing" constant="12" id="QTq-gE-szB"/>
-                <constraint firstItem="sIt-3F-IX2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="Tgv-Be-AVV"/>
+                <constraint firstItem="sIt-3F-IX2" firstAttribute="top" secondItem="aeH-yp-75t" secondAttribute="top" constant="10" id="Tgv-Be-AVV"/>
                 <constraint firstItem="AYD-qm-tBd" firstAttribute="top" secondItem="sIt-3F-IX2" secondAttribute="bottom" constant="20" id="VgP-jS-Xuy"/>
                 <constraint firstAttribute="trailing" secondItem="sIt-3F-IX2" secondAttribute="trailing" id="YGE-e4-hoT"/>
                 <constraint firstItem="AYD-qm-tBd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="bd7-XQ-bm6"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="aeH-yp-75t"/>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
     </objects>

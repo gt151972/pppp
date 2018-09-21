@@ -41,10 +41,15 @@
 }
 
 - (void)nav{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+    view.backgroundColor = RGB(204, 174, 235);
+    [self.view addSubview:view];
     UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
-    viewBg.backgroundColor = RGB(204, 174, 235);
-    [self.view addSubview:viewBg];
-    
+    [view addSubview:viewBg];
+    if (kIs_iPhoneX) {
+        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 88);
+        viewBg.frame = CGRectMake(0, 22, SCREEN_WIDTH, 64);
+    }
     UIButton *btnBack = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, 44, 44)];
     [btnBack setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
     [btnBack addTarget:self action:@selector(btnBackClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -72,6 +77,7 @@
     self.viewLine.backgroundColor = RGB(119, 59, 175);
     self.viewLine.centerX = btnWeek.centerX;
     [viewBg addSubview:self.viewLine];
+    
 }
 
 - (void)viewDidLoad {

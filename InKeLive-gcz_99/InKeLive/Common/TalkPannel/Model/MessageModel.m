@@ -230,7 +230,7 @@
                     [tmpArray addObject:imageStorage];
                 }
             }];
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, -2, 10, 10)];
             [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
             [container addView:view range:NSMakeRange(0, 0)];
             //用户名字的颜色和文字大小
@@ -270,7 +270,7 @@
         }
             break;
         case CellSystemHomType:{
-            allMessage = [NSString stringWithFormat:@"【喇叭】:%@",message];
+            allMessage = [NSString stringWithFormat:@"喇叭: %@",message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -293,15 +293,15 @@
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
 //            NSString *string = [NSString stringWithFormat:@""];
-            nameTextStorage.range = [allMessage rangeOfString:@"【喇叭】:"];
-            nameTextStorage.textColor = RGB(32, 233, 256);
+            nameTextStorage.range = [allMessage rangeOfString:@"喇叭: "];
+            nameTextStorage.textColor = RGB(255, 115, 171);
             nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
             [container addTextStorage:nameTextStorage];
             
             //聊天格式
             TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
             deserveTextStorage.range = [allMessage rangeOfString:message];
-            deserveTextStorage.textColor = [UIColor whiteColor];
+            deserveTextStorage.textColor = RGB(255, 115, 171);
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:15];
             [container addTextStorage:deserveTextStorage];
             
@@ -320,7 +320,7 @@
         }
             break;
         case CellHomType:{
-            allMessage = [NSString stringWithFormat:@"【喇叭】%@:%@",name,message];
+            allMessage = [NSString stringWithFormat:@"喇叭: %@:%@",name,message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -342,7 +342,7 @@
             
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-            NSString *string = [NSString stringWithFormat:@"【喇叭】%@:",name];
+            NSString *string = [NSString stringWithFormat:@"喇叭: %@:",name];
             nameTextStorage.range = [allMessage rangeOfString:string];
             nameTextStorage.textColor = RGB(32, 233, 256);
             nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
@@ -370,7 +370,7 @@
         }
             break;
         case CellNoticeType:{
-            allMessage = [NSString stringWithFormat:@"【公告】%@:%@",name,message];
+            allMessage = [NSString stringWithFormat:@"公告: %@:%@",name,message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -391,7 +391,7 @@
             }];
             
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-            NSString *string = [NSString stringWithFormat:@"【公告】%@:",name];
+            NSString *string = [NSString stringWithFormat:@"公告: %@:",name];
             nameTextStorage.range = [allMessage rangeOfString:string];
             nameTextStorage.textColor = GREEN_COLOR;
             nameTextStorage.font = [UIFont boldSystemFontOfSize:15];

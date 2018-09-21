@@ -83,7 +83,7 @@
     CGFloat y             = - h + 5;
     lable.frame           = CGRectMake(x, y, w, h);
     self.shakeLable       = lable;
-//    [self addSubview:lable];
+    [self addSubview:lable];
 }
 
 /**

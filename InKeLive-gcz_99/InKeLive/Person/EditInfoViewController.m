@@ -50,6 +50,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = RGB(243, 243, 243);
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 365) style:UITableViewStylePlain];
+    if (kIs_iPhoneX) {
+        _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 400);
+    }
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;

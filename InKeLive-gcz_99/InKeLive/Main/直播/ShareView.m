@@ -24,6 +24,9 @@
 - (void)setSubViews{
     [self addSubview:self.viewBK];
     UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 144, SCREEN_WIDTH, 144)];
+    if (kIs_iPhoneX) {
+        viewBg.frame = CGRectMake(0, SCREEN_HEIGHT - 144 - 34, SCREEN_WIDTH, 144+34);
+    }
     viewBg.backgroundColor = [UIColor whiteColor];
     [self addSubview:viewBg];
     

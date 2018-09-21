@@ -26,6 +26,7 @@
 @property(nonatomic, assign) BOOL isLogining;
 @property(nonatomic, strong) MBProgressHUD* hud;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewHead;
+@property (weak, nonatomic) IBOutlet UIButton *btnPwdVisable;
 
 @end
 
@@ -39,6 +40,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController.navigationBar setHidden:YES];
+    [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_hidden"] forState:UIControlStateNormal];
+    [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_visible"] forState:UIControlStateSelected];
+    self.edtUserPwd.secureTextEntry = YES;
     // Do any additional setup after loading the view from its nib.
     //为导航栏左侧添加系统自定义按钮
     //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(perFormAdd:)];
@@ -71,6 +75,8 @@
 
     
 }
+
+
 -(UIImageView *)imgViewHead{
     _imgViewHead.layer.masksToBounds = YES;
     _imgViewHead.layer.cornerRadius = 48;

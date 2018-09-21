@@ -19,6 +19,7 @@
 @property (weak, nonatomic) NSMutableArray *arrMessageFrame;
 @end
 @implementation ChatPrivateView
+static const CGFloat kHeight=285.0;
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         _arrChatMessage = [[NSMutableArray alloc] init];
@@ -77,7 +78,10 @@
 
 -(void) setSubViews {
     [self addSubview:self.viewBK ];
-    UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2)];
+    UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-kHeight, SCREEN_WIDTH, kHeight)];
+    if (kIs_iPhoneX) {
+        viewBg.frame = CGRectMake(0, SCREEN_HEIGHT-kHeight-34, SCREEN_WIDTH, kHeight+34);
+    }
     viewBg.backgroundColor = [UIColor clearColor];
     [self addSubview:viewBg];
     
@@ -100,7 +104,10 @@
 //    [_messageTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
     [viewBg addSubview:self.messageTableView];
     
-    UIView *viewButtonBg = [[UIView alloc] initWithFrame:CGRectMake(51, SCREEN_HEIGHT/2-40, SCREEN_WIDTH - 51, 40)];
+    UIView *viewButtonBg = [[UIView alloc] initWithFrame:CGRectMake(51, kHeight-40, SCREEN_WIDTH - 51, 40)];
+    if (kIs_iPhoneX) {
+        viewButtonBg.frame = CGRectMake(51, kHeight-40, SCREEN_WIDTH - 51, 40 + 34);
+    }
     viewButtonBg.backgroundColor = RGB(242, 242, 242);
     [viewBg addSubview:viewButtonBg];
     [viewButtonBg addSubview:self.textField];
@@ -168,7 +175,7 @@
 
 - (UITableView *)messageTableView{
     if (_messageTableView == nil) {
-        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
+        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, kHeight - 35 -40) style:UITableViewStylePlain];
         _messageTableView.dataSource = self;
         _messageTableView.delegate = self;
         _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
@@ -215,7 +222,7 @@
         }
         cell.backgroundColor = [UIColor clearColor];
         //        cell.backgroundColor = [UIColor redColor];
-        if (_arrChatMessage) {
+        if (_arrChatMessage && _nowRow >= 0) {
             BOOL haveKey = NO;
             NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
             for (int index = 0; index < arrKey.count; index ++) {
@@ -293,26 +300,33 @@
     
     if (tableView == _userTableView) {
         NSLog(@"_arrChatMessage.count == %lu",(unsigned long)_arrChatMessage.count);
-        return _arrChatMessage.count;
-        
+        if (_arrChatMessage.count <= 0 ) {
+            return 0;
+        }else{
+            return _arrChatMessage.count;
+        }
     }else{
         BOOL haveKey = NO;
         if (_nowRow<0) {
             return 0;
         }else{
-            NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
-            for (int index = 0; index < arrKey.count; index ++) {
-                if ([arrKey[index] isEqualToString:@"message"]) {
-                    haveKey = YES;
-                    break;
+            if (_arrChatMessage.count > 0) {
+                NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
+                for (int index = 0; index < arrKey.count; index ++) {
+                    if ([arrKey[index] isEqualToString:@"message"]) {
+                        haveKey = YES;
+                        break;
+                    }
                 }
-            }
-            if (haveKey) {
-                NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
-                NSLog(@"array == %lu",(unsigned long)array.count);
-                return array.count;
+                if (haveKey) {
+                    NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+                    NSLog(@"array == %lu",(unsigned long)array.count);
+                    return array.count;
+                }else{
+                    return 0;
+                }
             }else{
-                return 0;
+               return 0;
             }
         }
     }
@@ -387,8 +401,12 @@
 - (void)btnUserDeleteClicked: (UIButton *)button{
     [_arrChatMessage removeObjectAtIndex:_nowRow];
     [self reloadDateForTableView];
+    _nowRow = 0;
     if (self.deteleChatUser) {
         self.deteleChatUser(_nowRow);
+    }
+    if (_arrChatMessage.count <=0) {
+        [self hide];
     }
 }
 
@@ -405,6 +423,9 @@
     if([sender.name isEqualToString:UIKeyboardWillShowNotification]){
 //        self.toBottom.constant = [value CGRectValue].size.height;
         self.frame = CGRectMake(0, -[value CGRectValue].size.height, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (kIs_iPhoneX) {
+            self.frame = CGRectMake(0, -[value CGRectValue].size.height + 34, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
      }else{
          self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
      }

@@ -22,7 +22,9 @@
 
 - (UIWebView *)greadImage:(int)level{
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,16,16)];
+    webView.opaque = NO;
     webView.backgroundColor = [UIColor clearColor];
+    [webView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"youkeyouyou.png"]]];
     NSString *resource;
     NSString *type = @"gif";
     

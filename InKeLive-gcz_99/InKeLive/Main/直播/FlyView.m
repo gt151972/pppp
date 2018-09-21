@@ -52,11 +52,11 @@
     CGRect lframe =aUILabel.frame;
     //用计算出来的text的width更改frame的原始width
     lframe.size.width= textSize.width;//从屏幕最右边向左边移
-    lframe.origin.x=SCREEN_WIDTH/4; //用新值更改label的原frame值
+    lframe.origin.x= -textSize.width; //用新值更改label的原frame值
     aUILabel.frame = lframe;
     //计算动画x移动的最大偏移：屏幕width+text的width
     aUILabel.clipsToBounds = YES;
-    float offset = textSize.width+ SCREEN_WIDTH*3/4;
+    float offset = textSize.width+ SCREEN_WIDTH;
     [UIView animateWithDuration:10.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState//动画重复的主开关
      |UIViewAnimationOptionCurveLinear//动画的时间曲
                     animations:^{aUILabel.transform=CGAffineTransformMakeTranslation(-offset,0);} completion:^(BOOL finished) {

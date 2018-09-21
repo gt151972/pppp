@@ -46,7 +46,11 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
+        
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 80)];
+        if (kIs_iPhoneX) {
+            _tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 80);
+        }
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.rowHeight = 40;

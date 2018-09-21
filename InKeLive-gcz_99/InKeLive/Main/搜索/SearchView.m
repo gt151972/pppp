@@ -46,15 +46,22 @@
     [self addSubview:btnBg];
     
     UIView *viewNav = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+    if (kIs_iPhoneX) {
+        viewNav.frame = CGRectMake(0, 0, SCREEN_WIDTH, 88);
+    }
     viewNav.backgroundColor = [UIColor whiteColor];
     [self addSubview:viewNav];
     
     _searchBarBgView  = [[UIView alloc] initWithFrame:CGRectMake(13, 23, SCREEN_WIDTH - 60, 35)];
+    if (kIs_iPhoneX) {
+        _searchBarBgView.frame = CGRectMake(13, 45, SCREEN_WIDTH - 60, 35);
+    }
     _searchBarBgView.layer.borderColor = RGB(128, 128, 128).CGColor;
+//    _searchBarBgView.backgroundColor = [UIColor redColor];
     _searchBarBgView.layer.borderWidth = 1;
     _searchBarBgView.layer.cornerRadius = 18;
     _searchBarBgView.layer.masksToBounds = YES;
-    [self addSubview:_searchBarBgView];
+    [viewNav addSubview:_searchBarBgView];
     
     UIImageView *imgSearch = [[UIImageView alloc] init];
     UIImage *imageSearch = [UIImage imageNamed:@"home_search"];
@@ -91,15 +98,21 @@
     [_btnCancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.right.equalTo(viewNav.mas_right);
-        make.top.equalTo(@20);
+        make.top.equalTo(_searchBarBgView.mas_top).offset(-3);
     }];
     
     _btnChangeFrame = [[UIButton alloc] initWithFrame:CGRectMake(13, 25, SCREEN_WIDTH - 60, 35)];
+    if (kIs_iPhoneX) {
+        _btnChangeFrame.frame = CGRectMake(13, 47, SCREEN_WIDTH - 60, 35);
+    }
 //    [_btnChangeFrame setBackgroundColor:[UIColor redColor]];
     [_btnChangeFrame addTarget:self action:@selector(btnChangeFrameClicked) forControlEvents:UIControlEventTouchUpInside];
     [_searchBarBgView addSubview:_btnChangeFrame];
     
     _btnSearch = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 44, 20, 44, 44)];
+    if (kIs_iPhoneX) {
+        _btnSearch.frame = CGRectMake(SCREEN_WIDTH - 44, 42, 44, 44);
+    }
     [_btnSearch setTitle:@"搜索" forState:UIControlStateNormal];
     [_btnSearch setTitleColor:RGB(23, 23, 23) forState:UIControlStateNormal];
     [_btnSearch.titleLabel setFont:[UIFont systemFontOfSize:14]];
@@ -107,6 +120,9 @@
     [_btnSearch addTarget:self action:@selector(btnSearchClicked) forControlEvents:UIControlEventTouchUpInside];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 0) style:UITableViewStylePlain];
+    if (kIs_iPhoneX) {
+        _tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 0);
+    }
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -153,6 +169,10 @@
 - (void)btnChangeFrameClicked{
     _btnCancel.frame = CGRectMake(0, 20, 44, 44);
     _searchBarBgView.frame = CGRectMake(44, 25, SCREEN_WIDTH - 88, 35);
+    if (kIs_iPhoneX) {
+        _searchBarBgView.frame = CGRectMake(44, 47, SCREEN_WIDTH - 88, 35);
+        _btnCancel.frame = CGRectMake(0, 42, 44, 44);
+    }
     [_btnChangeFrame removeFromSuperview];
     [self addSubview:_btnSearch];
 }
@@ -170,6 +190,11 @@
     [keyWindow addSubview:self];
     _btnCancel.frame = CGRectMake(0, SCREEN_WIDTH - 44, 44, 44);
     _searchBarBgView.frame = CGRectMake(13, 25, SCREEN_WIDTH - 60, 35);
+    if (kIs_iPhoneX) {
+        _searchBarBgView.frame = CGRectMake(13, 47, SCREEN_WIDTH - 60, 35);
+        _btnCancel.frame = CGRectMake(0, SCREEN_WIDTH - 22, 44, 44);
+    }
+    
     [self addSubview:_btnChangeFrame];
     [_btnSearch removeFromSuperview];
     

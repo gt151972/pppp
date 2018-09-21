@@ -129,7 +129,12 @@ privateChatViewDelegate>
 @end
 
 @implementation LiveViewController
-
+- (void)viewSafeAreaInsetsDidChange {
+    // 补充：顶部的危险区域就是距离刘海10points，（状态栏不隐藏）
+    // 也可以不写，系统默认是UIEdgeInsetsMake(10, 0, 34, 0);
+    [super viewSafeAreaInsetsDidChange];
+    self.additionalSafeAreaInsets = UIEdgeInsetsMake(10, 0, 34, 0);
+}
 
 - (void)initURL:(NSURL *)url fileList:(NSArray *)fileList
 {
@@ -219,7 +224,7 @@ privateChatViewDelegate>
     is_ksystream_pull_autoconnect_ = NO;
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
-    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH/4, 33)];
+    UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*3/4, 70, SCREEN_WIDTH/4, 33)];
     [self.view addSubview:viewOnMic];
     UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 17)];
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_up"] forState:UIControlStateNormal];
@@ -676,41 +681,42 @@ privateChatViewDelegate>
 
     [self.giftView setGiftClick:^(NSDictionary *dic, int number) {
         //发送礼物
-        NSLog(@"dic == %@",dic);
-        int giftID = [[dic objectForKey:@"giftId"] intValue];
-        NSLog(@"点击了礼物, tag=%d, playerId=%d", giftID, weakSelf.playerId);
-        LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-        NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-        const char* szSrcAlias = (const char*)[userData.userName cStringUsingEncoding:enc];
-//        DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-//        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
-        
-        int toId = weakSelf.giftView.userId;
-        int giftNum =number;
-        if(toId == 0) {
-            MessageModel *model = [[MessageModel alloc] init];
-            [model setModel:@"请选择赠送对象"];
-            [weakSelf.messageTableView sendMessage:model];
-        }
-        else if(giftNum == 0) {
-            MessageModel *model = [[MessageModel alloc] init];
-            [model setModel:@"请选择赠送数量"];
-            [weakSelf.messageTableView sendMessage:model];
-        }
-        else {
-            ClientUserModel* toUserObj = [weakSelf.roomObj findMember:toId];
-            char szToAlias[32]= {0};
-            if(toUserObj !=nil) {
-                const char * sztmp = (const char*)[toUserObj.userAlias cStringUsingEncoding:enc];
-                strcpy(szToAlias, sztmp);
+        if (dic.allKeys.count>1) {
+            NSLog(@"dic == %@",dic);
+            int giftID = [[dic objectForKey:@"giftId"] intValue];
+            NSLog(@"点击了礼物, tag=%d, playerId=%d", giftID, weakSelf.playerId);
+            LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            const char* szSrcAlias = (const char*)[userData.userName cStringUsingEncoding:enc];
+            //        DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+            //        GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
+            
+            int toId = weakSelf.giftView.userId;
+            int giftNum =number;
+            if(toId == 0) {
+                MessageModel *model = [[MessageModel alloc] init];
+                [model setModel:@"请选择赠送对象"];
+                [weakSelf.messageTableView sendMessage:model];
+            }
+            else if(giftNum == 0) {
+                MessageModel *model = [[MessageModel alloc] init];
+                [model setModel:@"请选择赠送数量"];
+                [weakSelf.messageTableView sendMessage:model];
             }
             else {
-                sprintf(szToAlias, "%d", toId);
-            }
-            
-//            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-//            GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
-//            if(model !=nil) {
+                ClientUserModel* toUserObj = [weakSelf.roomObj findMember:toId];
+                char szToAlias[32]= {0};
+                if(toUserObj !=nil) {
+                    const char * sztmp = (const char*)[toUserObj.userAlias cStringUsingEncoding:enc];
+                    strcpy(szToAlias, sztmp);
+                }
+                else {
+                    sprintf(szToAlias, "%d", toId);
+                }
+                
+                //            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+                //            GTGiftListModel* model = [dpk_app.giftList objectAtIndex:tag];
+                //            if(model !=nil) {
                 [weakSelf.socketObj SendRoomGiftReq:weakSelf.roomObj.roomId
                                               SrcID:userData.userID
                                                ToID:toId
@@ -720,12 +726,14 @@ privateChatViewDelegate>
                                        SrcUserAlias:szSrcAlias
                                         ToUserAlias:szToAlias
                                            GiftText:0];
-//            }
-            
+                //            }
+            }
+        }else{
+            [[GTAlertTool shareInstance] showAlert:@"未选择赠送的礼物" message:@"请先选择礼物" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:nil];
         }
         [weakSelf bottomToolShow];
-        
     }];
+        
     //显示底部工具栏
     [self.giftView setGrayClick:^{
         [weakSelf bottomToolShow];
@@ -824,6 +832,9 @@ privateChatViewDelegate>
     //下部 工具条按钮区
     if (_bottomTool == nil) {
         _bottomTool = [[BottomView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 64, SCREEN_WIDTH, 64)];
+        if (kIs_iPhoneX) {
+            _bottomTool.frame = CGRectMake(0, SCREEN_HEIGHT - 75, SCREEN_WIDTH, 75);
+        }
         
         WEAKSELF;
         [_bottomTool setButtonClick:^(NSInteger tag) {
@@ -1072,6 +1083,17 @@ privateChatViewDelegate>
     [self.giftView updateUserMoney:userData.nk NB:userData.nb];
 }
 
+//显示送礼物界面
+- (void)showGiftView: (int)userId :(NSString *)userName {
+    self.giftView.roomObj = self.roomObj;
+    self.giftView.userId = userId;
+    self.giftView.userName = userName;
+    [self.giftView popShow];
+    [self.giftView.selectUserButton setTitle:[NSString stringWithFormat:@"赠送:%@",userName] forState:UIControlStateNormal];
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    [self.giftView updateUserMoney:userData.nk NB:userData.nb];
+}
+
 //关闭直播
 - (void)closeRoom {
     [self closeRoom2:NO AlertString:nil];
@@ -1259,7 +1281,7 @@ privateChatViewDelegate>
 - (PresentView *)presentView {
     if (!_presentView) {
         _presentView  = [[PresentView alloc]init];
-        _presentView.frame = CGRectMake(0,150, CGRectGetWidth(self.view.frame)/2, 285);
+        _presentView.frame = CGRectMake(0,70, CGRectGetWidth(self.view.frame)/2, 214);
         _presentView.showTime = 2;
         _presentView.delegate = self;
         _presentView.backgroundColor = [UIColor clearColor];
@@ -1412,7 +1434,7 @@ privateChatViewDelegate>
 
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
-        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-180, CGRectGetWidth(self.view.frame)/3*2, 120)];
+        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)/3*2, 220)];
     }
     return _messageTableView;
 }
@@ -1445,7 +1467,7 @@ privateChatViewDelegate>
 
 - (FlyView *)flyView{
     if (!_flyView) {
-        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/4, 70, SCREEN_WIDTH*3/4, 18)];
+        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
     }
     return _flyView;
 }
@@ -1533,7 +1555,7 @@ privateChatViewDelegate>
 
 -(RoomOnMicUsersView*)onMicUsersHeadView {
     if(!_onMicUsersHeadView) {
-        CGRect frame = CGRectMake(0, 103, SCREEN_WIDTH/4, SCREEN_WIDTH);
+        CGRect frame = CGRectMake(SCREEN_WIDTH*3/4, 103, SCREEN_WIDTH/4, SCREEN_WIDTH);
         _onMicUsersHeadView = [[RoomOnMicUsersView alloc]initWithFrame:frame style:UITableViewStylePlain];
         _onMicUsersHeadView.backgroundColor = [UIColor clearColor];
         _onMicUsersHeadView.dataSource =self;
@@ -1587,10 +1609,12 @@ privateChatViewDelegate>
                 [self.userView removeFromSuperview];
                 self.userView = nil;
             }];
+            NSLog(@"userName == %@",userName);
             self.giftView.userName = userName;
             self.giftView.userId = userId;
             NSLog(@"userid == %d",userId);
-            [self bottomToolPosition];
+//            [self bottomToolPosition];
+            [self showGiftView:userId :userName];
         }];
         
         [userView setPrivateChatBlock:^(int userId, NSString *userName) {
@@ -2044,7 +2068,7 @@ privateChatViewDelegate>
     for (int index = 0; index < arrData.count; index ++ ) {
         ClientUserModel *model = arrData[index];
         if (model.userId == myModel.userID) {
-            [arrData insertObject:array[index] atIndex:0];
+            [arrData insertObject:arrData[index] atIndex:0];
             [arrData removeObjectAtIndex:index + 1];
         }
     }
@@ -2088,56 +2112,61 @@ privateChatViewDelegate>
 - (void)showPrivateChatView:(int)userId{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _chatPrivateView = [[ChatPrivateView alloc] initWithFrame:frame];
-    NSLog(@"_arrPrivate == %@",_arrPrivate);
-    if (_arrPrivate.count > 0) {
-        if (userId == 0) {
-            //直接点击私聊:1 _arrPrivate.count>0
-            _chatPrivateView.nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
-            NSString *strUserId = [[_arrPrivate lastObject] objectForKey:@"userId"];
-            NSString *strUserName = [[_arrPrivate lastObject] objectForKey:@"userAlias"];
-            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",strUserId, strUserName];
-        }else{
-            //直接跳入userId的私聊页面(判断是否替换)
-            ClientUserModel* userObj = [self.roomObj findMember:userId];
-            BOOL isAdd = YES;
-            for (int index = 0; index < _arrPrivate.count; index ++ ) {
-                int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
-                if (userObj.userId == userID) {
-                    isAdd = NO;
-                    _nowRow = index;
-                    break;
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
+    if (userId == myModel.userID) {
+        [[GTAlertTool shareInstance] showAlert:@"不能与自己私聊" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+    }else{
+        NSLog(@"_arrPrivate == %@",_arrPrivate);
+        if (_arrPrivate.count > 0) {
+            if (userId == 0) {
+                //直接点击私聊:1 _arrPrivate.count>0
+                _chatPrivateView.nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
+                NSString *strUserId = [[_arrPrivate lastObject] objectForKey:@"userId"];
+                NSString *strUserName = [[_arrPrivate lastObject] objectForKey:@"userAlias"];
+                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",strUserId, strUserName];
+            }else{
+                //直接跳入userId的私聊页面(判断是否替换)
+                ClientUserModel* userObj = [self.roomObj findMember:userId];
+                BOOL isAdd = YES;
+                for (int index = 0; index < _arrPrivate.count; index ++ ) {
+                    int userID = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
+                    if (userObj.userId == userID) {
+                        isAdd = NO;
+                        _nowRow = index;
+                        break;
+                    }
                 }
+                if (isAdd) {
+                    NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
+                                             @"userAlias":userObj.userAlias,
+                                             @"image":userObj.userSmallHeadPic
+                                             };
+                    [_arrPrivate addObject:dicAll];
+                    _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+                }
+                
+                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
             }
-            if (isAdd) {
+            _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
+        }else{
+            if (userId == 0) {
+                _chatPrivateView.labNameAndId.text = @"  悄悄说";
+                _chatPrivateView.nowRow = -1;
+            }else{
+                ClientUserModel* userObj = [self.roomObj findMember:userId];
                 NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
                                          @"userAlias":userObj.userAlias,
                                          @"image":userObj.userSmallHeadPic
                                          };
                 [_arrPrivate addObject:dicAll];
+                _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
+                _chatPrivateView.nowRow = 0;
             }
-            
-            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
         }
-        _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
-    }else{
-        if (userId == 0) {
-            _chatPrivateView.labNameAndId.text = @"  悄悄说";
-            _chatPrivateView.nowRow = -1;
-        }else{
-             ClientUserModel* userObj = [self.roomObj findMember:userId];
-            NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
-                                     @"userAlias":userObj.userAlias,
-                                     @"image":userObj.userSmallHeadPic
-                                     };
-            [_arrPrivate addObject:dicAll];
-            _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
-            _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
-            _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
-            _chatPrivateView.nowRow = 0;
-        }
+        [_chatPrivateView popShow];
     }
-    [_chatPrivateView popShow];
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
         if (toId == 0) {
@@ -2986,7 +3015,7 @@ privateChatViewDelegate>
     presentModel.giftName = strGiftName;
     presentModel.icon = giftInfo.pic_thumb;
     presentModel.giftImageName = giftInfo.pic_original;
-    presentModel.num = giftNum;
+    presentModel.giftNumber = giftNum;
 //    for (int index = 0; index < giftNum; index ++ ) {
 //        [self.giftArr addObject:presentModel];
 //    }

@@ -80,6 +80,9 @@
             _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, _arrData.count * 59);
         }else{
             _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            if (kIs_iPhoneX) {
+                _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-34);
+            }
         }
         [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

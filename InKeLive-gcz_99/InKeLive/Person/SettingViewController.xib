@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9NX-9G-A66">
-                    <rect key="frame" x="0.0" y="74" width="375" height="390"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="390"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="390" id="dYc-y2-g9d"/>
@@ -30,10 +31,11 @@
             </subviews>
             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="9NX-9G-A66" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="BQn-cr-Qgg"/>
+                <constraint firstItem="9NX-9G-A66" firstAttribute="top" secondItem="82y-R2-ObY" secondAttribute="top" id="BQn-cr-Qgg"/>
                 <constraint firstAttribute="trailing" secondItem="9NX-9G-A66" secondAttribute="trailing" id="IEi-tf-rhS"/>
                 <constraint firstItem="9NX-9G-A66" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fRd-KL-4Ji"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="82y-R2-ObY"/>
         </view>
     </objects>
 </document>

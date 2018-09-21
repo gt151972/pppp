@@ -221,6 +221,8 @@ typedef struct _tag_HBCMD_VideoChat_UserLogon_Resp
     uint8   playerLevel;
     int64   user_nk;
     int64   user_nb;
+    int8    ngender ;        //用户性别
+    char    szguid[32] ;        //用户本次安全校验码
 }HBCMD_VideoChat_UserLogon_Resp_t;
 
 //加入房间请求
@@ -720,8 +722,10 @@ typedef struct _tag_HBCMD_VideoChat_Lottery_XinYun_Noty
     uint32 userId;
     uint32 giftId;
     uint32 giftNum;
-    uint32 wincount;
-    uint64 winmoney;
+    uint32 nten ;
+    uint32 nfifty ;
+    uint32 nfivehundred ;
+    uint32 nOnethou ;
     char   userName[NAMELEN];
 }HBCMD_VideoChat_Lottery_XinYun_Noty_t;
 

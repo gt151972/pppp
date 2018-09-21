@@ -11,6 +11,7 @@
 
 @interface SelectGiftUserView : UIView
 
+@property(nonatomic, copy)NSString* userId;
 //用户数组
 @property(nonatomic, copy)NSArray* userArray;
 //选择用户

@@ -29,6 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame]; 
     _textFieldPassword.secureTextEntry = YES;
     _textFieldPassword2.secureTextEntry = YES;
 }

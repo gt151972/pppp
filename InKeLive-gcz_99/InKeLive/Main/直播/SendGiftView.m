@@ -19,6 +19,7 @@
 #import "GTGiftGroupModel.h"
 
 #define GifGetY SCREEN_HEIGHT - 285
+#define GifGetYFORX SCREEN_HEIGHT - 285 - 34
 #define Collor_Simple RGBA(0, 0, 0, 0.58)
 #define Collor_Deep RGBA(0, 0, 0, 0.6)
 
@@ -49,6 +50,7 @@
         self.giftNum = 1;
         self.userName = @"";
         _reuse = -1;
+        _type = 0;
         pickerArray = @[@"1",@"18",@"99",@"199",@"520",@"666",@"888",@"920",@"1314",@"9999"];
     }
     return self;
@@ -60,7 +62,7 @@
    
     [self addSubview:self.giftCollectionView];
     [self addSubview:self.rechargeView];
-     [self.giftCollectionView  addSubview:self.pageControl];
+    [self addSubview:self.pageControl];
     [self addSubview:self.pageBgView];
     //[self.rechargeView addSubview:self.rechargeButton];
     [self.rechargeView addSubview:self.userMoneyLabel];
@@ -91,22 +93,8 @@
 - (void)updateUserMoney:(long long)nk NB:(long long)nb {
     NSString* strNK=@"";
     NSString* strNB=@"";
-    if(nk >=1000000) {
-        nk = nk/10000;
-        strNK = [NSString stringWithFormat:@"金币:%lld万", nk];
-    }
-    else {
-        strNK = [NSString stringWithFormat:@"金币:%lld", nk];
-    }
-    //
-    if(nb >=1000000) {
-        nb = nb/10000;
-        strNB = [NSString stringWithFormat:@"积分:%lld万", nb];
-    }
-    else {
-        strNB =[NSString stringWithFormat:@"积分:%lld", nb];
-    }
-    
+    strNB =[NSString stringWithFormat:@"积分:%lld", nb];
+    strNK = [NSString stringWithFormat:@"金币:%lld", nk];
     NSString* strText = [NSString stringWithFormat:@"%@  %@", strNK, strNB];
     self.userMoneyLabel.text = strText;
 }
@@ -264,6 +252,9 @@
         
         //listView的尺寸
         _giftCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, GifGetY+35, SCREEN_WIDTH, 205) collectionViewLayout:flowLay];
+        if (kIs_iPhoneX) {
+            _giftCollectionView.frame = CGRectMake(0, GifGetYFORX+35, SCREEN_WIDTH, 205);
+        }
         _giftCollectionView.backgroundColor = RGBA(0, 0, 0, 0.8);
 //        _giftCollectionView.backgroundColor = [UIColor darkGrayColor];
         _giftCollectionView.bounces = NO;
@@ -314,6 +305,9 @@
 - (UIView *)rechargeView{
     if (!_rechargeView) {
         _rechargeView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height - 46, SCREEN_WIDTH, 46)];
+        if (kIs_iPhoneX) {
+            _rechargeView.frame = CGRectMake(0, self.height - 46 - 35, SCREEN_WIDTH, 46+35);
+        }
         _rechargeView.backgroundColor = RGBA(0, 0, 0, 0.8);
 //        _rechargeView.backgroundColor = [UIColor grayColor];
     }
@@ -329,6 +323,9 @@
 - (UIView *)topClassifyView{
     if (!_topClassifyView) {
         _topClassifyView = [[UIView alloc] initWithFrame:CGRectMake(0, GifGetY, SCREEN_WIDTH, 35)];
+        if (kIs_iPhoneX) {
+            _topClassifyView.frame = CGRectMake(0, GifGetYFORX, SCREEN_WIDTH, 35);
+        }
         _topClassifyView.backgroundColor = RGBA(0, 0, 0, 0.8);
         CGFloat btnWidth = SCREEN_WIDTH/typeCount;
         DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
@@ -358,11 +355,13 @@
         [btn setSelected:NO];
     }
     UIButton *button = btnType;
-    _type = (int)button.tag - 1000;
+    self.type = (int)button.tag - 1000;
     [button setSelected:YES];
     _arrayCollect = [NSArray arrayWithArray:[_arrayAll objectAtIndex:btnType.tag - 1000]];
-    NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
+    [self.pageControl reloadInputViews];
+//    NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
     self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
+//    [self addSubview:self.pageControl];
     [self.rechargeView reloadInputViews];
     [self.giftCollectionView reloadData];
 }
@@ -394,13 +393,20 @@
 - (UIButton *)senderButton{
     if (!_senderButton) {
         _senderButton = [MyControlTool buttonWithText:@"赠送" textColor:[UIColor blackColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
-            NSLog(@"list == %@",[_arrayAll objectAtIndex:_type]);
-            GTGiftListModel* model = [[_arrayAll objectAtIndex:_type] objectAtIndex:_reuse];
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:model.name, @"name", model.pic_original, @"imageName", model.pic_thumb, @"image",[NSString stringWithFormat:@"%d",model.giftId], @"giftId", nil];
-            NSLog(@"dic == %@",dic);
             if (self.giftClick) {
-                self.giftClick(dic, _giftNum);
-                NSLog(@"_reuse == %ld", (long)_reuse);
+                NSLog(@"_type == %d",_type);
+                if (_reuse == -1) {
+                    NSDictionary *dic = [NSDictionary dictionary];
+                    self.giftClick(dic, 0);
+                    
+                }else{
+                    NSLog(@"list == %@",[_arrayAll objectAtIndex:_type]);
+                    GTGiftListModel* model = [[_arrayAll objectAtIndex:_type] objectAtIndex:_reuse];
+                    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:model.name, @"name", model.pic_original, @"imageName", model.pic_thumb, @"image",[NSString stringWithFormat:@"%d",model.giftId], @"giftId", nil];
+                    NSLog(@"dic == %@",dic);
+                    self.giftClick(dic, _giftNum);
+                    NSLog(@"_reuse == %ld", (long)_reuse);
+                }
             }
         }];
         _senderButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -488,11 +494,11 @@
 //分页（放在底部工具栏里面)
 - (UIPageControl *)pageControl{
     if (!_pageControl) {
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, 190, 40, 20)];
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, GifGetYFORX + 230, 40, 20)];
         _pageControl.currentPage = 0;
         _pageControl.numberOfPages = 3;
         _pageControl.backgroundColor = [UIColor clearColor];
-        [_pageControl setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
+        [_pageControl setCurrentPageIndicatorTintColor:MAIN_COLOR];
         [_pageControl setPageIndicatorTintColor:[UIColor grayColor]];
     }
     return _pageControl;

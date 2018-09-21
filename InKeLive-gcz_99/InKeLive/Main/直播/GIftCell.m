@@ -66,7 +66,6 @@
         make.right.equalTo(self.giftImageView.mas_left).offset(-10);
         make.height.equalTo(@16);
     }];
-
 }
 
 - (void)startAnimationDuration:(NSTimeInterval)interval completion:(void (^)(BOOL finish))completion
