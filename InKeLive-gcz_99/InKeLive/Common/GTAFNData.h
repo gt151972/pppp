@@ -23,6 +23,17 @@
 @property (nonatomic, weak) id<GTAFNDataDelegate> delegate;
 
 +(GTAFNData *)shareInstance;
+#pragma mark 登录
+
+/**
+ 登录
+
+ @param uid 手机账号 微信 QQ
+ @param sid 密码 openid unionid
+ @param type 1:账号密码 2:QQ 3:手机密码 4:微信
+ @param mac 唯一标识符
+ */
+-(void)LoginWithUid:(NSString *)uid sid:(NSString *)sid type:(NSString *)type mac:(NSString *)mac;
 
 #pragma mark 密保
 /**

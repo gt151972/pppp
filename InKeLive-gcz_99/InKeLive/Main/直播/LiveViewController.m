@@ -225,11 +225,17 @@ privateChatViewDelegate>
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
     UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*3/4, 70, SCREEN_WIDTH/4, 33)];
+    if (kIs_iPhoneX) {
+        viewOnMic.frame = CGRectMake(SCREEN_WIDTH*3/4, 94, SCREEN_WIDTH/4, 33);
+    }
     [self.view addSubview:viewOnMic];
     UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 17)];
+    [btnRoomName setBackgroundColor:RGBA(0, 0, 0, 0.2)];
+    btnRoomName.layer.masksToBounds = YES;
+    btnRoomName.layer.cornerRadius = 8;
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_up"] forState:UIControlStateNormal];
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_down"] forState:UIControlStateSelected];
-    [btnRoomName setBackgroundColor:[UIColor clearColor]];
+//    [btnRoomName setBackgroundColor:[UIColor clearColor]];
     [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
     [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:12]];
@@ -402,7 +408,7 @@ privateChatViewDelegate>
     NSLog(@"url == %@",aURL);
     //设置播放参数
     _player.videoDecoderMode = MPMovieVideoDecoderMode_AUTO;
-    _player.scalingMode = MPMovieScalingModeAspectFit;
+    _player.scalingMode = MPMovieScalingModeAspectFill;
     _player.shouldAutoplay = NO;  //YES
     _player.deinterlaceMode = MPMovieVideoDeinterlaceMode_Auto;
     _player.shouldLoop = NO;
@@ -694,9 +700,10 @@ privateChatViewDelegate>
             int toId = weakSelf.giftView.userId;
             int giftNum =number;
             if(toId == 0) {
-                MessageModel *model = [[MessageModel alloc] init];
-                [model setModel:@"请选择赠送对象"];
-                [weakSelf.messageTableView sendMessage:model];
+//                MessageModel *model = [[MessageModel alloc] init];
+                [MBProgressHUD showAlertMessage:@"请选择赠送对象"];
+//                [model setModel:@"请选择赠送对象"];
+//                [weakSelf.messageTableView sendMessage:model];
             }
             else if(giftNum == 0) {
                 MessageModel *model = [[MessageModel alloc] init];
@@ -1176,8 +1183,8 @@ privateChatViewDelegate>
 //启动播放器
 -(void)onPlayStream:(BOOL)start URL:(NSString*)strlUrl RotateDegree:(int)rotateDegree {
     if(start) {
-        if(is_ksystream_pull_connecting_ ) return;
-        if(is_ksystream_pull_connected_ ) return;
+//        if(is_ksystream_pull_connecting_ ) return;
+//        if(is_ksystream_pull_connected_ ) return;
         is_ksystream_pull_autoconnect_ = YES;
         
         is_ksystream_pull_connecting_ = YES;
@@ -1282,6 +1289,9 @@ privateChatViewDelegate>
     if (!_presentView) {
         _presentView  = [[PresentView alloc]init];
         _presentView.frame = CGRectMake(0,70, CGRectGetWidth(self.view.frame)/2, 214);
+        if (kIs_iPhoneX) {
+            _presentView.frame = CGRectMake(0,94, CGRectGetWidth(self.view.frame)/2, 214);
+        }
         _presentView.showTime = 2;
         _presentView.delegate = self;
         _presentView.backgroundColor = [UIColor clearColor];
@@ -1434,7 +1444,7 @@ privateChatViewDelegate>
 
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
-        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)/3*2, 220)];
+        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220)];
     }
     return _messageTableView;
 }
@@ -1449,17 +1459,20 @@ privateChatViewDelegate>
 - (AnchorView *)anchorView {
     if (!_anchorView) {
         _anchorView = [[AnchorView alloc]initWithFrame:CGRectMake(4, 30, 150, 36)];
+        if (kIs_iPhoneX) {
+            _anchorView.frame = CGRectMake(4, 54, 150, 36);
+        }
         WEAKSELF;
         NSLog(@"userId == %d",_userObj.userId);
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
 //            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
             NSLog(@"_userObj.vipLevel == %d",weakSelf.userObj.vipLevel);
-            if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
+//            if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
                 [weakSelf sendAttention:flag roomId:_roomObj.roomId singerId:_userObj.userId];
-            }else{
-                [MBProgressHUD showAlertMessage:@"只能关注主播"];
-            }
+//            }else{
+//                [MBProgressHUD showAlertMessage:@"只能关注主播"];
+//            }
         }];
     }
     return _anchorView;
@@ -1468,6 +1481,10 @@ privateChatViewDelegate>
 - (FlyView *)flyView{
     if (!_flyView) {
         _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
+        if (kIs_iPhoneX) {
+            _flyView.frame = CGRectMake(0, 94, SCREEN_WIDTH*3/4, 18);
+        }
+
     }
     return _flyView;
 }
@@ -1532,6 +1549,9 @@ privateChatViewDelegate>
     if (!_topToolView) {
         CGRect frame = CGRectMake(170, 30, SCREEN_WIDTH - 174, 33);
         _topToolView = [[TopToolView alloc] initWithFrame:frame];
+        if (kIs_iPhoneX) {
+            _topToolView.frame = CGRectMake(170, 54, SCREEN_WIDTH - 174, 33);
+        }
         WEAKSELF;
         [_topToolView setToolClicked: ^(UIButton *btn) {
             if (btn.tag == 511) {
@@ -1556,6 +1576,9 @@ privateChatViewDelegate>
 -(RoomOnMicUsersView*)onMicUsersHeadView {
     if(!_onMicUsersHeadView) {
         CGRect frame = CGRectMake(SCREEN_WIDTH*3/4, 103, SCREEN_WIDTH/4, SCREEN_WIDTH);
+        if (kIs_iPhoneX) {
+            frame = CGRectMake(SCREEN_WIDTH*3/4, 127, SCREEN_WIDTH/4, SCREEN_WIDTH);
+        }
         _onMicUsersHeadView = [[RoomOnMicUsersView alloc]initWithFrame:frame style:UITableViewStylePlain];
         _onMicUsersHeadView.backgroundColor = [UIColor clearColor];
         _onMicUsersHeadView.dataSource =self;
@@ -1756,7 +1779,27 @@ privateChatViewDelegate>
         NSLog(@"userObj2 == %@",userObj);
         
         NSURL *url =[NSURL URLWithString:userObj.userSmallHeadPic];
-        [cell.userHeadImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
+        UIImage *imageDefault = [UIImage imageNamed:@"default_head"];
+        UIImageView *imgHead = [[UIImageView alloc] init];
+        [imgHead sd_setImageWithURL:url placeholderImage:imageDefault];
+        [cell.contentView addSubview:imgHead];
+        [imgHead mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(cell.contentView);
+            make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4-15, SCREEN_WIDTH/4-15));
+        }];
+        
+        UILabel *labName = [[UILabel alloc] init];
+        labName.text = userObj.userAlias;
+        labName.textColor = [UIColor whiteColor];
+        labName.font = [UIFont systemFontOfSize:13];
+        labName.textAlignment = NSTextAlignmentCenter;
+        [cell.contentView addSubview:labName];
+        [labName mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgHead.mas_bottom);
+            make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4, 15));
+            make.centerX.equalTo(cell.contentView);
+        }];
+//        [cell.userHeadImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
 //        //用户麦状态图片
 //        uint32_t mic_state = userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK;
 //        if(mic_state == FT_USERROOMSTATE_MIC_GUAN)
@@ -1853,7 +1896,7 @@ privateChatViewDelegate>
             NSLog(@"============================");
             NSLog(@"RTMP:%@",userObj.pullStreamUrl);
             NSLog(@"============================");
-            
+
             [self onPlayStream:YES URL:userObj.pullStreamUrl RotateDegree:rotateDegree];
         }
     }
@@ -3015,10 +3058,8 @@ privateChatViewDelegate>
     presentModel.giftName = strGiftName;
     presentModel.icon = giftInfo.pic_thumb;
     presentModel.giftImageName = giftInfo.pic_original;
+//    presentModel.giftNumber = giftNum;
     presentModel.giftNumber = giftNum;
-//    for (int index = 0; index < giftNum; index ++ ) {
-//        [self.giftArr addObject:presentModel];
-//    }
 
     [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
 }
@@ -3273,9 +3314,9 @@ privateChatViewDelegate>
     if (nRet == 0) {
         //操作成功
         if (nFlag == 1) {
-            _anchorView.payButton.selected = YES;
+            [self.anchorView setAttention:NO];
         }else{
-            _anchorView.payButton.selected = NO;
+            [self.anchorView setAttention:YES];
         }
     }else{
         if (nFlag ==1) {

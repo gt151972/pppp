@@ -7,7 +7,7 @@
 //
 
 #import "GTAFNData.h"
-
+#import "CocoaSecurity.h"
 @implementation GTAFNData
 
 + (GTAFNData *)shareInstance {
@@ -78,6 +78,25 @@
         }
     }
 }
+#pragma mark 登录
+/**
+ 登录
+ 
+ @param uid 手机账号 微信 QQ
+ @param sid 密码 openid unionid
+ @param type 1:账号密码 2:QQ 3:手机密码 4:微信
+ @param mac 唯一标识符
+ */
+-(void)LoginWithUid:(NSString *)uid sid:(NSString *)sid type:(NSString *)type mac:(NSString *)mac{
+    currResult = CMD_LOGIN;
+    if ([type intValue] == 1 || [type intValue] == 3) {
+        CocoaSecurityResult *md5 = [CocoaSecurity md5:sid];
+        sid = md5.hex;
+    }
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", sid, @"sid", type, @"type", mac, @"mac", nil];
+    NSLog(@"dic == %@",dict);
+    [self postData:currResult data:dict];
+}
 #pragma mark 密保
 /**
  手机密保读取
@@ -87,7 +106,7 @@
     currResult = CMD_SECURITY_READ;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
-    NSLog(@"dic == %@",dict);
+//    NSLog(@"dic == %@",dict);
     [self postData:currResult data:dict];
 }
 

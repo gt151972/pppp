@@ -166,8 +166,8 @@
     if (self.modelCaches.count > 0 && _state != AnimationStateShaking) {
         _state = AnimationStateShaking;
         id<PresentModelAble> obj = self.modelCaches.firstObject;
-        self.shakeLable.text = [NSString stringWithFormat:@"X%d", ((int)[obj giftNumber]+_nowNO)];
-        self.nowNO = [obj giftNumber]+_nowNO;
+        self.shakeLable.text = [NSString stringWithFormat:@"X%d", _nowNO];
+        self.nowNO = (int)[obj giftNumber]+_nowNO;
         [self.modelCaches removeObjectAtIndex:0];
         __weak typeof(self) ws = self;
         [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {

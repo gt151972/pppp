@@ -13,7 +13,6 @@
 + (instancetype)modelWithSender:(NSString *)sender giftName:(NSString *)giftName icon:(NSString *)icon giftImageName:(NSString *)giftImageName
 {
     PresentModel *model = [[PresentModel alloc] init];
-    model.giftNumber = 1;
     model.sender        = sender;
     model.giftName      = giftName;
     model.icon          = icon;

@@ -16,6 +16,8 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = RGBA(0, 0, 0, 0.2); //背景透明
+        self.layer.cornerRadius = 9;
+        self.layer.masksToBounds = YES;
 //        self.backgroundColor = [UIColor redColor];
         [self creatUI];
     }
@@ -52,7 +54,7 @@
     CGRect lframe =aUILabel.frame;
     //用计算出来的text的width更改frame的原始width
     lframe.size.width= textSize.width;//从屏幕最右边向左边移
-    lframe.origin.x= -textSize.width; //用新值更改label的原frame值
+    lframe.origin.x= self.bounds.size.width;; //用新值更改label的原frame值
     aUILabel.frame = lframe;
     //计算动画x移动的最大偏移：屏幕width+text的width
     aUILabel.clipsToBounds = YES;

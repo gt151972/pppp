@@ -26,7 +26,7 @@
     [self.imgBg addSubview:self.giftImageView];
     [self.imgBg addSubview:self.senderLabel];
     [self.imgBg addSubview:self.lineLabel];
-    [self.imgBg addSubview:self.labNum];
+//    [self.imgBg addSubview:self.labNum];
     
     [self.imgBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
@@ -45,12 +45,12 @@
         make.width.height.equalTo(@32);
     }];
     
-    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_imgBg.mas_centerY);
-        make.right.equalTo(self).offset(20);
-        make.left.equalTo(self.giftImageView.mas_right).offset(5);
-        make.height.equalTo(@20);
-    }];
+//    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(_imgBg.mas_centerY);
+//        make.right.equalTo(self).offset(20);
+//        make.left.equalTo(self.giftImageView.mas_right).offset(5);
+//        make.height.equalTo(@20);
+//    }];
     
     [self.senderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImageView.mas_right).offset(10);

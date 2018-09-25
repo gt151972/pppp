@@ -84,7 +84,7 @@
     [super drawRect:rect];
     
     //初始值
-    self.showTime = 3;
+    self.showTime = 1;
     
     //添加cell
     self.cellHeight = self.cellHeight ? self.cellHeight : 40;
@@ -138,7 +138,6 @@
     for (int index = 0; index < models.count; index++) {
         id<PresentModelAble> obj = models[index];
         PresentViewCell *cell = [self examinePresentingCell:obj];
-//        PresentViewCell *cell = nil;
         if (cell) {
             if (cell.state == AnimationStateShowing) {
                 //在执行展示动画期间如果收到了连乘动画礼物消息，就将消息缓存
@@ -255,7 +254,7 @@
 {
     NSMutableArray *array = [NSMutableArray array];
     for (id<PresentModelAble> cache in self.dataCaches) {
-        if ([[cache sender] isEqualToString:[obj sender]] && [[cache giftName] isEqualToString:[obj giftName]]) {
+        if ([[cache sender] isEqualToString:[obj sender]] && [[cache giftName] isEqualToString:[obj giftName]] && [cache giftNumber] == [obj giftNumber]) {
             [array addObject:cache];
         }
     }

@@ -8,7 +8,7 @@
 
 #import "PresentViewCell.h"
 
-#define Duration 0.3
+#define Duration 0.2
 
 @interface PresentViewCell ()
 
@@ -59,6 +59,7 @@
     if (self = [super init]) {
         _row              = row;
         _state            = AnimationStateNone;
+        self.nowNO = 0;
     }
     return self;
 }
@@ -78,9 +79,9 @@
     lable.textAlignment   = NSTextAlignmentCenter;
     lable.alpha           = 0.0;
     CGFloat w             = 60;
-    CGFloat h             = 20;
-    CGFloat x             = CGRectGetWidth(self.frame);
-    CGFloat y             = - h + 5;
+    CGFloat h             = CGRectGetHeight(self.frame);
+    CGFloat x             = CGRectGetWidth(self.frame) - 20;
+    CGFloat y             = 0;
     lable.frame           = CGRectMake(x, y, w, h);
     self.shakeLable       = lable;
     [self addSubview:lable];
@@ -142,6 +143,7 @@
 
 - (void)shakeAnimationWithNumber:(NSInteger)number
 {
+    NSLog(@"number == %ld",(long)number);
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenAnimationOfShowShake:) object:@(YES)];
     [self performSelector:@selector(hiddenAnimationOfShowShake:) withObject:@(YES) afterDelay:self.showTime];
     if (number > 0) [self.caches addObject:@(number)];
@@ -151,6 +153,7 @@
         __weak typeof(self) ws = self;//
         [self startShakeAnimationWithNumber:cache completion:^(BOOL finished) {
             [ws shakeAnimationWithNumber:-1];//传-1是为了缓存不被重复添加
+            _nowNO = 0;
         }];
     }
 }
@@ -163,7 +166,8 @@
     if (self.modelCaches.count > 0 && _state != AnimationStateShaking) {
         _state = AnimationStateShaking;
         id<PresentModelAble> obj = self.modelCaches.firstObject;
-        self.shakeLable.text = [NSString stringWithFormat:@"X%ld", [obj giftNumber]];
+        self.nowNO = (int)[obj giftNumber]+_nowNO;
+        self.shakeLable.text = [NSString stringWithFormat:@"X%d", _nowNO];
         [self.modelCaches removeObjectAtIndex:0];
         __weak typeof(self) ws = self;
         [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
@@ -191,7 +195,7 @@
         self.shakeLable.alpha = 0.0;
         [self.caches removeAllObjects];
         [self.modelCaches removeAllObjects];
-        
+        _nowNO = 0;
         //通知代理
         if ([self.delegate respondsToSelector:@selector(presentViewCell:showShakeAnimation:shakeNumber:)]) {
             [self.delegate presentViewCell:self showShakeAnimation:flag shakeNumber:self.number];
@@ -203,7 +207,7 @@
 //目前还没有使用
 - (void)releaseVariable
 {
-//    [self.shakeLable removeFromSuperview];
+    //    [self.shakeLable removeFromSuperview];
 }
 
 @end
@@ -253,7 +257,7 @@
     [UIView animateKeyframesWithDuration:interval delay:0 options:0 animations:^{
         
         [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1/2.0 animations:^{
-            self.transform = CGAffineTransformMakeScale(4, 4);
+            self.transform = CGAffineTransformMakeScale(2, 2);
         }];
         [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1/2.0 animations:^{
             self.transform = CGAffineTransformMakeScale(0.8, 0.8);

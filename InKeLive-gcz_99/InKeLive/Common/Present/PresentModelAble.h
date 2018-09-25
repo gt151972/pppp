@@ -50,5 +50,6 @@
  @discussion 用于解决当前礼物消息消息展示到一半时，新加入到聊天室的人看到的礼物消息不是从1开始，如果要使用，消息体中必须包含当前礼物个数
  */
 @property (assign, nonatomic) NSInteger giftNumber;
+@property (assign, nonatomic) NSInteger num;
 
 @end

@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
  */
 @property (copy, nonatomic, readonly) NSString *giftName;
 
-@property (assign, nonatomic) int *nowNO;
+@property (assign, nonatomic) int nowNO;
 
 - (instancetype)initWithRow:(NSInteger)row;
 /**

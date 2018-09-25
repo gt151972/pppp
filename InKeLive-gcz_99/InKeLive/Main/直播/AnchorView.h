@@ -22,6 +22,7 @@
 @property (nonatomic, copy) void (^anchorClick)(int flag); ////1标识增加，2表示删除
 //设置主播信息和重置信息
 -(void) setAnchorInfo:(int)userId UserName:(NSString*)userName UserHeadPic:(NSString*)userHeadPic;
+-(void) setAttention:(BOOL)isSelect;
 -(void) reset;
 
 @end

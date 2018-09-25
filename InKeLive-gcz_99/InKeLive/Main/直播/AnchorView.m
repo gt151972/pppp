@@ -100,11 +100,14 @@
         _payButton = [UIButton buttonWithType:UIButtonTypeCustom];
         //_payButton.layer.borderWidth = 1;
         //_payButton.layer.borderColor = RGB(36, 216, 200).CGColor;
-        //_payButton.layer.cornerRadius = 16;
-        //_payButton.layer.masksToBounds = YES;
-        [_payButton setImage:[UIImage imageNamed:@"living_attention"] forState:UIControlStateNormal];
+        _payButton.layer.cornerRadius = 13;
+        _payButton.layer.masksToBounds = YES;
+        _payButton.backgroundColor = MAIN_COLOR;
+//        [_payButton setImage:[UIImage imageNamed:@"living_attention"] forState:UIControlStateNormal];
         [_payButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_payButton setTitle:@"取消关注" forState:UIControlStateSelected];
+        [_payButton setTitle:@"关注" forState:UIControlStateNormal];
+        [_payButton setTitle:@"取消" forState:UIControlStateSelected];
+        [_payButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_payButton addTarget:self action:@selector(payButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _payButton;
@@ -129,7 +132,13 @@
     NSURL *url =[NSURL URLWithString:userHeadPic];
     [_iconImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     }
-
+-(void) setAttention:(BOOL)isSelect{
+    if (isSelect) {
+        [_payButton setTitle:@"关注" forState:UIControlStateNormal];
+    }else{
+        [_payButton setTitle:@"取消" forState:UIControlStateNormal];
+    }    
+}
 -(void) reset
 {
     _userNameLabel.text = @"无观看主播";

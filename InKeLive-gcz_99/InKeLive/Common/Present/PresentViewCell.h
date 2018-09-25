@@ -48,6 +48,8 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
  */
 @property (copy, nonatomic, readonly) NSString *giftName;
 
+@property (assign, nonatomic) int nowNO;
+
 - (instancetype)initWithRow:(NSInteger)row;
 /**
  *  显示cell动画
@@ -69,7 +71,7 @@ typedef NS_ENUM(NSUInteger, AnimationState) {
 - (void)shakeAnimationWithNumber:(NSInteger)number;
 /**
  连乘动画
-
+ 
  @discussion  当礼物模型中拥有礼物个数时，才调用此接口
  @param       model 礼物模型
  */

@@ -32,6 +32,7 @@
 #define CMD_SECURITY_READ          @"21016"   //手机密保读取
 #define CMD_SECURITY_CODE          @"21017"   //手机密保验证码
 #define CMD_SECURITY_SAVE          @"21018"   //手机密保保存
+#define CMD_LOGIN                  @"21000"   //登录{"cmd":21000,"uid":18657970173,"sid":"f59bd65f7edafb087a81d4dca06c4910","type":1,"flag":1,"mac":"123"}
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 

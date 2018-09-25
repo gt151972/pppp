@@ -17,11 +17,11 @@
 
 #import "CommonAPIDefines.h"
 #import "AppDelegate.h"
-
+#import "GTAFNData.h"
 #import "ForgetPasswordViewController.h"
 #import "RegisteredViewController.h"
 
-@interface LogonViewController ()
+@interface LogonViewController ()<GTAFNDataDelegate>
 
 @property(nonatomic, assign) BOOL isLogining;
 @property(nonatomic, strong) MBProgressHUD* hud;
@@ -39,29 +39,13 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    data LoginWithUid:<#(NSString *)#> sid:<#(NSString *)#> type:<#(NSString *)#> mac:<#(NSString *)#>
     [self.navigationController.navigationBar setHidden:YES];
     [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_hidden"] forState:UIControlStateNormal];
     [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_visible"] forState:UIControlStateSelected];
     self.edtUserPwd.secureTextEntry = YES;
-    // Do any additional setup after loading the view from its nib.
-    //为导航栏左侧添加系统自定义按钮
-    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(perFormAdd:)];
-    
-    //UIBarButtonItem* backButton = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backButtonClick)];
-    
-//    UIBarButtonItem *backButton=[[UIBarButtonItem alloc]initWithTitle:@"<返回" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonClick)];
-//    [backButton setTintColor:[UIColor whiteColor]];
-//    self.navigationItem.leftBarButtonItem=backButton;
-    
-    //UIButton *backButton = [UIButton buttonWithType:101];
-    //[backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    //[backButton setTitle:@"返回" forState:UIControlStateNormal];
-    //UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    //self.navigationItem.leftBarButtonItem= backItem;
-    
-//    self.navigationItem.title = @"登录";
-    
-    //设置TextFiled/textView 的边框
 #if 0
     textView.layer.borderColor = [UIColorgrayColor].CGColor;
     textView.layer.borderWidth =1.0;
@@ -245,7 +229,7 @@
     }
     else {
         userData.userMobile = appDic[@"mobile"];
-        userData.userID =  [appDic[@"userId"] intValue];
+        userData.userID =  [appDic[@"userID"] intValue];
         userData.userLogonPwd = appDic[@"userPwd"];
         userData.gender = [appDic[@"gender"] intValue];
         userData.birthday = appDic[@"birthday"];
