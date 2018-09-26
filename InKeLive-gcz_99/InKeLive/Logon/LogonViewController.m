@@ -20,8 +20,9 @@
 #import "GTAFNData.h"
 #import "ForgetPasswordViewController.h"
 #import "RegisteredViewController.h"
-
-@interface LogonViewController ()<GTAFNDataDelegate>
+@interface LogonViewController ()<GTAFNDataDelegate>{
+    int type;//1:账号密码 2:QQ 3:手机密码 4:微信
+}
 
 @property(nonatomic, assign) BOOL isLogining;
 @property(nonatomic, strong) MBProgressHUD* hud;
@@ -39,9 +40,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    GTAFNData *data = [[GTAFNData alloc] init];
-    data.delegate = self;
-    data LoginWithUid:<#(NSString *)#> sid:<#(NSString *)#> type:<#(NSString *)#> mac:<#(NSString *)#>
+    type = 1;
     [self.navigationController.navigationBar setHidden:YES];
     [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_hidden"] forState:UIControlStateNormal];
     [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_visible"] forState:UIControlStateSelected];
@@ -78,17 +77,24 @@
 
 #pragma mark  登录
 - (IBAction)logonButtonClicked:(id)sender {
-    [self sendUserLogonRequest];
-    return;
-    
-    
-    [DPK_NW_Application sharedInstance].isLogon = YES;
-//    发出重新加载个人信息通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];
-    
-    [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
-//    测试代码 testcode
-    [self dismissViewControllerAnimated:YES completion:nil];
+    NSString *strUUID = [self randomUUID];
+    NSString *strPwd;
+    if (type == 1) {
+        strPwd = [NSString md5:_edtUserPwd.text];
+    }else{
+        strPwd = @"";
+    }
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    userData.userLogonPwd = strPwd;
+    [[NSUserDefaults standardUserDefaults] setValue:_edtUserID.text forKey:@"DPK_USERID"];
+    [[NSUserDefaults standardUserDefaults] setValue:strPwd forKey:@"DPK_USERLOGONPWD"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%d",type] forKey:@"DPK_USERLOGONTYPE"];
+    [[NSUserDefaults standardUserDefaults] setValue:strUUID forKey:@"DPK_USERLOGONMAC"];
+  
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data LoginWithUid:_edtUserID.text sid:strPwd type:[NSString stringWithFormat:@"%d",type] mac:strUUID];
+    [self showLoadingHud];
 }
 
 #pragma mark 忘记密码
@@ -116,7 +122,19 @@
     self.edtUserPwd.enabled = YES;  // the second one;
     [self.edtUserPwd becomeFirstResponder];
 }
-
+-(NSString *)randomUUID {
+    if(NSClassFromString(@"NSUUID")) { // only available in iOS >= 6.0
+        return [[NSUUID UUID] UUIDString];
+    }
+    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef cfuuid = CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
+    CFRelease(uuidRef);
+    NSString *uuid = [((__bridge NSString *) cfuuid) copy];
+    CFRelease(cfuuid);
+    [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:@"deviceUID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    return uuid;
+}
 
 #pragma mark  三方登录
 
@@ -126,6 +144,7 @@
  @param sender <#sender description#>
  */
 - (IBAction)btnWeichatLogin:(id)sender {
+    type = 4;
 }
 
 
@@ -166,111 +185,48 @@
     [self.hud removeFromSuperview];
 }
 
--(void) sendUserLogonRequest {
-    if(self.isLogining) return;
-    
-    NSString* strUserLogonAccount = self.edtUserID.text;
-    NSString* strUserLogonPwd = self.edtUserPwd.text;
-    strUserLogonAccount = [strUserLogonAccount stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if(strUserLogonAccount.length <=0)
-        return;
-    strUserLogonPwd = [NSString md5:strUserLogonPwd];
-    
-    self.isLogining  =YES;
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    userData.tmpLogonAccount =strUserLogonAccount;
-    userData.tmpLogonPwd =strUserLogonPwd;
-    //网络请求
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@"" forKey:@"mobile"];
-    [parameters setObject:@"" forKey:@"authCode"];
-    [parameters setObject:strUserLogonAccount forKey:@"userId"];
-    [parameters setObject:strUserLogonPwd forKey:@"logonPwd"];
-    [parameters setObject:@"2" forKey:@"logonType"]; //账号密码登录方式
-    
-    [self showLoadingHud];
-    
-    WEAKSELF;
-    
-    NSString* strAPIUrl = [NSString stringWithFormat:@"%@%@",[DPK_NW_Application sharedInstance].clientConfigParam.commonApiPrefix, URL_UserLogon];
-    NSLog(@"========================================");
-    NSLog(@"%@", strAPIUrl);
-    NSLog(@"========================================");
-    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"Success: %@", responseObject);
-        if(weakSelf !=nil)
-            [weakSelf onAPI_UserLogonRequest_Success:responseObject];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"Error: %@", error);
-        if(weakSelf !=nil)
-            [weakSelf onAPI_UserLogonRequest_Failed];
-    }];
-}
-
-
--(void)onAPI_UserLogonRequest_Success:(id)responseObject {
-    NSDictionary *appDic =(NSDictionary*)responseObject;
-    NSString* errorCode= appDic[@"errorCode"];
-    NSString* errorMsg = appDic[@"errorMsg"];
-    //先移除,后面可能还会弹出
-    [self hideLoadingHud];
-    self.isLogining = NO;
-
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    
-    if(![errorCode isEqualToString:@"0"]) {
-    NSLog(@" return, errCode=%@, errMsg=%@", errorCode, errorMsg);
-        [MBProgressHUD showError:errorMsg];
-    }
-    else {
-        userData.userMobile = appDic[@"mobile"];
-        userData.userID =  [appDic[@"userID"] intValue];
-        userData.userLogonPwd = appDic[@"userPwd"];
-        userData.gender = [appDic[@"gender"] intValue];
-        userData.birthday = appDic[@"birthday"];
-        userData.userName = appDic[@"userAlias"];
-        userData.viplevel = [appDic[@"viplevel"] intValue];
-        userData.playerlevel = [appDic[@"playerlevel"] intValue];
-        userData.guishuRoomId = [appDic[@"guishuRoomId"] intValue];
-        userData.guishuDailiId = [appDic[@"guishuDailiId"] intValue];
-        userData.userBigHeadPic = appDic[@"starpic"];
-        userData.userSmallHeadPic =appDic[@"headpic"];
-        userData.nk =[ appDic[@"nk"] longLongValue];
-        userData.nb =[ appDic[@"nb"] longLongValue ];
-        userData.bankUserName = appDic[@"bankusername"];
-        userData.bankName = appDic[@"bankname"];
-        userData.bankCardNo = appDic[@"bankcardno"];
-        userData.gsRoomName = appDic[@"gsroomname"];
-        userData.gsRoomGate = appDic[@"gsroomgate"];
-        
-        [DPK_NW_Application sharedInstance].isLogon = YES;
-        
-        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"DPK_ISLOGON"];
-        [[NSUserDefaults standardUserDefaults] setValue:appDic[@"userId"] forKey:@"DPK_USERID"];
-        [[NSUserDefaults standardUserDefaults] setValue:appDic[@"userPwd"] forKey:@"DPK_USERLOGONPWD"];
-
-        //发出重新加载个人信息通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];
-        
-        //获取礼物配置列表
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.00001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-            [dpk_app loadGiftVersion];
-        });
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
 -(void)onAPI_UserLogonRequest_Failed {
     [self hideLoadingHud];
     self.isLogining = NO;
 }
 
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    NSLog(@"cmd == %@\n data == %@",cmd, data);
+
+    if ([cmd isEqualToString:CMD_LOGIN]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+            userData.userID =  [data[@"uid"] intValue];
+            userData.userSid = data[@"sid"];
+            userData.gender = [data[@"Gender"] intValue];
+            userData.userName = data[@"uNick"];
+            userData.viplevel = [data[@"Level"] intValue];
+            userData.guishuRoomId = [data[@"rId"] intValue];
+            userData.userBigHeadPic = data[@"StarPic"];
+            userData.userSmallHeadPic =data[@"HeadPic"];
+            userData.nk =[ data[@"nk"] longLongValue];
+            userData.nb =[ data[@"nb"] longLongValue ];
+            [DPK_NW_Application sharedInstance].isLogon = YES;
+            
+            [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"DPK_ISLOGON"];
+            [[NSUserDefaults standardUserDefaults] setValue:data[@"uid"] forKey:@"DPK_USERID"];
+            [[NSUserDefaults standardUserDefaults] setValue:data[@"sid"] forKey:@"DPK_USERLOGONSID"];
+            
+            //发出重新加载个人信息通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];
+            //获取礼物配置列表
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.00001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+                [dpk_app loadGiftVersion];
+            });
+            [self hideLoadingHud];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }else{
+            [self hideLoadingHud];
+            [MBProgressHUD showAlertMessage:[data objectForKey:@"msg"]];
+        }
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -269,24 +269,6 @@
         NSLog(@"error: %@", error);
     }];
     
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    manager.responseSerializer= [AFHTTPResponseSerializer serializer];
-//    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-//    parameters[@"cmd"] = CMD_REQUEST_WEB_ADDRESS;
-//    parameters[@"flag"] = IOS_REQUEST_FLAG;
-//    NSString* strAPIUrl = URL_GiftInfo;
-//    [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-//
-//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"response == %@",responseObject);
-//
-////        NSArray *array = [responseObject objectForKey:@"List"];
-////        for (NSDictionary *dic2 in array) {
-////        }
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//
-//    }];
 }
 
 @end

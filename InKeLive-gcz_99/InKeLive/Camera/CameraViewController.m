@@ -18,8 +18,8 @@
 #import <AFNetworking.h>
 
 #import "WBRadioGroup.h"
-
-@interface CameraViewController ()< UIAlertViewDelegate , UITextFieldDelegate>
+#import "GTAFNData.h"
+@interface CameraViewController ()< UIAlertViewDelegate , UITextFieldDelegate, GTAFNDataDelegate>
 {
     UIAlertView *alertView;
     WBRadioGroup* _roomStyleRadioBtnGroup;   //房间类型单选按钮组
@@ -264,10 +264,15 @@
             break;
         case 203: //开始按钮
         {
+            LocalUserModel *model= [DPK_NW_Application sharedInstance].localUserModel;
+            GTAFNData *data = [[GTAFNData alloc] init];
+            data.delegate = self;
+            NSString *strRid = [NSString stringWithFormat:@"%d",model.guishuRoomId];
+            [data getRoomInfoWithRid:strRid];
             //self.randomStr = [self randomString:12];
             //[self sendQueryVCBServerRequest];
             //直接使用用户的信息数据开始(进入归属房间上手机私麦)
-            [self close:YES];
+//            [self close:YES];
         }
             break;
         default:
@@ -590,6 +595,10 @@
     [self endRecordingVideo];
     [self.view removeFromSuperview];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == NO) {
+        [appDelegate doLogon];
+        return;
+    }
     appDelegate.createCameraVC = nil;
     if(createFlag) {
         [appDelegate showLiveRoom:YES CameraFront:self.cameraIsFront];
@@ -672,6 +681,20 @@
     [self hideLoadingHud];
     self.isLogining = NO;
     [MBProgressHUD showError:@"请求服务器信息失败!"];
+}
+
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_REQUEST_ADDTESS]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            model.gsRoomGate = data[@"GateAddr"];
+            model.gsRoomName = data[@"rName"];
+            [self close:YES];
+        }else{
+            [MBProgressHUD showAlertMessage:@"msg"];
+        }
+    }
 }
 
 

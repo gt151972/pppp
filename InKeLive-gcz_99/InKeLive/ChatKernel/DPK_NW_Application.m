@@ -309,7 +309,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
             for (int index = 0; index < arrKey.count; index ++) {
                 NSString *string = [webAddress objectForKey:arrKey[index]];
                 string = [string stringByReplacingOccurrencesOfString:@"{uid}"withString:[NSString stringWithFormat:@"%d",_localUserModel.userID]];
-                string = [string stringByReplacingOccurrencesOfString:@"{sid}"withString:@"0"];
+                string = [string stringByReplacingOccurrencesOfString:@"{sid}"withString:[NSString stringWithFormat:@"%@",_localUserModel.userSid]];
                 [dic setValue:string forKey:arrKey[index]];
             }
             NSLog(@"dic == %@",dic);

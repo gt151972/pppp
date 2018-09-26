@@ -22,7 +22,7 @@
 #define CMD_ATTENTION_ROOM_LIST    @"21007"   //请求关注房间列表({"cmd":21007,"uid":11})
 #define CMD_ENTER_ROOM_RECORD      @"21014"   //进房记录({"cmd":21014,"uid":11})
 #define CMD_REQUEST_BANNER         @"21019"   //首页请求banner接口({"cmd":21019,"flag":2} img 实际路径为 res+web+img)
-#define CMD_REQUEST_ADDTESS        @"20002"   //根据rid请求房间名和房间地址 ("cmd":20001,"rid":100000)
+#define CMD_REQUEST_ADDTESS        @"20002"   //根据rid请求房间名和房间地址 ("cmd":20002,"rid":100000)
 #define CMD_REQUEST_WEB_ADDRESS    @"20001"   //请求网页url链接 ({"cmd":20001,"flag":2})
 #define CMD_ATTENTION_DELETE       @"21008"   //删除关注{"cmd":21008,"uid":12345,"pid":12} pid为删除对象
 #define CMD_REGISTER_SEND_CODE     @"21004"   //注册发送验证码

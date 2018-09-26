@@ -281,7 +281,6 @@
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
 		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
 		64241E63214F5139007E3F3D /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64241E62214F5138007E3F3D /* ShareView.m */; };
-		64271C42215A34B3008057CD /* CocoaSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 64271C40215A34B2008057CD /* CocoaSecurity.m */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
 		644B18102114249F00939E76 /* AttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B180E2114249F00939E76 /* AttentionViewController.m */; };
 		644B18112114249F00939E76 /* AttentionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644B180F2114249F00939E76 /* AttentionViewController.xib */; };
@@ -837,8 +836,6 @@
 		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
 		64241E61214F5138007E3F3D /* ShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
 		64241E62214F5138007E3F3D /* ShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareView.m; sourceTree = "<group>"; };
-		64271C40215A34B2008057CD /* CocoaSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocoaSecurity.m; sourceTree = "<group>"; };
-		64271C41215A34B2008057CD /* CocoaSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaSecurity.h; sourceTree = "<group>"; };
 		6431960F2113FCB600D97682 /* libSocialOfficialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocialOfficialWeChat.a; path = Pods/UMengUShare/UShareSDK/SocialLibraries/WeChat/WechatSDK/libSocialOfficialWeChat.a; sourceTree = "<group>"; };
 		643196112114027F00D97682 /* Time.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		643196122114027F00D97682 /* Time.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Time.m; sourceTree = "<group>"; };
@@ -1737,8 +1734,6 @@
 		6357A6211DFE4CA7001E77AF /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				64271C41215A34B2008057CD /* CocoaSecurity.h */,
-				64271C40215A34B2008057CD /* CocoaSecurity.m */,
 				640526F6215249D5007C7E3E /* Present */,
 				6480BC90212C08C600A08911 /* Data */,
 				1A9D1CFA1F43483A0003EA13 /* MBProgressHUD.bundle */,
@@ -2763,7 +2758,6 @@
 				637D2D161E003FDB004F1873 /* CameraView.m in Sources */,
 				647F33F521250AA800D06FD5 /* GTLocationManager.m in Sources */,
 				633D8D961E0796010087BD77 /* UIColor+Category.m in Sources */,
-				64271C42215A34B3008057CD /* CocoaSecurity.m in Sources */,
 				6462E7DC2117F44E005EF737 /* TADotView.m in Sources */,
 				649A07A0212A89BF00639EE7 /* YYTableViewCell.m in Sources */,
 				6462E7DE2117F44E005EF737 /* TAAnimatedDotView.m in Sources */,

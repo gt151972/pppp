@@ -7,7 +7,6 @@
 //
 
 #import "GTAFNData.h"
-#import "CocoaSecurity.h"
 @implementation GTAFNData
 
 + (GTAFNData *)shareInstance {
@@ -41,6 +40,7 @@
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error: %@", error);
+
     }];
 }
 
@@ -89,11 +89,7 @@
  */
 -(void)LoginWithUid:(NSString *)uid sid:(NSString *)sid type:(NSString *)type mac:(NSString *)mac{
     currResult = CMD_LOGIN;
-    if ([type intValue] == 1 || [type intValue] == 3) {
-        CocoaSecurityResult *md5 = [CocoaSecurity md5:sid];
-        sid = md5.hex;
-    }
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", sid, @"sid", type, @"type", mac, @"mac", nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", sid, @"sid", type, @"type",IOS_REQUEST_FLAG, @"flag", mac, @"mac", nil];
     NSLog(@"dic == %@",dict);
     [self postData:currResult data:dict];
 }
@@ -211,6 +207,27 @@
     currResult = CMD_ATTENTION_DELETE;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", pid, @"pid", nil];
+    [self postData:currResult data:dict];
+}
+
+#pragma mark 获取房间信息
+/**
+ 根据房间ID搜索房间地址房间名
+ 
+ @param rid 房间id
+ */
+-(void)getRoomInfoWithRid:(NSString *)rid{
+    currResult = CMD_REQUEST_ADDTESS;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:rid, @"rid", nil];
+    [self postData:currResult data:dict];
+}
+#pragma mark 请求网页地址
+/**
+ 请求网页地址
+ */
+-(void)getWebUrl{
+    currResult = CMD_REQUEST_WEB_ADDRESS;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
     [self postData:currResult data:dict];
 }
 @end

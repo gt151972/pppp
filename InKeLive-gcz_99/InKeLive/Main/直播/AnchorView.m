@@ -133,11 +133,13 @@
     [_iconImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     }
 -(void) setAttention:(BOOL)isSelect{
-    if (isSelect) {
-        [_payButton setTitle:@"关注" forState:UIControlStateNormal];
-    }else{
-        [_payButton setTitle:@"取消" forState:UIControlStateNormal];
-    }    
+    _payButton.selected = isSelect;
+    
+//    if (isSelect) {
+//        [_payButton setTitle:@"关注" forState:UIControlStateNormal];
+//    }else{
+//        [_payButton setTitle:@"取消" forState:UIControlStateNormal];
+//    }
 }
 -(void) reset
 {

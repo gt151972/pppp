@@ -10,6 +10,8 @@
 #import "MBProgressHUD+MJ.h"
 #import "GTAFNData.h"
 #import "AppDelegate.h"
+#import "DPK_NW_Application.h"
+#import "NSString+Common.h"
 
 @interface ChangePwdViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GTAFNDataDelegate>{
     NSArray *arrayTitle;
@@ -140,8 +142,10 @@
     if ([cmd isEqualToString:CMD_PASSWORD_CHANGE]) {
         if ([[data objectForKey:@"code"] intValue] == 0) {
             UITextField *textFieldNew1 = (UITextField *)[self.view  viewWithTag:901] ;
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            model.userLogonPwd = [NSString md5:textFieldNew1.text];
             AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            [[NSUserDefaults standardUserDefaults] setObject:textFieldNew1.text forKey:@"DPK_USERLOGONPWD"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString md5:textFieldNew1.text] forKey:@"DPK_USERLOGONPWD"];
             [appDelegate autoLogin];
             [[GTAlertTool shareInstance] showAlert:@"提示" message:@"修改密码成功" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 [self btnBackClicked];

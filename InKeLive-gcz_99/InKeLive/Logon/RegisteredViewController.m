@@ -13,6 +13,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "GTAFNData.h"
 #import "Time.h"
+#import "NSString+Common.h"
 @interface RegisteredViewController ()<GTAFNDataDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnGetCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisteredClicked;
@@ -71,7 +72,7 @@
             [[GTAlertTool shareInstance]showAlert:@"注册成功" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"DPK_ISLOGON"];
                 [[NSUserDefaults standardUserDefaults] setValue:_textFieldPhone.text forKey:@"DPK_USERID"];
-                [[NSUserDefaults standardUserDefaults] setValue:_textFieldPassword.text forKey:@"DPK_USERLOGONPWD"];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString md5:_textFieldPassword.text] forKey:@"DPK_USERLOGONPWD"];
                 
                 //发出重新加载个人信息通知
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"hzmsg_reload_me_data" object:nil];

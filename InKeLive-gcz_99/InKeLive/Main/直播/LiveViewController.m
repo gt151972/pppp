@@ -1466,13 +1466,13 @@ privateChatViewDelegate>
         NSLog(@"userId == %d",_userObj.userId);
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
-//            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
             NSLog(@"_userObj.vipLevel == %d",weakSelf.userObj.vipLevel);
-//            if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
+            if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
                 [weakSelf sendAttention:flag roomId:_roomObj.roomId singerId:_userObj.userId];
-//            }else{
-//                [MBProgressHUD showAlertMessage:@"只能关注主播"];
-//            }
+            }else{
+                [MBProgressHUD showAlertMessage:@"只能关注主播"];
+            }
         }];
     }
     return _anchorView;
@@ -3315,8 +3315,10 @@ privateChatViewDelegate>
         //操作成功
         if (nFlag == 1) {
             [self.anchorView setAttention:NO];
+            [MBProgressHUD showAlertMessage:@"关注成功"];
         }else{
             [self.anchorView setAttention:YES];
+            [MBProgressHUD showAlertMessage:@"取关成功"];
         }
     }else{
         if (nFlag ==1) {

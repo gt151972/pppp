@@ -109,4 +109,18 @@
  @param pid 关注对象的uid
  */
 -(void)DeteleAttentionWithPid: (NSString *)pid;
+
+#pragma mark 获取房间信息
+/**
+ 根据房间ID搜索房间地址房间名
+
+ @param rid 房间id
+ */
+-(void)getRoomInfoWithRid:(NSString *)rid;
+
+
+/**
+ 请求网页地址
+ */
+-(void)getWebUrl;
 @end
