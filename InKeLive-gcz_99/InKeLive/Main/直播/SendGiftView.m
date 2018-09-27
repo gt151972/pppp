@@ -66,6 +66,7 @@
     [self addSubview:self.pageBgView];
     //[self.rechargeView addSubview:self.rechargeButton];
     [self.rechargeView addSubview:self.userMoneyLabel];
+    [self.rechargeView addSubview:self.userScoreLabel];
     [self.rechargeView addSubview:self.senderButton];
     [self.rechargeView addSubview:self.selectUserButton];
     [self.rechargeView addSubview:self.btnChange];
@@ -95,8 +96,8 @@
     NSString* strNB=@"";
     strNB =[NSString stringWithFormat:@"积分:%lld", nb];
     strNK = [NSString stringWithFormat:@"金币:%lld", nk];
-    NSString* strText = [NSString stringWithFormat:@"%@  %@", strNK, strNB];
-    self.userMoneyLabel.text = strText;
+    self.userMoneyLabel.text = strNK;
+    self.userScoreLabel.text = strNB;
 }
 
 //更新选中用户
@@ -382,11 +383,23 @@
         _userMoneyLabel.font =[UIFont systemFontOfSize:12];
         _userMoneyLabel.textColor = RGB(255, 255, 255);
         _userMoneyLabel.textAlignment = NSTextAlignmentLeft;
-        _userMoneyLabel.text = @"金币:0 积分:0";
+        _userMoneyLabel.text = @"金币:0";
         //_userMoneyLabel.layer.borderColor = [UIColor colorWithRed:0/255.0f green:255/255.0f blue:0/255.0f alpha:1.0f].CGColor;
         //_userMoneyLabel.layer.borderWidth = 1.0f;
     }
     return _userMoneyLabel;
+}
+-(UILabel*)userScoreLabel {
+    if(!_userScoreLabel) {
+        _userScoreLabel =[[UILabel alloc] initWithFrame:CGRectMake(150, 8, SCREEN_WIDTH- 80, 14)];
+        _userScoreLabel.font =[UIFont systemFontOfSize:12];
+        _userScoreLabel.textColor = RGB(255, 255, 255);
+        _userScoreLabel.textAlignment = NSTextAlignmentLeft;
+        _userScoreLabel.text = @"积分:0";
+        //_userMoneyLabel.layer.borderColor = [UIColor colorWithRed:0/255.0f green:255/255.0f blue:0/255.0f alpha:1.0f].CGColor;
+        //_userMoneyLabel.layer.borderWidth = 1.0f;
+    }
+    return _userScoreLabel;
 }
 
 //发送礼物按钮
@@ -420,7 +433,7 @@
 //选择赠送对象按钮
 -(UIButton *)selectUserButton {
     if(!_selectUserButton) {
-        CGRect frame = CGRectMake(12, 28, 230, 22);
+        CGRect frame = CGRectMake(12, 22, 230, 22);
         _selectUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectUserButton.frame = frame;
         _selectUserButton.backgroundColor = [UIColor clearColor];
@@ -494,7 +507,10 @@
 //分页（放在底部工具栏里面)
 - (UIPageControl *)pageControl{
     if (!_pageControl) {
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, GifGetYFORX + 230, 40, 20)];
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, GifGetY + 220, 40, 20)];
+        if (kIs_iPhoneX) {
+            _pageBgView.frame = CGRectMake(SCREEN_WIDTH/2 - 20, GifGetYFORX + 220, 40, 20);
+        }
         _pageControl.currentPage = 0;
         _pageControl.numberOfPages = 3;
         _pageControl.backgroundColor = [UIColor clearColor];

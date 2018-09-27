@@ -34,6 +34,7 @@
 //充值按钮
 //@property (nonatomic,strong)UIButton *rechargeButton;
 @property(nonatomic, strong)UILabel *userMoneyLabel;
+@property(nonatomic, strong)UILabel *userScoreLabel;
 //发送礼物按钮
 @property (nonatomic,strong)UIButton *senderButton;
 //赠送对象按钮
@@ -45,9 +46,9 @@
 
 @property (nonatomic,copy)void (^giftClick)(NSDictionary *dic, int number);
 @property (nonatomic,copy)void (^grayClick)();
-@property (nonatomic,copy)void (^selectGiftUser)();
-@property (nonatomic,copy)void (^changeScore)();
-@property (nonatomic,copy)void (^rechargeClick)();
+@property (nonatomic,copy)void (^selectGiftUser)();//选择赠送对象
+@property (nonatomic,copy)void (^changeScore)();//兑换
+@property (nonatomic,copy)void (^rechargeClick)();//充值
 
 //@property (nonatomic,strong)NSMutableArray *dataArr;  //数据
 

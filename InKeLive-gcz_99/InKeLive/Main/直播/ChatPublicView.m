@@ -135,6 +135,9 @@
 }
 
 -(void)hide{
+    if (self.closePublicChatClick) {
+        self.closePublicChatClick();
+    }
     [self removeFromSuperview];
 }
 
@@ -181,12 +184,19 @@
     // <注意>具有约束的控件通过改变约束值进行frame的改变处理
     if([sender.name isEqualToString:UIKeyboardWillShowNotification]){
         //        self.toBottom.constant = [value CGRectValue].size.height;
-        self.frame = CGRectMake(0, -[value CGRectValue].size.height, SCREEN_WIDTH, SCREEN_HEIGHT);
         if (kIs_iPhoneX) {
             self.frame = CGRectMake(0, -[value CGRectValue].size.height + 34, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }else{
+           self.frame = CGRectMake(0, -[value CGRectValue].size.height, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+        if (self.changeMessageTableView) {
+            self.changeMessageTableView(value);
         }
     }else{
         self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (self.changeMessageTableView) {
+            self.changeMessageTableView(0);
+        }
     }
 }
 

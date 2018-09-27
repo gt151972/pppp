@@ -118,9 +118,16 @@
  */
 -(void)getRoomInfoWithRid:(NSString *)rid;
 
-
+#pragma mark 请求网页地址
 /**
  请求网页地址
  */
 -(void)getWebUrl;
+
+#pragma mark banner图
+
+/**
+ 请求banner图
+ */
+-(void)getBanner;
 @end

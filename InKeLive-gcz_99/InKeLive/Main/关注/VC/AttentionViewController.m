@@ -15,6 +15,7 @@
 #import "EmptyView.h"
 #import "GTAFNData.h"
 #import "AppDelegate.h"
+#import "MJAnimHeader.h"
 @interface AttentionViewController ()<UITableViewDataSource, UITableViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong) NSArray *arrData;
 @property (nonatomic, strong) UITableView *tableView;
@@ -37,19 +38,27 @@
     _arrData = [NSArray array];
     [self getData];
     [self.view addSubview:self.emptyView];
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 0)];
+    if (kIs_iPhoneX) {
+        _tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 0);
+    }
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(218, 218, 218);
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:_tableView];
+    MJAnimHeader *header = [MJAnimHeader headerWithRefreshingTarget:self refreshingAction:@selector(getData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    header.stateLabel.hidden = YES;
+    [header beginRefreshing];
+    self.tableView.mj_header = header;
 }
 
 #pragma mark UITableViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellWithIdentifier = @"EditInfoTableViewCell";
+    static NSString *CellWithIdentifier = @"AttentionTableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
@@ -57,8 +66,14 @@
     NSString *strImgPath = @"";
     NSString *strName = @"美女世家";
     NSString *strId = @"101100";
-    cell.imageView.size = CGSizeMake(43, 43);
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:strImgPath] placeholderImage:[UIImage imageNamed:@"default_head"]];
+    CGSize itemSize = CGSizeMake(43, 43);//希望显示的大小
+    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"%@(%@)",strName,strId]];
     [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(32, 32, 32) range:NSMakeRange(0, strName.length)];
     [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(214, 214, 214) range:NSMakeRange(strName.length, strId.length + 2)];
@@ -91,6 +106,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _arrData.count;
+//    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -127,7 +143,20 @@
             NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
             if (array.count != 0) {
                 self.arrData = array;
-                [self.emptyView setHidden:YES];
+                [self.emptyView removeFromSuperview];
+                if (kIs_iPhoneX) {
+                    if (55*array.count > SCREEN_HEIGHT-88-68) {
+                        self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_HEIGHT-88-68);
+                    }else{
+                        self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 55*array.count);
+                    }
+                }else{
+                    if (55*array.count > SCREEN_HEIGHT- 64-49) {
+                        self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-49);
+                    }else{
+                        self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, 55*array.count);
+                    }
+                }
                 [self.tableView reloadData];
             }
         }else{
@@ -140,17 +169,13 @@
     }else if ([cmd isEqualToString:CMD_ATTENTION_DELETE]){
         NSLog(@"data == %@",data);
         if ([[data objectForKey:@"code"] intValue] == 0) {
-//            NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
-//            if (array.count != 0) {
-//                self.arrData = array;
-//
-//            }
-//            [self.tableView reloadData];
+            [self.tableView reloadData];
         }else{
             [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
             }];
         }
     }
+    [self.tableView.mj_header endRefreshing];
 }
 /*
 #pragma mark - Navigation

@@ -230,4 +230,14 @@
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
     [self postData:currResult data:dict];
 }
+
+#pragma mark banner图
+/**
+ 请求banner图
+ */
+-(void)getBanner{
+    currResult = CMD_REQUEST_BANNER;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
 @end

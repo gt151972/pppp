@@ -19,6 +19,8 @@
 
 @property (nonatomic,copy)void (^publicChatSend)(NSString *messageInfo, int toId ,NSString *toUserAlias);
 @property (nonatomic,copy)void (^chooseUserClick)(NSArray *array);
+@property (nonatomic,copy)void (^closePublicChatClick)();
+@property (nonatomic,copy)void (^changeMessageTableView)(NSValue *value);
 
 
 - (void)sendMessage:(NSString *)strInfo receiverID:(int)receiverId ToUserAlias: (NSString *)ToUserAlias;

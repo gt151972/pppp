@@ -180,6 +180,8 @@ static const CGFloat kHeight=285.0;
         _messageTableView.delegate = self;
         _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
         _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
+        _messageTableView.scrollsToTop = NO;
+        _messageTableView.allowsSelection = NO;
     }
     return _messageTableView;
 }
@@ -216,7 +218,7 @@ static const CGFloat kHeight=285.0;
     NSLog(@"_arrChatMessage == %@",_arrChatMessage);
     if(tableView == self.messageTableView){
         static NSString *CellWithIdentifier = @"messageTableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+        UITableViewCell *cell =  [tableView cellForRowAtIndexPath:indexPath];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
         }
@@ -345,6 +347,11 @@ static const CGFloat kHeight=285.0;
         cell2.backgroundColor = RGB(67, 67, 67);
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
+        CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
+        if (offset > 0)
+        {
+            [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
+        }
         [_messageTableView reloadData];
     }else if (tableView == _messageTableView){
 //        [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -368,6 +375,11 @@ static const CGFloat kHeight=285.0;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
     NSLog(@"_arrChatMessage == %@",_arrChatMessage);
+    CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
+    if (offset > 0)
+    {
+        [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
+    }
 }
 
 -(void)hide {
@@ -381,6 +393,7 @@ static const CGFloat kHeight=285.0;
  */
 - (void)btnBgClicked{
     [self hide];
+    
 }
 
 
@@ -432,9 +445,6 @@ static const CGFloat kHeight=285.0;
  }
 
 - (void)reloadDateForTableView{
-//    if (_nowRow >0) {
-//        [_messageTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    }
     
     [_userTableView reloadData];
     [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];

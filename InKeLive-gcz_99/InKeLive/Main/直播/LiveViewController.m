@@ -738,12 +738,13 @@ privateChatViewDelegate>
         }else{
             [[GTAlertTool shareInstance] showAlert:@"未选择赠送的礼物" message:@"请先选择礼物" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:nil];
         }
-        [weakSelf bottomToolShow];
+//        [weakSelf bottomToolShow];
     }];
         
     //显示底部工具栏
     [self.giftView setGrayClick:^{
         [weakSelf bottomToolShow];
+        weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
     }];
     //testcode 创建开始预览和开始推流按钮
     //选择赠送用户
@@ -764,7 +765,7 @@ privateChatViewDelegate>
         WebViewController *webVC = [[WebViewController alloc] init];
         webVC.strTitle = @"充值";
         webVC.strUrl = strUrl;
-        [self.navigationController pushViewController:webVC animated:YES];
+        [weakSelf.navigationController pushViewController:webVC animated:YES];
     }];
 }
 
@@ -857,6 +858,7 @@ privateChatViewDelegate>
                 case 151: //礼物
                 {
                     [weakSelf bottomToolPosition];
+                    
                 }
                 break;
                 case 152: //切换镜头
@@ -894,6 +896,13 @@ privateChatViewDelegate>
         }];
         
         [_bottomTool setTextFieldChangeClick:^{
+            //动画隐藏
+            CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+            anim.duration = 0.3f;
+            anim.removedOnCompletion = NO;
+            anim.fillMode = kCAFillModeForwards;
+            anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
+            [weakSelf.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
             [weakSelf showPublicChatView:0 userName:@""];
         }];
     }
@@ -1062,14 +1071,14 @@ privateChatViewDelegate>
     //0.5秒后执行
     [self performSelector:@selector(popShowGiftView) withObject:nil afterDelay:0.5];
 }
-//- (void)bottomToolHidden{
-//    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
-//    anim.duration = 0.3f;
-//    anim.removedOnCompletion = NO;
-//    anim.fillMode = kCAFillModeForwards;
-//    anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
-//    [self.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
-//}
+- (void)bottomToolHidden{
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+    anim.duration = 0.3f;
+    anim.removedOnCompletion = NO;
+    anim.fillMode = kCAFillModeForwards;
+    anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
+    [self.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
+}
 
 //显示工具栏
 - (void)bottomToolShow {
@@ -1088,6 +1097,12 @@ privateChatViewDelegate>
     [self.giftView popShow];
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     [self.giftView updateUserMoney:userData.nk NB:userData.nb];
+
+    if (kIs_iPhoneX) {
+        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 75, CGRectGetWidth(self.view.frame)*3/4, 220);
+    }else{
+        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 64, CGRectGetWidth(self.view.frame)*3/4, 220);
+    }
 }
 
 //显示送礼物界面
@@ -1099,6 +1114,11 @@ privateChatViewDelegate>
     [self.giftView.selectUserButton setTitle:[NSString stringWithFormat:@"赠送:%@",userName] forState:UIControlStateNormal];
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     [self.giftView updateUserMoney:userData.nk NB:userData.nb];
+    if (kIs_iPhoneX) {
+        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 75, CGRectGetWidth(self.view.frame)*3/4, 220);
+    }else{
+        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 64, CGRectGetWidth(self.view.frame)*3/4, 220);
+    }
 }
 
 //关闭直播
@@ -1659,6 +1679,12 @@ privateChatViewDelegate>
                 [self.userView removeFromSuperview];
                 self.userView = nil;
             }];
+            CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+            anim.duration = 0.3f;
+            anim.removedOnCompletion = NO;
+            anim.fillMode = kCAFillModeForwards;
+            anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
+            [weakSelf.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
             [weakSelf showPublicChatView:userId userName:userName];
         }];
        
@@ -2047,7 +2073,7 @@ privateChatViewDelegate>
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
         self.giftView.userName = userAlias;
         self.giftView.userId = (int)userId;
-        [self bottomToolPosition];
+//        [self bottomToolPosition];
     }];
     
     [view popShow];
@@ -2254,6 +2280,16 @@ privateChatViewDelegate>
     WEAKSELF;
     [_chatPublicView setPublicChatSend:^(NSString *messageInfo, int toId, NSString *toUserAlias) {
         [weakSelf sendMessage:messageInfo receiverID:toId ToUserAlias:toUserAlias];
+    }];
+    [_chatPublicView setClosePublicChatClick:^{
+        [weakSelf bottomToolShow];
+    }];
+    [_chatPublicView setChangeMessageTableView:^(NSValue *value) {
+        if (value == 0) {
+            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+        }else{
+            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*3/4, 220);
+        }
     }];
 }
 
@@ -2594,7 +2630,7 @@ privateChatViewDelegate>
     [self.roomObj clearMember];
 //    [self.membersHeadView reloadData];
 }
-
+//房间用户信息结构
 -(void) OnNetMsg_RoomUserListItem:(int)roomId
                            UserID:(int)userId
                            Gender:(int)gender
@@ -3052,16 +3088,18 @@ privateChatViewDelegate>
     
     [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName level:level];
     [self.messageTableView sendMessage:model];
-//    WEAKSELF;
-    PresentModel *presentModel = [[PresentModel alloc] init];
-    presentModel.sender = srcUserAlias;
-    presentModel.giftName = strGiftName;
-    presentModel.icon = giftInfo.pic_thumb;
-    presentModel.giftImageName = giftInfo.pic_original;
-//    presentModel.giftNumber = giftNum;
-    presentModel.giftNumber = giftNum;
-
-    [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
+    if (isAnimation) {
+        //    WEAKSELF;
+        PresentModel *presentModel = [[PresentModel alloc] init];
+        presentModel.sender = srcUserAlias;
+        presentModel.giftName = strGiftName;
+        presentModel.icon = giftInfo.pic_thumb;
+        presentModel.giftImageName = giftInfo.pic_original;
+        //    presentModel.giftNumber = giftNum;
+        presentModel.giftNumber = giftNum;
+        
+        [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
+    }
 }
 
 //获取用户帐户信息响应

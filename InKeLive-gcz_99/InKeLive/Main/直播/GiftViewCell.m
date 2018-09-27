@@ -40,8 +40,10 @@
     [self.viewBgCase mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(4);
         make.right.equalTo(self).offset(-4);
-        make.centerY.equalTo(_giftImageView.mas_centerY);
-        make.height.equalTo(_giftImageView.mas_height).offset(2);
+        make.top.equalTo(self);
+        make.bottom.equalTo(_giftPriceView.mas_bottom).offset(2);
+//        make.centerY.equalTo(_giftImageView.mas_centerY);
+//        make.height.equalTo(_giftImageView.mas_height).offset(2);
     }];
 //
     [self.giftNameView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -54,7 +56,7 @@
     [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@8);
         make.width.equalTo(@35);
-        make.top.right.equalTo(self.viewBgCase).offset(5);
+        make.top.right.equalTo(self.viewBgCase);
     }];
     [self.giftPriceView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.giftNameView.mas_bottom).offset(5);
@@ -141,7 +143,7 @@
 -(UILabel*)giftPriceView {
     if(!_giftPriceView) {
         _giftPriceView = [[UILabel alloc]init];
-        _giftPriceView.backgroundColor =RGBA(0, 0,0, 0.5);
+        _giftPriceView.backgroundColor = [UIColor clearColor];
         _giftPriceView.text = @"礼物价格";
         _giftPriceView.textColor = [UIColor whiteColor];
         _giftPriceView.textAlignment = NSTextAlignmentCenter;

@@ -405,6 +405,7 @@
 		64C022C9212A991800116F7F /* weibo_0.json in Resources */ = {isa = PBXBuildFile; fileRef = 64C022C1212A991800116F7F /* weibo_0.json */; };
 		64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C022CB212AC02700116F7F /* SendDynamicViewController.m */; };
 		64C022CE212AC02700116F7F /* SendDynamicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C022CC212AC02700116F7F /* SendDynamicViewController.xib */; };
+		64CA04C4215CD2A700A13359 /* WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CA04C3215CD2A700A13359 /* WebView.m */; };
 		64CF3FBC213F6DEB0060261B /* FlyGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CF3FBB213F6DEB0060261B /* FlyGiftModel.m */; };
 		64CF3FBF213F85460060261B /* AnchorListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CF3FBE213F85460060261B /* AnchorListView.m */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
@@ -1031,6 +1032,8 @@
 		64C022CA212AC02700116F7F /* SendDynamicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendDynamicViewController.h; sourceTree = "<group>"; };
 		64C022CB212AC02700116F7F /* SendDynamicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendDynamicViewController.m; sourceTree = "<group>"; };
 		64C022CC212AC02700116F7F /* SendDynamicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendDynamicViewController.xib; sourceTree = "<group>"; };
+		64CA04C2215CD2A700A13359 /* WebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebView.h; sourceTree = "<group>"; };
+		64CA04C3215CD2A700A13359 /* WebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
 		64CF3FBA213F6DEB0060261B /* FlyGiftModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyGiftModel.h; sourceTree = "<group>"; };
 		64CF3FBB213F6DEB0060261B /* FlyGiftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyGiftModel.m; sourceTree = "<group>"; };
 		64CF3FBD213F85460060261B /* AnchorListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnchorListView.h; sourceTree = "<group>"; };
@@ -1526,6 +1529,8 @@
 				64738D39214A5FFB00536B90 /* BeautyView.m */,
 				64241E61214F5138007E3F3D /* ShareView.h */,
 				64241E62214F5138007E3F3D /* ShareView.m */,
+				64CA04C2215CD2A700A13359 /* WebView.h */,
+				64CA04C3215CD2A700A13359 /* WebView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2720,6 +2725,7 @@
 				1A9D1D0C1F43DD960003EA13 /* DPKTCPSocket.m in Sources */,
 				644B1815211424B700939E76 /* StateViewController.m in Sources */,
 				64A43524214BA3C900A2FF99 /* GTAFNData.m in Sources */,
+				64CA04C4215CD2A700A13359 /* WebView.m in Sources */,
 				6314834F1E15FFF800EB5294 /* NetUtils.m in Sources */,
 				644B183F2114319100939E76 /* RoomViewController.m in Sources */,
 				1AE89EC11F41C6CA0001C5D8 /* TempCreateRoomInfo.m in Sources */,

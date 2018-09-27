@@ -12,7 +12,9 @@
 #import "EditNameViewController.h"
 #import "SignatureViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#import "MBProgressHUD+MJ.h"
+#import <AFNetworking.h>
+#import "CommonAPIDefines.h"
 @interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong) NSArray *arrayTitle;
 @property (nonatomic, strong) UITableView *tableView;
@@ -195,7 +197,7 @@
         _imagePicker.delegate = self;
         _imagePicker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         _imagePicker.allowsEditing = YES;
-        [[GTAlertTool shareInstance] showSheet:@"" message:@"" cancelTitle:nil viewController:self confirm:^(NSInteger buttonTag) {
+        [[GTAlertTool shareInstance] showSheet:@"修改头像" message:@"" cancelTitle:nil viewController:self confirm:^(NSInteger buttonTag) {
             if (buttonTag == 0) {
                 [self selectImageFromCamera];
             }else if (buttonTag == 1){
@@ -282,6 +284,96 @@
 //该代理方法仅适用于只选取图片时
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo {
     NSLog(@"选择完毕----image:%@-----info:%@",image,editingInfo);
+    
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+    NSString *mediaType = [editingInfo objectForKey:UIImagePickerControllerMediaType];
+    NSLog(@"found an image");
+    [self.imgHead setImage:image];
+    
+    //保存文件到沙盒
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"userheadpic1.png"]];   // 保存文件的名称
+    BOOL result = [UIImagePNGRepresentation(image) writeToFile: filePath atomically:YES]; // 保存成功会返回YES
+    NSLog(@"save userHeadPic file result:%d", result);
+    NSLog(@"file path:%@", filePath);
+    
+    //文件2
+    UIImage* image2 = [DPK_NW_Application scaleImage:image toSize:CGSizeMake(64, 64)];
+    NSString *filePath2 = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"userheadpic2.png"]];   // 保存文件的名称
+    result = [UIImagePNGRepresentation(image2) writeToFile: filePath2 atomically:YES]; // 保存成功会返回YES
+    NSLog(@"save userHeadPic2 file result:%d", result);
+    NSLog(@"file2 path:%@", filePath2);
+    
+    
+    //上传数据
+    //[UIImageJPEGRepresentation(image, 1.0f) writeToFile:[self findUniqueSavePath] atomically:YES];
+    //NSData *imageData = UIImageJPEGRepresentation(image, COMPRESSED_RATE);
+    //UIImage *compressedImage = [UIImage imageWithData:imageData];
+    //[HttpRequestManager uploadImage:compressedImage httpClient:self.httpClient delegate:self];
+    
+    //测试进度条View
+    /*
+     UIProgressView* uploadFileProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+     uploadFileProgressView.center = CGPointMake(self.view.center.x, 100);
+     uploadFileProgressView.progress = 0;
+     uploadFileProgressView.progressTintColor = [UIColor blueColor];
+     uploadFileProgressView.trackTintColor = [UIColor grayColor];
+     [self.view addSubview:uploadFileProgressView];
+     [uploadFileProgressView removeFromSuperview];
+     */
+    
+    //圆形进度条
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    MBProgressHUD* hud = [[MBProgressHUD alloc]initWithFrame:frame];
+    //全屏禁止
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+    //[self.view addSubview:hud];
+    //当前view背景颜色暗下去
+    hud.minShowTime= 10000;
+    hud.dimBackground =YES;
+    hud.labelText = @"更新数据...";
+    [hud showAnimated:YES whileExecutingBlock:^{
+        //sleep(2);
+    } completionBlock:^{
+        //[hud removeFromSuperview];
+    }];
+    
+    //用户本地数据
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    
+    //上传文件
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    NSString* strUserId = [NSString stringWithFormat:@"%d", userData.userID];
+    [parameters setObject:strUserId forKey:@"userid"];
+    [parameters setObject:strUserId forKey:@"sessionmask"];
+    [parameters setObject:@"PNG" forKey:@"filetype"];
+    [parameters setObject:@"" forKey:@"uploadtime"];
+    
+    //NSDictionary *parameters = @{@"foo": @"bar"};
+    //NSURL *filePath = [NSURL fileURLWithPath:@"file://path/to/image.png"];
+    
+    NSString* strAPIUrl = [NSString stringWithFormat:@"%@%@",[DPK_NW_Application sharedInstance].clientConfigParam.commonApiPrefix, URL_UploadUserHead];
+    
+    [manager POST:strAPIUrl parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath isDirectory:NO] name:@"file1" error:nil];
+        [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath2 isDirectory:NO] name:@"file2" error:nil];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"Success: %@", responseObject);
+        
+        NSDictionary *appDic =(NSDictionary*)responseObject;
+        NSString* errorCode= appDic[@"errCode"];
+        NSString* errorMsg = appDic[@"errMsg"];
+        NSLog(@" return, errCode=%@, errMsg=%@", errorCode, errorMsg);
+        
+        NSLog(@"Success: %@", responseObject);
+        [hud removeFromSuperview];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Error: %@", error);
+        [hud removeFromSuperview];
+    }];
 }
 
 
