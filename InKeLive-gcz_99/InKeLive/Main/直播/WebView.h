@@ -10,7 +10,8 @@
 
 @interface WebView : UIView
 @property (nonatomic, strong) UILabel *labTitle;
-@property (nonatomic, copy) void(^btnCloseClick)(int tag);
+@property (nonatomic, strong) NSString *strUrl;
+@property (nonatomic, copy) void(^btnCloseClick)();
 - (void)popShow;
 - (void)hide;
 @end

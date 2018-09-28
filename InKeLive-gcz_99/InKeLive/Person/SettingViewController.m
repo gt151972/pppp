@@ -65,6 +65,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [[arrayTitle objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
     cell.textLabel.font = [UIFont systemFontOfSize:15];

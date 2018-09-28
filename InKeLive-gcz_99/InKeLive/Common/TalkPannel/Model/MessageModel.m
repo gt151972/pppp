@@ -206,9 +206,9 @@
         case CellNewChatMessageType:  //新聊天消息
         {
             if (toId == 0) {
-                allMessage = [NSString stringWithFormat:@" %@:%@",name,message];
+                allMessage = [NSString stringWithFormat:@"%@:%@",name,message];
             }else{
-                allMessage = [NSString stringWithFormat:@" %@:@%@ %@",name,toUserAlias,message];
+                allMessage = [NSString stringWithFormat:@"%@:@%@ %@",name,toUserAlias,message];
             }
             
             
@@ -230,7 +230,7 @@
                     [tmpArray addObject:imageStorage];
                 }
             }];
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, -2, 10, 10)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
             [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
             [container addView:view range:NSMakeRange(0, 0)];
             //用户名字的颜色和文字大小
@@ -494,7 +494,7 @@
     container.font = [UIFont systemFontOfSize:15];
     container.linesSpacing = 0;
     container.characterSpacing = 0;
-    NSString *allMessage= [NSString stringWithFormat:@"  %@%@%@%@",name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@%@",name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -514,7 +514,7 @@
             [tmpArray addObject:imageStorage];
         }
     }];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
     [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
     [container addView:view range:NSMakeRange(0, 0)];
     
@@ -527,7 +527,7 @@
     
     //用户名字的颜色和文字大小
     TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-    nameTextStorage.range = [allMessage rangeOfString:name];
+    nameTextStorage.range = [allMessage rangeOfString:[NSString stringWithFormat:@"%@:",name]];
     nameTextStorage.textColor = MAIN_COLOR;
     nameTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:nameTextStorage];

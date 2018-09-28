@@ -59,6 +59,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorColor = RGB(243, 243, 243);
+    _tableView.scrollEnabled = NO;
+    _tableView.sectionIndexColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
 }
 
@@ -70,6 +72,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.contentView.backgroundColor = [UIColor whiteColor];
     UILabel *labTitle = [[UILabel alloc] init];
     labTitle.text = [[_arrayTitle objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -191,6 +194,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.section == 1 && indexPath.row == 0) {
         //改头像
         _imagePicker = [[UIImagePickerController alloc] init];

@@ -208,15 +208,17 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     parameters[@"cmd"] = CMD_REQUEST_SEARCH;
-    parameters[@"uid"] = @"1259";
-    parameters[@"sid"] = @"";
+    parameters[@"uid"] = [NSString stringWithFormat:@"%d",model.userID];
+    parameters[@"sid"] = model.userSid;
     parameters[@"rid"] = @"0";
     parameters[@"info"] = strInfo;
     NSString* strAPIUrl = URL_GiftInfo;
     [manager POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        self.arrayData = [NSMutableArray array];
         NSLog(@"response == %@",responseObject);
         NSArray *array = [responseObject objectForKey:@"List"];
         for (NSDictionary *dic2 in array) {

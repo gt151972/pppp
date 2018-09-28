@@ -54,7 +54,7 @@
         make.right.equalTo(self.mas_right);
     }];
     [self.hitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@8);
+        make.height.equalTo(@9);
         make.width.equalTo(@35);
         make.top.right.equalTo(self.viewBgCase);
     }];
@@ -117,10 +117,10 @@
     if (!_hitButton) {
         _hitButton = [UIButton buttonWithType:UIButtonTypeCustom];
         //根据状态设置不同的图片
-        _hitButton.layer.cornerRadius = 4;
-        _hitButton.layer.masksToBounds = YES;
+//        _hitButton.layer.cornerRadius = 4;
+//        _hitButton.layer.masksToBounds = YES;
         [_hitButton setBackgroundColor:MAIN_COLOR];
-        [_hitButton.titleLabel setFont:[UIFont systemFontOfSize:8]];
+        [_hitButton.titleLabel setFont:[UIFont systemFontOfSize:9]];
         [_hitButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [_hitButton setImage:[UIImage imageNamed:@"pop_gift_lian"] forState:UIControlStateNormal];
 //        [_hitButton setImage:[UIImage imageNamed:@"button_choose-on"] forState:UIControlStateSelected];

@@ -153,6 +153,9 @@
 
     if(_arrayCollect.count>0 && indexPath.row < _arrayCollect.count)
     {
+//        if (indexPath.row == 0 || indexPath.row == 7) {
+//            cell.contentView.backgroundColor = [UIColor redColor];
+//        }
 //        NSLog(@"_arrayCollect == %@",_arrayCollect);
         //设置礼物信息
         GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
@@ -252,18 +255,21 @@
         flowLay.itemSize = CGSizeMake(SCREEN_WIDTH/4, 90);  //item的尺寸
         
         //listView的尺寸
-        _giftCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, GifGetY+35, SCREEN_WIDTH, 205) collectionViewLayout:flowLay];
+        _giftCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, GifGetY+35, SCREEN_WIDTH, 180) collectionViewLayout:flowLay];
         if (kIs_iPhoneX) {
             _giftCollectionView.frame = CGRectMake(0, GifGetYFORX+35, SCREEN_WIDTH, 205);
         }
-        _giftCollectionView.backgroundColor = RGBA(0, 0, 0, 0.8);
+        _giftCollectionView.backgroundColor = RGBA(0, 0, 0, 0.6);
+//        _giftCollectionView.backgroundColor = MAIN_COLOR;
 //        _giftCollectionView.backgroundColor = [UIColor darkGrayColor];
         _giftCollectionView.bounces = NO;
         _giftCollectionView.delegate = self;
         _giftCollectionView.dataSource = self;
         _giftCollectionView.pagingEnabled = YES;
-        _giftCollectionView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        
+//        _giftCollectionView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        _giftCollectionView.scrollsToTop = YES;
+        _giftCollectionView.showsHorizontalScrollIndicator = NO;
+        _giftCollectionView.showsVerticalScrollIndicator = NO;
         [_giftCollectionView registerClass:[GiftViewCell class] forCellWithReuseIdentifier:@"RegisterId"];
     }
     return _giftCollectionView;
@@ -275,7 +281,7 @@
     NSArray *arrayGroup = [NSArray arrayWithArray: dpk_app.giftGroup];
     NSArray *arrayList = [NSArray arrayWithArray: dpk_app.giftList];
     if (arrayGroup.count > 0 && arrayList.count > 0) {
-        for (int count = 0; count < typeCount ; count ++) {
+        for (int count = 0; count < dpk_app.giftGroup.count ; count ++) {
             NSMutableArray *arrSame = [NSMutableArray array];
             GTGiftGroupModel*model = [arrayGroup objectAtIndex:count];
             for (int index = 0; index < model.list.count; index ++) {
@@ -305,11 +311,11 @@
 //底部工具栏(充值按钮，发送按钮)
 - (UIView *)rechargeView{
     if (!_rechargeView) {
-        _rechargeView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height - 46, SCREEN_WIDTH, 46)];
+        _rechargeView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height - 70, SCREEN_WIDTH, 70)];
         if (kIs_iPhoneX) {
-            _rechargeView.frame = CGRectMake(0, self.height - 46 - 35, SCREEN_WIDTH, 46+35);
+            _rechargeView.frame = CGRectMake(0, self.height - 70 - 35, SCREEN_WIDTH, 70+35);
         }
-        _rechargeView.backgroundColor = RGBA(0, 0, 0, 0.8);
+        _rechargeView.backgroundColor = RGBA(0, 0, 0, 0.6);
 //        _rechargeView.backgroundColor = [UIColor grayColor];
     }
     return _rechargeView;
@@ -327,10 +333,17 @@
         if (kIs_iPhoneX) {
             _topClassifyView.frame = CGRectMake(0, GifGetYFORX, SCREEN_WIDTH, 35);
         }
-        _topClassifyView.backgroundColor = RGBA(0, 0, 0, 0.8);
-        CGFloat btnWidth = SCREEN_WIDTH/typeCount;
+        _topClassifyView.backgroundColor = RGBA(0, 0, 0, 0.6);
         DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
-        for (int index = 0; index < typeCount; index ++) {
+        CGFloat btnWidth = SCREEN_WIDTH/typeCount;
+        CGFloat scrollWidth = btnWidth * dpk_app.giftGroup.count;
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 35)];
+        scrollView.backgroundColor = [UIColor clearColor];
+        scrollView.contentSize = CGSizeMake(scrollWidth, 35);
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        [_topClassifyView addSubview:scrollView];
+        for (int index = 0; index < dpk_app.giftGroup.count; index ++) {
             UIButton *btnType = [[UIButton alloc] initWithFrame:CGRectMake(index*btnWidth, 0, btnWidth, 35)];
             [btnType setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [btnType setTitleColor:MAIN_COLOR forState:UIControlStateSelected];
@@ -339,7 +352,7 @@
             [btnType setTitle:model.title forState:UIControlStateNormal];
             [btnType setTag:1000+index];
             [btnType addTarget:self action:@selector(btnTypeClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [_topClassifyView addSubview:btnType];
+            [scrollView addSubview:btnType];
         }
         UIButton *btn = (UIButton *)[_topClassifyView viewWithTag:1000];
         [btn setSelected:YES];
@@ -351,7 +364,8 @@
     if (_arrayCollect.count > 0) {
         _arrayCollect = nil;
     }
-    for (int index = 0; index < 6; index ++) {
+    DPK_NW_Application* dpk_app = [DPK_NW_Application sharedInstance];
+    for (int index = 0; index < dpk_app.giftGroup.count; index ++) {
         UIButton *btn = (UIButton *)[[btnType superview]viewWithTag:1000 + index];
         [btn setSelected:NO];
     }
@@ -379,7 +393,7 @@
 //用户金币/记分
 -(UILabel*)userMoneyLabel {
     if(!_userMoneyLabel) {
-        _userMoneyLabel =[[UILabel alloc] initWithFrame:CGRectMake(12, 8, SCREEN_WIDTH- 80, 14)];
+        _userMoneyLabel =[[UILabel alloc] initWithFrame:CGRectMake(12, 28, SCREEN_WIDTH- 80, 14)];
         _userMoneyLabel.font =[UIFont systemFontOfSize:12];
         _userMoneyLabel.textColor = RGB(255, 255, 255);
         _userMoneyLabel.textAlignment = NSTextAlignmentLeft;
@@ -391,7 +405,7 @@
 }
 -(UILabel*)userScoreLabel {
     if(!_userScoreLabel) {
-        _userScoreLabel =[[UILabel alloc] initWithFrame:CGRectMake(150, 8, SCREEN_WIDTH- 80, 14)];
+        _userScoreLabel =[[UILabel alloc] initWithFrame:CGRectMake(120, 28, SCREEN_WIDTH- 80, 14)];
         _userScoreLabel.font =[UIFont systemFontOfSize:12];
         _userScoreLabel.textColor = RGB(255, 255, 255);
         _userScoreLabel.textAlignment = NSTextAlignmentLeft;
@@ -405,7 +419,7 @@
 //发送礼物按钮
 - (UIButton *)senderButton{
     if (!_senderButton) {
-        _senderButton = [MyControlTool buttonWithText:@"赠送" textColor:[UIColor blackColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36) clickBlock:^(id x) {
+        _senderButton = [MyControlTool buttonWithText:@"赠送" textColor:[UIColor blackColor] selectTextColor:[UIColor whiteColor] font:17 tag:0 frame:CGRectMake(SCREEN_WIDTH - 78, 30, 66, 36) clickBlock:^(id x) {
             if (self.giftClick) {
                 NSLog(@"_type == %d",_type);
                 if (_reuse == -1) {
@@ -433,21 +447,38 @@
 //选择赠送对象按钮
 -(UIButton *)selectUserButton {
     if(!_selectUserButton) {
-        CGRect frame = CGRectMake(12, 22, 230, 22);
+        CGRect frame = CGRectMake(12, 45, 230, 22);
         _selectUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectUserButton.frame = frame;
         _selectUserButton.backgroundColor = [UIColor clearColor];
         _selectUserButton.tag = 2000;
         
-        _selectUserButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        _selectUserButton.titleLabel.font = [UIFont systemFontOfSize:12];
         [_selectUserButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
         _selectUserButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 //        _selectUserButton.contentEdgeInsets = UIEdgeInsetsMake(0,5, 0, 0);
+        NSString *strInfo = @"";
+        NSMutableAttributedString *attrStr;
+        
         if (_userName !=nil ) {
-             [_selectUserButton setTitle:[NSString stringWithFormat:@"送给:%@",_userName] forState:UIControlStateNormal];
+            strInfo = [NSString stringWithFormat:@"送给:%@",_userName];
+             [_selectUserButton setTitle:strInfo forState:UIControlStateNormal];
+            attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+            [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, 3)];
+            [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(3, _userName.length)];
         }else{
-             [_selectUserButton setTitle:@"送给:请选择要赠送的对象" forState:UIControlStateNormal];
+            strInfo = [NSString stringWithFormat:@"送给:请选择要赠送的对象"];
+             [_selectUserButton setTitle:strInfo forState:UIControlStateNormal];
+            attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+            [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, 3)];
+            [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(3, 9)];
         }
+        UIImage *image = [UIImage imageNamed:@"living_gift_up"];
+        [_selectUserButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -_selectUserButton.imageView.bounds.size.width-5, 0, _selectUserButton.imageView.bounds.size.width)];
+        [_selectUserButton setImageEdgeInsets:UIEdgeInsetsMake(0, _selectUserButton.titleLabel.bounds.size.width, 0, -_selectUserButton.titleLabel.bounds.size.width)];
+        NSLog(@"width == %f",_selectUserButton.titleLabel.bounds.size.width);
+        [_selectUserButton setImage:image forState:UIControlStateNormal];
+        [_selectUserButton setAttributedTitle:attrStr forState:UIControlStateNormal];
         [_selectUserButton addTarget:self action:@selector(selectUserBtnClicked:) forControlEvents:UIControlEventTouchUpInside ];
     }
     return _selectUserButton;
@@ -463,7 +494,7 @@
 //选择赠送数量按钮
 -(UIButton*)selectNumButton {
     if(!_selectNumButton) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 2, 90, 28);
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 22, 90, 28);
         _selectNumButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectNumButton.frame = frame;
         _selectNumButton.backgroundColor = [UIColor clearColor];
@@ -481,7 +512,7 @@
 
 - (UIButton *)btnChange{
     if (!_btnChange) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 2, 50, 28);
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 22, 50, 28);
         _btnChange = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnChange.frame = frame;
         [_btnChange.titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -493,7 +524,7 @@
 }
 - (UIButton *)btnRecharge{
     if (!_btnRecharge) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 22, 50, 28);
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 42, 50, 28);
         _btnRecharge = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnRecharge.frame = frame;
         [_btnRecharge.titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -542,7 +573,17 @@
     WEAKSELF;
     [view setUserClick:^(NSInteger userId, NSString* userAlias) {
         weakSelf.userId = (int)userId;
-        [self.selectUserButton setTitle:[NSString stringWithFormat:@"赠送:%@", userAlias] forState:UIControlStateNormal ];
+        NSString *strInfo = [NSString stringWithFormat:@"送给:%@",userAlias];
+        [self.selectUserButton setTitle:strInfo forState:UIControlStateNormal];
+        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, 3)];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(3, userAlias.length)];
+        [self.selectUserButton setAttributedTitle:attrStr forState:UIControlStateNormal];
+        UIImage *image = [UIImage imageNamed:@"living_gift_up"];
+        [self.selectUserButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.selectUserButton.imageView.bounds.size.width, 0, self.selectUserButton.imageView.bounds.size.width)];
+        [self.selectUserButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.selectUserButton.titleLabel.bounds.size.width, 0, -self.selectUserButton.titleLabel.bounds.size.width)];
+        NSLog(@"width == %f",self.selectUserButton.titleLabel.bounds.size.width);
+        [self.selectUserButton setImage:image forState:UIControlStateNormal];
     }];
     [view popShow];
 }

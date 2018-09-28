@@ -35,6 +35,7 @@
 #import "ChangeScore.h"
 #import "BeautyView.h"
 #import "WebViewController.h"
+#import "WebView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -119,6 +120,8 @@ privateChatViewDelegate>
 @property (nonatomic, strong) BeautyView *beautyView;
 //分享面板
 @property (nonatomic, strong) ShareView *shareView;
+//充值网页
+@property (nonatomic, strong) WebView *webView;
 @property (nonatomic, readwrite) float grind;//磨皮
 @property (nonatomic, readwrite) float whiten;//美白
 @property (nonatomic, readwrite) float rubby;//红润
@@ -664,7 +667,6 @@ privateChatViewDelegate>
     [self.topSideView addSubview:self.topToolView];//顶部工具栏
 //    [self.topSideView addSubview:self.membersHeadView];//观众头像(弃用)
     [self.topSideView addSubview:self.onMicUsersHeadView];//右侧主播头像
-    
     [self.topSideView addSubview:self.keyBoardView];
     [self.topSideView addSubview:self.messageTableView];
     [self.topSideView addSubview:self.presentView];
@@ -744,7 +746,7 @@ privateChatViewDelegate>
     //显示底部工具栏
     [self.giftView setGrayClick:^{
         [weakSelf bottomToolShow];
-        weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+//        weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
     }];
     //testcode 创建开始预览和开始推流按钮
     //选择赠送用户
@@ -757,15 +759,7 @@ privateChatViewDelegate>
     }];
     //充值
     [self.giftView setRechargeClick:^{
-        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-        NSString*cachePath = array[0];
-        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
-        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-        NSString *strUrl = [dict objectForKey:@"activity"];
-        WebViewController *webVC = [[WebViewController alloc] init];
-        webVC.strTitle = @"充值";
-        webVC.strUrl = strUrl;
-        [weakSelf.navigationController pushViewController:webVC animated:YES];
+        [weakSelf showWebView];
     }];
 }
 
@@ -1098,11 +1092,11 @@ privateChatViewDelegate>
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     [self.giftView updateUserMoney:userData.nk NB:userData.nb];
 
-    if (kIs_iPhoneX) {
-        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 75, CGRectGetWidth(self.view.frame)*3/4, 220);
-    }else{
-        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 64, CGRectGetWidth(self.view.frame)*3/4, 220);
-    }
+//    if (kIs_iPhoneX) {
+//        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 75, CGRectGetWidth(self.view.frame)*3/4, 220);
+//    }else{
+//        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 64, CGRectGetWidth(self.view.frame)*3/4, 220);
+//    }
 }
 
 //显示送礼物界面
@@ -1111,14 +1105,19 @@ privateChatViewDelegate>
     self.giftView.userId = userId;
     self.giftView.userName = userName;
     [self.giftView popShow];
-    [self.giftView.selectUserButton setTitle:[NSString stringWithFormat:@"赠送:%@",userName] forState:UIControlStateNormal];
+    NSString *strInfo = [NSString stringWithFormat:@"送给:%@",userName];
+    [self.giftView.selectUserButton setTitle:strInfo forState:UIControlStateNormal];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, 3)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(3, userName.length)];
+    [self.giftView.selectUserButton setAttributedTitle:attrStr forState:UIControlStateNormal];
+    UIImage *image = [UIImage imageNamed:@"living_gift_up"];
+    [self.giftView.selectUserButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.giftView.selectUserButton.imageView.bounds.size.width, 0, self.giftView.selectUserButton.imageView.bounds.size.width)];
+    [self.giftView.selectUserButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.giftView.selectUserButton.titleLabel.bounds.size.width, 0, -self.giftView.selectUserButton.titleLabel.bounds.size.width)];
+    NSLog(@"width == %f",self.giftView.selectUserButton.titleLabel.bounds.size.width);
+    [self.giftView.selectUserButton setImage:image forState:UIControlStateNormal];
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     [self.giftView updateUserMoney:userData.nk NB:userData.nb];
-    if (kIs_iPhoneX) {
-        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 75, CGRectGetWidth(self.view.frame)*3/4, 220);
-    }else{
-        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280 - 285 + 64, CGRectGetWidth(self.view.frame)*3/4, 220);
-    }
 }
 
 //关闭直播
@@ -2169,6 +2168,16 @@ privateChatViewDelegate>
         [weakSelf.kit setupFilter:bf];
     }];
 }
+- (void)showWebView{
+     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    self.webView = [[WebView alloc] initWithFrame:frame];
+    [self.webView popShow];
+    WEAKSELF;
+    [_webView setBtnCloseClick:^{
+        [weakSelf bottomToolShow];
+        weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+    }];
+}
 
 - (void)showChangeScoreView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -2910,11 +2919,7 @@ privateChatViewDelegate>
                     ToUserAlias:(NSString*)toUserAlias
                     ChatContent:(NSString*)chatContent
 {
-//    NSLog(@"srcId == %d",srcId);
-//    NSLog(@"toId == %d",toId);
-//    NSLog(@"msgType == %d",msgType);
-//    NSLog(@"chatContent == %@",chatContent);
-//    NSLog(@"toUserAlias == %@",toUserAlias);
+    
     int level = 0;
     NSArray *arrName = self.roomObj.memberList;
     for (int i = 0; i<arrName.count; i++) {
@@ -2924,8 +2929,15 @@ privateChatViewDelegate>
         }
         if (srcId == model.userId) {
             level = model.vipLevel;
+            srcUserAlias = model.userAlias;
         }
     }
+    NSLog(@"srcId == %d",srcId);
+    NSLog(@"toId == %d",toId);
+    NSLog(@"msgType == %d",msgType);
+    NSLog(@"chatContent == %@",chatContent);
+    NSLog(@"toUserAlias == %@",toUserAlias);
+    NSLog(@"srcUserAlias == %@",srcUserAlias);
     //聊天区域显示
     if (msgType == 1) {//公聊
         NSString* chatContent2 = [NSString filterHTML:chatContent];
@@ -2969,7 +2981,7 @@ privateChatViewDelegate>
         }else if (myId == toId){
             for (int index = 0; index < _arrPrivate.count; index ++ ) {
                 int userId = [[_arrPrivate[index] objectForKey:@"userId"] intValue];
-                if (toId == userId) {
+                if (srcId == userId) {
                     count = index;
                     break;
                 }
@@ -2977,15 +2989,19 @@ privateChatViewDelegate>
             ClientUserModel* userObj = [self.roomObj findMember:srcId];
             if (count == -1) {
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
-                NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                NSArray *arrMsg = [[NSArray alloc] initWithObjects:dic, nil];
+                NSDictionary *dicAll = [[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId],@"userId",
+                                        userObj.userAlias, @"userAlias",
+                                        arrMsg, @"message",
+                                        @"", @"image", nil];
+
                 [_arrPrivate addObject:dicAll];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
             }else{
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
                 NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
                 [arrMsg addObject:dic];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, "image", nil];
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
                 [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
                 _nowRow = count;
             }
