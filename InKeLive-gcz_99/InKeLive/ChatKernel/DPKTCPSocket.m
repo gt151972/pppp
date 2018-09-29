@@ -1,5 +1,6 @@
 
 #import "DPKTCPSocket.h"
+#import "DPK_NW_Application.h"
 
 @implementation DPKTCPSocket
 
@@ -370,7 +371,7 @@ DataLen:(int)data_len
 	req.vcbId = roomId;
 	req.qxFileMaskSeed = 0;
 	req.isReconnect = 0;
-	req.isHide = 0;
+	req.isHide = isHide;
 	req.isMobile = 2;
 	strcpy(req.userPwd, userPwd);
 //    strcpy(req.vcbPwd, roomPwd);

@@ -35,10 +35,10 @@
     }];
     
     [self.payButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(5);
-        make.right.equalTo(self).offset(-3);
-        make.bottom.equalTo(self).offset(-5);
-        make.width.equalTo(@35);
+        make.top.equalTo(self).offset(2);
+        make.right.equalTo(self).offset(-2);
+        make.bottom.equalTo(self).offset(-2);
+        make.width.equalTo(@40);
     }];
     
     [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -89,7 +89,7 @@
         _userIdLabel.textColor = [UIColor whiteColor];
         _userIdLabel.text = @"ID:0";
         _userIdLabel.textAlignment = NSTextAlignmentLeft;
-        _userIdLabel.font = [UIFont systemFontOfSize:8];
+        _userIdLabel.font = [UIFont systemFontOfSize:10];
     }
     return _userIdLabel;
 }
@@ -100,14 +100,14 @@
         _payButton = [UIButton buttonWithType:UIButtonTypeCustom];
         //_payButton.layer.borderWidth = 1;
         //_payButton.layer.borderColor = RGB(36, 216, 200).CGColor;
-        _payButton.layer.cornerRadius = 13;
+        _payButton.layer.cornerRadius = 16;
         _payButton.layer.masksToBounds = YES;
         _payButton.backgroundColor = MAIN_COLOR;
 //        [_payButton setImage:[UIImage imageNamed:@"living_attention"] forState:UIControlStateNormal];
         [_payButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_payButton setTitle:@"关注" forState:UIControlStateNormal];
         [_payButton setTitle:@"取消" forState:UIControlStateSelected];
-        [_payButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+        [_payButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [_payButton addTarget:self action:@selector(payButtonClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _payButton;
@@ -119,7 +119,7 @@
         _userNameLabel.textColor = [UIColor whiteColor];
         _userNameLabel.text = @"无观看主播";
         _userNameLabel.textAlignment = NSTextAlignmentLeft;
-        _userNameLabel.font = [UIFont systemFontOfSize:10];
+        _userNameLabel.font = [UIFont systemFontOfSize:12];
     }
     return _userNameLabel;
 }

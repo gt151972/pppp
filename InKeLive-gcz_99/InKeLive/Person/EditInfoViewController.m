@@ -139,7 +139,13 @@
         btnFemale.titleLabel.font = [UIFont systemFontOfSize:14];
         btnFemale.tag = 302;
         [cell.contentView addSubview:btnFemale];
-        
+        if (model.gender == 0) {
+            btnFemale.selected = YES;
+            btnMale.selected = NO;
+        }else{
+            btnMale.selected = YES;
+            btnFemale.selected = NO;
+        }
         btnGo.hidden = YES;
     }else if (indexPath.section == 2 && indexPath.row == 1){
         _textFieldQQ = [[UITextField alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/3+13, 10, SCREEN_WIDTH/3*2 - 20, 30)];

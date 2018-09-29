@@ -407,6 +407,7 @@ privateChatViewDelegate>
     [_player.view setFrame: self.playerView.bounds];  // player's frame must match parent's
     [self.playerView addSubview: _player.view];
     self.playerView.autoresizesSubviews = TRUE;
+    self.playerView.backgroundColor = [UIColor brownColor];
     _player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     NSLog(@"url == %@",aURL);
     //设置播放参数
@@ -547,6 +548,13 @@ privateChatViewDelegate>
            ((_player.naturalRotate / 90) % 2 != 0 && _player.naturalSize.width < _player.naturalSize.height))
         {
             //如果想要在宽大于高的时候横屏播放，你可以在这里旋转
+            _player.scalingMode = MPMovieScalingModeAspectFit;
+            if (kIs_iPhoneX) {
+                _player.view.frame = CGRectMake(0, 90, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+            }else{
+                _player.view.frame = CGRectMake(0, 70, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+            }
+            
         }
     }
     if (MPMoviePlayerFirstVideoFrameRenderedNotification == notify.name)
@@ -1307,9 +1315,9 @@ privateChatViewDelegate>
 - (PresentView *)presentView {
     if (!_presentView) {
         _presentView  = [[PresentView alloc]init];
-        _presentView.frame = CGRectMake(0,70, CGRectGetWidth(self.view.frame)/2, 214);
+        _presentView.frame = CGRectMake(0,70, SCREEN_WIDTH*3/5, 214);
         if (kIs_iPhoneX) {
-            _presentView.frame = CGRectMake(0,94, CGRectGetWidth(self.view.frame)/2, 214);
+            _presentView.frame = CGRectMake(0,94, SCREEN_WIDTH*3/5, 214);
         }
         _presentView.showTime = 2;
         _presentView.delegate = self;
@@ -1463,7 +1471,7 @@ privateChatViewDelegate>
 
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
-        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220)];
+        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220)];
     }
     return _messageTableView;
 }
@@ -1477,7 +1485,7 @@ privateChatViewDelegate>
 
 - (AnchorView *)anchorView {
     if (!_anchorView) {
-        _anchorView = [[AnchorView alloc]initWithFrame:CGRectMake(4, 30, 150, 36)];
+        _anchorView = [[AnchorView alloc]initWithFrame:CGRectMake(4, 30, 160, 36)];
         if (kIs_iPhoneX) {
             _anchorView.frame = CGRectMake(4, 54, 150, 36);
         }
@@ -1715,7 +1723,12 @@ privateChatViewDelegate>
         
     }
     else {
-        [self removeObserver:self forKeyPath:@"player"];
+        @try{
+            [self removeObserver:self forKeyPath:@"player"];
+        }@catch(NSException *exception){
+            NSLog(@"多次移除kvo");
+        }
+        
     }
     self.keyBoardView.delegate = nil;
     self.presentView.delegate = nil;
@@ -2033,7 +2046,7 @@ privateChatViewDelegate>
         const char* sessionMask =(const char*)[model.sessionMask cStringUsingEncoding:enc];
         const char* userLogonPwd =(const char*)[model.userLogonPwd cStringUsingEncoding:enc];
         const char* text =(const char*)[envirnmentNameTextField.text cStringUsingEncoding:enc];
-        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:0 isMobile:2];
+        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:model.isHiding isMobile:2];
         
     }]];
     //添加一个取消按钮
@@ -2352,7 +2365,7 @@ privateChatViewDelegate>
             const char* sz_sessionmask = (const char*)[dpkapp.localUserModel.sessionMask cStringUsingEncoding:enc];
             const char* sz_userpwd =(const char*)[dpkapp.localUserModel.userLogonPwd cStringUsingEncoding:NSASCIIStringEncoding];
             //发送加入房间请求
-            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:0 isMobile:2];
+            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:dpkapp.localUserModel.isHiding isMobile:2];
 
             //房间连接标志
             self.roomObj.isConnected = 0;
@@ -2428,7 +2441,7 @@ privateChatViewDelegate>
         userData.nextAction = USER_NEXTACTION_JOINROOM;
         self.roomObj.isConnected = 0;
         self.roomObj.isJoinRoomFinished = 0;
-        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:0 isMobile:2];
+        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:userData.isHiding isMobile:2];
 //        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd];
         self.lastJoinRoomTime =time(0);
     }
@@ -3113,7 +3126,6 @@ privateChatViewDelegate>
         presentModel.giftImageName = giftInfo.pic_original;
         //    presentModel.giftNumber = giftNum;
         presentModel.giftNumber = giftNum;
-        
         [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
     }
 }

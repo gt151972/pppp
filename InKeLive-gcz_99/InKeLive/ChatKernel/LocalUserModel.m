@@ -36,6 +36,9 @@
 //    self.nextAction =0;
 //    self.tmpLogonAccount =@"";
 //    self.tmpLogonPwd = @"";
+    self.isHiding = 0;
+    self.isZan = 0;
+    self.isReview = 0;
 }
 
 @end

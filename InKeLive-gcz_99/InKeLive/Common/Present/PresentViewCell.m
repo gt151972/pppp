@@ -75,7 +75,7 @@
     lable.backgroundColor = [UIColor clearColor];
     lable.borderColor     = [UIColor whiteColor];
     lable.textColor       = MAIN_COLOR;
-    lable.font            = [UIFont systemFontOfSize:17.0];
+    lable.font            = [UIFont systemFontOfSize:19.0];
     lable.textAlignment   = NSTextAlignmentCenter;
     lable.alpha           = 0.0;
     CGFloat w             = 60;
@@ -170,14 +170,18 @@
         self.shakeLable.text = [NSString stringWithFormat:@"X%d", _nowNO];
         [self.modelCaches removeObjectAtIndex:0];
         __weak typeof(self) ws = self;
-        [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                _state = AnimationStateShaked;
-                if (ws.modelCaches.count > 0) {
-                    [ws shakeAnimationWithModels:nil];
-                }
-            });
-        }];
+//        [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                _state = AnimationStateShaked;
+//                if (ws.modelCaches.count > 0) {
+//                    [ws shakeAnimationWithModels:nil];
+//                }
+//            });
+//        }];
+        _state = AnimationStateShaked;
+        if (ws.modelCaches.count > 0) {
+            [ws shakeAnimationWithModels:nil];
+        }
     }
 }
 

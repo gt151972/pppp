@@ -42,6 +42,10 @@
 @property(nonatomic, strong) NSString* tmpLogonAccount;     //保存临时登录账号
 @property(nonatomic, strong) NSString* tmpLogonPwd;         //保存临时登录密码
 
+@property(nonatomic, assign) int isHiding; //是否隐身
+@property(nonatomic, assign) int isZan; //点赞通知
+@property(nonatomic, assign) int isReview; //评论通知
+
 -(void)reset;
 
 @end

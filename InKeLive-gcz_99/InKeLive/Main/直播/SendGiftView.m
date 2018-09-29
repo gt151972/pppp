@@ -236,7 +236,7 @@
         }
         
     }
-    NSLog(@"num == %d",_giftNum);
+//    NSLog(@"num == %d",_giftNum);
 }
 
 -(CGFloat )collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -313,7 +313,7 @@
     if (!_rechargeView) {
         _rechargeView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height - 70, SCREEN_WIDTH, 70)];
         if (kIs_iPhoneX) {
-            _rechargeView.frame = CGRectMake(0, self.height - 70 - 35, SCREEN_WIDTH, 70+35);
+            _rechargeView.frame = CGRectMake(0, self.height - 79 , SCREEN_WIDTH, 79);
         }
         _rechargeView.backgroundColor = RGBA(0, 0, 0, 0.6);
 //        _rechargeView.backgroundColor = [UIColor grayColor];
@@ -378,6 +378,7 @@
     self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
 //    [self addSubview:self.pageControl];
     [self.rechargeView reloadInputViews];
+    _reuse = -1;
     [self.giftCollectionView reloadData];
 }
 
@@ -394,6 +395,9 @@
 -(UILabel*)userMoneyLabel {
     if(!_userMoneyLabel) {
         _userMoneyLabel =[[UILabel alloc] initWithFrame:CGRectMake(12, 28, SCREEN_WIDTH- 80, 14)];
+        if (kIs_iPhoneX) {
+            _userMoneyLabel.frame = CGRectMake(12, 8, SCREEN_WIDTH- 80, 14);
+        }
         _userMoneyLabel.font =[UIFont systemFontOfSize:12];
         _userMoneyLabel.textColor = RGB(255, 255, 255);
         _userMoneyLabel.textAlignment = NSTextAlignmentLeft;
@@ -406,6 +410,9 @@
 -(UILabel*)userScoreLabel {
     if(!_userScoreLabel) {
         _userScoreLabel =[[UILabel alloc] initWithFrame:CGRectMake(120, 28, SCREEN_WIDTH- 80, 14)];
+        if (kIs_iPhoneX) {
+            _userScoreLabel.frame = CGRectMake(120, 8, SCREEN_WIDTH- 80, 14);
+        }
         _userScoreLabel.font =[UIFont systemFontOfSize:12];
         _userScoreLabel.textColor = RGB(255, 255, 255);
         _userScoreLabel.textAlignment = NSTextAlignmentLeft;
@@ -440,6 +447,9 @@
         _senderButton.layer.cornerRadius = 2; //圆角
         _senderButton.layer.masksToBounds = YES;
         [_senderButton setBackgroundColor:MAIN_COLOR];
+        if (kIs_iPhoneX) {
+            _senderButton.frame = CGRectMake(SCREEN_WIDTH - 78, 10, 66, 36);
+        }
     }
     return _senderButton;
 }
@@ -448,6 +458,9 @@
 -(UIButton *)selectUserButton {
     if(!_selectUserButton) {
         CGRect frame = CGRectMake(12, 45, 230, 22);
+        if (kIs_iPhoneX) {
+            frame = CGRectMake(12, 25, 230, 22);
+        }
         _selectUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _selectUserButton.frame = frame;
         _selectUserButton.backgroundColor = [UIColor clearColor];
@@ -513,6 +526,9 @@
 - (UIButton *)btnChange{
     if (!_btnChange) {
         CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 22, 50, 28);
+        if (kIs_iPhoneX) {
+            frame = CGRectMake(SCREEN_WIDTH - 140, 2, 50, 28);
+        }
         _btnChange = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnChange.frame = frame;
         [_btnChange.titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -525,6 +541,9 @@
 - (UIButton *)btnRecharge{
     if (!_btnRecharge) {
         CGRect frame = CGRectMake(SCREEN_WIDTH - 140, 42, 50, 28);
+        if (kIs_iPhoneX) {
+            frame = CGRectMake(SCREEN_WIDTH - 140, 22, 50, 28);
+        }
         _btnRecharge = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnRecharge.frame = frame;
         [_btnRecharge.titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -540,7 +559,7 @@
     if (!_pageControl) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2 - 20, GifGetY + 220, 40, 20)];
         if (kIs_iPhoneX) {
-            _pageBgView.frame = CGRectMake(SCREEN_WIDTH/2 - 20, GifGetYFORX + 220, 40, 20);
+            _pageControl.frame = CGRectMake(SCREEN_WIDTH/2 - 20, GifGetYFORX + 220, 40, 20);
         }
         _pageControl.currentPage = 0;
         _pageControl.numberOfPages = 3;

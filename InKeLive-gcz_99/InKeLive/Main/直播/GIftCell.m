@@ -35,14 +35,15 @@
     
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self).offset(2);
-        make.width.height.equalTo(@32);
+        make.width.height.equalTo(@40);
     }];
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(2);
-        make.right.equalTo(self).offset(-40);
+        make.right.equalTo(self).offset(-10);
         make.bottom.equalTo(self).offset(-2);
-        make.width.height.equalTo(@32);
+        make.width.height.equalTo(@40
+                                  );
     }];
     
 //    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,7 +63,7 @@
     
     [self.lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImageView.mas_right).offset(10);
-        make.top.equalTo(self.senderLabel.mas_bottom);
+        make.top.equalTo(self.senderLabel.mas_bottom).offset(5);
         make.right.equalTo(self.giftImageView.mas_left).offset(-10);
         make.height.equalTo(@16);
     }];
@@ -155,7 +156,7 @@
         _senderLabel = [[UILabel alloc]init];
         _senderLabel.textColor = [UIColor whiteColor];
         _senderLabel.textAlignment = NSTextAlignmentLeft;
-        _senderLabel.font = [UIFont systemFontOfSize:10];
+        _senderLabel.font = [UIFont systemFontOfSize:12];
     }
     return _senderLabel;
 }
@@ -202,6 +203,7 @@
     //    NSURL *url = [NSURL URLWithString:giftImage];
     NSString *strUrl = [NSString stringWithFormat:@"%@gift/%@",[dict objectForKey:@"res"],presentmodel.giftImageName];
     NSURL *urlGiftImage =[NSURL URLWithString:strUrl];
+    [self.giftImageView sd_cancelCurrentImageLoad];
     [self.giftImageView sd_setImageWithURL:urlGiftImage];
     self.labNum.text = [NSString stringWithFormat:@"x%ld",(long)presentmodel.num];
 }

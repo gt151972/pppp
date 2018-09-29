@@ -65,6 +65,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [[arrayTitle objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.textColor = RGB(32, 32, 32);
@@ -78,11 +79,12 @@
 //        switch0.tintColor=RGB(169, 169, 169);
 //        switch0.thumbTintColor=[UIColor whiteColor];
         [switch0 addTarget:self action:@selector(getValueForSwitch:) forControlEvents:UIControlEventValueChanged];
+        switch0.tag = indexPath.row + 2000;
         [cell.contentView addSubview:switch0];
         
         if (indexPath.row == 0) {
             //隐身进入
-            [switch0 setOn:YES animated:YES];
+            [switch0 setOn:model.isHiding animated:YES];
         }else if (indexPath.row == 1){
             //点赞通知
         }else if (indexPath.row == 2){
@@ -228,7 +230,10 @@
 
 #pragma mark Action
 - (void)getValueForSwitch: (UISwitch *)swi{
-    
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    if (swi.tag == 2000) {
+        model.isHiding = swi.on;
+    }
 }
 
 

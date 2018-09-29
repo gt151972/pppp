@@ -31,27 +31,28 @@
     [self addSubview:viewBg];
     
     int widthIcon = 40;
-    int interspaceIcon = (SCREEN_WIDTH - (_arrayImage.count*widthIcon))/(_arrayImage.count + 1);
+    int interspaceIcon = (SCREEN_WIDTH - (_arrayImage.count*widthIcon))/_arrayImage.count;
     int widthTitle = 60;
     for (int index = 0; index < _arrayImage.count; index ++ ) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(interspaceIcon *(index + 1) + widthIcon * index, 20, widthIcon, widthIcon)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(interspaceIcon *index + interspaceIcon/2 + widthIcon * index, 20, widthIcon, widthIcon)];
         [button setImage:[UIImage imageNamed:[_arrayImage objectAtIndex:index]] forState:UIControlStateNormal];
         [viewBg addSubview:button];
         
-        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(interspaceIcon  *(index + 1) + widthIcon * index - 10, 75, widthTitle, 14)];
+        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(interspaceIcon *index + interspaceIcon/2 + widthIcon * index - 10, 75, widthTitle, 14)];
         lable.text = [_arrayTitle objectAtIndex:index];
         lable.textAlignment = NSTextAlignmentCenter;
         lable.font = [UIFont systemFontOfSize:14];
+        lable.textColor = TEXT_COLOR;
         [viewBg addSubview:lable];
     }
     
     UIView *viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 105, SCREEN_WIDTH, 1)];
-    viewLine.backgroundColor = GRAY_COLOR;
+    viewLine.backgroundColor = RGB(191, 191, 191);
     [viewBg addSubview:viewLine];
     
     UIButton *btnCancle = [[UIButton alloc] initWithFrame:CGRectMake(0, 106, SCREEN_WIDTH, 39)];
     [btnCancle setTitle:@"取消分享" forState:UIControlStateNormal];
-    [btnCancle setTitleColor:GRAY_COLOR forState:UIControlStateNormal];
+    [btnCancle setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
     [btnCancle addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
     [viewBg addSubview:btnCancle];
 }

@@ -333,7 +333,7 @@ typedef struct _tag_HBCMD_VideoChat_GiftRecord
     int8    castMode;       //广播模式
     int8    serverMode;     //服务器模式
     uint8   hideMode;       //隐身模式,0-无,1-发送者隐身
-    uint8    sendType;       //发送类型,0-普通,1-所有用户,2-所有主播,3-所有VIP
+    uint8   sendType;       //发送类型,0-普通,1-所有用户,2-所有主播,3-所有VIP
     uint8   nextAction;     //下一步状态,0-没状态
     uint8   textLen;        //赠言文字长度
     int8    reserve01;
