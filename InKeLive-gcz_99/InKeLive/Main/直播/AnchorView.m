@@ -42,17 +42,17 @@
     }];
     
     [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.left.equalTo(self.iconImageView.mas_right).offset(6);
         make.top.equalTo(self.iconImageView.mas_top);
-        make.right.equalTo(self.payButton.mas_left).offset(-10);
+        make.right.equalTo(self.payButton.mas_left);
         make.height.equalTo(@16);
     }];
     
     
     [self.userIdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.left.equalTo(self.iconImageView.mas_right).offset(6);
         make.top.equalTo(self.userNameLabel.mas_bottom);
-        make.right.equalTo(self.payButton.mas_left).offset(-10);
+        make.right.equalTo(self.payButton.mas_left);
         make.height.equalTo(@16);
     }];
 }
@@ -62,9 +62,9 @@
     if (self.anchorClick) {
 
         if (_payButton.selected) {
-            self.anchorClick(1);
-        }else{
             self.anchorClick(2);
+        }else{
+            self.anchorClick(1);
         }
     }
 }
@@ -133,13 +133,7 @@
     [_iconImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     }
 -(void) setAttention:(BOOL)isSelect{
-    _payButton.selected = isSelect;
-    
-//    if (isSelect) {
-//        [_payButton setTitle:@"关注" forState:UIControlStateNormal];
-//    }else{
-//        [_payButton setTitle:@"取消" forState:UIControlStateNormal];
-//    }
+    _payButton.selected = !isSelect;
 }
 -(void) reset
 {

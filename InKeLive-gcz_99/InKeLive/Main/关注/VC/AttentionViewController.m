@@ -20,12 +20,14 @@
 @property (nonatomic, strong) NSArray *arrData;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic,strong)EmptyView *emptyView;
+@property (nonatomic, assign) int index;
 @end
 
 @implementation AttentionViewController
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.hidden = NO;
     self.title = @"关注";
+    _arrData = [NSArray array];
 }
 
 - (void)viewDidLoad {
@@ -63,9 +65,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
-    NSString *strImgPath = @"";
-    NSString *strName = @"美女世家";
-    NSString *strId = @"101100";
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSString *strImgPath = [[_arrData objectAtIndex:indexPath.row] objectForKey:@"img"];
+    NSString *strName = [[_arrData objectAtIndex:indexPath.row] objectForKey:@"Title"];
+    NSString *strId = [NSString stringWithFormat:@"%@",[[_arrData objectAtIndex:indexPath.row] objectForKey:@"uId"]];
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:strImgPath] placeholderImage:[UIImage imageNamed:@"default_head"]];
     CGSize itemSize = CGSizeMake(43, 43);//希望显示的大小
     UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
@@ -75,8 +78,10 @@
     UIGraphicsEndImageContext();
 
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"%@(%@)",strName,strId]];
+    NSLog(@"strName.length == %lu",(unsigned long)strName.length);
+    NSLog(@"strId.length == %lu",(unsigned long)strId.length);
     [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(32, 32, 32) range:NSMakeRange(0, strName.length)];
-    [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(214, 214, 214) range:NSMakeRange(strName.length, strId.length + 2)];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(214, 214, 214) range:NSMakeRange(strName.length, strId.length+2)];
     [cell.textLabel setAttributedText:attrStr];
     cell.textLabel.font = [UIFont systemFontOfSize:13];
     UIButton *btnAttention = [[UIButton alloc] init];
@@ -105,7 +110,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _arrData.count;
+    if (!_arrData) {
+        return 0;
+    }else{
+        return _arrData.count;
+    }
+    
 //    return 1;
 }
 
@@ -115,9 +125,18 @@
 
 - (void)btnCancelAttention:(UIButton *)button{
     NSString *pid = [[_arrData objectAtIndex:button.tag - 200] objectForKey:@"pid"];
-    GTAFNData *data = [[GTAFNData alloc] init];
-    data.delegate = self;
-    [data DeteleAttentionWithPid:pid];
+    [[GTAlertTool shareInstance]showAlert:@"是否取消关注此歌手" message:nil cancelTitle:@"确定" titleArray:@[@"取消"] viewController:self confirm:^(NSInteger buttonTag) {
+        if (buttonTag == -1) {
+            NSLog(@"确定");
+            GTAFNData *data = [[GTAFNData alloc] init];
+            data.delegate = self;
+            [data DeteleAttentionWithPid:pid];
+            _index = (int)button.tag - 200;
+        }else{
+            NSLog(@"取消");
+        }
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -169,7 +188,13 @@
     }else if ([cmd isEqualToString:CMD_ATTENTION_DELETE]){
         NSLog(@"data == %@",data);
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            [self.tableView reloadData];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_arrData];
+            if (_index > -1) {
+                [array removeObjectAtIndex:_index];
+                [self.tableView reloadData];
+                [MBProgressHUD showAlertMessage:@"取消关注成功"];
+            }
+            _index = -1;
         }else{
             [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
             }];

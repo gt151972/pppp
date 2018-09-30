@@ -23,6 +23,7 @@
 @property(nonatomic, strong) NSString* userBigHeadPic;
 @property(nonatomic, strong) NSString* pushStreamUrl;
 @property(nonatomic, strong) NSString* pullStreamUrl;
+@property(nonatomic, assign) int isAttention;//是否被关注
 
 -(void) reset;
 @end

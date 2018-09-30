@@ -25,6 +25,7 @@
     self.userBigHeadPic= @"";
     self.pushStreamUrl = @"";
     self.pullStreamUrl =@"";
+    self.isAttention = 0;
 }
 
 @end

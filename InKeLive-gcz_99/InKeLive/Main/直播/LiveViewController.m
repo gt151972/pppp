@@ -36,6 +36,7 @@
 #import "BeautyView.h"
 #import "WebViewController.h"
 #import "WebView.h"
+#import "GTAFNData.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -49,7 +50,7 @@ PresentViewDelegate,
 UITableViewDataSource, UITableViewDelegate,
 DPKRoomMessageSink,
 UIAlertViewDelegate,
-privateChatViewDelegate>
+privateChatViewDelegate, GTAFNDataDelegate>
 {
     bool use_cap_;
     UITapGestureRecognizer *tapGesture;
@@ -129,6 +130,9 @@ privateChatViewDelegate>
 //公聊数据
 @property (nonatomic, strong) NSMutableArray *arrPubChat;
 
+//关注列表
+@property (nonatomic, strong)NSArray *arrayAttention;
+
 @end
 
 @implementation LiveViewController
@@ -173,6 +177,7 @@ privateChatViewDelegate>
     [self creatUI];
     _arrPrivate = [NSMutableArray array];
     _arrAmchorList = [NSMutableArray array];
+    _arrayAttention = [NSArray array];
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
@@ -250,6 +255,7 @@ privateChatViewDelegate>
     labRoomId.textAlignment = NSTextAlignmentCenter;
     labRoomId.font = [UIFont systemFontOfSize:12];
     [viewOnMic addSubview:labRoomId];
+    
 }
 
 - (void)btnSpreadClicked:(UIButton *)button{
@@ -1472,6 +1478,9 @@ privateChatViewDelegate>
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
         _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220)];
+        if (kIs_iPhone5S) {
+            _messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+        }
     }
     return _messageTableView;
 }
@@ -1896,9 +1905,15 @@ privateChatViewDelegate>
         if(!self.createFlag) {
             //观众端:点击头像观看该用户
             ClientUserModel* userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
-            [self.anchorView setAnchorInfo:userObj.userId UserName:userObj.userAlias UserHeadPic:userObj.userSmallHeadPic];
-            self.playerId = userObj.userId;
-            NSLog(@"userObj == %@",userObj);
+            self.userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
+            [self.anchorView setAnchorInfo:_userObj.userId UserName:_userObj.userAlias UserHeadPic:_userObj.userSmallHeadPic];
+            self.playerId = _userObj.userId;
+            NSLog(@"userObj == %@",_userObj);
+            for (ClientUserModel *model in _arrayAttention) {
+                if (model.userId == _userObj.userId) {
+                    [self.anchorView setAttention:NO];
+                }
+            }
             //testcode 不在判断,直接连接
             //if(userObj.mbTLstatus == 3) {
             //    [self onPlayStream:YES URL:userObj.pullStreamUrl];
@@ -2189,6 +2204,9 @@ privateChatViewDelegate>
     [_webView setBtnCloseClick:^{
         [weakSelf bottomToolShow];
         weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+        if (kIs_iPhone5S) {
+            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+        }
     }];
 }
 
@@ -2309,8 +2327,14 @@ privateChatViewDelegate>
     [_chatPublicView setChangeMessageTableView:^(NSValue *value) {
         if (value == 0) {
             weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+            if (kIs_iPhone5S) {
+                weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+            }
         }else{
             weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*3/4, 220);
+            if (kIs_iPhone5S) {
+                weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*4/5, 150);
+            }
         }
     }];
 }
@@ -2701,6 +2725,7 @@ privateChatViewDelegate>
     NSLog(@"OnNetMsg_RoomOnMicUserListBegin");
     [self.roomObj clearOnMicUser];
     [self.onMicUsersHeadView reloadData];
+    
 }
 
 -(void)OnNetMsg_RoomOnMicUserListItem:(int)roomId
@@ -2736,6 +2761,9 @@ privateChatViewDelegate>
 -(void)OnNetMsg_RoomOnMicUserListEnd
 {
     [self.onMicUsersHeadView reloadData];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data AttentionList];
 }
 
 
@@ -2977,13 +3005,15 @@ privateChatViewDelegate>
             }
             ClientUserModel* userObj = [self.roomObj findMember:toId];
             if (count == -1) {
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
+                NSString* chatContent2 = [NSString filterHTML:chatContent];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
                 NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
                 NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
                 [_arrPrivate addObject:dicAll];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
             }else{
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"1", @"isMe", nil];
+                NSString* chatContent2 = [NSString filterHTML:chatContent];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
                 NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
                 [arrMsg addObject:dic];
                 NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
@@ -3001,7 +3031,8 @@ privateChatViewDelegate>
             }
             ClientUserModel* userObj = [self.roomObj findMember:srcId];
             if (count == -1) {
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
+                NSString* chatContent2 = [NSString filterHTML:chatContent];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"0", @"isMe", nil];
                 NSArray *arrMsg = [[NSArray alloc] initWithObjects:dic, nil];
                 NSDictionary *dicAll = [[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId],@"userId",
                                         userObj.userAlias, @"userAlias",
@@ -3011,7 +3042,8 @@ privateChatViewDelegate>
                 [_arrPrivate addObject:dicAll];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue];
             }else{
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent, @"msg", @"0", @"isMe", nil];
+                NSString* chatContent2 = [NSString filterHTML:chatContent];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"0", @"isMe", nil];
                 NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
                 [arrMsg addObject:dic];
                 NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
@@ -3428,6 +3460,29 @@ privateChatViewDelegate>
     [_flyView paomadeng];
 }
 
+#pragma mark onMicUserList
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_ATTENTION_ROOM_LIST]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            NSArray *arrList = self.roomObj.onMicUserList;
+            NSArray *arrData = [data objectForKey:@"List"];
+            NSMutableArray *array = [NSMutableArray array];
+            for (ClientUserModel *userObj in arrList) {//遍历在麦用户
+                for (NSDictionary *dic in arrData) {//遍历关注用户
+                    int uid = [[dic objectForKey:@"uId"] intValue];//关注
+                    int userId = userObj.userId;
+                    if (uid == userId) {
+                        [array addObject:userObj];
+                    }
+                }
+            }
+            self.arrayAttention = [[NSArray alloc] initWithArray:array];
+        }else{
+            NSLog(@"获取关注列表失败");
+        }
+    }
+}
 @end
 
 
