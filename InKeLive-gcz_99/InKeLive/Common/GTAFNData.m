@@ -240,4 +240,14 @@
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
     [self postData:currResult data:dict];
 }
+
+#pragma mark 首页数据
+/**
+ 推荐房间列表
+ */
+-(void)RecommendRoom{
+    currResult = CMD_RECOMMEND_ROOM_LIST;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
 @end

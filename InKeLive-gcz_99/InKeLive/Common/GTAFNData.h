@@ -130,4 +130,10 @@
  请求banner图
  */
 -(void)getBanner;
+
+#pragma mark 首页数据
+/**
+ 推荐房间列表
+ */
+-(void)RecommendRoom;
 @end

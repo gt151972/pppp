@@ -232,6 +232,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     is_ksystream_pull_autoconnect_ = NO;
     is_ksystream_pull_connecting_ = NO;
     is_ksystream_pull_connected_ = NO;
+    TempJoinRoomInfo* joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
     UIView *viewOnMic = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*3/4, 70, SCREEN_WIDTH/4, 33)];
     if (kIs_iPhoneX) {
         viewOnMic.frame = CGRectMake(SCREEN_WIDTH*3/4, 94, SCREEN_WIDTH/4, 33);
@@ -244,13 +245,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_up"] forState:UIControlStateNormal];
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_down"] forState:UIControlStateSelected];
 //    [btnRoomName setBackgroundColor:[UIColor clearColor]];
-    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
+//    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
+    [btnRoomName setTitle:joinRoomInfo.roomName forState:UIControlStateNormal];
     [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [btnRoomName addTarget:self action:@selector(btnSpreadClicked:) forControlEvents:UIControlEventTouchUpInside];
     [viewOnMic addSubview:btnRoomName];
     UILabel *labRoomId = [[UILabel alloc] initWithFrame:CGRectMake(0, 17, SCREEN_WIDTH/4, 12)];
-    labRoomId.text = [NSString stringWithFormat:@"ID: %@",[_dicInfo objectForKey:@"room_id"]];
+//    labRoomId.text = [NSString stringWithFormat:@"ID: %@",[_dicInfo objectForKey:@"room_id"]];
+    labRoomId.text = [NSString stringWithFormat:@"ID: %d",joinRoomInfo.roomId];
     labRoomId.textColor = [UIColor whiteColor];
     labRoomId.textAlignment = NSTextAlignmentCenter;
     labRoomId.font = [UIFont systemFontOfSize:12];
@@ -1390,7 +1393,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
     if (_backdropView == nil) {
         _backdropView = [[UIImageView alloc]init];
         _backdropView.frame = self.view.bounds;
-        NSString *urlStr = [_dicInfo objectForKey:@"room_pic"];
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strRes = [dict objectForKey:@"res"];
+        NSString *urlStr = [NSString stringWithFormat:@"%@room/%@",strRes,[_dicInfo objectForKey:@"img"]];;
         [_backdropView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"swipe_bg"]];
         UIVisualEffect *effcet = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effcet];
@@ -2213,9 +2221,13 @@ privateChatViewDelegate, GTAFNDataDelegate>
 - (void)showChangeScoreView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     _changeScore = [[ChangeScore alloc] initWithFrame:frame];
-    _changeScore.nowGold = 100;
-    _changeScore.nowScore = 1000;
     [_changeScore popShow];
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    [self.changeScore updateUserMoney:userData.nk NB:userData.nb];
+    WEAKSELF;
+    [self.changeScore setCommendChangeClick:^(int score) {
+        [weakSelf.socketObj sendScoreChargeReq:weakSelf.roomObj.roomId userId:userData.userID money:score];
+    }];
 }
 
 - (void)showPrivateChatView:(int)userId{
@@ -3425,6 +3437,20 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [MBProgressHUD showAlertMessage:@"关注未成功"];
         }
     }
+}
+
+/**
+ 积分兑换回调
+
+ @param vcbId <#vcbId description#>
+ @param userId <#userId description#>
+ @param money <#money description#>
+ */
+-(void)OnNetMsg_ScoreChargeResp:(int)vcbId
+                         userId:(int)userId
+                          money:(int)money{
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    [self.changeScore updateUserMoney:userData.nk NB:userData.nb];
 }
 
 //进房间跑道消息通知

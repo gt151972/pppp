@@ -142,7 +142,7 @@
         NSString*cachePath = array[0];
         NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
         NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-        NSString *strUrl = [dict objectForKey:@"about"];
+        NSString *strUrl = [dict objectForKey:@"superlist"];
         WebViewController *webVC = [[WebViewController alloc] init];
         webVC.strUrl = strUrl;
         webVC.strTitle = @"排行榜";

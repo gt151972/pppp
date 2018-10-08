@@ -23,9 +23,9 @@
 #import "DPK_NW_Application.h"
 #import "SDCycleScrollView.h"
 #import "CommonAPIDefines.h"
+#import "GTAFNData.h"
 
-
-@interface MainViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface MainViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource, GTAFNDataDelegate>
 {
 //    UITableViewCell *cell;
 }
@@ -37,6 +37,8 @@
 @property (nonatomic,strong) UIView *headView;
 @property (nonatomic, strong)NSArray *array;
 @property (nonatomic, strong)NSArray *arrayBanner;
+@property (nonatomic, strong)InKeModel *roomObj;
+@property (nonatomic, strong)TempJoinRoomInfo* joinRoomInfo;
 @end
 
 @implementation MainViewController
@@ -164,9 +166,16 @@
     }];
 }
 
+-(void)getRecommendList{
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data RecommendRoom];
+}
+
 - (void)loadData{
     //刷新数据
-    [self getData];
+//    [self getData];
+    [self getRecommendList];
     [self getBanner];
     
 }
@@ -191,6 +200,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.roomObj = [self.dataArr objectAtIndex:indexPath.row];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data getRoomInfoWithRid:[NSString stringWithFormat:@"%d",_roomObj.roomId]];
 
     //LiveViewController *live = [[LiveViewController alloc]init];
     //[live initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];
@@ -200,28 +213,15 @@
     //    live.livingItem = item;
     //}
     //[self.navigationController pushViewController:live animated:YES];
-    
-    InKeModel *model = [self.dataArr objectAtIndex:indexPath.row];
+    self.joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
+    [self.joinRoomInfo reset];
+    self.joinRoomInfo.roomId = _roomObj.roomId;
+    self.joinRoomInfo.lookUserId = _roomObj.userId;
+    self.joinRoomInfo.roomName = _roomObj.roomName;
+    self.joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
+    NSLog(@"dicRoomInfo == %@",self.joinRoomInfo.dicRoomInfo);
 
-    TempJoinRoomInfo* joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
-    [joinRoomInfo reset];
-    joinRoomInfo.roomId = model.roomId;
-    joinRoomInfo.lookUserId = model.userId;
-    joinRoomInfo.roomName = model.roomName;
-    joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
-    NSLog(@"dicRoomInfo == %@",joinRoomInfo.dicRoomInfo);
-    [joinRoomInfo setGateAddr:model.gateAddr]; //6位地址
     
-    //测试代码 testcode
-    NSLog(@"加入房间信息, model.roomId=%d, joinRoomInfo.roomId=%d", model.roomId, joinRoomInfo.roomId);
-    
-    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if([DPK_NW_Application sharedInstance].isLogon == NO) {
-        [appDelegate doLogon];
-        return;
-    }else {
-        [appDelegate showLiveRoom:NO CameraFront:YES];
-    }
 }
 
 - (void)writeData{
@@ -326,6 +326,61 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = NO;
+}
+
+#pragma mark GTAFNDataDelegate
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_RECOMMEND_ROOM_LIST]) {
+        if ([[data objectForKey:@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            NSArray* item_arr = (NSArray*)data[@"List"];
+            _array = [NSArray arrayWithArray:item_arr];
+            NSLog(@"item count:%lu", (unsigned long)item_arr.count);
+            [self.dataArr removeAllObjects];
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+            NSString *strRes = [dict objectForKey:@"res"];
+            for(NSDictionary* dic2 in item_arr) {
+                InKeModel* inkItem = [[InKeModel alloc]init];
+                inkItem.roomId = [dic2[@"rId"] intValue];
+                inkItem.userId =[dic2[@"uId"] intValue];
+                inkItem.roomUserCount = [dic2[@"online"] intValue];
+                inkItem.roomPic = [NSString stringWithFormat:@"%@room/%@",strRes,dic2[@"img"]];
+                inkItem.userstarPic = [NSString stringWithFormat:@"%@room/%@",strRes,dic2[@"img"]];
+                inkItem.roomName = dic2[@"Title"];
+                if(inkItem.userId !=0)
+                    inkItem.modelType =1;
+                else
+                    inkItem.modelType =2;
+                [self.dataArr addObject:inkItem];
+            }
+        
+        [self.mainTableView reloadData];
+        [self.mainTableView.mj_header endRefreshing];
+        }else{
+            NSLog(@"msg == %@",[data objectForKey:@"msg"]);
+        }
+    }else if ([cmd isEqualToString:CMD_REQUEST_ADDTESS]){
+        if ([data[@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            [self.joinRoomInfo setGateAddr:data[@"GateAddr"]]; //6位地址
+
+            //测试代码 testcode
+            NSLog(@"加入房间信息, model.roomId=%d, joinRoomInfo.roomId=%d", _roomObj.roomId, _joinRoomInfo.roomId);
+
+            AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            if([DPK_NW_Application sharedInstance].isLogon == NO) {
+                [appDelegate doLogon];
+                return;
+            }else {
+                [appDelegate showLiveRoom:NO CameraFront:YES];
+            }
+        }else{
+            NSLog(@"msg == %@",[data objectForKey:@"msg"]);
+        }
+    }
 }
 
 - (void)dealloc{

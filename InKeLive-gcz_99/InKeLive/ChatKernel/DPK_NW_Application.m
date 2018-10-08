@@ -310,6 +310,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                 NSString *string = [webAddress objectForKey:arrKey[index]];
                 string = [string stringByReplacingOccurrencesOfString:@"{uid}"withString:[NSString stringWithFormat:@"%d",_localUserModel.userID]];
                 string = [string stringByReplacingOccurrencesOfString:@"{sid}"withString:[NSString stringWithFormat:@"%@",_localUserModel.userSid]];
+                string = [string stringByReplacingOccurrencesOfString:@"{key}"withString:@"1"];
                 [dic setValue:string forKey:arrKey[index]];
             }
             NSLog(@"dic == %@",dic);
@@ -1079,6 +1080,17 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                  nUserID:pResp->nUserID
                                                  nRoomID:pResp->nRoomID
                                                  nSinger:pResp->nSinger];
+                }
+            }
+                break;
+            case MXP_SUBCMD_VIDEOCHAT_ROOMNB2NK_RESP:{//积分兑换返回1055
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_ROOMNB2NK_RESP");
+                HBCMD_VideoChat_RoomNB2NK_Resp_t *pResp = (HBCMD_VideoChat_RoomNB2NK_Resp_t *)data;
+                __strong id delegate = [sock GetMessageEventSink];
+                if (delegate != nil) {
+                    [delegate OnNetMsg_ScoreChargeResp:pResp->vcbId
+                                                userId:pResp->userId
+                                                 money:pResp->money];
                 }
             }
                 break;

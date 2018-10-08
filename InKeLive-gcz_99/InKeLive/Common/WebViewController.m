@@ -14,6 +14,7 @@
 }
 @property (strong, nonatomic) WKWebView *webView;
 @property (strong, nonatomic) UIView *viewLine;
+
 @end
 
 @implementation WebViewController
@@ -247,9 +248,19 @@
     UIButton *btnWeek = (UIButton *)[self.view viewWithTag:201];
     UIButton *btnDay = (UIButton *)[self.view viewWithTag:202];
     if (button.tag == 201) {
+        NSString *url = _strUrl;
+        url = [url stringByReplacingOccurrencesOfString:@"key=2"withString:@"key=1"];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+        [_webView loadRequest:request];
+        _strUrl = url;
         btnWeek.selected = YES;
         btnDay.selected = NO;
     }else if (button.tag == 202){
+        NSString *url = _strUrl;
+        url = [url stringByReplacingOccurrencesOfString:@"key=1"withString:@"key=2"];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+        [_webView loadRequest:request];
+        _strUrl = url;
         btnWeek.selected = NO;
         btnDay.selected = YES;
     }

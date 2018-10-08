@@ -633,6 +633,7 @@ DataLen:(int)data_len
     req.vcbId = roomId;
     if(_isConnected == 1) {
         int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand:MXP_SUBCMD_VIDEOCHAT_ROOMKEEPLIVE_REQ Data:(char*)&req DataLen:sizeof(HBCMD_VideoChat_RoomKeepLive_Req_t)];
+        return 0;
     }
     else if(_isConnecting == 1) {
         return -1;
@@ -653,6 +654,27 @@ DataLen:(int)data_len
     req.nSinger = nSinge;
     if(_isConnected == 1) {
         int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand:MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ Data:(char*)&req DataLen:sizeof(HBCMD_VIDEOCHAT_UserAttention_Req_t)];
+        return 0;
+    }
+    else if(_isConnecting == 1) {
+        return -1;
+    }
+    return -2;
+    
+}
+
+//积分兑换
+-(int)sendScoreChargeReq:(int)vcbId
+                  userId:(int)userId
+                   money:(int)money{
+    HBCMD_VideoChat_RoomNB2NK_Req_t req;
+    memset(&req, 0, sizeof(req));
+    req.vcbId = vcbId;
+    req.userId = userId;
+    req.money = money;
+    if(_isConnected == 1) {
+        int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand: MXP_SUBCMD_VIDEOCHAT_ROOMNB2NK_REQ  Data:(char*)&req DataLen:sizeof(HBCMD_VideoChat_RoomNB2NK_Req_t)];
+        return 0;
     }
     else if(_isConnecting == 1) {
         return -1;

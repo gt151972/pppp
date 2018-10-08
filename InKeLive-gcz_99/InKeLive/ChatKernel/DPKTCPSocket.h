@@ -330,6 +330,16 @@
                           nRoomID:(int)nRoomID
                           nSinger:(int)nSinger;
 
+/**
+ 积分兑换回调
+ 
+ @param vcbId <#vcbId description#>
+ @param userId <#userId description#>
+ @param money <#money description#>
+ */
+-(void)OnNetMsg_ScoreChargeResp:(int)vcbId
+                         userId:(int)userId
+                          money:(int)money;
 @end
 
 ///////////////////////////////////////////////////////////////////
@@ -460,6 +470,10 @@
                     uUserID:(int)nUserID
                     nRoomID:(int)nRoomID
                     nSinger:(int)nSinger;
+//积分兑换
+-(int)sendScoreChargeReq:(int)vcbId
+                  userId:(int)userId
+                   money:(int)money;
 @end
 
 ///////////////////////////////////////////////////////////////////

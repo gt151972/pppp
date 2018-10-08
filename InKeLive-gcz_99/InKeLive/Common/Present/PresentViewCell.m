@@ -75,12 +75,12 @@
     lable.backgroundColor = [UIColor clearColor];
     lable.borderColor     = [UIColor whiteColor];
     lable.textColor       = MAIN_COLOR;
-    lable.font            = [UIFont systemFontOfSize:19.0];
-    lable.textAlignment   = NSTextAlignmentCenter;
+    lable.font            = [UIFont systemFontOfSize:23.0];
+    lable.textAlignment   = NSTextAlignmentLeft;
     lable.alpha           = 0.0;
-    CGFloat w             = 60;
+    CGFloat w             = 160;
     CGFloat h             = CGRectGetHeight(self.frame);
-    CGFloat x             = CGRectGetWidth(self.frame) - 20;
+    CGFloat x             = CGRectGetWidth(self.frame);
     CGFloat y             = 0;
     lable.frame           = CGRectMake(x, y, w, h);
     self.shakeLable       = lable;
