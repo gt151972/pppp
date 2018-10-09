@@ -312,6 +312,7 @@
 		6462E7DD2117F44E005EF737 /* TAPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6462E7D32117F44E005EF737 /* TAPageControl.m */; };
 		6462E7DE2117F44E005EF737 /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6462E7D42117F44E005EF737 /* TAAnimatedDotView.m */; };
 		6462E7DF2117F44E005EF737 /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6462E7D52117F44E005EF737 /* TAAbstractDotView.m */; };
+		646A0DFB216C982100F24B36 /* CatchCrash.m in Sources */ = {isa = PBXBuildFile; fileRef = 646A0DFA216C982100F24B36 /* CatchCrash.m */; };
 		647219A9212A66DB0064CBDB /* YYFPSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219A8212A66DB0064CBDB /* YYFPSLabel.m */; };
 		647219AC212A685D0064CBDB /* YYTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219AB212A685D0064CBDB /* YYTableView.m */; };
 		647219B0212A69760064CBDB /* WBStatusTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 647219AF212A69760064CBDB /* WBStatusTimelineViewController.m */; };
@@ -893,6 +894,8 @@
 		6462E7D72117F44E005EF737 /* TAAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAnimatedDotView.h; sourceTree = "<group>"; };
 		6462E7D82117F44E005EF737 /* TAPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAPageControl.h; sourceTree = "<group>"; };
 		64641B09211A8D420081AD88 /* zhibo_commands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zhibo_commands.h; sourceTree = "<group>"; };
+		646A0DF9216C982100F24B36 /* CatchCrash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchCrash.h; sourceTree = "<group>"; };
+		646A0DFA216C982100F24B36 /* CatchCrash.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatchCrash.m; sourceTree = "<group>"; };
 		647219A7212A66DB0064CBDB /* YYFPSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFPSLabel.h; sourceTree = "<group>"; };
 		647219A8212A66DB0064CBDB /* YYFPSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFPSLabel.m; sourceTree = "<group>"; };
 		647219AA212A685D0064CBDB /* YYTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTableView.h; sourceTree = "<group>"; };
@@ -1770,6 +1773,8 @@
 				6481F887214669F0007264AB /* WebViewController.m */,
 				64A43522214BA3C900A2FF99 /* GTAFNData.h */,
 				64A43523214BA3C900A2FF99 /* GTAFNData.m */,
+				646A0DF9216C982100F24B36 /* CatchCrash.h */,
+				646A0DFA216C982100F24B36 /* CatchCrash.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2817,6 +2822,7 @@
 				633D8D5C1E0790AF0087BD77 /* DanmuItem.m in Sources */,
 				63402EF11E124611002F6661 /* NearModel.m in Sources */,
 				647219AC212A685D0064CBDB /* YYTableView.m in Sources */,
+				646A0DFB216C982100F24B36 /* CatchCrash.m in Sources */,
 				6481F888214669F0007264AB /* WebViewController.m in Sources */,
 				635B5E671E00D04D00E62E7A /* UIButton+ImageTitleSpacing.m in Sources */,
 				63A334FB1E0269AF00027174 /* CarsViews.m in Sources */,

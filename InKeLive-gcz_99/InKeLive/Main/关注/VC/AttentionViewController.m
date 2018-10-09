@@ -49,6 +49,7 @@
     _tableView.rowHeight = 55;
     _tableView.separatorColor = RGB(218, 218, 218);
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_tableView];
     MJAnimHeader *header = [MJAnimHeader headerWithRefreshingTarget:self refreshingAction:@selector(getData)];
     header.lastUpdatedTimeLabel.hidden = YES;
@@ -65,10 +66,21 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    NSString *strRes = [dict objectForKey:@"res"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSString *strImgPath = [[_arrData objectAtIndex:indexPath.row] objectForKey:@"img"];
-    NSString *strName = [[_arrData objectAtIndex:indexPath.row] objectForKey:@"Title"];
-    NSString *strId = [NSString stringWithFormat:@"%@",[[_arrData objectAtIndex:indexPath.row] objectForKey:@"uId"]];
+    NSString *strImgPath = @"";
+    NSString *strName = @"";
+    NSString *strId = @"";
+    if (_arrData.count > 0) {
+        strImgPath = [NSString stringWithFormat:@"%@user/%@",strRes,[[_arrData objectAtIndex:indexPath.row] objectForKey:@"img"]];
+        strName = [[_arrData objectAtIndex:indexPath.row] objectForKey:@"Title"];
+        strId = [NSString stringWithFormat:@"%@",[[_arrData objectAtIndex:indexPath.row] objectForKey:@"uId"]];
+    }
+
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:strImgPath] placeholderImage:[UIImage imageNamed:@"default_head"]];
     CGSize itemSize = CGSizeMake(43, 43);//希望显示的大小
     UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
@@ -164,17 +176,9 @@
                 self.arrData = array;
                 [self.emptyView removeFromSuperview];
                 if (kIs_iPhoneX) {
-                    if (55*array.count > SCREEN_HEIGHT-88-68) {
-                        self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_HEIGHT-88-68);
-                    }else{
-                        self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 55*array.count);
-                    }
+                    self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_HEIGHT-88-68);
                 }else{
-                    if (55*array.count > SCREEN_HEIGHT- 64-49) {
-                        self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-49);
-                    }else{
-                        self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, 55*array.count);
-                    }
+                    self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-49);
                 }
                 [self.tableView reloadData];
             }

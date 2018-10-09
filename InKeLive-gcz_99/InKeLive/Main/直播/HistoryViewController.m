@@ -12,7 +12,7 @@
 #import "LocalUserModel.h"
 #import "DPK_NW_Application.h"
 #import "AppDelegate.h"
-
+#import "MJAnimHeader.h"
 @interface HistoryViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSArray *arrData;
 @property (nonatomic, strong) UITableView *tableView;
@@ -44,6 +44,11 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
+    MJAnimHeader *header = [MJAnimHeader headerWithRefreshingTarget:self refreshingAction:@selector(getData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    header.stateLabel.hidden = YES;
+    [header beginRefreshing];
+    self.tableView.mj_header = header;
 }
 
 - (void) getData{
@@ -85,8 +90,10 @@
             }
         }
         [_tableView reloadData];
+        [_tableView.mj_header endRefreshing];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error: %@", error);
+        [_tableView.mj_header endRefreshing];
     }];
 }
 
@@ -103,7 +110,7 @@
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
     NSString *strRes = [dict objectForKey:@"res"];
     NSString *strImg =  [[_arrData objectAtIndex:indexPath.row] objectForKey:@"img"];
-    NSString *str = [NSString stringWithFormat:@"%@user/%@",strRes,strImg];
+    NSString *str = [NSString stringWithFormat:@"%@room/%@",strRes,strImg];
 //    NSLog(@"str == %@",str);
     UIImageView *imgHead = [[UIImageView alloc] init];
     [imgHead sd_setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"default_head"]];
@@ -203,6 +210,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)dealloc{
+    self.tableView.dataSource = nil;
+    self.tableView.delegate = nil;
 }
 
 

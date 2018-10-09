@@ -108,6 +108,8 @@
     [_viewBg addSubview:_btnSobmit];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChangeOneCI:) name:UITextFieldTextDidChangeNotification object:_textField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardAction:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardAction:) name:UIKeyboardWillHideNotification object:nil];
 }
 -(UIButton*)viewBK {
     if(_viewBK == nil) {
@@ -148,7 +150,8 @@
         button3.selected = NO;
         [button2 setBackgroundColor:RGB(230, 230, 230)];
         [button3 setBackgroundColor:RGB(230, 230, 230)];
-        _textField.text = strChangeScore;
+        _textField.text = strChangeScore
+        ;
     }else if (button.tag == 401){
         button1.selected = NO;
         button3.selected = NO;
@@ -176,7 +179,7 @@
             int score = [_textField.text intValue];
             self.commendChangeClick(score);
         }
-        [self hide];
+//        [self hide];
     }
 }
 
@@ -205,4 +208,20 @@
     UITextField *textfield=[notification object];
    _labChangeGold.text = [NSString stringWithFormat:@"对应金币: %@",textfield.text];
 }
+- (void)keyboardAction:(NSNotification*)sender{
+    // 通过通知对象获取键盘frame: [value CGRectValue]
+    NSDictionary *useInfo = [sender userInfo];
+    NSValue *value = [useInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    // <注意>具有约束的控件通过改变约束值进行frame的改变处理
+    if([sender.name isEqualToString:UIKeyboardWillShowNotification]){
+        //        self.toBottom.constant = [value CGRectValue].size.height;
+        self.frame = CGRectMake(0, -[value CGRectValue].size.height, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (kIs_iPhoneX) {
+            self.frame = CGRectMake(0, -[value CGRectValue].size.height + 34, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+    }else{
+        self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+}
+
 @end

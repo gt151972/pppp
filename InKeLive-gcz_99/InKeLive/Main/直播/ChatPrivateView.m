@@ -268,7 +268,7 @@ static const CGFloat kHeight=285.0;
     }
     if (tableView == _userTableView) {
         static NSString *CellWithIdentifier = @"userTableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+        UITableViewCell *cell =  [tableView cellForRowAtIndexPath:indexPath];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
         }
@@ -380,6 +380,7 @@ static const CGFloat kHeight=285.0;
     {
         [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
     }
+//    [self reloadDateForTableView];
 }
 
 -(void)hide {
@@ -445,10 +446,11 @@ static const CGFloat kHeight=285.0;
  }
 
 - (void)reloadDateForTableView{
-    
     [_userTableView reloadData];
     [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
     [_messageTableView reloadData];
+    UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0]];
+    cell.selected = YES;
     
 }
 

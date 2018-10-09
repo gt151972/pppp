@@ -19,6 +19,7 @@
 #import "CommonAPIDefines.h"
 #import "HomeViewController.h"
 #import "GTAFNData.h"
+#import <UMCommon/UMCommon.h>
 
 @interface AppDelegate ()<GTAFNDataDelegate>
 
@@ -27,6 +28,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [UMConfigure initWithAppkey:@"59892ebcaed179694b000104" channel:@"App Store"];
     // Override point for customization after application launch.
     [DPK_NW_Application sharedInstance].isLogon = NO;
     LocalUserModel* localUserData = [DPK_NW_Application sharedInstance].localUserModel;

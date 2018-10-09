@@ -164,6 +164,7 @@
 - (UIImageView *)giftImageView{
     if (!_giftImageView) {
         _giftImageView = [[UIImageView alloc]init];
+        _giftImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _giftImageView;
 }

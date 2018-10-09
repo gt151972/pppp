@@ -280,6 +280,7 @@
         _mainTableView.dataSource = self;
         _mainTableView.rowHeight = SCREEN_WIDTH*245/312 + 51;
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.mainTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     }
     return _mainTableView;
 }

@@ -232,7 +232,7 @@
             NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
             NSString *strRes = [dict objectForKey:@"res"];
             NSString *strImg = dic2[@"img"];
-            NSString *str = [NSString stringWithFormat:@"%@roompic/%@",strRes,strImg];
+            NSString *str = [NSString stringWithFormat:@"%@room/%@",strRes,strImg];
             inkItem.roomPic = str;
             inkItem.userstarPic = str;
             inkItem.roomName = dic2[@"Title"];
@@ -243,8 +243,14 @@
         CGFloat H = SCREEN_HEIGHT-64 - 59;
         if (height < H) {
             [self.tableView setFrame:CGRectMake(0, 64, SCREEN_WIDTH, height)];
+            if (kIs_iPhoneX) {
+                [self.tableView setFrame:CGRectMake(0, 88, SCREEN_WIDTH, height)];
+            }
         }else{
             [self.tableView setFrame:CGRectMake(0, 64, SCREEN_WIDTH, H)];
+            if (kIs_iPhoneX) {
+                [self.tableView setFrame:CGRectMake(0, 88, SCREEN_WIDTH, H)];
+            }
         }
         [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

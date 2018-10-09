@@ -10,7 +10,9 @@ pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FMDB'
 pod 'YYKit'
 pod 'pop'
-
+pod 'UMCCommon'
+pod 'UMCAnalytics'
+pod 'UMCSecurityPlugins'
 
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'

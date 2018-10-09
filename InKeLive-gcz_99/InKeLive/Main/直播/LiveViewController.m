@@ -3064,7 +3064,6 @@ privateChatViewDelegate, GTAFNDataDelegate>
             }
         }
         NSLog(@"arr == %@",_arrPrivate);
-        
         _chatPrivateView.nowRow = self.nowRow;
         _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         [_chatPrivateView reloadDateForTableView];
@@ -3451,6 +3450,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
                           money:(int)money{
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     [self.changeScore updateUserMoney:userData.nk NB:userData.nb];
+    [self.giftView updateUserMoney:userData.nk NB:userData.nb];
+    [MBProgressHUD showAlertMessage:[NSString stringWithFormat:@"您已成功兑换%d金币",money]];
+    [UIView animateWithDuration:2.0 animations:^{
+        [self.changeScore hide];
+    }];
 }
 
 //进房间跑道消息通知
