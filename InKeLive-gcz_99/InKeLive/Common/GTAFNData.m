@@ -250,4 +250,14 @@
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
     [self postData:currResult data:dict];
 }
+
+#pragma mark 版本更新
+/**
+ 版本更新
+ */
+-(void)versionUpdate{
+    currResult = CMD_VERSION_UPDATE;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
 @end

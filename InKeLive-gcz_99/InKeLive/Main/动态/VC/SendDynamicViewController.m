@@ -8,6 +8,7 @@
 
 #import "SendDynamicViewController.h"
 #import <AFNetworking.h>
+#import <ZYQAssetPickerController.h>
 
 @interface SendDynamicViewController ()<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePick;

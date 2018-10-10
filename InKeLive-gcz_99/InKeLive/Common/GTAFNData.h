@@ -136,4 +136,10 @@
  推荐房间列表
  */
 -(void)RecommendRoom;
+
+#pragma mark 版本更新
+/**
+ 版本更新
+ */
+-(void)versionUpdate;
 @end

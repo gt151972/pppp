@@ -28,7 +28,7 @@
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-    NSString *strUrl = [dict objectForKey:@"activity"];
+    NSString *strUrl = [dict objectForKey:@"pay"];
    
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.selectionGranularity = WKSelectionGranularityDynamic;

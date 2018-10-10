@@ -98,6 +98,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png"
   install_resource "${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png"
   install_resource "${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle"
+  install_resource "${PODS_ROOT}/ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/GPUImage/framework/Resources/lookup.png"
@@ -106,6 +107,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png"
   install_resource "${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png"
   install_resource "${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle"
+  install_resource "${PODS_ROOT}/ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

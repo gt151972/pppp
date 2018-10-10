@@ -1399,7 +1399,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
         NSString *strRes = [dict objectForKey:@"res"];
         NSString *urlStr = [NSString stringWithFormat:@"%@room/%@",strRes,[_dicInfo objectForKey:@"img"]];;
-        [_backdropView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"swipe_bg"]];
+        [_backdropView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"wellcome_default_blur"]];
         UIVisualEffect *effcet = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effcet];
         visualEffectView.frame = _backdropView.bounds;
@@ -2286,6 +2286,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 _chatPrivateView.nowRow = 0;
             }
         }
+        [self.chatPrivateView reloadDateForTableView];
         [_chatPrivateView popShow];
     }
      WEAKSELF;

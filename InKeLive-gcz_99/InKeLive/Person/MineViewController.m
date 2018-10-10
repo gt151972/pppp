@@ -30,7 +30,7 @@
 
 @implementation MineViewController
 - (void)initData{
-    _arrTitle = @[@"我的收益", @"安全中心", @"排行榜", @"活动中心", @"设置"];
+    _arrTitle = @[@"我的收益", @"安全中心", @"排行榜", @"设置"];
     _userModel = [DPK_NW_Application sharedInstance].localUserModel;
     
     [self.tableView reloadData];
@@ -99,7 +99,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return 4;
 }
 
 
@@ -127,7 +127,7 @@
         NSString*cachePath = array[0];
         NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
         NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-        NSString *strUrl = [dict objectForKey:@"activity"];
+        NSString *strUrl = [dict objectForKey:@"profit"];
         WebViewController *webVC = [[WebViewController alloc] init];
         webVC.strUrl = strUrl;
         webVC.strTitle = @"我的收益";
@@ -147,18 +147,18 @@
         webVC.strUrl = strUrl;
         webVC.strTitle = @"排行榜";
         [self.navigationController pushViewController:webVC animated:YES];
+//    }else if (indexPath.row == 3){
+//        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+//        NSString*cachePath = array[0];
+//        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+//        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+//        NSString *strUrl = [dict objectForKey:@"activity"];
+//        WebViewController *webVC = [[WebViewController alloc] init];
+//        webVC.strUrl = strUrl;
+//        webVC.strTitle = @"活动中心";
+//        [self.navigationController pushViewController:webVC animated:YES];
+//        //活动中心
     }else if (indexPath.row == 3){
-        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-        NSString*cachePath = array[0];
-        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
-        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-        NSString *strUrl = [dict objectForKey:@"activity"];
-        WebViewController *webVC = [[WebViewController alloc] init];
-        webVC.strUrl = strUrl;
-        webVC.strTitle = @"活动中心";
-        [self.navigationController pushViewController:webVC animated:YES];
-        //活动中心
-    }else if (indexPath.row == 4){
         //设置
         SettingViewController *settingVC = [[SettingViewController alloc] init];
         [self.navigationController pushViewController:settingVC animated:YES];
@@ -289,7 +289,7 @@
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-    NSString *strUrl = [dict objectForKey:@"about"];
+    NSString *strUrl = [dict objectForKey:@"pay"];
     WebViewController *webVC = [[WebViewController alloc] init];
     webVC.strUrl = strUrl;
     webVC.strTitle = @"充值";

@@ -2701,6 +2701,7 @@
 				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png",
 				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_ROOT}/ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2710,6 +2711,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_1.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_2.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZYQAssetPicker.Bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

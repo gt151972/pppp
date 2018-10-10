@@ -14,8 +14,9 @@
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
 #import "WebViewController.h"
+#import "GTAFNData.h"
 
-@interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>{
+@interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource,GTAFNDataDelegate>{
     NSArray *arrayTitle;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -148,6 +149,9 @@
             [self.navigationController pushViewController:webVC animated:YES];
         }else if (indexPath.row == 2){
             //检查更新
+            GTAFNData *data = [[GTAFNData alloc] init];
+            data.delegate = self;
+            [data versionUpdate];
         }else if (indexPath.row == 3){
             //关于我们
             NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
@@ -275,6 +279,28 @@
         NSLog(@"error: %@", error);
     }];
     
+}
+
+#pragma mark GTAFNDataDelegate
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_VERSION_UPDATE]) {
+        if ([data[@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            NSString* File = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
+            NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithContentsOfFile:File];
+            int apkcode = [[dict objectForKey:@"apkcode"] intValue];
+            NSLog(@"apkcode == %d",apkcode);
+            if ([data[@"apkcode"] intValue] > apkcode) {
+                [[GTAlertTool shareInstance] showAlert:@"当前版本不是最新版本" message:@"请前往商店下载更新" cancelTitle:@"取消" titleArray:@[@"去更新"] viewController:self confirm:^(NSInteger buttonTag) {
+                    if (buttonTag != -1) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_PATH]];
+                    }
+                }];
+            }
+        }else{
+            [MBProgressHUD showAlertMessage:data[@"msg"]];
+        }
+    }
 }
 
 @end

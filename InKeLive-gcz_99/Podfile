@@ -13,6 +13,7 @@ pod 'pop'
 pod 'UMCCommon'
 pod 'UMCAnalytics'
 pod 'UMCSecurityPlugins'
+pod 'ZYQAssetPickerController'
 
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'

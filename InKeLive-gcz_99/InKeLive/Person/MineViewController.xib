@@ -22,14 +22,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iod-E2-5je">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="473"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="430"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="473" id="ckt-B5-Pps"/>
+                        <constraint firstAttribute="height" constant="430" id="ckt-B5-Pps"/>
                     </constraints>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYG-LO-g1e">
-                    <rect key="frame" x="12" y="483" width="351" height="45"/>
+                    <rect key="frame" x="12" y="440" width="351" height="45"/>
                     <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="BJB-aM-Vc9"/>

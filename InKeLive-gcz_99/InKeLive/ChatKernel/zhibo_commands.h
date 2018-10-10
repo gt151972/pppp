@@ -973,6 +973,7 @@ typedef struct _tag_HBCMD_VideoChat_GlobalChatMsg
     uint32  toId;        //所有人=0
     int8    chatTypeId;  //消息模式(>=10):10-系统公告,11-小喇叭, 12-礼物消息 13-幸运中奖消息, 14-爆炸中奖消息
     uint16  textLen;
+    uint8   vipLevel;             //用户等级
     char    srcName[NAMELEN];
     char    toName[NAMELEN];
     char    vcbName[NAMELEN];

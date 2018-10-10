@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B0C88F716F4D551989CABB3C9E052E28"
-               BlueprintName = "Pods-InKeLive"
+               BlueprintIdentifier = "8FE7F36F16C1609EB1C534DF44C4AFE5"
+               BlueprintName = "ZYQAssetPickerController"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "libPods-InKeLive.a">
+               BuildableName = "libZYQAssetPickerController.a">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

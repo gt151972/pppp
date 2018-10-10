@@ -55,6 +55,7 @@ PODS:
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
   - YYKit/no-arc (1.0.9)
+  - ZYQAssetPickerController (1.2.0)
 
 DEPENDENCIES:
   - AFNetworking
@@ -72,6 +73,7 @@ DEPENDENCIES:
   - UMCCommon
   - UMCSecurityPlugins
   - YYKit
+  - ZYQAssetPickerController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -91,6 +93,7 @@ SPEC REPOS:
     - UMCCommon
     - UMCSecurityPlugins
     - YYKit
+    - ZYQAssetPickerController
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -109,7 +112,8 @@ SPEC CHECKSUMS:
   UMCCommon: 4392868ac47ff1b101663106bb114ba616fabbad
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+  ZYQAssetPickerController: dc692a6fb421c0dc0efcabd43eb260cfb073f7fd
 
-PODFILE CHECKSUM: e6b0923fa7504fa1056a55a4af56692820680ca1
+PODFILE CHECKSUM: a74244160e9bf8f1d35278babd1779f52664c4f4
 
 COCOAPODS: 1.5.3

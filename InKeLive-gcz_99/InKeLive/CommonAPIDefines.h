@@ -34,8 +34,10 @@
 #define CMD_SECURITY_SAVE          @"21018"   //手机密保保存
 #define CMD_LOGIN                  @"21000"   //登录{"cmd":21000,"uid":18657970173,"sid":"f59bd65f7edafb087a81d4dca06c4910","type":1,"flag":1,"mac":"123"}
 #define CMD_RECOMMEND_ROOM_LIST    @"21020"   //首页数据推荐列表{"cmd":21020,"flag":1}
+#define CMD_VERSION_UPDATE         @"21101"   //版本更新
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 
 #define URL_GiftInfo   @"http://em.aa1258.com/E/Api" //礼物状态和分组列表
+#define APPSTORE_PATH  @"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"//跳转商店地址
 #endif /* CommonAPIDefines_h */

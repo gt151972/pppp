@@ -273,6 +273,7 @@ static const CGFloat kHeight=285.0;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
         }
         //        cell.textLabel.text = @"头像";
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = indexPath.row + 500;
         cell.backgroundColor = [UIColor clearColor];
         UIImageView *imgHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 4, 32, 32)];
@@ -449,6 +450,7 @@ static const CGFloat kHeight=285.0;
     [_userTableView reloadData];
     [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
     [_messageTableView reloadData];
+    NSLog(@"row == %d",_nowRow);
     UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0]];
     cell.selected = YES;
     

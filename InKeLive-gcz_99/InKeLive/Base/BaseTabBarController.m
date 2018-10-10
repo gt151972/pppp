@@ -21,6 +21,7 @@
 #import "DPK_NW_Application.h"
 #import "LogonViewController.h"
 #import "AppDelegate.h"
+#import "WebViewController.h"
 
 @interface BaseTabBarController ()<UITabBarDelegate,TabBarDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -63,10 +64,22 @@
     BaseViewController *attentionNav = [[BaseViewController alloc] initWithRootViewController:attentionVC];
     [self addChildViewController:attentionNav image:@"tab_attention_normal" selectedImage:@"tab_attention_select" title:@"关注"];
     
-    //动态
-    StateViewController *stateVC = [[StateViewController alloc] init];
-    BaseViewController *stateNav = [[BaseViewController alloc] initWithRootViewController:stateVC];
-    [self addChildViewController:stateNav image:@"tab_state_normal" selectedImage:@"tab_state_select" title:@"动态"];
+//    //动态
+//    StateViewController *stateVC = [[StateViewController alloc] init];
+//    BaseViewController *stateNav = [[BaseViewController alloc] initWithRootViewController:stateVC];
+//    [self addChildViewController:stateNav image:@"tab_state_normal" selectedImage:@"tab_state_select" title:@"动态"];
+    
+    //活动
+    WebViewController *activityVC = [[WebViewController alloc] init];
+    NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+    NSString*cachePath = array[0];
+    NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+    NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+    NSString *strUrl = [dict objectForKey:@"activity"];
+    activityVC.strUrl = strUrl;
+    activityVC.strTitle = @"活动";
+    BaseViewController *activityNav = [[BaseViewController alloc] initWithRootViewController:activityVC];
+    [self addChildViewController:activityNav image:@"tab_state_normal" selectedImage:@"tab_state_select" title:@"活动"];
     
     //个人
     MineViewController *personVC = [[MineViewController alloc]init];

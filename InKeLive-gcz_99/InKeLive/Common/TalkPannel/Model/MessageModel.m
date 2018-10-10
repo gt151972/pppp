@@ -494,7 +494,7 @@
     container.font = [UIFont systemFontOfSize:15];
     container.linesSpacing = 0;
     container.characterSpacing = 0;
-    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@%@",name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@ %@",name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -541,7 +541,7 @@
     
     //XXX
     TYTextStorage *toUserTextStorage = [[TYTextStorage alloc]init];
-    toUserTextStorage.range = [allMessage rangeOfString:strToName];
+    toUserTextStorage.range = [allMessage rangeOfString:[NSString stringWithFormat:@"%@ ",strToName]];
     toUserTextStorage.textColor = MAIN_COLOR;
     toUserTextStorage.font = [UIFont boldSystemFontOfSize:15];
     [container addTextStorage:toUserTextStorage];
