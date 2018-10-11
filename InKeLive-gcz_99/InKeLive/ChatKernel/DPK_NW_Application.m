@@ -611,7 +611,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                       UserRoomState:pResp->userRoomState
                                                  NK:pResp->user_nk
                                                  NB:pResp->user_nb
-                                             Ngende:pResp->ngende];
+                                             Ngende:pResp->ngender];
              
                 }
             }

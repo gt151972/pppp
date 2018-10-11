@@ -137,6 +137,12 @@
  */
 -(void)RecommendRoom;
 
+
+/**
+ 首页分组列表
+ */
+-(void)MainListGroup;
+
 #pragma mark 版本更新
 /**
  版本更新

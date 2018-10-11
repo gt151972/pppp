@@ -133,6 +133,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //关注列表
 @property (nonatomic, strong)NSArray *arrayAttention;
 
+@property (nonatomic, strong)UIImageView *imgHeadForSinger;
+
 @end
 
 @implementation LiveViewController
@@ -238,7 +240,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         viewOnMic.frame = CGRectMake(SCREEN_WIDTH*3/4, 94, SCREEN_WIDTH/4, 33);
     }
     [self.view addSubview:viewOnMic];
-    UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 17)];
+    UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 18)];
     [btnRoomName setBackgroundColor:RGBA(0, 0, 0, 0.2)];
     btnRoomName.layer.masksToBounds = YES;
     btnRoomName.layer.cornerRadius = 8;
@@ -248,10 +250,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
     [btnRoomName setTitle:joinRoomInfo.roomName forState:UIControlStateNormal];
     [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [btnRoomName addTarget:self action:@selector(btnSpreadClicked:) forControlEvents:UIControlEventTouchUpInside];
     [viewOnMic addSubview:btnRoomName];
-    UILabel *labRoomId = [[UILabel alloc] initWithFrame:CGRectMake(0, 17, SCREEN_WIDTH/4, 12)];
+    UILabel *labRoomId = [[UILabel alloc] initWithFrame:CGRectMake(0, 18, SCREEN_WIDTH/4, 12)];
 //    labRoomId.text = [NSString stringWithFormat:@"ID: %@",[_dicInfo objectForKey:@"room_id"]];
     labRoomId.text = [NSString stringWithFormat:@"ID: %d",joinRoomInfo.roomId];
     labRoomId.textColor = [UIColor whiteColor];
@@ -416,7 +418,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [_player.view setFrame: self.playerView.bounds];  // player's frame must match parent's
     [self.playerView addSubview: _player.view];
     self.playerView.autoresizesSubviews = TRUE;
-    self.playerView.backgroundColor = [UIColor brownColor];
+    self.playerView.backgroundColor = RGB(16, 16, 16);
+    [UIApplication sharedApplication].statusBarStyle =  UIStatusBarStyleLightContent;
     _player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     NSLog(@"url == %@",aURL);
     //设置播放参数
@@ -426,15 +429,17 @@ privateChatViewDelegate, GTAFNDataDelegate>
     _player.deinterlaceMode = MPMovieVideoDeinterlaceMode_Auto;
     _player.shouldLoop = NO;
     _player.bInterruptOtherAudio = NO;
+    _player.mirror = NO;
+    _player.shouldMute = YES;
 //    _player.bufferTimeMax = config.bufferTimeMax;
 //    _player.bufferSizeMax = config.bufferSizeMax;
     [_player setTimeout:10 readTimeout:30];
-    
     NSKeyValueObservingOptions opts = NSKeyValueObservingOptionNew;
     [_player addObserver:self forKeyPath:@"currentPlaybackTime" options:opts context:nil];
     [_player addObserver:self forKeyPath:@"clientIP" options:opts context:nil];
     [_player addObserver:self forKeyPath:@"localDNSIP" options:opts context:nil];
     NSLog(@"%d",[_player isPreparedToPlay]);
+    
     [_player prepareToPlay];
 }
 
@@ -678,7 +683,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [self.view addSubview:self.closeButton];
     
     [self.view addSubview:self.anchorView];//主播信息
-    [self.view addSubview:self.flyView];//跑道
+    
 //    [self.view addSubview:self.anchorListView];//在麦主播列表
     [self.topSideView addSubview:self.bottomTool];//底部工具栏
     [self.topSideView addSubview:self.topToolView];//顶部工具栏
@@ -882,11 +887,18 @@ privateChatViewDelegate, GTAFNDataDelegate>
                     [weakSelf showBeautyViewLWithGrind:weakSelf.grind whiten:weakSelf.whiten ruddy:weakSelf.rubby];
                 }
                     break;
-                case 154: //显示分享面板 (共享)
+                case 154: //静音
                 {
+                    UIButton *btn = (UIButton *)[weakSelf.bottomTool viewWithTag:tag];
+                    [self.player reset:NO];
+//                    self.player.rotateDegress = rotateDegree;
+//                    [self.player setUrl:[NSURL URLWithString:strlUrl]];
+                    [self.player setShouldMute:YES];
+                    [self.player prepareToPlay];
+                    btn.selected = !btn.selected;
                     //testcode
-                    [weakSelf showSelectGiftUserView];
-                    break;
+//                    [weakSelf showSelectGiftUserView];
+//                    break;
 //                    [UMSocialManager setPreDefinePlatforms:weakSelf.platformArr];
 //                    [UMSocialShareUIConfig shareInstance].shareTitleViewConfig.isShow = NO;
 //                    [UMSocialShareUIConfig shareInstance].shareCancelControlConfig.isShow = NO;
@@ -1229,6 +1241,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         [self.player reset:NO];
         self.player.rotateDegress = rotateDegree;
         [self.player setUrl:[NSURL URLWithString:strlUrl]];
+        [self.player setShouldMute:YES];
         [self.player prepareToPlay];
         [self.player play];
         self.KSYstreamerStatusLabel.text =@"[L:正在连接...]";
@@ -1522,16 +1535,16 @@ privateChatViewDelegate, GTAFNDataDelegate>
     return _anchorView;
 }
 
-- (FlyView *)flyView{
-    if (!_flyView) {
-        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
-        if (kIs_iPhoneX) {
-            _flyView.frame = CGRectMake(0, 94, SCREEN_WIDTH*3/4, 18);
-        }
-
-    }
-    return _flyView;
-}
+//- (FlyView *)flyView{
+//    if (!_flyView) {
+//        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
+//        if (kIs_iPhoneX) {
+//            _flyView.frame = CGRectMake(0, 94, SCREEN_WIDTH*3/4, 18);
+//        }
+//
+//    }
+//    return _flyView;
+//}
 
 - (AnchorListView *)anchorListView{
     if (!_anchorListView) {
@@ -1835,10 +1848,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
         
         NSURL *url =[NSURL URLWithString:userObj.userSmallHeadPic];
         UIImage *imageDefault = [UIImage imageNamed:@"default_head"];
-        UIImageView *imgHead = [[UIImageView alloc] init];
-        [imgHead sd_setImageWithURL:url placeholderImage:imageDefault];
-        [cell.contentView addSubview:imgHead];
-        [imgHead mas_makeConstraints:^(MASConstraintMaker *make) {
+        _imgHeadForSinger = [[UIImageView alloc] init];
+        [_imgHeadForSinger sd_setImageWithURL:url placeholderImage:imageDefault];
+        [cell.contentView addSubview:_imgHeadForSinger];
+        [_imgHeadForSinger mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(cell.contentView);
             make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4-15, SCREEN_WIDTH/4-15));
         }];
@@ -1850,7 +1863,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         labName.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:labName];
         [labName mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(imgHead.mas_bottom);
+            make.top.equalTo(_imgHeadForSinger.mas_bottom);
             make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4, 15));
             make.centerX.equalTo(cell.contentView);
         }];
@@ -1911,6 +1924,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
     {
         //在线用户列表
         if(!self.createFlag) {
+            _imgHeadForSinger.layer.borderColor = MAIN_COLOR.CGColor;
+            _imgHeadForSinger.layer.borderWidth = 3;
+            _imgHeadForSinger.layer.cornerRadius = 35.5;
             //观众端:点击头像观看该用户
             ClientUserModel* userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
             self.userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
@@ -3114,7 +3130,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
         }
     }
     if (flyId >= 0) {
+        if (!_flyView.hidden) {
+            [_flyView removeFromSuperview];
+        }
         //跑道显示
+        _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
+        if (kIs_iPhoneX) {
+            _flyView.frame = CGRectMake(0, 94, SCREEN_WIDTH*3/4, 18);
+        }
+        [self.view addSubview:self.flyView];//跑道
         _flyView.strToName = toUserAlias;
         _flyView.strSrcName = srcUserAlias;
         NSArray *array = [NSArray arrayWithArray:[DPK_NW_Application sharedInstance].giftList];
@@ -3476,7 +3500,14 @@ privateChatViewDelegate, GTAFNDataDelegate>
                        toName:(NSString *)toName
                       vcbName:(NSString *)vcbName
                          text:(NSString *)text{
-    
+    if (!_flyView.hidden) {
+        [_flyView removeFromSuperview];
+    }
+    _flyView = [[FlyView alloc] initWithFrame:CGRectMake(0, 70, SCREEN_WIDTH*3/4, 18)];
+    if (kIs_iPhoneX) {
+        _flyView.frame = CGRectMake(0, 94, SCREEN_WIDTH*3/4, 18);
+    }
+    [self.view addSubview:self.flyView];//跑道
     _flyView.strToName = toName;
     _flyView.strSrcName = srcName;
     NSArray *array = [NSArray arrayWithArray:[DPK_NW_Application sharedInstance].giftList];

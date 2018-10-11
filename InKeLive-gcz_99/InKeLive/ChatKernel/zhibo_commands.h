@@ -247,36 +247,37 @@ typedef struct _tag_HBCMD_VideoChat_JoinRoom_Req
 //加入房间响应
 typedef struct _tag_HBCMD_VideoChat_JoinRoom_Resp
 {
-    int32  errorCode;
-    uint32 versionId;           //协议版本号,
-    uint32 userId;
-    uint32 vcbId;
-    uint32 vcbCreatorId;        //房主ID
-    uint32 opUser01;
-    uint32 opUser02;
-    uint32 opUser03;
-    uint32 opUser04;
-    uint32 opUser05;
-    uint32 opUser06;
-    uint32 roomState;
+    int32    errorCode;
+    uint32    versionId;           //协议版本号,
+    uint32    userId;
+    uint32    vcbId;
+    uint32    vcbCreatorId;        //房主ID
+    uint32    opUser01;
+    uint32    opUser02;
+    uint32    opUser03;
+    uint32    opUser04;
+    uint32    opUser05;
+    uint32    opUser06;
+    uint32    roomState;
     
-    int8   layoutType;
-    int8   roomAttrId;
-    int8   reserved_01;
-    int8   reserved_02;
+    int8        layoutType;
+    int8        roomAttrId;
+    int8        reserved_01;
+    int8        reserved_02;
     
-    char   vcbName[NAMELEN];    //房间名称
-    char   vcbMediaServer[MEDIAADDRLEN];  //媒体服务器地址(用于TCPMedia协议)
+    char        vcbName[NAMELEN];    //房间名称
+    char        vcbMediaServer[MEDIAADDRLEN];  //媒体服务器地址(用于TCPMedia协议)
     
-    uint8  vcbIsUsedPwd;        //房间是否使用密码了？
-    uint8   vipLevel;           //请求用户的信息
-    uint8   playerLevel;
-    uint8   roomLevel;
+    uint8    vcbIsUsedPwd;        //房间是否使用密码了？
+    uint8    vipLevel;           //请求用户的信息
+    uint8    playerLevel;
+    uint8    roomLevel;
     
-    uint32  userRoomState;
-    int64   user_nk;
-    int64   user_nb;
-    int8    ngende;     //性别
+    uint32    userRoomState;
+    int64    user_nk;
+    int64    user_nb;
+    int8        ngender ;        //用户性别
+    char        szcidiograph[128] ;    //个人签名
 }HBCMD_VideoChat_JoinRoom_Resp_t;
 
 //房间基本信息
@@ -346,25 +347,25 @@ typedef struct _tag_HBCMD_VideoChat_GiftRecord
 //房间用户信息结构
 typedef struct _tag_HBCMD_VideoChat_RoomUserInfo
 {
-    uint32  vcbId;
-    uint32  userId;
-    uint32  userRoomState;     //含城主、城后
-    uint8   vipLevel;
-    uint8   playerLevel;
-    uint8   roomLevel;
-    uint8   reserve_01;
-    uint32  comeInTime;        //进入时间
-    uint32  upMicTime;         //上麦时间
-    uint32  sealExpiredTime;   //盖章过期时间
-    uint16  sealId;            //章ID
-    uint16  carId;             //座驾ID
-//    uint32  starFlag;          //0xFF week-star, 0xFF00 top-star
-    int32  param_01;           //pubMicIndex,MicGiftId
-    int32  param_02;           //pubMicRemainTime,MicGiftNum
-    char   userName[NAMELEN];  //用户呢称
-    char   userHeadPic[MD5LEN];//用户头像,可能有
-    int8   ngender;            //用户性别
-    int8   nsatrt[20];         //周星、日星数据
+    uint32    vcbId;
+    uint32    userId;
+    uint32    userRoomState;        //含城主、城后
+    uint8    vipLevel;
+    uint8    playerLevel;
+    uint8    roomLevel;
+    uint8    reserve_01;
+    uint32    comeInTime;            //进入时间
+    uint32    upMicTime;            //上麦时间
+    uint32    sealExpiredTime;        //盖章过期时间
+    uint16    sealId;                //章ID
+    uint16    carId;                //座驾ID
+    int32    param_01;            //pubMicIndex,MicGiftId
+    int32    param_02;            //pubMicRemainTime,MicGiftNum
+    char        userName[NAMELEN];    //用户呢称
+    char        userHeadPic[MD5LEN];    //用户头像,可能有
+    int8        ngender;                //用户性别
+    int8        nsatrt[20] ;            //周星、日星数据
+    char        szcidiograph[128] ;    //个人签名
 }HBCMD_VideoChat_RoomUserInfo_t;
 
 //房间聊天信息结构

@@ -21,5 +21,5 @@
 @property (nonatomic,strong)UIImageView *lineImageView;
 
 - (void)scrollMove:(NSInteger)tag;
-
+- (void)CreatUI;
 @end

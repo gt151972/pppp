@@ -35,6 +35,7 @@
 #define CMD_LOGIN                  @"21000"   //登录{"cmd":21000,"uid":18657970173,"sid":"f59bd65f7edafb087a81d4dca06c4910","type":1,"flag":1,"mac":"123"}
 #define CMD_RECOMMEND_ROOM_LIST    @"21020"   //首页数据推荐列表{"cmd":21020,"flag":1}
 #define CMD_VERSION_UPDATE         @"21101"   //版本更新
+#define CMD_MAINLIST_GROUP         @"21021"   //首页分组数据{"cmd":21021,"flag":1}
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 

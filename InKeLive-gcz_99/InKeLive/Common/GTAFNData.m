@@ -251,6 +251,15 @@
     [self postData:currResult data:dict];
 }
 
+/**
+ 首页分组列表
+ */
+-(void)MainListGroup{
+    currResult = CMD_MAINLIST_GROUP;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
+
 #pragma mark 版本更新
 /**
  版本更新

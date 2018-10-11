@@ -588,8 +588,8 @@
 -(void) selectUserBtnClicked:(id)sender {
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SelectGiftUserView* view = [[SelectGiftUserView alloc] initWithFrame:frame];
-    
-    view.userArray = self.roomObj.memberList;
+    NSArray *array = [self sortData:self.roomObj.memberList];
+    view.userArray = array;
     WEAKSELF;
     [view setUserClick:^(NSInteger userId, NSString* userAlias) {
         weakSelf.userId = (int)userId;
@@ -606,6 +606,32 @@
         [self.selectUserButton setImage:image forState:UIControlStateNormal];
     }];
     [view popShow];
+}
+/**
+ 基于model的Array的排序
+ 
+ @param array <#array description#>
+ @return <#return value description#>
+ */
+- (NSArray *)sortData: (NSArray *)array{
+    NSLog(@"array == %@",array);
+    NSMutableArray *arrData = [[NSMutableArray alloc] initWithArray:array];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"vipLevel" ascending:NO];
+    [arrData sortUsingDescriptors:@[sort]];
+    // 输出排序结果
+    for (ClientUserModel *model in arrData) {
+        NSLog(@"vipLevel: %d,userId: %d userAlias: %@", model.vipLevel,model.userId, model.userAlias);
+    }
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
+    for (int index = 0; index < arrData.count; index ++ ) {
+        ClientUserModel *model = arrData[index];
+        if (model.userId == myModel.userID) {
+            [arrData insertObject:arrData[index] atIndex:0];
+            [arrData removeObjectAtIndex:index + 1];
+        }
+    }
+    NSArray *arr = [[NSArray alloc] initWithArray:arrData];
+    return arr;
 }
 
 //选择赠送数量

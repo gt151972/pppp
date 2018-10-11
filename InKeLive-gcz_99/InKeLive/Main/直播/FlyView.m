@@ -59,7 +59,7 @@
     //计算动画x移动的最大偏移：屏幕width+text的width
     aUILabel.clipsToBounds = YES;
     float offset = textSize.width+ SCREEN_WIDTH;
-    [UIView animateWithDuration:10.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState//动画重复的主开关
+    [UIView animateWithDuration:10.0 delay:0 options:UIViewAnimationOptionRepeat//动画重复的主开关
      |UIViewAnimationOptionCurveLinear//动画的时间曲
                     animations:^{aUILabel.transform=CGAffineTransformMakeTranslation(-offset,0);} completion:^(BOOL finished) {
                     }

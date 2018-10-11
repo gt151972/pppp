@@ -35,6 +35,9 @@
     for (NSInteger i = 0; i < self.imageArr.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:self.imageArr[i]] forState:UIControlStateNormal];
+        if (i == 4) {
+            [button setImage:[UIImage imageNamed:@"living_voice_off"] forState:UIControlStateSelected];
+        }
         [button addTarget:self action:@selector(bottomClick:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = 150+i; //由于是循环创建的,所以需要设置tag
         button.frame = CGRectMake(132+i* 47, 10, 40, 40);
@@ -69,7 +72,7 @@
     if (_imageArr == nil) {
         NSLog(@"_createFlag == %d",_createFlag);
         if (_createFlag) {
-            _imageArr = @[@"living_private_chat",@"living_gift",@"living_turn_camera", @"living_beauty"];
+            _imageArr = @[@"living_private_chat",@"living_gift",@"living_turn_camera", @"living_beauty", @"living_voice_on"];
         }else{
            _imageArr = @[@"living_private_chat",@"living_gift"];
         }
