@@ -13,6 +13,7 @@
 @property (nonatomic,assign) NSInteger lastTag;
 
 @property (nonatomic,copy)void (^titleClick)(NSInteger tag, NSInteger lastTag);
+@property (nonatomic,copy)void (^btnTitleClicked)(NSInteger tag);
 
 @property (nonatomic,strong)UIScrollView *titleScrollView;
 

@@ -243,11 +243,21 @@
 
 #pragma mark 首页数据
 /**
- 推荐房间列表
+ 推荐房间列表(弃用)
  */
 -(void)RecommendRoom{
     currResult = CMD_RECOMMEND_ROOM_LIST;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
+/**
+ 首页分类的数据
+ 
+ @param key 分类的key
+ */
+-(void)mainListData:(NSString *)key{
+    currResult = CMD_RECOMMEND_ROOM_LIST;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag",key, @"key", nil];
     [self postData:currResult data:dict];
 }
 
@@ -267,6 +277,34 @@
 -(void)versionUpdate{
     currResult = CMD_VERSION_UPDATE;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
+
+#pragma mark 个人信息修改
+/**
+ 读取用户信息
+ */
+-(void)getUserInfo{
+    currResult = CMD_GET_USER_INFO;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", nil];
+    [self postData:currResult data:dict];
+}
+/**
+ 个人信息修改
+ 
+ @param uid 用户id
+ @param uNick 昵称
+ @param head 头像地址
+ @param sign 个性签名
+ @param gender 性别
+ @param qq QQ号
+ @param wechat 微信号
+ */
+-(void)changeUserInfoWithUid:(NSString *)uid uNick:(NSString *)uNick head:(NSString *)head sign:(NSString *)sign gender:(NSString *)gender qq:(NSString *)qq wechat:(NSString *)wechat{
+    currResult = CMD_CHANGE_USER_INFO;
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uId", uNick, @"uNick", head, @"Head", sign, @"Sign", gender, @"Gender", qq, @"QQ", wechat, @"Wechat", nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: uid, @"uid", dic , @"data", nil];
     [self postData:currResult data:dict];
 }
 @end

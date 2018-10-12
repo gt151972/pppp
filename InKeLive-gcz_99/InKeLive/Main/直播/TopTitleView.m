@@ -24,8 +24,11 @@
 - (void)scrollMove:(NSInteger)tag{
     UIButton *buttons = (UIButton *)[self viewWithTag:tag];
     [UIView animateWithDuration:0.3 animations:^{
-        self.lineImageView.centerX = buttons.centerX;
         self.lineImageView.size = CGSizeMake(buttons.titleLabel.width, 3);
+        self.lineImageView.centerX = buttons.centerX;
+//        if (_btnTitleClicked) {
+//            self.btnTitleClicked(tag);
+//        }
     }];
 }
 
@@ -50,7 +53,7 @@
 - (void)CreatUI{
     UIView *topClassifyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
     [self addSubview:topClassifyView];
-    CGFloat btnWidth = SCREEN_WIDTH/4;
+    CGFloat btnWidth = self.frame.size.width/3;
     CGFloat scrollWidth = btnWidth * _titleArr.count;
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
     scrollView.backgroundColor = [UIColor clearColor];

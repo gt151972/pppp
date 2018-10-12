@@ -54,7 +54,7 @@
 //    _searchView.hidden = YES;
 }
 
-- (void)initChildViewControllers{
+- (void)initChildViewControllers:(NSArray *)arrayData{
     
     
     
@@ -74,6 +74,8 @@
     for (int index = 0; index < _arrayTitle.count; index ++) {
         //推荐
         MainViewController*mainVC = [[MainViewController alloc]init];
+        mainVC.tag = 500+index;
+        mainVC.arrData = arrayData;
         [self addChildViewController:mainVC];
         [_arr addObject:mainVC];
     }
@@ -125,6 +127,12 @@
             button1.selected = NO;
             button2.selected = YES;
         }];
+//        [_titleView setBtnTitleClicked:^(NSInteger tag) {
+//            GTAFNData *data = [[GTAFNData alloc] init];
+//            data.delegate = weakSelf;
+//            NSString *key = [[weakSelf.arrayTitle objectAtIndex:(tag - 50)] objectForKey:@"key"];
+//            [data mainListData:key];
+//        }];
         
     }
     return _titleView;
@@ -152,13 +160,17 @@
             NSLog(@"data == %@",data);
             self.arrayTitle = data[@"List"];
            self.navigationItem.titleView = self.titleView;
-            [self initChildViewControllers];
+            [self initChildViewControllers:self.arrayTitle];
         }else{
             [[GTAlertTool shareInstance] showAlert:@"网络异常" message:@"请重新请求" cancelTitle:@"确认" titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
                 GTAFNData *data = [[GTAFNData alloc] init];
                 data.delegate = self;
                 [data MainListGroup];
             }];
+        }
+    }else if ([cmd isEqualToString:CMD_RECOMMEND_ROOM_LIST]){
+        if ([data[@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
         }
     }
 }

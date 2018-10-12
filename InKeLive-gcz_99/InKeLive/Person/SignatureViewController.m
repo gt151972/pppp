@@ -8,7 +8,8 @@
 
 #import "SignatureViewController.h"
 #import "MBProgressHUD+MJ.h"
-@interface SignatureViewController ()<UITextViewDelegate>
+#import "GTAFNData.h"
+@interface SignatureViewController ()<UITextViewDelegate,GTAFNDataDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labTextNum;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
@@ -61,7 +62,14 @@
 }
 
 - (void)btnSubmitClicked{
-    
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    LocalUserModel *model = [[LocalUserModel alloc] init];
+    NSString *str = _textView.text;
+    if ([_textView.text isEqualToString:@"今天有什么想和大家分享一下呢？"]) {
+        str = @"";
+    }
+    [data changeUserInfoWithUid:[NSString stringWithFormat:@"%d",model.userID] uNick:model.userName head:@"" sign:str gender:[NSString stringWithFormat:@"%d",model.gender] qq:model.qq wechat:model.wechat];
 }
 
 #pragma mark - UITextViewDelegate
@@ -84,6 +92,16 @@
         num = 0;
     }
         _labTextNum.text =  [NSString stringWithFormat:@"您最多还能输入%d个字",50-num];
+}
+
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_CHANGE_USER_INFO]) {
+        if ([data[@"code"] intValue] == 0) {
+            <#statements#>
+        }else{
+            [MBProgressHUD showAlertMessage:data[@"msg"]];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

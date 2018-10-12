@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MainViewController : UIViewController
-
-
+@property(nonatomic, strong)NSArray *arrData;
+@property(nonatomic, assign)int tag;
 @end

@@ -15,13 +15,15 @@
 #import "MBProgressHUD+MJ.h"
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
-@interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+#import "GTAFNData.h"
+@interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong) NSArray *arrayTitle;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 @property (nonatomic, strong) UIImageView *imgHead;//头像
 @property (nonatomic, strong) UITextField *textFieldQQ;
 @property (nonatomic, strong) UITextField *textFieldWechat;
+@property (nonatomic, strong) NSDictionary *dicData;
 @end
 
 @implementation EditInfoViewController
@@ -38,6 +40,9 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data getUserInfo];
     self.navigationController.navigationBar.hidden = NO;
     
     self.title = @"修改资料";
@@ -51,6 +56,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(243, 243, 243);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 365) style:UITableViewStylePlain];
     if (kIs_iPhoneX) {
         _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 400);
@@ -63,7 +72,6 @@
     _tableView.sectionIndexColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
 }
-
 
 #pragma mark UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -157,6 +165,7 @@
         _textFieldQQ.delegate = self;
         _textFieldQQ.tag = 401;
         _textFieldQQ.keyboardType = UIKeyboardTypeNumberPad;
+        _textFieldQQ.text = model.qq;
         [cell.contentView addSubview:_textFieldQQ];
         btnGo.hidden = YES;
     }else if (indexPath.section == 2 && indexPath.row == 2){
@@ -169,6 +178,7 @@
         _textFieldWechat.delegate = self;
         _textFieldWechat.tag = 402;
         _textFieldWechat.keyboardType = UIKeyboardTypeDefault;
+        _textFieldWechat.text = model.wechat;
         [cell.contentView addSubview:_textFieldWechat];
         btnGo.hidden = YES;
     }
@@ -201,6 +211,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     if (indexPath.section == 1 && indexPath.row == 0) {
         //改头像
         _imagePicker = [[UIImagePickerController alloc] init];
@@ -216,13 +227,13 @@
         } buttonTitles:@"拍摄", @"从手机相册选择", nil];
     }else if (indexPath.section == 1 && indexPath.row == 1){
         //改昵称
-        LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
         EditNameViewController *editNameVC = [[EditNameViewController alloc] init];
         editNameVC.strOldName = model.userName;
         [self.navigationController pushViewController:editNameVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 2){
         //个性签名
         SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
+        signatureVC.strInfo = model.sign;
         [self.navigationController pushViewController:signatureVC animated:YES];
     }
 }
@@ -240,6 +251,10 @@
 #pragma mark Action
 - (void)btnBackClicked{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnSaveClicked{
+    GTAFNData *
 }
 
 - (void)didReceiveMemoryWarning {
@@ -436,5 +451,24 @@
 //        NSLog(@"视频保存成功.");
 //    }
 //}
-
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_GET_USER_INFO]) {
+        if ([data[@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:data[@"data"]];
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            model.userID = [dic[@"uId"] intValue];
+            model.userName = dic[@"uNick"];
+            model.userBigHeadPic = dic[@"Head"];
+            model.userSmallHeadPic = dic[@"Head"];
+            model.gender = [dic[@"Gender"] intValue];
+            model.sign = dic[@"Sign"];
+            model.qq = dic[@"QQ"];
+            model.wechat = dic[@"WeChat"];
+            [self.tableView reloadData];
+        }else{
+            NSLog(@"msg == %@",data[@"msg"]);
+        }
+    }
+}
 @end

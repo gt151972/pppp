@@ -39,6 +39,9 @@
     self.isHiding = 0;
     self.isZan = 0;
     self.isReview = 0;
+    self.sign = @"";
+    self.qq = @"";
+    self.wechat = @"";
 }
 
 @end

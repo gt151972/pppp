@@ -33,9 +33,11 @@
 #define CMD_SECURITY_CODE          @"21017"   //手机密保验证码
 #define CMD_SECURITY_SAVE          @"21018"   //手机密保保存
 #define CMD_LOGIN                  @"21000"   //登录{"cmd":21000,"uid":18657970173,"sid":"f59bd65f7edafb087a81d4dca06c4910","type":1,"flag":1,"mac":"123"}
-#define CMD_RECOMMEND_ROOM_LIST    @"21020"   //首页数据推荐列表{"cmd":21020,"flag":1}
+#define CMD_RECOMMEND_ROOM_LIST    @"21020"   //首页数据推荐列表{"cmd":21020,"flag":1,"key":0}
 #define CMD_VERSION_UPDATE         @"21101"   //版本更新
 #define CMD_MAINLIST_GROUP         @"21021"   //首页分组数据{"cmd":21021,"flag":1}
+#define CMD_GET_USER_INFO          @"21001"   //读取个人信息
+#define CMD_CHANGE_USER_INFO       @"21002"   //个人信息修改
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 

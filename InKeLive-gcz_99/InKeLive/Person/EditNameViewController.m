@@ -7,8 +7,10 @@
 //
 
 #import "EditNameViewController.h"
+#import "GTAFNData.h"
+#import "MBProgressHUD+MJ.h"
 
-@interface EditNameViewController ()<UITextFieldDelegate>
+@interface EditNameViewController ()<UITextFieldDelegate, GTAFNDataDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnSure;
 @property (weak, nonatomic) IBOutlet UILabel *labOldName;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldNewName;
@@ -39,6 +41,26 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)btnSureChangeClicked:(id)sender {
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    LocalUserModel *model = [[LocalUserModel alloc] init];
+    [data changeUserInfoWithUid:[NSString stringWithFormat:@"%d",model.userID] uNick:_textFieldNewName.text head:@"" sign:model.sign gender:[NSString stringWithFormat:@"%d",model.gender] qq:model.qq wechat:model.wechat];
+}
+
+- (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
+    if ([cmd isEqualToString:CMD_CHANGE_USER_INFO]) {
+        if ([data[@"code"] intValue] == 0) {
+            NSLog(@"data == %@",data);
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            model.userName = [data[@"data"] objectForKey:@"uNick"];
+            if ([data[@"msg"] isEqualToString:@"ok"]) {
+                [MBProgressHUD showAlertMessage:@"修改昵称成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }else{
+            [MBProgressHUD showAlertMessage:data[@"msg"]];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -43,8 +43,10 @@
 
 @implementation MainViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"tag == %d",_tag);
     // Do any additional setup after loading the view.
     [self.view addSubview:self.mainTableView];
     
@@ -77,6 +79,12 @@
 
 -(void)hideLoadingHud {
     [self.hud removeFromSuperview];
+}
+-(void)getMainList{
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    NSString *key = [[_arrData objectAtIndex:self.tag - 500] objectForKey:@"key"];
+    [data mainListData:key];
 }
 
 /**
@@ -175,7 +183,8 @@
 - (void)loadData{
     //刷新数据
 //    [self getData];
-    [self getRecommendList];
+    
+    [self getMainList];
     [self getBanner];
     
 }

@@ -46,6 +46,9 @@
 @property(nonatomic, assign) int isZan; //点赞通知
 @property(nonatomic, assign) int isReview; //评论通知
 
+@property(nonatomic, strong) NSString* sign;//个性签名
+@property(nonatomic, strong) NSString* qq;//qq
+@property(nonatomic, strong) NSString* wechat;//微信
 -(void)reset;
 
 @end

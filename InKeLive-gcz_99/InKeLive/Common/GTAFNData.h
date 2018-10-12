@@ -133,11 +133,16 @@
 
 #pragma mark 首页数据
 /**
- 推荐房间列表
+ 推荐房间列表(弃用)
  */
 -(void)RecommendRoom;
 
+/**
+ 首页分类的数据
 
+ @param key 分类的key
+ */
+-(void)mainListData:(NSString *)key;
 /**
  首页分组列表
  */
@@ -148,4 +153,22 @@
  版本更新
  */
 -(void)versionUpdate;
+
+#pragma mark 个人信息
+/**
+ 读取用户信息
+ */
+-(void)getUserInfo;
+/**
+ 个人信息修改
+
+ @param uid 用户id
+ @param uNick 昵称
+ @param head 头像地址
+ @param sign 个性签名
+ @param gender 性别
+ @param qq QQ号
+ @param wechat 微信号
+ */
+-(void)changeUserInfoWithUid:(NSString *)uid uNick:(NSString *)uNick head:(NSString *)head sign:(NSString *)sign gender:(NSString *)gender qq:(NSString *)qq wechat:(NSString *)wechat;
 @end
