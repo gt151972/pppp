@@ -43,6 +43,7 @@
     _tableView.rowHeight = 59;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorColor = [UIColor clearColor];
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_tableView];
     MJAnimHeader *header = [MJAnimHeader headerWithRefreshingTarget:self refreshingAction:@selector(getData)];
     header.lastUpdatedTimeLabel.hidden = YES;
@@ -80,14 +81,9 @@
         if ([appDic[@"code"] intValue] == 0) {
             _arrData = appDic[@"List"];
         }
-        int height = (int)_arrData.count*59;
-        if (height < SCREEN_HEIGHT) {
-            _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, _arrData.count * 59);
-        }else{
-            _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            if (kIs_iPhoneX) {
-                _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-34);
-            }
+        _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (kIs_iPhoneX) {
+            _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-34);
         }
         [_tableView reloadData];
         [_tableView.mj_header endRefreshing];
@@ -141,24 +137,39 @@
         make.right.equalTo(cell.contentView).offset(-13);
         make.centerY.equalTo(cell.contentView);
     }];
-    
+    UILabel *labId = [[UILabel alloc] initWithFrame:CGRectMake(57, 37, SCREEN_WIDTH - 80, 12)];
+    labId.text = [NSString stringWithFormat:@"ID:%@",[[_arrData objectAtIndex:indexPath.row] objectForKey:@"rId"]];
+    labId.textColor =  RGB(110, 110, 110);
+    labId.textAlignment = NSTextAlignmentLeft;
+    labId.font = [UIFont systemFontOfSize:12];
+    [cell.contentView addSubview:labId];
     if (indexPath.row == 0) {
         UIView *viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 1)];
         viewLine.backgroundColor = RGB(223, 223, 223);
         [cell.contentView addSubview:viewLine];
-        
-        UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(57, 37, SCREEN_WIDTH - 80, 12)];
-        labTitle.text = [NSString stringWithFormat:@"ID:%@",[[_arrData objectAtIndex:indexPath.row] objectForKey:@"rId"]];
-        labTitle.textColor =  RGB(110, 110, 110);
-        labTitle.textAlignment = NSTextAlignmentLeft;
-        labTitle.font = [UIFont systemFontOfSize:12];
-        [cell.contentView addSubview:labTitle];
-    }
+   }
+    
+    UIButton *btnHide = [[UIButton alloc] init];
+    [btnHide setBackgroundColor:MAIN_COLOR];
+    [btnHide setTitle:@"隐身" forState:UIControlStateNormal];
+    [btnHide setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [btnHide addTarget:self action:@selector(btnHideClicked) forControlEvents:UIControlEventTouchUpInside];
+    [btnHide.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [cell.contentView addSubview:btnHide];
+    [btnHide mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cell.contentView);
+        make.size.mas_equalTo(CGSizeMake(40, 18));
+        make.right.equalTo(btnGo.mas_left).offset(-5);
+    }];
     return cell;
 }
 
 - (void)btnBackClicked{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)btnHideClicked{
+    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -199,7 +210,7 @@
                 [appDelegate doLogon];
                 return;
             }else {
-                [appDelegate showLiveRoom:NO CameraFront:YES];
+                [appDelegate showLiveRoom:NO CameraFront:YES hide:NO];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

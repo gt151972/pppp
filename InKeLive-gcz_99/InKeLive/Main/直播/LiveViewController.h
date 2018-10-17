@@ -123,7 +123,7 @@
 //碰撞行为
 @property(nonatomic ,strong)UICollisionBehavior * collisionBehavior;
 
-
+ @property(nonatomic, assign)BOOL isHide;//隐身
 //函数
 - (void)initURL:(NSURL *)url fileList:(NSArray *)fileList;
 - (void)initPushURL:(NSString*)rtmpUrl;

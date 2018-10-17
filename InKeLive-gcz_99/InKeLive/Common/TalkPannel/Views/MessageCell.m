@@ -7,6 +7,7 @@
 //
 
 #import "MessageCell.h"
+#import "UILabel+WidthAndHeight.h"
 
 @implementation MessageCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -31,21 +32,32 @@
 - (void)setModel:(MessageModel *)model{
     _model = model;
     self.label.textContainer = model.textContainer;
+    self.label.verticalAlignment = TYVerticalAlignmentCenter;
    // self.label.backgroundColor = [UIColor colorWithRed:236/255.0 green:237/255.0 blue:241/255.0 alpha:1];;
-    
 }
 
 - (void)addAtrribuedLabel
 {
     //Label?
     TYAttributedLabel *label = [[TYAttributedLabel alloc]init];
+//    label.backgroundColor = RGBA(0, 0, 0, 0.15);
+//    label.layer.cornerRadius = 12;
+//    label.layer.masksToBounds = YES;
     label.backgroundColor = [UIColor clearColor];
     label.translatesAutoresizingMaskIntoConstraints = NO;
+    [label sizeToFit];
+    CGFloat height = [UILabel getHeightByWidth:label.frame.size.width title:label.text font:label.font];
+    UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 3, self.frame.size.width, height)];
+    viewBg.backgroundColor = RGBA(0, 0, 0, 0.15);
+    viewBg.layer.cornerRadius = 12;
+    viewBg.layer.masksToBounds = YES;
+    [self.contentView addSubview:viewBg];
     [self.contentView addSubview:label];
+    
     _label = label;
-    //看不明白
+    _viewBg = viewBg;
     NSArray *verticalContrainsts = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-3-[label]-3-|" options:0 metrics:nil views:@{@"label":_label}];
-    NSArray *horizontalCOntraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[label]-5-|" options:0 metrics:nil views:@{@"label":_label}];
+    NSArray *horizontalCOntraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[label]-0-|" options:0 metrics:nil views:@{@"label":_label}];
     //不同版本使用不一样?
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
         [NSLayoutConstraint activateConstraints:verticalContrainsts];

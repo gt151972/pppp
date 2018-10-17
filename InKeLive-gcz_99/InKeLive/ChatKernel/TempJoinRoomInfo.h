@@ -14,6 +14,7 @@
 @property(nonatomic, assign)int roomId;
 @property(nonatomic, assign)int lookUserId;
 @property(nonatomic, strong)NSString* roomName;
+@property(nonatomic, assign)BOOL isHide;
 @property(nonatomic, strong)NSDictionary *dicRoomInfo;
 
 

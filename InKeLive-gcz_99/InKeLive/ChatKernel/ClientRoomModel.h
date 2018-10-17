@@ -31,22 +31,27 @@
 @property(nonatomic, assign)int isJoinRoomFinished;  //是否加入成功
 @property(nonatomic, assign)int connectedCount;      //连接成功次数
 
-@property(nonatomic, strong) NSMutableArray* memberList;  //房间成员列表
+@property(nonatomic, strong) NSMutableArray* memberList;  //房间成员列表(非隐身)
+@property(nonatomic, strong) NSMutableArray* allMemberList; //房间成员列表(所有)
 @property(nonatomic, strong) NSMutableArray* onMicUserList;  //在麦成员列表
 
 
 //函数
 -(void) reset;
 
+-(ClientUserModel*) findAllMember: (int)userId;
 -(ClientUserModel*) findMember :(int) userId;
 -(ClientUserModel*) findOnMicUser: (int) userId;
 
+-(void) addaAllMember: (ClientUserModel *)userObj;
 -(void) addMember: (ClientUserModel*) userObj;
 -(void) addOnMicUser:(ClientUserModel*) userObj;
 
+-(void) delAllMember: (int)userId;
 -(void) delMember: (int) userId;
 -(void) delOnMicUser: (int)userId;
 
+-(void) clearAllMember;
 -(void) clearMember;
 -(void) clearOnMicUser;
 

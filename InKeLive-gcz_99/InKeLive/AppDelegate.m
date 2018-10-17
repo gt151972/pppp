@@ -28,7 +28,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [UMConfigure initWithAppkey:@"59892ebcaed179694b000104" channel:@"App Store"];
+//    [UMConfigure initWithAppkey:@"59892ebcaed179694b000104" channel:@"App Store"];
     // Override point for customization after application launch.
     [DPK_NW_Application sharedInstance].isLogon = NO;
     LocalUserModel* localUserData = [DPK_NW_Application sharedInstance].localUserModel;
@@ -91,7 +91,7 @@
 //    return result;
 //}
 
--(void) showLiveRoom:(BOOL)isCreate CameraFront:(BOOL)isFront {
+-(void) showLiveRoom:(BOOL)isCreate CameraFront:(BOOL)isFront hide:(BOOL)hide{
     TempJoinRoomInfo* joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
     //
     LWServerAddr* serverAddr = [joinRoomInfo getGateAddr:0];
@@ -103,12 +103,14 @@
         TempJoinRoomInfo* joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
         [joinRoomInfo reset];
         joinRoomInfo.roomId = userData.guishuRoomId;
+        joinRoomInfo.roomName = userData.gsRoomName;
         joinRoomInfo.lookUserId = 0;
         [joinRoomInfo setGateAddr:userData.gsRoomGate]; //6位地址
     }
     
     LiveViewController *live = [[LiveViewController alloc]init];
     [live initURL:[NSURL URLWithString:pushStreamUrl] fileList:nil];
+    live.isHide = hide;
     live.createFlag = isCreate;//是否主播
     live.caremaIsFront = isFront;//是否前置
     live.dicInfo = joinRoomInfo.dicRoomInfo;

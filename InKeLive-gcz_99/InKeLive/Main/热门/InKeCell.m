@@ -48,6 +48,15 @@
         make.width.equalTo(@200);
     }];
     
+    _btnHide = [[UIButton alloc]init];
+    [_btnHide setBackgroundColor:MAIN_COLOR];
+    [_btnHide setTitle:@"隐身" forState:UIControlStateNormal];
+    [_btnHide.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [_btnHide setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //    [_btnOnline setBackgroundColor: [UIColor redColor]];
+    [_btnHide addTarget:self action:@selector(btnHideClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:_btnHide];
+    
     
 //    _cityLabel = [[UILabel alloc]init];
 //    _cityLabel.textColor = [UIColor grayColor];
@@ -72,7 +81,12 @@
         make.width.equalTo(@70);
         make.height.equalTo(@45);
     }];
-
+    [_btnHide mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_nameLabel);
+        make.right.equalTo(_btnOnline.mas_left).offset(-5);
+        make.width.equalTo(@40);
+        make.height.equalTo(@18);
+    }];
     _coverImageView = [[UIImageView alloc]init];
     _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
     _coverImageView.clipsToBounds = true;
@@ -130,4 +144,9 @@
     // Configure the view for the selected state
 }
 
+- (void)btnHideClick{
+    if (self.btnHideClicked) {
+        self.btnHideClicked();
+    }
+}
 @end

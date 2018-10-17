@@ -148,6 +148,11 @@
  */
 -(void)MainListGroup;
 
+/**
+ 图片等前缀
+ */
+-(void)requestImageHead;
+
 #pragma mark 版本更新
 /**
  版本更新

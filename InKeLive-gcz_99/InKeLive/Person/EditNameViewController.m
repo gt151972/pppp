@@ -41,10 +41,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)btnSureChangeClicked:(id)sender {
-    GTAFNData *data = [[GTAFNData alloc] init];
-    data.delegate = self;
-    LocalUserModel *model = [[LocalUserModel alloc] init];
-    [data changeUserInfoWithUid:[NSString stringWithFormat:@"%d",model.userID] uNick:_textFieldNewName.text head:@"" sign:model.sign gender:[NSString stringWithFormat:@"%d",model.gender] qq:model.qq wechat:model.wechat];
+    [_delegate addNameViewController:self didFinishEnteringName:_textFieldNewName.text];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{

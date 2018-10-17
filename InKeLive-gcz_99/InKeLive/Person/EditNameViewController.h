@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol EditNameViewControllerDelegate <NSObject>
+- (void)addNameViewController:(UIViewController *)controller didFinishEnteringName:(NSString *)Name;
+@end
 
 @interface EditNameViewController : UIViewController
 @property (nonatomic, copy) NSString *strOldName;
+@property (nonatomic, weak) id <EditNameViewControllerDelegate> delegate;
+
 @end

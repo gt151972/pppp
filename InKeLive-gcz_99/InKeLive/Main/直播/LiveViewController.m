@@ -37,6 +37,7 @@
 #import "WebViewController.h"
 #import "WebView.h"
 #import "GTAFNData.h"
+#import "SpecialView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -59,7 +60,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     bool is_ksystream_pull_connected_;      //拉流器的状态,是否连接成功
     bool is_ksystream_pull_autoconnect_;    //拉流器的状态,是否自动连接
     
-    BOOL isAnimation; //是否显示礼物特效
+    
     
     
 }
@@ -121,11 +122,18 @@ privateChatViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong) BeautyView *beautyView;
 //分享面板
 @property (nonatomic, strong) ShareView *shareView;
+@property (nonatomic, strong) SpecialView *speicalView;
 //充值网页
 @property (nonatomic, strong) WebView *webView;
 @property (nonatomic, readwrite) float grind;//磨皮
 @property (nonatomic, readwrite) float whiten;//美白
 @property (nonatomic, readwrite) float rubby;//红润
+//开关特效
+@property (nonatomic, assign)BOOL isAnimationHide;//礼物动画
+@property (nonatomic, assign)BOOL isGiftHide;//礼物信息
+@property (nonatomic, assign)BOOL isEnterHide;//进房信息
+@property (nonatomic, assign)BOOL isQuitHide;//退房信息
+@property (nonatomic, assign)BOOL isHarnHide;//喇叭信息
 
 //公聊数据
 @property (nonatomic, strong) NSMutableArray *arrPubChat;
@@ -180,11 +188,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
     _arrPrivate = [NSMutableArray array];
     _arrAmchorList = [NSMutableArray array];
     _arrayAttention = [NSArray array];
+    _isAnimationHide = NO;
+    _isGiftHide = NO;
+    _isEnterHide = NO;
+    _isQuitHide = NO;
+    _isHarnHide = NO;
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
     [self.socketObj SetMessageEventSink:self];
-    isAnimation = YES;
     //创建keeplive心跳线程
     self.closeThreadFlag = 0;
     self.keepliveThread = [[NSThread alloc] initWithTarget:self selector:@selector(threadRoomKeeplive) object:nil];
@@ -249,8 +261,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [btnRoomName setBackgroundColor:[UIColor clearColor]];
 //    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
     [btnRoomName setTitle:joinRoomInfo.roomName forState:UIControlStateNormal];
+    btnRoomName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    NSLog(@"width == %f",btnRoomName.titleLabel.bounds.size.width);
     [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [btnRoomName.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [btnRoomName setTitleEdgeInsets:UIEdgeInsetsMake(0, -btnRoomName.imageView.bounds.size.width, 0, btnRoomName.imageView.bounds.size.width)];
+    [btnRoomName setImageEdgeInsets:UIEdgeInsetsMake(0, btnRoomName.titleLabel.bounds.size.width, 0, -btnRoomName.titleLabel.bounds.size.width)];
     [btnRoomName addTarget:self action:@selector(btnSpreadClicked:) forControlEvents:UIControlEventTouchUpInside];
     [viewOnMic addSubview:btnRoomName];
     UILabel *labRoomId = [[UILabel alloc] initWithFrame:CGRectMake(0, 18, SCREEN_WIDTH/4, 12)];
@@ -418,7 +434,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [_player.view setFrame: self.playerView.bounds];  // player's frame must match parent's
     [self.playerView addSubview: _player.view];
     self.playerView.autoresizesSubviews = TRUE;
-    self.playerView.backgroundColor = RGB(16, 16, 16);
+//    self.playerView.backgroundColor
     [UIApplication sharedApplication].statusBarStyle =  UIStatusBarStyleLightContent;
     _player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     NSLog(@"url == %@",aURL);
@@ -430,7 +446,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     _player.shouldLoop = NO;
     _player.bInterruptOtherAudio = NO;
     _player.mirror = NO;
-    _player.shouldMute = YES;
+    _player.shouldMute = NO;
 //    _player.bufferTimeMax = config.bufferTimeMax;
 //    _player.bufferSizeMax = config.bufferSizeMax;
     [_player setTimeout:10 readTimeout:30];
@@ -564,9 +580,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
             //如果想要在宽大于高的时候横屏播放，你可以在这里旋转
             _player.scalingMode = MPMovieScalingModeAspectFit;
             if (kIs_iPhoneX) {
-                _player.view.frame = CGRectMake(0, 90, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+                _player.view.frame = CGRectMake(0, 112, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
             }else{
-                _player.view.frame = CGRectMake(0, 70, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+                _player.view.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
             }
             
         }
@@ -697,7 +713,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [self.topSideView addSubview:self.KSYstreamerStatusLabel];
     
     [self.view addSubview:self.danmuView];
-
+    UIImageView *imageBg = [[UIImageView alloc] initWithFrame:_playerView.frame];
+    imageBg.image = [UIImage imageNamed:@"wellcome_default_blur"];
+    [_playerView addSubview:imageBg];
     //设置关闭按钮的约束
 //    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.bottom.equalTo(self.view).offset(-14);
@@ -782,6 +800,30 @@ privateChatViewDelegate, GTAFNDataDelegate>
     //充值
     [self.giftView setRechargeClick:^{
         [weakSelf showWebView];
+    }];
+    [self.messageTableView setShowUserInfo:^(int userId) {
+        NSArray *arrName = self.roomObj.memberList;
+        for (int i = 0; i<arrName.count; i++) {
+            ClientUserModel *model = [arrName objectAtIndex:i];
+            if (userId == model.userId) {
+                NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+                NSString*cachePath = array[0];
+                NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+                NSDictionary*dict =@{@"userId":[NSString stringWithFormat:@"%d",model.userId],
+                                     @"userAlias":model.userAlias,
+                                     @"userSmallHeadPic":model.userSmallHeadPic,
+                                     @"vipLevel":[NSString stringWithFormat:@"%d",model.vipLevel],
+                                     @"userBigHeadPic":model.userBigHeadPic,
+                                     @"pushStreamUrl":model.pushStreamUrl,
+                                     @"pullStreamUrl":model.pullStreamUrl
+                                     };
+                [dict writeToFile:filePathName atomically:YES];
+                break;
+            }
+        }
+        [UIView animateWithDuration:0 animations:^{
+            self.userView.transform = CGAffineTransformIdentity;
+        }];
     }];
 }
 
@@ -890,11 +932,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 case 154: //静音
                 {
                     UIButton *btn = (UIButton *)[weakSelf.bottomTool viewWithTag:tag];
-                    [self.player reset:NO];
-//                    self.player.rotateDegress = rotateDegree;
-//                    [self.player setUrl:[NSURL URLWithString:strlUrl]];
-                    [self.player setShouldMute:YES];
-                    [self.player prepareToPlay];
+                    [_kit.streamerBase muteStream:!btn.selected];
                     btn.selected = !btn.selected;
                     //testcode
 //                    [weakSelf showSelectGiftUserView];
@@ -1241,7 +1279,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         [self.player reset:NO];
         self.player.rotateDegress = rotateDegree;
         [self.player setUrl:[NSURL URLWithString:strlUrl]];
-        [self.player setShouldMute:YES];
+        [self.player setShouldMute:NO];
         [self.player prepareToPlay];
         [self.player play];
         self.KSYstreamerStatusLabel.text =@"[L:正在连接...]";
@@ -1387,6 +1425,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         _playerView = [[UIView alloc]init];
         _playerView.frame = self.view.bounds;
         _playerView.backgroundColor = [UIColor blackColor];
+        
     }
     return _playerView;
 }
@@ -1411,8 +1450,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
         NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
         NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
         NSString *strRes = [dict objectForKey:@"res"];
-        NSString *urlStr = [NSString stringWithFormat:@"%@room/%@",strRes,[_dicInfo objectForKey:@"img"]];;
-        [_backdropView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"wellcome_default_blur"]];
+        NSString *urlStr = [NSString stringWithFormat:@"%@room/%@",strRes,[_dicInfo objectForKey:@"img"]];
+        [_backdropView setImage:[UIImage imageNamed:@"wellcome_default_blur"]];
+//        [_backdropView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"wellcome_default_blur"]];
         UIVisualEffect *effcet = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effcet];
         visualEffectView.frame = _backdropView.bounds;
@@ -1613,8 +1653,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
         [_topToolView setToolClicked: ^(UIButton *btn) {
             if (btn.tag == 511) {
                 //特效
-                isAnimation = btn.selected;
-                btn.selected = !btn.selected;
+//                isAnimation = btn.selected;
+//                btn.selected = !btn.selected;
+                [weakSelf showSpecialView];
             }else if (btn.tag == 512){
                 //分享
                 [weakSelf showShareView];
@@ -2085,7 +2126,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         const char* sessionMask =(const char*)[model.sessionMask cStringUsingEncoding:enc];
         const char* userLogonPwd =(const char*)[model.userLogonPwd cStringUsingEncoding:enc];
         const char* text =(const char*)[envirnmentNameTextField.text cStringUsingEncoding:enc];
-        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:model.isHiding isMobile:2];
+        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:_isHide isMobile:2];
         
     }]];
     //添加一个取消按钮
@@ -2128,6 +2169,31 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }];
     
     [view popShow];
+}
+
+- (void)showSpecialView{
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    _speicalView = [[SpecialView alloc] initWithFrame:frame];
+    _speicalView.isAnimationHide = _isAnimationHide;
+    _speicalView.isGiftHide = _isGiftHide;
+    _speicalView.isEnterHide = _isEnterHide;
+    _speicalView.isQuitHide = _isQuitHide;
+    _speicalView.isHarnHide = _isHarnHide;
+    [_speicalView popShow];
+    WEAKSELF;
+    [_speicalView setBtnButtonClick:^(int tag, BOOL isSelect) {
+        if (tag == 200) {
+            weakSelf.isAnimationHide = isSelect;
+        }else if (tag == 201) {
+            weakSelf.isGiftHide = isSelect;
+        }else if (tag == 202) {
+            weakSelf.isEnterHide = isSelect;
+        }else if (tag == 203) {
+            weakSelf.isQuitHide = isSelect;
+        }else if (tag == 204) {
+            weakSelf.isHarnHide = isSelect;
+        }
+    }];
 }
 - (void)showShareView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -2348,7 +2414,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [_chatPublicView popShow];
     WEAKSELF;
     [_chatPublicView setPublicChatSend:^(NSString *messageInfo, int toId, NSString *toUserAlias) {
-        [weakSelf sendMessage:messageInfo receiverID:toId ToUserAlias:toUserAlias];
+        if (!weakSelf.isHide) {
+            [weakSelf sendMessage:messageInfo receiverID:toId ToUserAlias:toUserAlias];
+        }else{
+            [MBProgressHUD showAlertMessage:@"隐身用户无法发送公聊"];
+        }
+        
     }];
     [_chatPublicView setClosePublicChatClick:^{
         [weakSelf bottomToolShow];
@@ -2418,7 +2489,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             const char* sz_sessionmask = (const char*)[dpkapp.localUserModel.sessionMask cStringUsingEncoding:enc];
             const char* sz_userpwd =(const char*)[dpkapp.localUserModel.userLogonPwd cStringUsingEncoding:NSASCIIStringEncoding];
             //发送加入房间请求
-            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:dpkapp.localUserModel.isHiding isMobile:2];
+            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:_isHide isMobile:2];
 
             //房间连接标志
             self.roomObj.isConnected = 0;
@@ -2494,7 +2565,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         userData.nextAction = USER_NEXTACTION_JOINROOM;
         self.roomObj.isConnected = 0;
         self.roomObj.isJoinRoomFinished = 0;
-        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:userData.isHiding isMobile:2];
+        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:_isHide isMobile:2];
 //        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd];
         self.lastJoinRoomTime =time(0);
     }
@@ -2740,6 +2811,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
     if([self.roomObj findMember:userId] == nil) {
         [self.roomObj addMember:userObj];
     }
+    if (inroomstate && FT_USERROOMSTATE_HIDEIN !=0) {
+        //隐身登录
+    }
     
 }
 
@@ -2958,25 +3032,33 @@ privateChatViewDelegate, GTAFNDataDelegate>
     userObj.userBigHeadPic =@"";
     userObj.pushStreamUrl = @"";
     userObj.pullStreamUrl =@"";
-    if([self.roomObj findMember:userId] == nil) {
-        [self.roomObj addMember:userObj];
-//        [self.membersHeadView reloadData];
-    }
     
+    if([self.roomObj findAllMember:userId] == nil) {
+        [self.roomObj addaAllMember:userObj];
+        //        [self.membersHeadView reloadData];
+    }
     //所有用户都提示
-    NSString* sysTipText;
-    if(userObj.userId == self.playerId) {
-         sysTipText= [NSString stringWithFormat:@"%@ 主播上线了",userObj.userAlias];
+    int ishide = inroomstate & FT_USERROOMSTATE_HIDEIN;
+    if (ishide != 0) {//隐身
+        NSLog(@"%d隐身登陆了",userId);
+    }else{
+        if([self.roomObj findMember:userId] == nil) {
+            [self.roomObj addMember:userObj];
+            //        [self.membersHeadView reloadData];
+        }
+        NSString* sysTipText;
+        if(userObj.userId == self.playerId) {
+            sysTipText= [NSString stringWithFormat:@"%@ 主播上线了",userObj.userAlias];
+        }
+        else {
+            sysTipText = [NSString stringWithFormat:@"%@ 进来了",userObj.userAlias];
+        }
+        if (!_isEnterHide) {
+            MessageModel *model = [[MessageModel alloc] init];
+            [model setModel:sysTipText];
+            [self.messageTableView sendMessage:model];
+        }
     }
-    else {
-        sysTipText = [NSString stringWithFormat:@"%@ 进来了",userObj.userAlias];
-    }
-    
-    NSLog(@"%@", sysTipText);
-    MessageModel *model = [[MessageModel alloc] init];
-    [model setModel:sysTipText];
-    [self.messageTableView sendMessage:model];
-    
 }
 
 //用户聊天通知
@@ -3002,12 +3084,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
             srcUserAlias = model.userAlias;
         }
     }
-    NSLog(@"srcId == %d",srcId);
-    NSLog(@"toId == %d",toId);
-    NSLog(@"msgType == %d",msgType);
-    NSLog(@"chatContent == %@",chatContent);
-    NSLog(@"toUserAlias == %@",toUserAlias);
-    NSLog(@"srcUserAlias == %@",srcUserAlias);
+//    NSLog(@"srcId == %d",srcId);
+//    NSLog(@"toId == %d",toId);
+//    NSLog(@"msgType == %d",msgType);
+//    NSLog(@"chatContent == %@",chatContent);
+//    NSLog(@"toUserAlias == %@",toUserAlias);
+//    NSLog(@"srcUserAlias == %@",srcUserAlias);
     //聊天区域显示
     if (msgType == 1) {//公聊
         NSString* chatContent2 = [NSString filterHTML:chatContent];
@@ -3063,8 +3145,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 NSString* chatContent2 = [NSString filterHTML:chatContent];
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"0", @"isMe", nil];
                 NSArray *arrMsg = [[NSArray alloc] initWithObjects:dic, nil];
+                NSString *strName = userObj.userAlias;
+                if (userObj == nil) {
+                    strName = @"天外贵宾";
+                }
                 NSDictionary *dicAll = [[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId],@"userId",
-                                        userObj.userAlias, @"userAlias",
+                                        strName, @"userAlias",
                                         arrMsg, @"message",
                                         @"", @"image", nil];
 
@@ -3074,8 +3160,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 NSString* chatContent2 = [NSString filterHTML:chatContent];
                 NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"0", @"isMe", nil];
                 NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
-                [arrMsg addObject:dic];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", srcUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
+                [arrMsg addObject:dic];NSString *strName = userObj.userAlias;
+                if (userObj == nil) {
+                    strName = @"天外贵宾";
+                }
+                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",srcId], @"userId", strName, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
                 [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
                 _nowRow = count;
             }
@@ -3168,11 +3257,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
     
     NSString* strToId = [NSString stringWithFormat:@"%d", srcId];
     NSString* strToName = [NSString stringWithFormat:@"%d", toId];
+    BOOL hidding = NO;
     if(toId == 0)
         strToName = @"大家";
     ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
     if(srcUserObj !=nil) {
-        strToName = srcUserObj.userAlias;
+        srcUserAlias = srcUserObj.userAlias;
+    }else{
+        srcUserAlias = @"天外贵宾";
+        hidding = YES;
     }
     ClientUserModel* toUserObj = [self.roomObj findMember:toId];
     if(toUserObj !=nil) {
@@ -3182,10 +3275,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     if(userData.userID == toId)
         strToName = @"你";
-    
-    [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToName:strToName level:level];
-    [self.messageTableView sendMessage:model];
-    if (isAnimation) {
+    ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
+    if(srcUserObj !=nil) {
+        srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+    }
+    if (!_isGiftHide) {
+        [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToId:[NSString stringWithFormat:@"%d",toId] withToName:strToName level:level hide:hidding];
+        [self.messageTableView sendMessage:model];
+    }
+    if (!_isAnimationHide) {
         //    WEAKSELF;
         PresentModel *presentModel = [[PresentModel alloc] init];
         presentModel.sender = srcUserAlias;
@@ -3194,7 +3292,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         presentModel.giftImageName = giftInfo.pic_original;
         //    presentModel.giftNumber = giftNum;
         presentModel.giftNumber = giftNum;
-        [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:isAnimation];
+        [self.presentView insertPresentMessages:@[presentModel]showShakeAnimation:1];
     }
 }
 
@@ -3238,7 +3336,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     else {
         //用户离开提示
         ClientUserModel* userObj = [self.roomObj findMember:userId];
-        if(userObj != nil) {
+        if(userObj != nil &&  !_isQuitHide) {
             NSString* sysTipText =[NSString stringWithFormat:@"%@ 离开了", userObj.userAlias];
             MessageModel *model = [[MessageModel alloc] init];
             [model setModel:sysTipText];
@@ -3428,14 +3526,16 @@ privateChatViewDelegate, GTAFNDataDelegate>
     NSString *strUserId = [NSString stringWithFormat:@"%d",srcId];
     NSLog(@"srcName == %@\n toName == %d\n roomName == %d\n text == %@\n",srcName,srcId,chatType,text);
     NSString* chatContent2 = [NSString filterHTML:text];
-    if (chatType == 10) {//系统公告(喇叭)
-        MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:strUserId withName:srcName withIcon:nil withType:CellSystemHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
-        [self.messageTableView sendMessage:model];
-    }else if (chatType ==11){//小喇叭
-        MessageModel *model = [[MessageModel alloc] init];
-        [model setModel:strUserId withName:srcName withIcon:nil withType:CellHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
-        [self.messageTableView sendMessage:model];
+    if (!_isHarnHide) {
+        if (chatType == 10) {//系统公告(喇叭)
+            MessageModel *model = [[MessageModel alloc] init];
+            [model setModel:strUserId withName:srcName withIcon:nil withType:CellSystemHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
+            [self.messageTableView sendMessage:model];
+        }else if (chatType ==11){//小喇叭
+            MessageModel *model = [[MessageModel alloc] init];
+            [model setModel:strUserId withName:srcName withIcon:nil withType:CellHomType withMessage:chatContent2 toUserAlias:toName toId:toId level:0];
+            [self.messageTableView sendMessage:model];
+        }
     }
 }
 

@@ -28,6 +28,7 @@
 @interface MainViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource, GTAFNDataDelegate>
 {
 //    UITableViewCell *cell;
+    BOOL ishide;
 }
 //数据源
 @property (nonatomic,strong)NSMutableArray *dataArr;
@@ -205,11 +206,15 @@
         
         InKeModel *model = [self.dataArr objectAtIndex:indexPath.row];
         [cell updateCell:model];
+    [cell setBtnHideClicked:^{
+        [self goRoom:indexPath];
+    }];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.roomObj = [self.dataArr objectAtIndex:indexPath.row];
+    ishide = NO;
     GTAFNData *data = [[GTAFNData alloc] init];
     data.delegate = self;
     [data getRoomInfoWithRid:[NSString stringWithFormat:@"%d",_roomObj.roomId]];
@@ -224,6 +229,7 @@
     //[self.navigationController pushViewController:live animated:YES];
     self.joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
     [self.joinRoomInfo reset];
+    self.joinRoomInfo.isHide = NO;
     self.joinRoomInfo.roomId = _roomObj.roomId;
     self.joinRoomInfo.lookUserId = _roomObj.userId;
     self.joinRoomInfo.roomName = _roomObj.roomName;
@@ -231,6 +237,32 @@
     NSLog(@"dicRoomInfo == %@",self.joinRoomInfo.dicRoomInfo);
 
     
+}
+- (void)goRoom:(NSIndexPath *)indexPath{
+    NSLog(@"goroom");
+    ishide = YES;
+    self.roomObj = [self.dataArr objectAtIndex:indexPath.row];
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data getRoomInfoWithRid:[NSString stringWithFormat:@"%d",_roomObj.roomId]];
+    
+    //LiveViewController *live = [[LiveViewController alloc]init];
+    //[live initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];
+    //if (self.livingDataArray.count > 0) {
+    //    //默认只开启一个直播（开启多个可自行判断添加）
+    //    LivingItem *item = [self.livingDataArray objectAtIndex:0];
+    //    live.livingItem = item;
+    //}
+    //[self.navigationController pushViewController:live animated:YES];
+    self.joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
+    [self.joinRoomInfo reset];
+    self.joinRoomInfo.isHide = YES;
+    self.joinRoomInfo.roomId = _roomObj.roomId;
+    self.joinRoomInfo.lookUserId = _roomObj.userId;
+    self.joinRoomInfo.roomName = _roomObj.roomName;
+    self.joinRoomInfo.dicRoomInfo = [_array objectAtIndex:indexPath.row];
+    NSLog(@"dicRoomInfo == %@",self.joinRoomInfo.dicRoomInfo);
+
 }
 
 - (void)writeData{
@@ -385,7 +417,7 @@
                 [appDelegate doLogon];
                 return;
             }else {
-                [appDelegate showLiveRoom:NO CameraFront:YES];
+                [appDelegate showLiveRoom:NO CameraFront:YES hide:ishide];
             }
         }else{
             NSLog(@"msg == %@",[data objectForKey:@"msg"]);

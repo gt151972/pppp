@@ -289,7 +289,7 @@
                 [appDelegate doLogon];
                 return;
             }else {
-                [appDelegate showLiveRoom:NO CameraFront:YES];
+                [appDelegate showLiveRoom:NO CameraFront:YES hide:NO];
             }
         }
         [self hide];

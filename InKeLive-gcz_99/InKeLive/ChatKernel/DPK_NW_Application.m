@@ -224,7 +224,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
     session.requestSerializer = [AFJSONRequestSerializer serializer];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     parameters[@"cmd"] = @"20001";
-    parameters[@"flag"] = @"0";
+    parameters[@"flag"] = @"2";
     NSString* strAPIUrl = URL_GiftInfo;
     NSLog(@"url:%@", strAPIUrl);
     [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
@@ -236,7 +236,10 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
             NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
             NSString*cachePath = array[0];
             NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
-            NSDictionary*dict =@{@"res": [appDic objectForKey:@"res"],@"uDown":[appDic objectForKey:@"uDown"],@"uUp":[appDic objectForKey:@"uUp"],@"GiftVersion":[NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]]};
+            NSDictionary*dict =@{@"res": [appDic objectForKey:@"res"],
+                                 @"uDown":[appDic objectForKey:@"uDown"],
+                                 @"uUp":[appDic objectForKey:@"uUp"],
+                                 @"GiftVersion":[NSString stringWithFormat:@"%@",[appDic objectForKey:@"GiftVersion"]]};
             [dict writeToFile:filePathName atomically:YES];
             [self loadGiftConf];
         }

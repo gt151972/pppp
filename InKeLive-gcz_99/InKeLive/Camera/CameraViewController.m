@@ -63,6 +63,7 @@
 @property (nonatomic, strong)UITextField* roomPrice2Edit;
 //房间密码设置
 @property (nonatomic, strong)UITextField* roomPwdEdit;
+@property (nonatomic, strong)UILabel *labDetail;
 
 //房间密码设置
 @property (nonatomic, strong)UITextField* textField;
@@ -78,6 +79,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([DPK_NW_Application sharedInstance].isLogon == NO) {
+        [appDelegate doLogon];
+    }
     // Do any additional setup after loading the view.
     _roomStyleRadioBtnGroup = [[WBRadioGroup alloc] init];
     
@@ -156,21 +161,28 @@
         make.top.equalTo(viewLine.mas_bottom).offset(12);
         make.width.equalTo(imgIcon.mas_height).multipliedBy(0.82);;
     }];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    _labDetail = [[UILabel alloc] init];
+    _labDetail.backgroundColor = [UIColor clearColor];
+    _labDetail.text = [NSString stringWithFormat:@"签约房间：%@（%d）\n有你直播世界才精彩！",model.gsRoomName,model.guishuRoomId];
     
-    _textField = [[UITextField alloc] init];
-    _textField.backgroundColor = [UIColor clearColor];
-    _textField.borderStyle = UITextBorderStyleNone;
-    _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"有标题的直播才能上热门哦"attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    _textField.textColor = [UIColor whiteColor];
-    _textField.textAlignment = NSTextAlignmentLeft;
-    _textField.font = [UIFont systemFontOfSize:15];
-    [viewBg addSubview:_textField];
-    [_textField mas_makeConstraints:^(MASConstraintMaker *make) {
+    _labDetail.textColor = [UIColor whiteColor];
+    _labDetail.textAlignment = NSTextAlignmentLeft;
+    _labDetail.font = [UIFont systemFontOfSize:15];
+    _labDetail.numberOfLines = 0;
+    [viewBg addSubview:_labDetail];
+    [_labDetail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgIcon.mas_right).offset(12);
         make.top.equalTo(viewLine.mas_bottom).offset(12);
         make.right.equalTo(viewBg.mas_right).offset(-12);
-        make.height.equalTo(@15);
+        make.height.equalTo(@55);
     }];
+    if (kIs_iPhone5S) {
+        _labDetail.text = [NSString stringWithFormat:@"签约房间：\n%@（%d）\n有你直播世界才精彩！",model.gsRoomName,model.guishuRoomId];
+    }
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    [data getRoomInfoWithRid:[NSString stringWithFormat:@"%d",model.guishuRoomId]];
     
     UIButton *btnStart = [[UIButton alloc] init];
     [btnStart setTitle:@"开始直播" forState:UIControlStateNormal];
@@ -264,15 +276,15 @@
             break;
         case 203: //开始按钮
         {
-            LocalUserModel *model= [DPK_NW_Application sharedInstance].localUserModel;
-            GTAFNData *data = [[GTAFNData alloc] init];
-            data.delegate = self;
-            NSString *strRid = [NSString stringWithFormat:@"%d",model.guishuRoomId];
-            [data getRoomInfoWithRid:strRid];
+//            LocalUserModel *model= [DPK_NW_Application sharedInstance].localUserModel;
+//            GTAFNData *data = [[GTAFNData alloc] init];
+//            data.delegate = self;
+//            NSString *strRid = [NSString stringWithFormat:@"%d",model.guishuRoomId];
+//            [data getRoomInfoWithRid:strRid];
             //self.randomStr = [self randomString:12];
             //[self sendQueryVCBServerRequest];
             //直接使用用户的信息数据开始(进入归属房间上手机私麦)
-//            [self close:YES];
+            [self close:YES];
         }
             break;
         default:
@@ -601,7 +613,7 @@
     }
     appDelegate.createCameraVC = nil;
     if(createFlag) {
-        [appDelegate showLiveRoom:YES CameraFront:self.cameraIsFront];
+        [appDelegate showLiveRoom:YES CameraFront:self.cameraIsFront hide:NO];
     }
     
 #if 0 //异步的方式
@@ -690,7 +702,10 @@
             LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
             model.gsRoomGate = data[@"GateAddr"];
             model.gsRoomName = data[@"rName"];
-            [self close:YES];
+            _labDetail.text = [NSString stringWithFormat:@"签约房间：%@（%d）\n有你直播世界才精彩！",model.gsRoomName,model.guishuRoomId];
+            if (kIs_iPhone5S) {
+                _labDetail.text = [NSString stringWithFormat:@"签约房间：\n%@（%d）\n有你直播世界才精彩！",model.gsRoomName,model.guishuRoomId];
+            }
         }else{
             [MBProgressHUD showAlertMessage:@"msg"];
         }

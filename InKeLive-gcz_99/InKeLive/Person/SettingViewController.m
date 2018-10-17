@@ -30,7 +30,7 @@
 {
     self = [super init];
     if (self) {
-        arrayTitle = @[@[@"隐身进入",@"点赞消息通知",@"评论消息通知"],@[@"清理缓存",@"客服中心",@"检查更新",@"关于我们"]];
+        arrayTitle = @[@[@"点赞消息通知",@"评论消息通知"],@[@"清理缓存",@"客服中心",@"检查更新",@"关于我们"]];
     }
     
     return self;
@@ -83,12 +83,13 @@
         switch0.tag = indexPath.row + 2000;
         [cell.contentView addSubview:switch0];
         
-        if (indexPath.row == 0) {
-            //隐身进入
-            [switch0 setOn:model.isHiding animated:YES];
-        }else if (indexPath.row == 1){
+//        if (indexPath.row == 0) {
+//            //隐身进入
+//            [switch0 setOn:model.isHiding animated:YES];
+//        }else
+            if (indexPath.row == 0){
             //点赞通知
-        }else if (indexPath.row == 2){
+        }else if (indexPath.row == 1){
             //评论通知
         }
     }
@@ -169,7 +170,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
-        return 3;
+        return 2;
     }else if (section == 1){
         return 4;
     }else{

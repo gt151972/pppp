@@ -270,6 +270,14 @@
     [self postData:currResult data:dict];
 }
 
+/**
+ 图片等前缀
+ */
+-(void)requestImageHead{
+    currResult = CMD_REQUEST_WEB_ADDRESS;
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:IOS_REQUEST_FLAG, @"flag", nil];
+    [self postData:currResult data:dict];
+}
 #pragma mark 版本更新
 /**
  版本更新

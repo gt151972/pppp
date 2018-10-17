@@ -22,10 +22,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9NX-9G-A66">
-                    <rect key="frame" x="0.0" y="20" width="375" height="390"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="345"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="390" id="dYc-y2-g9d"/>
+                        <constraint firstAttribute="height" constant="345" id="dYc-y2-g9d"/>
                     </constraints>
                 </tableView>
             </subviews>

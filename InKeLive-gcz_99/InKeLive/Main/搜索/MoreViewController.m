@@ -84,13 +84,17 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     InKeModel *model = [self.dataArr objectAtIndex:indexPath.row];
     [cell updateCell:model];
+    [cell setBtnHideClicked:^{
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate showLiveRoom:NO CameraFront:FALSE hide:YES];
+    }];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showLiveRoom:NO CameraFront:FALSE];
+    [appDelegate showLiveRoom:NO CameraFront:FALSE hide:NO];
     
     //LiveViewController *liveVC = [[LiveViewController alloc]init];
     //[liveVC initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];

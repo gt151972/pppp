@@ -191,9 +191,12 @@
         NSLog(@"dataCout:%lu,indexPathRow:%ld",(unsigned long)self.data.count,(long)indexPath.row);
         cell.model = [self.data lastObject];
     }
-    cell.label.preferredMaxLayoutWidth = CGRectGetWidth(self.frame)-10;
+    
+    cell.label.preferredMaxLayoutWidth = CGRectGetWidth(self.frame)-20;
     cell.label.delegate = self;
-    cell.label.textContainer = [cell.label.textContainer createTextContainerWithTextWidth:CGRectGetWidth(self.frame)-10];
+    cell.label.verticalAlignment = TYVerticalAlignmentCenter;
+    cell.label.textContainer = [cell.label.textContainer createTextContainerWithTextWidth:CGRectGetWidth(self.frame)];
+   
     return cell;
 }
 
@@ -211,8 +214,11 @@
         
         id linkStr = ((TYLinkTextStorage*)TextRun).linkData;
         if ([linkStr isKindOfClass:[NSString class]]) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"点击提示" message:linkStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alertView show];
+//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"点击提示" message:linkStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//            [alertView show];
+            if (self.showUserInfo) {
+                self.showUserInfo([linkStr intValue]);
+            }
         }
     }
 }

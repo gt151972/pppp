@@ -33,8 +33,8 @@
     
 }
 -(void)paomadeng{
-    UILabel *aUILabel=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 500, 50)];
-    aUILabel.font = [UIFont systemFontOfSize:15];
+    UILabel *aUILabel=[[UILabel alloc]initWithFrame:CGRectMake(0,2, 500, 50)];
+    aUILabel.font = [UIFont systemFontOfSize:12];
     aUILabel.layer.masksToBounds = YES;
     NSString *strInfo= [NSString stringWithFormat:@"%@送给%@%d个%@",_strSrcName,_strToName,_giftNum,_strGiftName];
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];

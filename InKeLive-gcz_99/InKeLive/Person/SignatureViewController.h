@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol signDelegate <NSObject>
+- (void)addItemViewController:(UIViewController *)controller didFinishEnteringItem:(NSString *)item;
+@end
 @interface SignatureViewController : UIViewController
 @property (nonatomic, copy) NSString *strInfo;
+@property (nonatomic, weak) id <signDelegate> delegate;
 @end

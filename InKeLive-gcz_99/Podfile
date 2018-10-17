@@ -16,6 +16,7 @@ pod 'UMCSecurityPlugins'
 pod 'ZYQAssetPickerController'
 pod 'UMengUShare'
 
+
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'
 pod 'pop'

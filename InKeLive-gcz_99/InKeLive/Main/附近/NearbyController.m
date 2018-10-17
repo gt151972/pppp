@@ -104,7 +104,7 @@ static NSString * identifier = @"NearById";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showLiveRoom:NO CameraFront:FALSE];
+    [appDelegate showLiveRoom:NO CameraFront:FALSE hide:NO];
     
     //LiveViewController *live = [[LiveViewController alloc]init];
     //[live initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];

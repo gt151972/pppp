@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "wellcome_default_blur.jpg",
+      "filename" : "bg.png",
       "scale" : "1x"
     },
     {

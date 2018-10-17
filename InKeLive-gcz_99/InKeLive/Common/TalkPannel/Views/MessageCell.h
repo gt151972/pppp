@@ -16,6 +16,7 @@
 @property (nonatomic, strong)UIView *viewLevel;
 
 @property (nonatomic, weak, readonly) TYAttributedLabel *label;
+@property (nonatomic, weak, readonly) UIView *viewBg;
 
 @property (nonatomic,strong)MessageModel *model;
 

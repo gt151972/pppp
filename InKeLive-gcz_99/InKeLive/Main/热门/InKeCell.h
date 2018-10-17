@@ -18,6 +18,8 @@
 @property (nonatomic,strong)UILabel *nameLabel;
 //所在城市
 @property (nonatomic,strong)UILabel *cityLabel;
+//隐身按钮
+@property (nonatomic,strong)UIButton *btnHide;
 //在线人数
 @property (nonatomic,strong)UIButton *btnOnline;
 //封面
@@ -26,7 +28,7 @@
 @property (nonatomic,strong)UILabel *moodLabel;
 //直播logo
 @property (nonatomic,strong)UIImageView *logoImageView;
-
+@property (nonatomic, copy) void (^btnHideClicked)();
 -(void)updateCell:(InKeModel*)model;
 
 @end

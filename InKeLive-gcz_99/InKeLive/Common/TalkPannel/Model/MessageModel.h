@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger,CellType){
 -(void) setModel:(NSString*)sysTipText;
 
 //赠送礼物提示信息
--(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToName:(NSString*)strToName level:(int)level;
+-(void) setModel:(NSString*)userId withName:(NSString*)name withIcon:(NSString*)icon withType:(CellType)type withGiftId:(NSString*)giftId withGiftName:(NSString*)giftName withGiftNum:(NSString*)giftNum withToId:(NSString *)toId withToName:(NSString*)strToName  level:(int)level hide:(BOOL)hide;
 
 
 @end

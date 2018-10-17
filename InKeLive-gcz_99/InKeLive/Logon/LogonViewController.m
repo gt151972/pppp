@@ -28,6 +28,7 @@
 @property(nonatomic, strong) MBProgressHUD* hud;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewHead;
 @property (weak, nonatomic) IBOutlet UIButton *btnPwdVisable;
+@property (weak, nonatomic) IBOutlet UIButton *btnRegiest;
 
 @end
 
@@ -58,7 +59,13 @@
 
     
 }
-
+- (UIButton *)btnRegiest{
+    _btnRegiest.layer.cornerRadius = 19;
+    _btnRegiest.layer.masksToBounds = YES;
+    _btnRegiest.layer.borderColor = MAIN_COLOR.CGColor;
+    _btnRegiest.layer.borderWidth = 2.0f;
+    return _btnRegiest;
+}
 
 -(UIImageView *)imgViewHead{
     _imgViewHead.layer.masksToBounds = YES;

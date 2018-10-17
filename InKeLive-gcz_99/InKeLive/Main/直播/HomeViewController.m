@@ -34,7 +34,7 @@
     _arrayTitle = [NSArray array];
     GTAFNData *data = [[GTAFNData alloc] init];
     data.delegate = self;
-    [data MainListGroup];
+    [data requestImageHead];
     // Do any additional setup after loading the view.
     
     
@@ -171,6 +171,20 @@
     }else if ([cmd isEqualToString:CMD_RECOMMEND_ROOM_LIST]){
         if ([data[@"code"] intValue] == 0) {
             NSLog(@"data == %@",data);
+        }
+    }else if ([cmd isEqualToString:CMD_REQUEST_WEB_ADDRESS]){
+        if ([data[@"code"] intValue] == 0) {
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
+            NSDictionary*dict =@{@"res": [data objectForKey:@"res"],
+                                 @"uDown":[data objectForKey:@"uDown"],
+                                 @"uUp":[data objectForKey:@"uUp"],
+                                 @"GiftVersion":[NSString stringWithFormat:@"%@",[data objectForKey:@"GiftVersion"]]};
+            [dict writeToFile:filePathName atomically:YES];
+            GTAFNData *data = [[GTAFNData alloc] init];
+            data.delegate = self;
+            [data MainListGroup];
         }
     }
 }

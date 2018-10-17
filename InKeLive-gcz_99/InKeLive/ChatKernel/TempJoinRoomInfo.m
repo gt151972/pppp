@@ -20,6 +20,7 @@
     self.roomId = 0;
     self.lookUserId = 0;
     self.roomName = @"";
+    self.isHide = NO;
     if(_addrList != nil)
        [_addrList removeAllObjects];
 }

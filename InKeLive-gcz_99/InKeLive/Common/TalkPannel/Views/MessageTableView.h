@@ -41,6 +41,8 @@
 
 @property (nonatomic, copy)void(^ShowNodeNumber)(int num);
 
+@property (nonatomic, copy)void(^showUserInfo)(int userId);
+
 - (void)sendMessage:(MessageModel*)model;
 
 - (void)scrollToEnd;

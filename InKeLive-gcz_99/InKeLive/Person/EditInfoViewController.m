@@ -16,7 +16,7 @@
 #import <AFNetworking.h>
 #import "CommonAPIDefines.h"
 #import "GTAFNData.h"
-@interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GTAFNDataDelegate>
+@interface EditInfoViewController ()<UITableViewDelegate, UITableViewDataSource,TakePhotoDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GTAFNDataDelegate,signDelegate,EditNameViewControllerDelegate>
 @property (nonatomic, strong) NSArray *arrayTitle;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
@@ -24,6 +24,9 @@
 @property (nonatomic, strong) UITextField *textFieldQQ;
 @property (nonatomic, strong) UITextField *textFieldWechat;
 @property (nonatomic, strong) NSDictionary *dicData;
+@property (nonatomic, strong) UILabel *labName;//昵称
+@property (nonatomic, strong) NSString *strSign;//签名
+@property (nonatomic, strong) NSString *strSex;//性别
 @end
 
 @implementation EditInfoViewController
@@ -33,6 +36,7 @@
     self = [super init];
     if (self) {
         _arrayTitle = @[@[@"账号"],@[@"头像",@"昵称",@"个性签名"],@[@"性别",@"QQ",@"微信"]];
+        _strSign = @"";
     }
     
     return self;
@@ -40,9 +44,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    GTAFNData *data = [[GTAFNData alloc] init];
-    data.delegate = self;
-    [data getUserInfo];
+    
     self.navigationController.navigationBar.hidden = NO;
     
     self.title = @"修改资料";
@@ -56,10 +58,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(243, 243, 243);
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 365) style:UITableViewStylePlain];
     if (kIs_iPhoneX) {
         _tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 400);
@@ -71,12 +69,20 @@
     _tableView.scrollEnabled = NO;
     _tableView.sectionIndexColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
+    EditNameViewController *editNameVC = [[EditNameViewController alloc] init];
+    editNameVC.delegate = self;
+    SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
+    signatureVC.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
 }
 
 #pragma mark UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellWithIdentifier = @"EditInfoTableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellWithIdentifier];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
@@ -115,12 +121,12 @@
         [_imgHead sd_setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"default_head"]];
         [cell.contentView addSubview:_imgHead];
     }else if (indexPath.section == 1 && indexPath.row == 1){
-        UILabel *labName = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 134, 13, 100, 14)];
-        labName.text = model.userName;
-        labName.textColor = RGB(110, 110, 110);
-        labName.textAlignment = NSTextAlignmentRight;
-        labName.font = [UIFont systemFontOfSize:14];
-        [cell.contentView addSubview:labName];
+        _labName = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 134, 13, 100, 14)];
+        _labName.text = model.userName;
+        _labName.textColor = RGB(110, 110, 110);
+        _labName.textAlignment = NSTextAlignmentRight;
+        _labName.font = [UIFont systemFontOfSize:14];
+        [cell.contentView addSubview:_labName];
     }else if (indexPath.section == 0 && indexPath.row == 0){
         UILabel *labID = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 134, 13, 100, 14)];
         labID.text = [NSString stringWithFormat:@"%d",model.userID];
@@ -150,9 +156,11 @@
         if (model.gender == 0) {
             btnFemale.selected = YES;
             btnMale.selected = NO;
+            self.strSex = @"0";
         }else{
             btnMale.selected = YES;
             btnFemale.selected = NO;
+            self.strSex = @"1";
         }
         btnGo.hidden = YES;
     }else if (indexPath.section == 2 && indexPath.row == 1){
@@ -254,7 +262,17 @@
 }
 
 - (void)btnSaveClicked{
-    GTAFNData *
+    GTAFNData *data = [[GTAFNData alloc] init];
+    data.delegate = self;
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    
+    [data changeUserInfoWithUid:[NSString stringWithFormat:@"%d",model.userID]
+                          uNick:_labName.text
+                           head:@""
+                           sign:_strSign
+                         gender:_strSex
+                             qq:_textFieldQQ.text
+                         wechat:_textFieldWechat.text];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -271,6 +289,11 @@
     }else{
         btnMale.selected = NO;
         btnFemale.selected = YES;
+    }
+    if (btnMale.selected == 1) {
+        self.strSex = @"1";
+    }else{
+        self.strSex = @"0";
     }
 }
 
@@ -469,6 +492,31 @@
         }else{
             NSLog(@"msg == %@",data[@"msg"]);
         }
+    }else if ([cmd isEqualToString:CMD_CHANGE_USER_INFO]){
+        if ([data[@"code"] intValue] == 0) {
+            NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data[@"data"]];
+            LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+            model.userName = dict[@"uNick"];
+            model.userBigHeadPic = dict[@"Head"];
+            model.userSmallHeadPic = dict[@"Head"];
+            model.gender = [dict[@"Gender"] intValue];
+            model.sign = dict[@"Sign"];
+            model.qq = dict[@"QQ"];
+            model.wechat = dict[@"WeChat"];
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [MBProgressHUD showAlertMessage:data[@"msg"]];
+        }
     }
+}
+
+#pragma mark signDelegate
+- (void)addItemViewController:(UIViewController *)controller didFinishEnteringItem:(NSString *)item{
+    self.strSign = item;
+}
+
+#pragma mark EditNameViewControllerDelegate
+- (void)addNameViewController:(UIViewController *)controller didFinishEnteringName:(NSString *)Name{
+    _labName.text = Name;
 }
 @end

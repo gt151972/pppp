@@ -32,6 +32,8 @@
     }else{
         _createFlag = NO;
     }
+    CGFloat width = (SCREEN_WIDTH - 132)/5;;
+    
     for (NSInteger i = 0; i < self.imageArr.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:[UIImage imageNamed:self.imageArr[i]] forState:UIControlStateNormal];
@@ -40,7 +42,7 @@
         }
         [button addTarget:self action:@selector(bottomClick:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = 150+i; //由于是循环创建的,所以需要设置tag
-        button.frame = CGRectMake(132+i* 47, 10, 40, 40);
+        button.frame = CGRectMake(132+i* width, 10, 40, 40);
         [self addSubview:button];
     }
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(4, 14, 115, 32)];

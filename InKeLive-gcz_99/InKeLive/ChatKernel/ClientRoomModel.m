@@ -35,6 +35,12 @@
     [self clearOnMicUser];
 }
 
+- (NSMutableArray *)allMemberList{
+    if (_allMemberList == nil) {
+        _allMemberList = [NSMutableArray array];
+    }
+    return _allMemberList;
+}
 
 -(NSMutableArray*)memberList {
     if(_memberList ==nil) {
@@ -48,6 +54,18 @@
         _onMicUserList = [NSMutableArray array];
     }
     return _onMicUserList;
+}
+
+-(ClientUserModel *)findAllMember:(int)userId{
+    ClientUserModel *userObj = nil;
+    for(int i=0; i<self.memberList.count; i++) {
+        ClientUserModel* p =[self.memberList objectAtIndex:i];
+        if(p.userId == userId) {
+            userObj = p;
+            break;
+        }
+    }
+    return userObj;
 }
 
 -(ClientUserModel*) findMember :(int) userId {
@@ -74,12 +92,26 @@
     return userObj;
 }
 
+-(void)addaAllMember:(ClientUserModel *)userObj{
+    [self.allMemberList addObject:userObj];
+}
+
 -(void) addMember: (ClientUserModel*) userObj {
     [self.memberList addObject:userObj];
 }
 
 -(void) addOnMicUser:(ClientUserModel*) userObj {
     [self.onMicUserList addObject:userObj];
+}
+
+- (void)delAllMember:(int)userId{
+    for(int i=0; i<self.memberList.count; i++) {
+        ClientUserModel* p = [self.memberList objectAtIndex:i];
+        if(p.userId == userId) {
+            [self.memberList removeObjectAtIndex:i];
+            break;
+        }
+    }
 }
 
 -(void) delMember: (int) userId {
@@ -114,6 +146,10 @@
     }
 }
 
-
+- (void)clearAllMember{
+    if(_allMemberList != nil) {
+        [_allMemberList removeAllObjects];
+    }
+}
 
 @end

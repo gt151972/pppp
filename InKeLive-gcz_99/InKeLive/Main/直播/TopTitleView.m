@@ -26,9 +26,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.lineImageView.size = CGSizeMake(buttons.titleLabel.width, 3);
         self.lineImageView.centerX = buttons.centerX;
-//        if (_btnTitleClicked) {
-//            self.btnTitleClicked(tag);
-//        }
+
     }];
 }
 
@@ -63,7 +61,7 @@
     [topClassifyView addSubview:scrollView];
     for (NSInteger i = 0; i < self.titleArr.count; i++) {
         WEAKSELF;
-        UIButton *buttons = [MyControlTool buttonWithText:self.titleArr[i] textColor:TEXT_COLOR selectTextColor:MAIN_COLOR font:18 tag:50 + i frame:CGRectMake(i * bWidth, 0, bWidth, 44) clickBlock:^(id x) {
+        UIButton *buttons = [MyControlTool buttonWithText:self.titleArr[i] textColor:TEXT_COLOR selectTextColor:MAIN_COLOR font:16 tag:50 + i frame:CGRectMake(i * bWidth, 0, bWidth, 44) clickBlock:^(id x) {
             UIButton *button = (UIButton *)x;
             buttons.selected = !buttons.selected;
             [weakSelf scrollMove:button.tag];

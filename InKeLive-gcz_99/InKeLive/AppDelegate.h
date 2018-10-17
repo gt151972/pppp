@@ -24,7 +24,7 @@ static NSString *appID = @"meetingtest";
 @property (strong, nonatomic) UIViewController* createCameraVC;
 @property (strong, nonatomic) UIViewController* LiveViewNavVC;
 
--(void) showLiveRoom:(BOOL)isCreate CameraFront:(BOOL)isFront;
+-(void) showLiveRoom:(BOOL)isCreate CameraFront:(BOOL)isFront hide: (BOOL)hide;
 -(void) logout;
 -(void) autoLogin;
 -(void) doLogon;

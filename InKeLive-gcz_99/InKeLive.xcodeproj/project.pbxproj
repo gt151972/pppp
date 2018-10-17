@@ -276,6 +276,7 @@
 		63FB93AB1E037A4D00C8A84A /* plane-tail.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A61E037A4D00C8A84A /* plane-tail.png */; };
 		63FB93AC1E037A4D00C8A84A /* plane-head.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A71E037A4D00C8A84A /* plane-head.png */; };
 		63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */; };
+		640472BF21758AF2002AC257 /* SpecialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640472BE21758AF2002AC257 /* SpecialView.m */; };
 		640526FC215249D6007C7E3E /* PresentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F8215249D5007C7E3E /* PresentViewCell.m */; };
 		640526FD215249D6007C7E3E /* PresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F9215249D5007C7E3E /* PresentView.m */; };
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
@@ -827,6 +828,8 @@
 		63FB93A71E037A4D00C8A84A /* plane-head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane-head.png"; sourceTree = "<group>"; };
 		63FEFF7C1DFE74BF0059D460 /* NetWorkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTools.h; sourceTree = "<group>"; };
 		63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTools.m; sourceTree = "<group>"; };
+		640472BD21758AF2002AC257 /* SpecialView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialView.h; sourceTree = "<group>"; };
+		640472BE21758AF2002AC257 /* SpecialView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialView.m; sourceTree = "<group>"; };
 		640526F7215249D5007C7E3E /* PresentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentView.h; sourceTree = "<group>"; };
 		640526F8215249D5007C7E3E /* PresentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentViewCell.m; sourceTree = "<group>"; };
 		640526F9215249D5007C7E3E /* PresentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentView.m; sourceTree = "<group>"; };
@@ -1534,6 +1537,8 @@
 				64241E62214F5138007E3F3D /* ShareView.m */,
 				64CA04C2215CD2A700A13359 /* WebView.h */,
 				64CA04C3215CD2A700A13359 /* WebView.m */,
+				640472BD21758AF2002AC257 /* SpecialView.h */,
+				640472BE21758AF2002AC257 /* SpecialView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2893,6 +2898,7 @@
 				64B3325121424864009D28CC /* RemoveBindingViewController.m in Sources */,
 				630483051E1F345A004837C5 /* AutoCommon.m in Sources */,
 				1AE89ED01F41CD580001C5D8 /* RoomMembersView.m in Sources */,
+				640472BF21758AF2002AC257 /* SpecialView.m in Sources */,
 				1AAD2FE01F3F028900FBB894 /* DPK_NW_Application.m in Sources */,
 				64AA3D612112C8EB00111B80 /* ForgetPasswordViewController.m in Sources */,
 				635AD6281E08D79D00D3F613 /* DMHeartFlyView.m in Sources */,
