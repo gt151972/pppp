@@ -201,6 +201,7 @@
     container.font = [UIFont systemFontOfSize:14];
     container.linesSpacing = 3;
     container.characterSpacing = 0;
+    container.isWidthToFit = YES;
     NSString *allMessage;
     switch (type) {
         case CellNewChatMessageType:  //新聊天消息
@@ -295,14 +296,14 @@
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
 //            NSString *string = [NSString stringWithFormat:@""];
             nameTextStorage.range = [allMessage rangeOfString:@"喇叭: "];
-            nameTextStorage.textColor = RGB(255, 115, 171);
+            nameTextStorage.textColor = RGB(149, 255, 24);
             nameTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:nameTextStorage];
             
             //聊天格式
             TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
             deserveTextStorage.range = [allMessage rangeOfString:message];
-            deserveTextStorage.textColor = RGB(255, 115, 171);
+            deserveTextStorage.textColor = RGB(149, 255, 24);
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage];
             
@@ -563,5 +564,142 @@
     _unColoredMsg = allMessage;
     _textContainer = container;
 }
-
+/**
+ 进出房间通知
+ 
+ @param userId <#userId description#>
+ @param name <#name description#>
+ @param type <#type description#>
+ @param level <#level description#>
+ */
+-(void)setModelWithId:(NSString *)userId name:(NSString *)name type:(CellType)type level:(int)level{
+    _userId = [userId intValue];
+    self.cellType = type;
+    userId = userId?userId:@"";
+    name = name?name:@"";
+    TYTextContainer *container = [[TYTextContainer alloc]init];
+    container.font = [UIFont systemFontOfSize:14];
+    container.linesSpacing = 3;
+    container.characterSpacing = 0;
+    container.isWidthToFit = YES;
+    NSString *allMessage;
+    switch (type) {
+        case CellLeaveType:  //新聊天消息
+        {
+            
+            allMessage = [NSString stringWithFormat:@"%@: 离开了!",name];
+            
+            // 属性文本生成器
+            container.text = allMessage;
+            NSMutableArray *tmpArray = [NSMutableArray array];
+            
+            // 正则匹配表情
+            [allMessage enumerateStringsMatchedByRegex:@"\\[emot:(\\w+\\d+)\\]" usingBlock:^(NSInteger captureCount, NSString *const __unsafe_unretained *capturedStrings, const NSRange *capturedRanges, volatile BOOL *const stop) {
+                
+                if (captureCount > 0) {
+                    // 图片信息储存
+                    TYImageStorage *imageStorage = [[TYImageStorage alloc]init];
+                    imageStorage.cacheImageOnMemory = YES;
+                    imageStorage.imageName = capturedStrings[1];
+                    imageStorage.range = capturedRanges[0];
+                    imageStorage.size = CGSizeMake(30, 30);
+                    
+                    [tmpArray addObject:imageStorage];
+                }
+            }];
+            
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
+            [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
+            [container addView:view range:NSMakeRange(0, 0)];
+            //用户名字的颜色和文字大小
+            TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
+            NSString *string = [NSString stringWithFormat:@"%@:",name];
+            nameTextStorage.range = [allMessage rangeOfString:string];
+            nameTextStorage.textColor = MAIN_COLOR;
+            nameTextStorage.font = [UIFont boldSystemFontOfSize:14];
+            [container addTextStorage:nameTextStorage];
+            
+            //聊天格式
+            TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
+            NSString *string2 = @" 离开了!";
+            deserveTextStorage.range = [allMessage rangeOfString:string2];
+            deserveTextStorage.textColor = [UIColor whiteColor];
+            deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
+            [container addTextStorage:deserveTextStorage];
+            
+            //增加连接??
+//            [container addLinkWithLinkData:userId linkColor:RGBA(30, 153, 247, 1) underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
+            
+            //             链接
+//            TYTextStorage *textStorage = [[TYTextStorage alloc]init];
+//            textStorage.range = [allMessage rangeOfString:name];
+//            textStorage.textColor = RGB(30, 153, 247);
+//            textStorage.font = [UIFont systemFontOfSize:14];
+//            [container addTextStorage:textStorage];
+//            
+            // 添加表情数组到label
+            [container addTextStorageArray:tmpArray];
+        }
+            break;
+        case CellEnterType:  //新聊天消息
+        {
+            allMessage = [NSString stringWithFormat:@"%@: 进来了!",name];
+            
+            // 属性文本生成器
+            container.text = allMessage;
+            NSMutableArray *tmpArray = [NSMutableArray array];
+            
+            // 正则匹配表情
+            [allMessage enumerateStringsMatchedByRegex:@"\\[emot:(\\w+\\d+)\\]" usingBlock:^(NSInteger captureCount, NSString *const __unsafe_unretained *capturedStrings, const NSRange *capturedRanges, volatile BOOL *const stop) {
+                
+                if (captureCount > 0) {
+                    // 图片信息储存
+                    TYImageStorage *imageStorage = [[TYImageStorage alloc]init];
+                    imageStorage.cacheImageOnMemory = YES;
+                    imageStorage.imageName = capturedStrings[1];
+                    imageStorage.range = capturedRanges[0];
+                    imageStorage.size = CGSizeMake(30, 30);
+                    
+                    [tmpArray addObject:imageStorage];
+                }
+            }];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
+            [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
+            [container addView:view range:NSMakeRange(0, 0)];
+            //用户名字的颜色和文字大小
+            TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
+            NSString *string = [NSString stringWithFormat:@"%@:",name];
+            nameTextStorage.range = [allMessage rangeOfString:string];
+            nameTextStorage.textColor = MAIN_COLOR;
+            nameTextStorage.font = [UIFont boldSystemFontOfSize:14];
+            [container addTextStorage:nameTextStorage];
+            
+            //聊天格式
+            TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
+            NSString *string2 = @" 进来了!";
+            deserveTextStorage.range = [allMessage rangeOfString:string2];
+            deserveTextStorage.textColor = [UIColor whiteColor];
+            deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
+            [container addTextStorage:deserveTextStorage];
+            
+            //增加连接??
+            [container addLinkWithLinkData:userId linkColor:MAIN_COLOR underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
+            
+            //             链接
+//            TYTextStorage *textStorage = [[TYTextStorage alloc]init];
+//            textStorage.range = [allMessage rangeOfString:name];
+//            textStorage.textColor = RGB(30, 153, 247);
+//            textStorage.font = [UIFont systemFontOfSize:14];
+//            [container addTextStorage:textStorage];
+            
+            // 添加表情数组到label
+            [container addTextStorageArray:tmpArray];
+        }
+            break;
+        default:
+            break;
+    }
+    _unColoredMsg = allMessage;
+    _textContainer = container;
+}
 @end

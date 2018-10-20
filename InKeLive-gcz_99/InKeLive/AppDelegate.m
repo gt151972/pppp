@@ -54,10 +54,11 @@
     [UIApplication sharedApplication].idleTimerDisabled = TRUE;
     //使用BaseTabBar
     BaseTabBarController *base = [[BaseTabBarController alloc]init];
-    
+//    if (self.window.rootViewController != nil) {
+//        self.window.rootViewController = nil;
+//    }
     self.window.rootViewController = base;
     [self.window makeKeyAndVisible];
-    
     self.tabbarVC = base;
     
     //设置图片的最大缓存为30M
@@ -107,7 +108,7 @@
         joinRoomInfo.lookUserId = 0;
         [joinRoomInfo setGateAddr:userData.gsRoomGate]; //6位地址
     }
-    
+   
     LiveViewController *live = [[LiveViewController alloc]init];
     [live initURL:[NSURL URLWithString:pushStreamUrl] fileList:nil];
     live.isHide = hide;
@@ -125,10 +126,9 @@
         dict =@{@"createFlag":@"0"};
     }
     [dict writeToFile:filePathName atomically:YES];
-    
-
     BaseViewController *liveNav = [[BaseViewController alloc]initWithRootViewController:live];
-    [self.tabbarVC presentViewController:liveNav animated:YES completion:nil];
+//    [self.tabbarVC presentViewController:liveNav animated:YES completion:nil];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:liveNav animated:YES completion:nil];
 }
 
 -(void) logout

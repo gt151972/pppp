@@ -100,6 +100,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"giftInfo.plist"];
@@ -153,7 +154,9 @@
     [btnHide setBackgroundColor:MAIN_COLOR];
     [btnHide setTitle:@"隐身" forState:UIControlStateNormal];
     [btnHide setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [btnHide addTarget:self action:@selector(btnHideClicked) forControlEvents:UIControlEventTouchUpInside];
+    [btnHide addTarget:self action:@selector(btnHideClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btnHide setTag:800+indexPath.row];
+    [btnHide setHidden:YES];
     [btnHide.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [cell.contentView addSubview:btnHide];
     [btnHide mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -161,6 +164,17 @@
         make.size.mas_equalTo(CGSizeMake(40, 18));
         make.right.equalTo(btnGo.mas_left).offset(-5);
     }];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSArray *arrLevel = @[@"6",@"7",@"8",@"9",@"203",@"204",@"205",@"206",@"207",@"208",@"209",@"210",@"211"];
+    NSString *strVipLevel = [NSString stringWithFormat:@"%d",model.viplevel];
+    if (model.userID != 0) {
+        for (NSString *str in arrLevel) {
+            if ([str isEqualToString:strVipLevel]) {
+                btnHide.hidden = NO;
+            }
+        }
+    }
+
     return cell;
 }
 
@@ -168,8 +182,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)btnHideClicked{
-    
+- (void)btnHideClicked:(UIButton *)button{
+    [self getRoomInfo:button.tag - 800 hide:YES];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -177,10 +191,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self getRoomInfo:indexPath.row];
+    [self getRoomInfo:indexPath.row hide:NO];
 }
 
-- (void)getRoomInfo:(NSInteger)row{
+- (void)getRoomInfo:(NSInteger)row hide:(BOOL)hide{
     // 获得请求管理者
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     
@@ -210,7 +224,7 @@
                 [appDelegate doLogon];
                 return;
             }else {
-                [appDelegate showLiveRoom:NO CameraFront:YES hide:NO];
+                [appDelegate showLiveRoom:NO CameraFront:YES hide:hide];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

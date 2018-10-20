@@ -69,14 +69,7 @@
     _tableView.scrollEnabled = NO;
     _tableView.sectionIndexColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
-    EditNameViewController *editNameVC = [[EditNameViewController alloc] init];
-    editNameVC.delegate = self;
-    SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
-    signatureVC.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+    
 }
 
 #pragma mark UITableViewDelegate
@@ -237,10 +230,12 @@
         //改昵称
         EditNameViewController *editNameVC = [[EditNameViewController alloc] init];
         editNameVC.strOldName = model.userName;
+        editNameVC.delegate = self;
         [self.navigationController pushViewController:editNameVC animated:YES];
     }else if (indexPath.section == 1 && indexPath.row == 2){
         //个性签名
         SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
+        signatureVC.delegate = self;
         signatureVC.strInfo = model.sign;
         [self.navigationController pushViewController:signatureVC animated:YES];
     }

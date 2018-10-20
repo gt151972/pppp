@@ -62,6 +62,7 @@
     [self addSubview:viewNavBg];
     
     _labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 44)];
+    
     _labTitle.textColor = TEXT_COLOR;
     _labTitle.text = @"充值";
     _labTitle.font = [UIFont systemFontOfSize:16];
@@ -69,6 +70,7 @@
     [viewNavBg addSubview:_labTitle];
     
     UIButton *btnBack = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, 44, 44)];
+ 
     [btnBack setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
     [btnBack addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
     [viewNavBg addSubview:btnBack];
@@ -76,7 +78,7 @@
     if (kIs_iPhoneX) {
         viewNavBg.frame = CGRectMake(0, 0, SCREEN_WIDTH, 88);
         _labTitle.frame = CGRectMake(0, 44, SCREEN_WIDTH, 44);
-        btnBack.frame = CGRectMake(0, 20, 44, 44);
+        btnBack.frame = CGRectMake(0, 44, 44, 44);
     }
 }
 

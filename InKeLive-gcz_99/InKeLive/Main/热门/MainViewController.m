@@ -43,7 +43,10 @@
 @end
 
 @implementation MainViewController
-
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [_mainTableView reloadData];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -187,7 +190,6 @@
     
     [self getMainList];
     [self getBanner];
-    
 }
 
 #pragma   UITableViewDataSource  UITableViewDelegate
@@ -198,10 +200,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString * identifierId = @"InKeCellId";
     InKeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierId];
-    if (cell == nil) {
+//    if (cell == nil) {
+//        cell = [[InKeCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierId];
+//    }
         cell = [[InKeCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierId];
-    }
-
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         InKeModel *model = [self.dataArr objectAtIndex:indexPath.row];

@@ -428,7 +428,8 @@
                TextLen:(int16_t)textLen
           SrcUserAlias:(const char*)srcUserAlias
            ToUserAlias:(const char*)toUserAlias
-              GiftText:(const char*)giftText;
+              GiftText:(const char*)giftText
+              hideMode:(int8_t)hideModel;
 
 //发送房间请求用户账户信息请求
 -(int)SendGetUserAccountReq:(int)roomId

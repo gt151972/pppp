@@ -14,6 +14,7 @@
 
 @implementation BaseViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     UINavigationBar *bar = [UINavigationBar appearance];

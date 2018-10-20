@@ -36,11 +36,11 @@
             [self requestCallBack:appDic];
             NSLog(@"%@",appDic[@"msg"]);
         }else{
+            [self requestCallBack:appDic];
             NSLog(@"%@",appDic[@"msg"]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error: %@", error);
-
     }];
 }
 

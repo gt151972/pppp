@@ -12,7 +12,7 @@
 
 //选择数量
 @property (nonatomic,copy)void (^numClick)(NSInteger giftNum);
-
+@property (nonatomic, assign)BOOL ishide;
 -(void)popShow;
 -(void)hide;
 

@@ -45,6 +45,11 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];

@@ -7,7 +7,7 @@
 //
 
 #import "InKeCell.h"
-
+#import "DPK_NW_Application.h"
 @implementation InKeCell
 
 - (void)awakeFromNib {
@@ -55,7 +55,19 @@
     [_btnHide setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    [_btnOnline setBackgroundColor: [UIColor redColor]];
     [_btnHide addTarget:self action:@selector(btnHideClick) forControlEvents:UIControlEventTouchUpInside];
+    [_btnHide setHidden:YES];
     [self.contentView addSubview:_btnHide];
+    LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+    NSArray *arrLevel = @[@"6",@"7",@"8",@"9",@"203",@"204",@"205",@"206",@"207",@"208",@"209",@"210",@"211"];
+    NSString *strVipLevel = [NSString stringWithFormat:@"%d",model.viplevel];
+    if (model.userID != 0) {
+        for (NSString *str in arrLevel) {
+            if ([str isEqualToString:strVipLevel]) {
+                _btnHide.hidden = NO;
+            }
+        }
+    }
+    
     
     
 //    _cityLabel = [[UILabel alloc]init];

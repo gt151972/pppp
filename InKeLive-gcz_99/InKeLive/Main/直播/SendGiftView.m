@@ -195,6 +195,10 @@
                     _giftNum = [[pickerArray objectAtIndex:index+1] intValue];
                     break;
                 }
+                
+            }
+            if (_reuse == -1) {
+                _giftNum = 1;
             }
             [cell.hitButton setTitle:[NSString stringWithFormat:@"X%d",_giftNum] forState:UIControlStateNormal];
             //可以发送礼物

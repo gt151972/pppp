@@ -61,7 +61,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     bool is_ksystream_pull_autoconnect_;    //拉流器的状态,是否自动连接
     
     
-    
+    int nowIndex;//当前选中的行;
     
 }
 
@@ -177,9 +177,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [UIApplication sharedApplication].idleTimerDisabled = YES;//屏幕常亮
     self.grind = 0.5;
     self.whiten = 0.5;
     self.rubby = 0.5;
+    nowIndex = -1;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"userId", @"大家", @"userName", nil];
@@ -774,7 +776,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
                                             TextLen:0
                                        SrcUserAlias:szSrcAlias
                                         ToUserAlias:szToAlias
-                                           GiftText:0];
+                                           GiftText:0
+                                           hideMode:_isHide];
                 //            }
             }
         }else{
@@ -864,7 +867,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         self.keyBoardView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame), self.view.bounds.size.width, 44);
     }
     if (self.messageTableView) {
-        self.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-180, CGRectGetWidth(self.view.frame)/3*2, 120);
+        self.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-180, CGRectGetWidth(self.view.frame)/3*2, 120);
     }
     if (self.danmuView) {
         self.danmuView.frame = CGRectMake(self.danmuView.frame.origin.x, CGRectGetMinY(self.messageTableView.frame)-CGRectGetHeight(self.danmuView.frame), CGRectGetWidth(self.danmuView.frame), CGRectGetHeight(self.danmuView.frame));
@@ -1514,7 +1517,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         _keyBoardView = [[KeyBoardInputView alloc] initWityStyle:KeyBoardInputViewTypeNomal];
         _keyBoardView.backgroundColor = [UIColor clearColor];
         _keyBoardView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame), self.view.bounds.size.width, 44);
-        _keyBoardView.delegate = self;
+//        _keyBoardView.delegate = self;
     }
     return _keyBoardView;
 }
@@ -1538,9 +1541,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 - (MessageTableView*)messageTableView {
     if (!_messageTableView) {
-        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220)];
+        _messageTableView = [[MessageTableView alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220)];
         if (kIs_iPhone5S) {
-            _messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+            _messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
         }
     }
     return _messageTableView;
@@ -1789,22 +1792,22 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    self.navigationController.navigationBarHidden = YES;
 //}
 
-- (void)dealloc {
-    if(self.createFlag) {
-        
-    }
-    else {
-        @try{
-            [self removeObserver:self forKeyPath:@"player"];
-        }@catch(NSException *exception){
-            NSLog(@"多次移除kvo");
-        }
-        
-    }
-    self.keyBoardView.delegate = nil;
-    self.presentView.delegate = nil;
-    self.privateChatView.delegate = nil;
-}
+//- (void)dealloc {
+//    if(self.createFlag) {
+//        
+//    }
+//    else {
+//        @try{
+//            [self removeObserver:self forKeyPath:@"player"];
+//        }@catch(NSException *exception){
+//            NSLog(@"多次移除kvo");
+//        }
+//        
+//    }
+//    self.keyBoardView.delegate = nil;
+//    self.presentView.delegate = nil;
+//    self.privateChatView.delegate = nil;
+//}
 
 #pragma mark - 推流端
 - (void)addPushStreamerObserver{
@@ -1889,10 +1892,17 @@ privateChatViewDelegate, GTAFNDataDelegate>
         
         NSURL *url =[NSURL URLWithString:userObj.userSmallHeadPic];
         UIImage *imageDefault = [UIImage imageNamed:@"default_head"];
-        _imgHeadForSinger = [[UIImageView alloc] init];
-        [_imgHeadForSinger sd_setImageWithURL:url placeholderImage:imageDefault];
-        [cell.contentView addSubview:_imgHeadForSinger];
-        [_imgHeadForSinger mas_makeConstraints:^(MASConstraintMaker *make) {
+        UIImageView *image = [[UIImageView alloc] init];
+        [image sd_setImageWithURL:url placeholderImage:imageDefault];
+        [cell.contentView addSubview:image];
+        image.layer.borderWidth = 3;
+        image.layer.cornerRadius = 35.5;
+        image.layer.borderColor = [UIColor clearColor].CGColor;
+        image.tag = 900+indexPath.row;
+        if (indexPath.row == nowIndex) {
+            image.layer.borderColor = MAIN_COLOR.CGColor;
+        }
+        [image mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(cell.contentView);
             make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4-15, SCREEN_WIDTH/4-15));
         }];
@@ -1904,10 +1914,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
         labName.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:labName];
         [labName mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_imgHeadForSinger.mas_bottom);
+            make.top.equalTo(image.mas_bottom);
             make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4, 15));
             make.centerX.equalTo(cell.contentView);
         }];
+        
+        
 //        [cell.userHeadImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
 //        //用户麦状态图片
 //        uint32_t mic_state = userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK;
@@ -1963,11 +1975,19 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    else
     if(tableView == _onMicUsersHeadView)
     {
+//        for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
+//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+//            UIImageView *image = (UIImageView *)[cell.contentView viewWithTag:900 + indexPath.row];
+//            if (index == indexPath.row) {
+//                image.layer.borderColor = MAIN_COLOR.CGColor;
+//            }else{
+//                image.layer.borderColor = [UIColor clearColor].CGColor;
+//            }
+//
+//        }
+        nowIndex = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
         //在线用户列表
         if(!self.createFlag) {
-            _imgHeadForSinger.layer.borderColor = MAIN_COLOR.CGColor;
-            _imgHeadForSinger.layer.borderWidth = 3;
-            _imgHeadForSinger.layer.cornerRadius = 35.5;
             //观众端:点击头像观看该用户
             ClientUserModel* userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
             self.userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
@@ -2019,6 +2039,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         }
     }
     NSLog(@"tableView didSelect:%ld", (long)indexPath.row);
+    [tableView reloadData];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -2161,7 +2182,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     //=======================================
 #endif
     view.userArray = self.roomObj.memberList;
-    
+    view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
         self.giftView.userName = userAlias;
         self.giftView.userId = (int)userId;
@@ -2224,7 +2245,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 #endif
     NSArray *array = [self sortData:self.roomObj.memberList];
     view.userArray = array;
-
+    view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
         [UIView animateWithDuration:0 animations:^{
             self.userView.transform = CGAffineTransformIdentity;
@@ -2293,9 +2314,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
     WEAKSELF;
     [_webView setBtnCloseClick:^{
         [weakSelf bottomToolShow];
-        weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+        weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220);
         if (kIs_iPhone5S) {
-            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+            weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
         }
     }];
 }
@@ -2426,14 +2447,14 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }];
     [_chatPublicView setChangeMessageTableView:^(NSValue *value) {
         if (value == 0) {
-            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*3/4, 220);
+            weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-280, CGRectGetWidth(self.view.frame)*4/5, 220);
             if (kIs_iPhone5S) {
-                weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
+                weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-210, CGRectGetWidth(self.view.frame)*4/5, 150);
             }
         }else{
-            weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-280-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*3/4, 220);
+            weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-280-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*4/5, 220);
             if (kIs_iPhone5S) {
-                weakSelf.messageTableView.frame = CGRectMake(0, CGRectGetMaxY(self.view.frame)-210-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*4/5, 150);
+                weakSelf.messageTableView.frame = CGRectMake(5, CGRectGetMaxY(self.view.frame)-210-[value CGRectValue].size.height, CGRectGetWidth(self.view.frame)*4/5, 150);
             }
         }
     }];
@@ -3055,7 +3076,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
         }
         if (!_isEnterHide) {
             MessageModel *model = [[MessageModel alloc] init];
-            [model setModel:sysTipText];
+//            [model setModel:sysTipText];
+            [model setModelWithId:[NSString stringWithFormat:@"%d",userObj.userId] name:userObj.userAlias type:CellEnterType level:vipLevel];
             [self.messageTableView sendMessage:model];
         }
     }
@@ -3273,12 +3295,17 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
     
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
-    if(userData.userID == toId)
+    
+    if(userData.userID == toId){
         strToName = @"你";
-    ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
-    if(srcUserObj !=nil) {
-        srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+        ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
+        if(srcUserObj ==nil && srcAllUserObj !=nil) {
+            srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+            hidding = YES;
+        }
     }
+    
+    
     if (!_isGiftHide) {
         [model setModel:strSrcId withName:srcUserAlias withIcon:nil withType:CellNewGiftType withGiftId:strGiftId withGiftName:strGiftName withGiftNum:strGiftNum withToId:[NSString stringWithFormat:@"%d",toId] withToName:strToName level:level hide:hidding];
         [self.messageTableView sendMessage:model];
@@ -3337,9 +3364,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
         //用户离开提示
         ClientUserModel* userObj = [self.roomObj findMember:userId];
         if(userObj != nil &&  !_isQuitHide) {
-            NSString* sysTipText =[NSString stringWithFormat:@"%@ 离开了", userObj.userAlias];
+//            NSString* sysTipText =[NSString stringWithFormat:@"%@ 离开了", userObj.userAlias];
             MessageModel *model = [[MessageModel alloc] init];
-            [model setModel:sysTipText];
+//            [model setModel:sysTipText];
+            [model setModelWithId:[NSString stringWithFormat:@"%d",userObj.userId] name:userObj.userAlias type:CellLeaveType level:userObj.vipLevel];
             [self.messageTableView sendMessage:model];
         }
         [self.giftView delUser:userId];
@@ -3377,9 +3405,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
    
     NSString* sysTipText = [NSString stringWithFormat:@"%@ 上PC麦了(type=%d)",userObj.userAlias, micType];
     MessageModel *model = [[MessageModel alloc] init];
-    [model setModel:sysTipText];
-    [self.messageTableView sendMessage:model];
+//    [model setModel:sysTipText];
     
+    [self.messageTableView sendMessage:model];
 }
 
 //用户下PC麦通知

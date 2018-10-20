@@ -186,17 +186,25 @@
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell" forIndexPath:indexPath];
     @try {
         cell.model = self.data[indexPath.row];
+//        [cell addLable:self.data[indexPath.row]];
     }
     @catch (NSException *exception) {
         NSLog(@"dataCout:%lu,indexPathRow:%ld",(unsigned long)self.data.count,(long)indexPath.row);
         cell.model = [self.data lastObject];
+//        [cell addLable:[self.data lastObject]];
     }
-    
-    cell.label.preferredMaxLayoutWidth = CGRectGetWidth(self.frame)-20;
+
+    cell.label.preferredMaxLayoutWidth = CGRectGetWidth(cell.contentView.frame)-20;
     cell.label.delegate = self;
     cell.label.verticalAlignment = TYVerticalAlignmentCenter;
-    cell.label.textContainer = [cell.label.textContainer createTextContainerWithTextWidth:CGRectGetWidth(self.frame)];
-   
+    cell.label.textContainer = [cell.label.textContainer createTextContainerWithTextWidth:CGRectGetWidth(cell.contentView.frame)-20];
+    [cell.label setFrameWithOrign:CGPointMake(0, 0) Width:CGRectGetWidth(cell.contentView.frame)];
+    cell.width = cell.width + 10;
+    cell.label.backgroundColor = RGBA(0, 0, 0, 0.15);
+    cell.label.layer.masksToBounds = YES;
+    cell.label.layer.cornerRadius = 10;
+    NSLog(@"cell.width == %lu",(unsigned long)cell.label.width);
+//    cell.label.isWidthToFit = YES;
     return cell;
 }
 
@@ -204,6 +212,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+//    MessageCell *cell = [[MessageCell alloc] init];
+//    CGFloat height = [cell height:self.data[indexPath.row]];
+//    height = height+3;
+//    return height;
     return UITableViewAutomaticDimension;
     
 }

@@ -432,6 +432,7 @@ DataLen:(int)data_len
           SrcUserAlias:(const char*)srcUserAlias
            ToUserAlias:(const char*)toUserAlias
               GiftText:(const char*)giftText
+             hideMode:(int8_t)hideModel
 {
     char szBuffer[SOCKET_TCP_BUFFER_SIZE];
     memset(szBuffer, 0, sizeof(szBuffer));
@@ -442,6 +443,7 @@ DataLen:(int)data_len
     req->toId    = toId;
     req->giftId  = giftId;
     req->giftNum = giftNum;
+    req->hideMode = hideModel;
     if(giftText !=0)
         req->textLen = strlen(giftText)+1;
     if(srcUserAlias !=0)

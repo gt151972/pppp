@@ -19,5 +19,6 @@
 @property (nonatomic, weak, readonly) UIView *viewBg;
 
 @property (nonatomic,strong)MessageModel *model;
-
+- (void)addLable:(MessageModel *)model;
+- (CGFloat)height: (MessageModel *)model;
 @end

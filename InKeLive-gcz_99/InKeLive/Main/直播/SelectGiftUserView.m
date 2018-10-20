@@ -129,8 +129,12 @@
     labTitle.textAlignment = NSTextAlignmentLeft;
     labTitle.font = [UIFont systemFontOfSize:15];
     NSString *strName = model.userAlias;
+    if (_ishide && indexPath.row == 0) {
+        strName = [NSString stringWithFormat:@"[隐]%@",model.userAlias];
+    }
     NSString *strId = [NSString stringWithFormat:@"%d",model.userId];
     NSString *strInfo= [NSString stringWithFormat:@"%@(%@)",strName,strId];
+
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:strInfo];
     [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, strName.length)];
     [attrStr addAttribute:NSForegroundColorAttributeName value:RGB(139, 139, 139) range:NSMakeRange(strName.length, strId.length + 2)];
