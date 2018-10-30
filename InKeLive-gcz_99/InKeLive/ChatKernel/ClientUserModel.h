@@ -13,6 +13,7 @@
 @property(nonatomic, assign) int userId;
 @property(nonatomic, assign) unsigned int inRoomState;
 @property(nonatomic, assign) int vipLevel;
+@property(nonatomic, assign) int userLevel;//用于房间排序
 @property(nonatomic, assign) int roomLevel;
 @property(nonatomic, assign) int playerLevel;
 @property(nonatomic, assign) int mbTLstatus;

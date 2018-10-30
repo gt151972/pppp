@@ -36,7 +36,7 @@ PODS:
   - MBProgressHUD (1.0.0)
   - MJExtension (3.0.15.1)
   - MJRefresh (3.0.8)
-  - pop (1.0.10)
+  - pop (1.0.12)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
     - ReactiveCocoa/UI (= 2.4.7)
@@ -223,7 +223,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: fafde8f18f4afd66b434331a9beb67a6c0264056
-  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9

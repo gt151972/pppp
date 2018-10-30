@@ -195,7 +195,8 @@
                         TextLen:(int)textLen
                    SrcUserAlias:(NSString*)srcUserAlias
                     ToUserAlias:(NSString*)toUserAlias
-                    ChatContent:(NSString*)chatContent;
+                    ChatContent:(NSString*)chatContent
+                          error:(int)error;
 
 //用户赠送礼物响应
 -(void)OnNetMsg_RoomSendGiftResp:(int)error_code;
@@ -320,7 +321,8 @@
                           SrcName:(NSString*)srcName
                            ToName:(NSString*)toName
                          RoomName:(NSString*)roomName
-                             Text:(NSString*)text;
+                             Text:(NSString*)text
+                         errorMsg:(int)error;
 
 
 //用户关注回包

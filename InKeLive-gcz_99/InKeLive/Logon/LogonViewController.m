@@ -20,7 +20,7 @@
 #import "GTAFNData.h"
 #import "ForgetPasswordViewController.h"
 #import "RegisteredViewController.h"
-@interface LogonViewController ()<GTAFNDataDelegate>{
+@interface LogonViewController ()<GTAFNDataDelegate, UITableViewDelegate, UITableViewDataSource>{
     int type;//1:账号密码 2:QQ 3:手机密码 4:微信
 }
 
@@ -29,7 +29,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewHead;
 @property (weak, nonatomic) IBOutlet UIButton *btnPwdVisable;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegiest;
-
+@property (weak, nonatomic) IBOutlet UIView *viewFooter;
+@property (weak, nonatomic) IBOutlet UIView *viewLine;
+@property (weak, nonatomic) IBOutlet UIButton *btnUserId;
+@property (strong, nonatomic)UITableView *tableView;
 @end
 
 @implementation LogonViewController
@@ -57,7 +60,21 @@
     UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(eventTapGesture:)];
     [self.view addGestureRecognizer:tapGesture];
 
+    self.viewFooter.hidden = YES;
     
+    _tableView = [[UITableView alloc] init];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.rowHeight = 20;
+    [self.view addSubview:_tableView];
+    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@80);
+        make.top.equalTo(_viewLine.mas_bottom);
+    }];
+    [self.tableView setHidden:YES];
+    
+    [self.btnUserId addTarget:self action:@selector(btnUserIdClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 - (UIButton *)btnRegiest{
     _btnRegiest.layer.cornerRadius = 19;
@@ -116,6 +133,9 @@
     [self.navigationController pushViewController:registeredVC animated:NO];
 }
 
+-(void)btnUserIdClicked{
+    self.tableView.hidden = NO;
+}
 
 /**
  密码可见切换

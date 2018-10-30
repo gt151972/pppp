@@ -46,7 +46,7 @@
         [self addSubview:button];
     }
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(4, 14, 115, 32)];
-    textField.layer.cornerRadius = 16;
+    textField.layer.cornerRadius = 4;
     textField.layer.masksToBounds = YES;
     textField.placeholder = @"  一起来聊天吧";
     textField.font = [UIFont systemFontOfSize:12];

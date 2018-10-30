@@ -89,6 +89,11 @@ static const CGFloat kHeight=285.0;
     viewTopBg.backgroundColor = RGBA(0, 0, 0, 0.8);
     [viewBg addSubview:viewTopBg];
     [viewTopBg addSubview:self.labNameAndId];
+    
+    UIButton *btnClose = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 40, 1, 32, 32)];
+    [btnClose setImage:[UIImage imageNamed:@"living_close"] forState:UIControlStateNormal];
+    [btnClose addTarget:self action:@selector(btnBgClicked) forControlEvents:UIControlEventTouchUpInside];
+    [viewTopBg addSubview:btnClose];
 //    _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
 //    _userTableView.dataSource = self;
 //    _userTableView.delegate = self;
@@ -447,6 +452,7 @@ static const CGFloat kHeight=285.0;
  }
 
 - (void)reloadDateForTableView{
+    
     [_userTableView reloadData];
     [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
     [_messageTableView reloadData];

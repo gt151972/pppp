@@ -157,11 +157,11 @@
 //        if (indexPath.row == 0 || indexPath.row == 7) {
 //            cell.contentView.backgroundColor = [UIColor redColor];
 //        }
-//        NSLog(@"_arrayCollect == %@",_arrayCollect);
         //设置礼物信息
         GTGiftListModel* model = [_arrayCollect objectAtIndex:indexPath.row];
-//        NSLog(@"pic == %@",model.pic_thumb);
+        NSLog(@"pic == %ld",(long)indexPath.row);
         [cell setGiftInfo:model.giftId GiftImage:model.pic_original GiftName:model.name GiftPrice:model.price];
+        
 //        [cell.hitButton setTitle:[NSString stringWithFormat:@"%d",model.price] forState:UIControlStateNormal];
         if (_reuse == indexPath.row) {
             cell.hitButton.hidden = NO;
@@ -378,14 +378,16 @@
     self.type = (int)button.tag - 1000;
     [button setSelected:YES];
     _arrayCollect = [NSArray arrayWithArray:[_arrayAll objectAtIndex:btnType.tag - 1000]];
-    [self.pageControl reloadInputViews];
+    self.pageControl.currentPage = 0;
 //    NSLog(@"count == %lu",(unsigned long)_arrayCollect.count);
     self.pageControl.numberOfPages = (_arrayCollect.count +7)/8;
-//    [self addSubview:self.pageControl];
+    [self.pageControl reloadInputViews];
     [self.rechargeView reloadInputViews];
     _reuse = -1;
+//    [self.giftCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+//    self.giftCollectionView.scrollsToTop = YES;
     [self.giftCollectionView reloadData];
-}
+    [self.giftCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];}
 
 //充值按钮
 //- (UIButton *)rechargeButton{
@@ -618,13 +620,84 @@
  @return <#return value description#>
  */
 - (NSArray *)sortData: (NSArray *)array{
-    NSLog(@"array == %@",array);
-    NSMutableArray *arrData = [[NSMutableArray alloc] initWithArray:array];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"vipLevel" ascending:NO];
+    NSMutableArray *arrData = [[NSMutableArray alloc] init];
+    for (ClientUserModel *model in array) {
+        switch (model.vipLevel) {
+            case 0:
+                model.userLevel = 0;
+                break;
+            case 1:
+                model.userLevel = 1;
+                break;
+            case 2:
+                model.userLevel = 5;
+                break;
+            case 3:
+                model.userLevel = 6;
+                break;
+            case 4:
+                model.userLevel = 7;
+                break;
+            case 5:
+                model.userLevel = 96;
+                break;
+            case 6:
+                model.userLevel = 97;
+                break;
+            case 7:
+                model.userLevel = 98;
+                break;
+            case 8:
+                model.userLevel = 99;
+                break;
+            case 9:
+                model.userLevel = 100;
+                break;
+            case 21:
+                model.userLevel = 35;
+                break;
+            case 22:
+                model.userLevel = 36;
+                break;
+            case 23:
+                model.userLevel = 37;
+                break;
+            case 24:
+                model.userLevel = 38;
+                break;
+            case 25:
+                model.userLevel = 39;
+                break;
+            case 30:
+                model.userLevel = 40;
+                break;
+            case 201:
+                model.userLevel = 26;
+                break;
+            case 205:
+                model.userLevel = 27;
+                break;
+            case 207:
+                model.userLevel = 28;
+                break;
+            case 210:
+                model.userLevel = 29;
+                break;
+            case 211:
+                model.userLevel = 30;
+                break;
+                
+            default:
+                break;
+        }
+        [arrData addObject:model];
+    }
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"userLevel" ascending:NO];
     [arrData sortUsingDescriptors:@[sort]];
-    // 输出排序结果
+    //     //输出排序结果
     for (ClientUserModel *model in arrData) {
-        NSLog(@"vipLevel: %d,userId: %d userAlias: %@", model.vipLevel,model.userId, model.userAlias);
+        NSLog(@"userLevel: %d,userId: %d userAlias: %@", model.userLevel,model.userId, model.userAlias);
     }
     LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
     for (int index = 0; index < arrData.count; index ++ ) {
@@ -645,8 +718,8 @@
     
     WEAKSELF;
     [view setNumClick:^(NSInteger giftNum) {
-        weakSelf.giftNum = giftNum;
-        [self.selectNumButton setTitle:[NSString stringWithFormat:@"数量:%d", giftNum] forState:UIControlStateNormal ];
+        weakSelf.giftNum = (int)giftNum;
+        [self.selectNumButton setTitle:[NSString stringWithFormat:@"数量:%ld", (long)giftNum] forState:UIControlStateNormal ];
     }];
     [view popShow];
 

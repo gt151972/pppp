@@ -795,6 +795,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                           SrcUserAlias:strSrcAlias
                                            ToUserAlias:strToAlias
                                            ChatContent:strMsgText
+                                                 error:pNoty->errorCode
                      ];
                 }
             }
@@ -1115,7 +1116,8 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                  SrcName:srcName
                                                   ToName:toName
                                                 RoomName:vcbName
-                                                    Text:text];
+                                                    Text:text
+                                                errorMsg:pNoty->errorCode];
                 }
             }
                 break;

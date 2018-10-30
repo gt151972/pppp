@@ -280,6 +280,7 @@
 		640526FC215249D6007C7E3E /* PresentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F8215249D5007C7E3E /* PresentViewCell.m */; };
 		640526FD215249D6007C7E3E /* PresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F9215249D5007C7E3E /* PresentView.m */; };
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
+		64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067EE0218808C500EFB774 /* ShareCopyView.m */; };
 		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
 		64241E63214F5139007E3F3D /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64241E62214F5138007E3F3D /* ShareView.m */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
@@ -837,6 +838,8 @@
 		640526FB215249D5007C7E3E /* PresentModelAble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentModelAble.h; sourceTree = "<group>"; };
 		640526FE21524A23007C7E3E /* PresentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentModel.h; sourceTree = "<group>"; };
 		640526FF21524A23007C7E3E /* PresentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentModel.m; sourceTree = "<group>"; };
+		64067EDF218808C500EFB774 /* ShareCopyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareCopyView.h; sourceTree = "<group>"; };
+		64067EE0218808C500EFB774 /* ShareCopyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareCopyView.m; sourceTree = "<group>"; };
 		6423C9EB2126631D00801996 /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppInfo.plist; sourceTree = "<group>"; };
 		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
 		64241E61214F5138007E3F3D /* ShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
@@ -1535,6 +1538,8 @@
 				64738D39214A5FFB00536B90 /* BeautyView.m */,
 				64241E61214F5138007E3F3D /* ShareView.h */,
 				64241E62214F5138007E3F3D /* ShareView.m */,
+				64067EDF218808C500EFB774 /* ShareCopyView.h */,
+				64067EE0218808C500EFB774 /* ShareCopyView.m */,
 				64CA04C2215CD2A700A13359 /* WebView.h */,
 				64CA04C3215CD2A700A13359 /* WebView.m */,
 				640472BD21758AF2002AC257 /* SpecialView.h */,
@@ -2892,6 +2897,7 @@
 				644B183521142E3C00939E76 /* RecommendViewController.m in Sources */,
 				633D8D991E0796010087BD77 /* CustomSwitch.m in Sources */,
 				6482B5562138CC4E009E6747 /* ServideViewController.m in Sources */,
+				64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */,
 				63402F1F1E124ADD002F6661 /* EmptyView.m in Sources */,
 				633E2E0B1E1CF9050049C9E8 /* GiftViewCell.m in Sources */,
 				633D8D781E0791B20087BD77 /* TYImageStorage.m in Sources */,

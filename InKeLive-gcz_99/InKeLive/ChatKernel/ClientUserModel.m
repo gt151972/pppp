@@ -15,6 +15,7 @@
     self.userId = 0;
     self.inRoomState = 0;
     self.vipLevel = 0;
+    self.userLevel = 0;
     self.roomLevel = 0;
     self.playerLevel = 0;
     self.mbTLstatus = 0;
@@ -26,6 +27,7 @@
     self.pushStreamUrl = @"";
     self.pullStreamUrl =@"";
     self.isAttention = 0;
+    
 }
 
 @end

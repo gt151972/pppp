@@ -587,7 +587,7 @@
         case CellLeaveType:  //新聊天消息
         {
             
-            allMessage = [NSString stringWithFormat:@"%@: 离开了!",name];
+            allMessage = [NSString stringWithFormat:@"%@ 离开了!",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -613,7 +613,7 @@
             [container addView:view range:NSMakeRange(0, 0)];
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-            NSString *string = [NSString stringWithFormat:@"%@:",name];
+            NSString *string = [NSString stringWithFormat:@"%@ ",name];
             nameTextStorage.range = [allMessage rangeOfString:string];
             nameTextStorage.textColor = MAIN_COLOR;
             nameTextStorage.font = [UIFont boldSystemFontOfSize:14];
@@ -643,7 +643,7 @@
             break;
         case CellEnterType:  //新聊天消息
         {
-            allMessage = [NSString stringWithFormat:@"%@: 进来了!",name];
+            allMessage = [NSString stringWithFormat:@"%@ 进来了!",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -668,7 +668,7 @@
             [container addView:view range:NSMakeRange(0, 0)];
             //用户名字的颜色和文字大小
             TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-            NSString *string = [NSString stringWithFormat:@"%@:",name];
+            NSString *string = [NSString stringWithFormat:@"%@ ",name];
             nameTextStorage.range = [allMessage rangeOfString:string];
             nameTextStorage.textColor = MAIN_COLOR;
             nameTextStorage.font = [UIFont boldSystemFontOfSize:14];

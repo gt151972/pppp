@@ -202,7 +202,7 @@
     cell.width = cell.width + 10;
     cell.label.backgroundColor = RGBA(0, 0, 0, 0.15);
     cell.label.layer.masksToBounds = YES;
-    cell.label.layer.cornerRadius = 10;
+    cell.label.layer.cornerRadius = 4;
     NSLog(@"cell.width == %lu",(unsigned long)cell.label.width);
 //    cell.label.isWidthToFit = YES;
     return cell;

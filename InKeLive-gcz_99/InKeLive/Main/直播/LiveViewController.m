@@ -38,6 +38,7 @@
 #import "WebView.h"
 #import "GTAFNData.h"
 #import "SpecialView.h"
+#import "ShareCopyView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -121,7 +122,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //美颜滤镜
 @property (nonatomic, strong) BeautyView *beautyView;
 //分享面板
-@property (nonatomic, strong) ShareView *shareView;
+//@property (nonatomic, strong) ShareView *shareView;
+@property (nonatomic, strong)ShareCopyView *shareView;
 @property (nonatomic, strong) SpecialView *speicalView;
 //充值网页
 @property (nonatomic, strong) WebView *webView;
@@ -576,16 +578,26 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
     if (MPMovieNaturalSizeAvailableNotification ==  notify.name) {
         NSLog(@"video size %.0f-%.0f, rotate:%ld\n", _player.naturalSize.width, _player.naturalSize.height, (long)_player.naturalRotate);
-        if(((_player.naturalRotate / 90) % 2  == 0 && _player.naturalSize.width > _player.naturalSize.height) ||
-           ((_player.naturalRotate / 90) % 2 != 0 && _player.naturalSize.width < _player.naturalSize.height))
-        {
-            //如果想要在宽大于高的时候横屏播放，你可以在这里旋转
+        if (_player.naturalSize.width > _player.naturalSize.height) {
             _player.scalingMode = MPMovieScalingModeAspectFit;
             if (kIs_iPhoneX) {
                 _player.view.frame = CGRectMake(0, 112, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
             }else{
                 _player.view.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
             }
+        }else{
+            _player.scalingMode = MPMovieScalingModeAspectFill;
+            _player.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+        if(((_player.naturalRotate / 90) % 2  == 0 && _player.naturalSize.width > _player.naturalSize.height) ||
+           ((_player.naturalRotate / 90) % 2 != 0 && _player.naturalSize.width < _player.naturalSize.height))
+        {
+            //如果想要在宽大于高的时候横屏播放，你可以在这里旋转
+//            if (kIs_iPhoneX) {
+//                _player.view.frame = CGRectMake(0, 112, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+//            }else{
+//                _player.view.frame = CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
+//            }
             
         }
     }
@@ -714,7 +726,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [self.topSideView addSubview:self.KSYstreamerStatusBK];
 //    [self.topSideView addSubview:self.KSYstreamerStatusLabel];
     
-    [self.view addSubview:self.danmuView];
+//    [self.view addSubview:self.danmuView]
     UIImageView *imageBg = [[UIImageView alloc] initWithFrame:_playerView.frame];
     imageBg.image = [UIImage imageNamed:@"wellcome_default_blur"];
     [_playerView addSubview:imageBg];
@@ -1192,6 +1204,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 //关闭直播
 - (void)closeRoom {
+    if (_createFlag) {
+        LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
+        [self.socketObj SendDownMBMicReq:model.userID RoomID:self.roomObj.roomId];
+    }
     [self closeRoom2:NO AlertString:nil];
 }
 
@@ -1985,10 +2001,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //            }
 //
 //        }
-        nowIndex = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
+        
         //在线用户列表
         if(!self.createFlag) {
             //观众端:点击头像观看该用户
+            nowIndex = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
             ClientUserModel* userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
             self.userObj = [self.roomObj.onMicUserList objectAtIndex:indexPath.row];
             [self.anchorView setAnchorInfo:_userObj.userId UserName:_userObj.userAlias UserHeadPic:_userObj.userSmallHeadPic];
@@ -2013,8 +2030,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 return;
             
             //主播端不处理
-            if(self.createFlag)
-                return;
+            if(self.createFlag){
+                
+            }
+            
             
             //获取用户的麦状态
             int rotateDegree = 0;
@@ -2036,6 +2055,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
             NSLog(@"============================");
 
             [self onPlayStream:YES URL:userObj.pullStreamUrl RotateDegree:rotateDegree];
+        }else{
+            [[GTAlertTool shareInstance]showAlert:@"你当前处于主播状态" message:@"不能观看其他麦" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                
+            }];
+            return;
         }
     }
     NSLog(@"tableView didSelect:%ld", (long)indexPath.row);
@@ -2218,7 +2242,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 }
 - (void)showShareView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    _shareView = [[ShareView alloc] initWithFrame:frame];
+    _shareView = [[ShareCopyView alloc] initWithFrame:frame];
     [_shareView popShow];
 }
 
@@ -2263,13 +2287,85 @@ privateChatViewDelegate, GTAFNDataDelegate>
  @return <#return value description#>
  */
 - (NSArray *)sortData: (NSArray *)array{
-    NSLog(@"array == %@",array);
-    NSMutableArray *arrData = [[NSMutableArray alloc] initWithArray:array];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"vipLevel" ascending:NO];
+//    NSLog(@"array == %@",array);
+    NSMutableArray *arrData = [[NSMutableArray alloc] init];
+    for (ClientUserModel *model in array) {
+        switch (model.vipLevel) {
+            case 0:
+                model.userLevel = 0;
+                break;
+            case 1:
+                model.userLevel = 1;
+                break;
+            case 2:
+                model.userLevel = 5;
+                break;
+            case 3:
+                model.userLevel = 6;
+                break;
+            case 4:
+                model.userLevel = 7;
+                break;
+            case 5:
+                model.userLevel = 96;
+                break;
+            case 6:
+                model.userLevel = 97;
+                break;
+            case 7:
+                model.userLevel = 98;
+                break;
+            case 8:
+                model.userLevel = 99;
+                break;
+            case 9:
+                model.userLevel = 100;
+                break;
+            case 21:
+                model.userLevel = 35;
+                break;
+            case 22:
+                model.userLevel = 36;
+                break;
+            case 23:
+                model.userLevel = 37;
+                break;
+            case 24:
+                model.userLevel = 38;
+                break;
+            case 25:
+                model.userLevel = 39;
+                break;
+            case 30:
+                model.userLevel = 40;
+                break;
+            case 201:
+                model.userLevel = 26;
+                break;
+            case 205:
+                model.userLevel = 27;
+                break;
+            case 207:
+                model.userLevel = 28;
+                break;
+            case 210:
+                model.userLevel = 29;
+                break;
+            case 211:
+                model.userLevel = 30;
+                break;
+                
+            default:
+                break;
+        }
+        [arrData addObject:model];
+    }
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"userLevel" ascending:NO];
     [arrData sortUsingDescriptors:@[sort]];
-    // 输出排序结果
+//     //输出排序结果
     for (ClientUserModel *model in arrData) {
-        NSLog(@"vipLevel: %d,userId: %d userAlias: %@", model.vipLevel,model.userId, model.userAlias);
+        NSLog(@"userLevel: %d,userId: %d userAlias: %@", model.userLevel,model.userId, model.userAlias);
     }
     LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
     for (int index = 0; index < arrData.count; index ++ ) {
@@ -2281,6 +2377,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
     NSArray *arr = [[NSArray alloc] initWithArray:arrData];
     return arr;
+}
+
+- (void)setUserLevel:(int)vipLevel{
+    
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
+    
 }
 
 - (void)showBeautyViewLWithGrind:(float)grind whiten:(float)whiten ruddy:(float)ruddy{
@@ -2601,6 +2703,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 TLMediaUrl1:(NSString*)tlMediaUrl1
                 TLMediaUrl2:(NSString*)tlMediaUrl2
 {
+    _player.scalingMode = MPMovieScalingModeAspectFill;
     NSLog(@"OnNetMsg_UpMBMicResp");
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     if(error_code !=0) {
@@ -2665,6 +2768,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
     [self.roomObj delOnMicUser:userId];
     [self.onMicUsersHeadView reloadData];
+    
+    [[GTAlertTool shareInstance] showAlert:@"您观看的主播已下麦" message:@"请选择其他主播" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+        _playerId = 0;
+        [self.anchorView reset];
+        [self onPlayStream:NO URL:nil RotateDegree:0];
+    }];
 }
 
 //设置推流状态响应(手机版)
@@ -3089,10 +3198,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
                            ToID:(int)toId
                         MsgType:(int)msgType
                         TextLen:(int)textLen
-                   SrcUserAlias:(NSString*)srcUserAlias
-                    ToUserAlias:(NSString*)toUserAlias
-                    ChatContent:(NSString*)chatContent
+                   SrcUserAlias:(NSString *)srcUserAlias
+                    ToUserAlias:(NSString *)toUserAlias
+                    ChatContent:(NSString *)chatContent
+                          error:(int)error
 {
+    NSLog(@"error == %d",error);
     
     int level = 0;
     NSArray *arrName = self.roomObj.memberList;
@@ -3195,6 +3306,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
         _chatPrivateView.nowRow = self.nowRow;
         _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         [_chatPrivateView reloadDateForTableView];
+//        if (<#condition#>) {
+//            <#statements#>
+//        }
     }else if (msgType == 3){//公告
         NSString *strToId = [NSString stringWithFormat:@"%d",toId];
         NSString* chatContent2 = [NSString filterHTML:chatContent];
@@ -3288,6 +3402,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }else{
         srcUserAlias = @"天外贵宾";
         hidding = YES;
+        if (srcId == toId) {
+            strToName = @"天外贵宾";
+        }
     }
     ClientUserModel* toUserObj = [self.roomObj findMember:toId];
     if(toUserObj !=nil) {
@@ -3296,7 +3413,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     
     LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     
-    if(userData.userID == toId){
+    if(userData.userID == toId && srcId == toId){
         strToName = @"你";
         ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
         if(srcUserObj ==nil && srcAllUserObj !=nil) {
@@ -3390,7 +3507,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
               TLMediaurl1:(NSString*)tlMediaUrl1
               TLMediaurl2:(NSString*)tlMediaUrl2
 {
-    
+    _player.scalingMode = MPMovieScalingModeAspectFit;
     ClientUserModel* userObj = [self.roomObj findMember:userId];
     userObj.inRoomState = userRoomState;
     userObj.mbTLstatus = 0;
@@ -3541,15 +3658,16 @@ privateChatViewDelegate, GTAFNDataDelegate>
 }
 
 //全局聊天(小喇叭，各种系统)信息通知
--(void)OnNetMsg_GlobalChatMsgNoty:(int)roomId
-                            SrcID:(int)srcId
-                             ToID:(int)toId
-                         ChatType:(int)chatType
-                          TextLen:(int)textLen
-                          SrcName:(NSString*)srcName
-                           ToName:(NSString*)toName
-                         RoomName:(NSString*)roomName
-                             Text:(NSString*)text
+- (void)OnNetMsg_GlobalChatMsgNoty:(int)roomId
+                             SrcID:(int)srcId
+                              ToID:(int)toId
+                          ChatType:(int)chatType
+                           TextLen:(int)textLen
+                           SrcName:(NSString *)srcName
+                            ToName:(NSString *)toName
+                          RoomName:(NSString *)roomName
+                              Text:(NSString *)text
+                          errorMsg:(int)error
 {
     NSString *strUserId = [NSString stringWithFormat:@"%d",srcId];
     NSLog(@"srcName == %@\n toName == %d\n roomName == %d\n text == %@\n",srcName,srcId,chatType,text);
