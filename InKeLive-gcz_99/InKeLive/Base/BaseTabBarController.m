@@ -102,8 +102,9 @@
     childViewController.title = title;
     NSMutableDictionary *textAttribute = [NSMutableDictionary dictionary];
     textAttribute[NSForegroundColorAttributeName] = [UIColor colorWithRed:24/255.0 green:24/255.0 blue:24/255.0 alpha:1.0];
+    textAttribute[NSFontAttributeName] = [UIFont systemFontOfSize:11];
     [childViewController.tabBarItem setTitleTextAttributes:textAttribute forState:UIControlStateNormal];
-     [childViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:MAIN_COLOR} forState:UIControlStateSelected];
+     [childViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithRed:24/255.0 green:24/255.0 blue:24/255.0 alpha:1.0]} forState:UIControlStateSelected];
     [self addChildViewController:nav];
 }
 

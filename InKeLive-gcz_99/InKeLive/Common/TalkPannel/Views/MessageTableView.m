@@ -198,12 +198,13 @@
     cell.label.delegate = self;
     cell.label.verticalAlignment = TYVerticalAlignmentCenter;
     cell.label.textContainer = [cell.label.textContainer createTextContainerWithTextWidth:CGRectGetWidth(cell.contentView.frame)-20];
-    [cell.label setFrameWithOrign:CGPointMake(0, 0) Width:CGRectGetWidth(cell.contentView.frame)];
+    [cell.label setFrameWithOrign:CGPointMake(0, 0) Width:CGRectGetWidth(cell.contentView.frame)-20];
     cell.width = cell.width + 10;
     cell.label.backgroundColor = RGBA(0, 0, 0, 0.15);
     cell.label.layer.masksToBounds = YES;
     cell.label.layer.cornerRadius = 4;
-    NSLog(@"cell.width == %lu",(unsigned long)cell.label.width);
+    cell.label.layer.shadowOffset = CGSizeMake(5, 5);
+    NSLog(@"cell.width == %lu, cell.lable.text == %@",(unsigned long)cell.label.width, cell.label.text);
 //    cell.label.isWidthToFit = YES;
     return cell;
 }
