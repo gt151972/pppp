@@ -30,7 +30,7 @@
 
 @implementation MineViewController
 - (void)initData{
-    _arrTitle = @[@"我的收益", @"安全中心", @"排行榜", @"设置"];
+    _arrTitle = @[@"我的收益", @"安全中心", @"客服中心", @"排行榜", @"设置"];
     _userModel = [DPK_NW_Application sharedInstance].localUserModel;
     
     [self.tableView reloadData];
@@ -104,7 +104,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 5;
 }
 
 
@@ -141,7 +141,7 @@
         //安全中心
         SecurityViewController *securityVC = [[SecurityViewController alloc] init];
         [self.navigationController pushViewController:securityVC animated:YES];
-    }else if (indexPath.row == 2){
+    }else if (indexPath.row == 3){
         //排行榜
         NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
         NSString*cachePath = array[0];
@@ -152,18 +152,18 @@
         webVC.strUrl = strUrl;
         webVC.strTitle = @"排行榜";
         [self.navigationController pushViewController:webVC animated:YES];
-//    }else if (indexPath.row == 3){
-//        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-//        NSString*cachePath = array[0];
-//        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
-//        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-//        NSString *strUrl = [dict objectForKey:@"activity"];
-//        WebViewController *webVC = [[WebViewController alloc] init];
-//        webVC.strUrl = strUrl;
-//        webVC.strTitle = @"活动中心";
-//        [self.navigationController pushViewController:webVC animated:YES];
-//        //活动中心
-    }else if (indexPath.row == 3){
+    }else if (indexPath.row == 2){
+        //客服中心
+        NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+        NSString*cachePath = array[0];
+        NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+        NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+        NSString *strUrl = [dict objectForKey:@"customer"];
+        WebViewController *webVC = [[WebViewController alloc] init];
+        webVC.strUrl = strUrl;
+        webVC.strTitle = @"客服中心";
+        [self.navigationController pushViewController:webVC animated:YES];
+    }else if (indexPath.row == 4){
         //设置
         SettingViewController *settingVC = [[SettingViewController alloc] init];
         [self.navigationController pushViewController:settingVC animated:YES];

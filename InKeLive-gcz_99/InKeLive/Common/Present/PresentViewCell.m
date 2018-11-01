@@ -8,7 +8,7 @@
 
 #import "PresentViewCell.h"
 
-#define Duration 0.2
+#define Duration 0.1
 
 @interface PresentViewCell ()
 
@@ -126,7 +126,7 @@
     if (prepare) {
         prepare();
     }
-    [UIView animateWithDuration:Duration delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:Duration delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self customDisplayAnimationOfShowShakeAnimation:flag];
     } completion:^(BOOL finished) {
         if (flag) {
@@ -170,14 +170,16 @@
         self.shakeLable.text = [NSString stringWithFormat:@"X%d", _nowNO];
         [self.modelCaches removeObjectAtIndex:0];
         __weak typeof(self) ws = self;
-//        [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                _state = AnimationStateShaked;
-//                if (ws.modelCaches.count > 0) {
-//                    [ws shakeAnimationWithModels:nil];
-//                }
-//            });
-//        }];
+        //
+        [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                _state = AnimationStateShaked;
+                if (ws.modelCaches.count > 0) {
+                    [ws shakeAnimationWithModels:nil];
+                }
+            });
+        }];
+        //
         _state = AnimationStateShaked;
         if (ws.modelCaches.count > 0) {
             [ws shakeAnimationWithModels:nil];
@@ -189,7 +191,7 @@
 {
     self.superview.userInteractionEnabled = NO;
     _state = AnimationStateHiding;
-    [UIView animateWithDuration:Duration delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:Duration delay:0 usingSpringWithDamping:0.2 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self customHideAnimationOfShowShakeAnimation:flag];
     } completion:^(BOOL finished) {
         
@@ -261,7 +263,7 @@
     [UIView animateKeyframesWithDuration:interval delay:0 options:0 animations:^{
         
         [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1/2.0 animations:^{
-            self.transform = CGAffineTransformMakeScale(2, 2);
+            self.transform = CGAffineTransformMakeScale(1.5, 1.5);
         }];
         [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1/2.0 animations:^{
             self.transform = CGAffineTransformMakeScale(0.8, 0.8);

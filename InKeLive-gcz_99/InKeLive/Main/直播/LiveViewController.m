@@ -222,7 +222,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         _kit.capturePixelFormat   = kCVPixelFormatType_32BGRA;
         //采集样式 _profileNames= 360p_auto, 540p_auto, 720p_auto
         _kit.streamerProfile = 100;
-        _kit.streamerMirrored = YES;  //镜像
+        
         
         self.pushStreamerView.hidden = NO;
         self.playerView.hidden = YES;
@@ -256,7 +256,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         viewOnMic.frame = CGRectMake(SCREEN_WIDTH*3/4, 94, SCREEN_WIDTH/4, 33);
     }
     [self.view addSubview:viewOnMic];
-    UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/4, 18)];
+    UIButton *btnRoomName = [[UIButton alloc] initWithFrame:CGRectMake(2, 0, SCREEN_WIDTH/4-4, 18)];
     [btnRoomName setBackgroundColor:RGBA(0, 0, 0, 0.2)];
     btnRoomName.layer.masksToBounds = YES;
     btnRoomName.layer.cornerRadius = 8;
@@ -580,6 +580,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         NSLog(@"video size %.0f-%.0f, rotate:%ld\n", _player.naturalSize.width, _player.naturalSize.height, (long)_player.naturalRotate);
         if (_player.naturalSize.width > _player.naturalSize.height) {
             _player.scalingMode = MPMovieScalingModeAspectFit;
+            _player.mirror = YES;
             if (kIs_iPhoneX) {
                 _player.view.frame = CGRectMake(0, 112, SCREEN_WIDTH, SCREEN_WIDTH * _player.naturalSize.height/_player.naturalSize.width);
             }else{
@@ -587,6 +588,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             }
         }else{
             _player.scalingMode = MPMovieScalingModeAspectFill;
+            _player.mirror = YES;
             _player.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
         if(((_player.naturalRotate / 90) % 2  == 0 && _player.naturalSize.width > _player.naturalSize.height) ||
@@ -2496,8 +2498,13 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
+        //判断是否在线
         if (toId == 0) {
             [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
+                
+            }];
+        }else if ([self.roomObj findAllMember:userId] == nil){
+            [[GTAlertTool shareInstance] showAlert:@"对方已下线" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
         }else{
@@ -2767,13 +2774,23 @@ privateChatViewDelegate, GTAFNDataDelegate>
         userObj.inRoomState = userRoomState;
     }
     [self.roomObj delOnMicUser:userId];
-    [self.onMicUsersHeadView reloadData];
     
-    [[GTAlertTool shareInstance] showAlert:@"您观看的主播已下麦" message:@"请选择其他主播" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
-        _playerId = 0;
-        [self.anchorView reset];
-        [self onPlayStream:NO URL:nil RotateDegree:0];
-    }];
+    if (userId == self.userObj.userId) {
+        [[GTAlertTool shareInstance] showAlert:@"您观看的主播已下麦" message:@"请选择其他主播" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+            _playerId = 0;
+            [self.anchorView reset];
+            [self onPlayStream:NO URL:nil RotateDegree:0];
+            
+        }];
+    }else{
+        for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
+            ClientUserModel *model = [self.roomObj.onMicUserList objectAtIndex:index];
+            if (userId == model.userId) {
+                _nowRow = index;
+            }
+        }
+    }
+    [self.onMicUsersHeadView reloadData];
 }
 
 //设置推流状态响应(手机版)
@@ -3487,7 +3504,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [model setModelWithId:[NSString stringWithFormat:@"%d",userObj.userId] name:userObj.userAlias type:CellLeaveType level:userObj.vipLevel];
             [self.messageTableView sendMessage:model];
         }
-        [self.giftView delUser:userId];
+        if (self.giftView.userId == userId) {
+            [self.giftView delUser:userId];
+        }
         //
         [self.roomObj delOnMicUser:userId];
         [self.roomObj delMember:userId];

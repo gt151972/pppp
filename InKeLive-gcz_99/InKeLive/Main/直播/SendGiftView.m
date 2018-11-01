@@ -445,6 +445,7 @@
                     GTGiftListModel* model = [[_arrayAll objectAtIndex:_type] objectAtIndex:_reuse];
                     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:model.name, @"name", model.pic_original, @"imageName", model.pic_thumb, @"image",[NSString stringWithFormat:@"%d",model.giftId], @"giftId", nil];
                     NSLog(@"dic == %@",dic);
+                    NSLog(@"id == %d",self.userId);
                     self.giftClick(dic, _giftNum);
                     NSLog(@"_reuse == %ld", (long)_reuse);
                 }

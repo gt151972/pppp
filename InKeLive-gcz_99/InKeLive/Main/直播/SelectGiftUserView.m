@@ -181,6 +181,10 @@
     labTitle.font = [UIFont systemFontOfSize:16];
     labTitle.text = [NSString stringWithFormat:@"在线用户(%lu)",(unsigned long)_userArray.count];
     [viewHead addSubview:labTitle];
+    
+    UIView *viewLine = [[UIView alloc] initWithFrame:CGRectMake(0, 49, SCREEN_WIDTH, 1)];
+    viewLine.backgroundColor = BG_COLOR;
+    [viewHead addSubview:viewLine];
     return viewHead;
 }
 

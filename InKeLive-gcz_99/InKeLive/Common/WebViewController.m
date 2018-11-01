@@ -33,12 +33,39 @@
     if ([_strTitle isEqualToString:@"排行榜"]){
         [self.navigationController setNavigationBarHidden:YES];
         [self nav];
-    }else{
+    }else if ([_strTitle isEqualToString:@"用户协议"]){
+        [self.navigationController setNavigationBarHidden:YES];
+        [self navA];
+    }
+    else{
         self.title = _strTitle;
         [self.navigationController setNavigationBarHidden:NO];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
         self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
     }
+}
+
+- (void)navA{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+    view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:view];
+    UIView *viewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+    [view addSubview:viewBg];
+    if (kIs_iPhoneX) {
+        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 88);
+        viewBg.frame = CGRectMake(0, 22, SCREEN_WIDTH, 64);
+    }
+    UIButton *btnBack = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, 44, 44)];
+    [btnBack setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+    [btnBack addTarget:self action:@selector(btnBackClicked) forControlEvents:UIControlEventTouchUpInside];
+    [viewBg addSubview:btnBack];
+    
+    UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 44)];
+    labTitle.text = _strTitle;
+    labTitle.textColor = [UIColor blackColor];
+    labTitle.font = [UIFont systemFontOfSize:18];
+    labTitle.textAlignment = NSTextAlignmentCenter;
+    [viewBg addSubview:labTitle];
 }
 
 - (void)nav{

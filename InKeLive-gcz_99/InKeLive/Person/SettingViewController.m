@@ -30,7 +30,7 @@
 {
     self = [super init];
     if (self) {
-        arrayTitle = @[@[@"点赞消息通知",@"评论消息通知"],@[@"清理缓存",@"客服中心",@"检查更新",@"关于我们"]];
+        arrayTitle = @[@[@"清理缓存",@"检查更新",@"关于我们",@"商务合作"]];
     }
     
     return self;
@@ -72,29 +72,29 @@
     cell.textLabel.textColor = RGB(32, 32, 32);
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     
-    if (indexPath.section == 0) {
-        UISwitch *switch0 = [[UISwitch alloc] init];
-        switch0.onTintColor= MAIN_COLOR;
-        switch0.transform= CGAffineTransformMakeScale(1.0,1.0);
-        switch0.frame=CGRectMake(SCREEN_WIDTH - 65, 10, 50, 20);
-//        switch0.tintColor=RGB(169, 169, 169);
-//        switch0.thumbTintColor=[UIColor whiteColor];
-        [switch0 addTarget:self action:@selector(getValueForSwitch:) forControlEvents:UIControlEventValueChanged];
-        switch0.tag = indexPath.row + 2000;
-        [cell.contentView addSubview:switch0];
-        
-//        if (indexPath.row == 0) {
-//            //隐身进入
-//            [switch0 setOn:model.isHiding animated:YES];
-//        }else
-            if (indexPath.row == 0){
-            //点赞通知
-        }else if (indexPath.row == 1){
-            //评论通知
-        }
-    }
+//    if (indexPath.section == 0) {
+//        UISwitch *switch0 = [[UISwitch alloc] init];
+//        switch0.onTintColor= MAIN_COLOR;
+//        switch0.transform= CGAffineTransformMakeScale(1.0,1.0);
+//        switch0.frame=CGRectMake(SCREEN_WIDTH - 65, 10, 50, 20);
+////        switch0.tintColor=RGB(169, 169, 169);
+////        switch0.thumbTintColor=[UIColor whiteColor];
+//        [switch0 addTarget:self action:@selector(getValueForSwitch:) forControlEvents:UIControlEventValueChanged];
+//        switch0.tag = indexPath.row + 2000;
+//        [cell.contentView addSubview:switch0];
+//
+////        if (indexPath.row == 0) {
+////            //隐身进入
+////            [switch0 setOn:model.isHiding animated:YES];
+////        }else
+//            if (indexPath.row == 0){
+//            //点赞通知
+//        }else if (indexPath.row == 1){
+//            //评论通知
+//        }
+//    }
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {
         UIButton *btnGo = [[UIButton alloc] init];
         [btnGo setImage:[UIImage imageNamed:@"btn_go"] forState:UIControlStateNormal];
         [cell.contentView addSubview:btnGo];
@@ -125,7 +125,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             //清理缓存
             if ([_labDetail.text isEqualToString:@"正在计算..."]){
@@ -137,23 +137,23 @@
                     }
                 }];
             }
+//        }else if (indexPath.row == 1){
+//            //客服中心
+//            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+//            NSString*cachePath = array[0];
+//            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+//            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+//            NSString *strUrl = [dict objectForKey:@"customer"];
+//            WebViewController *webVC = [[WebViewController alloc] init];
+//            webVC.strUrl = strUrl;
+//            webVC.strTitle = @"客服中心";
+//            [self.navigationController pushViewController:webVC animated:YES];
         }else if (indexPath.row == 1){
-            //客服中心
-            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
-            NSString*cachePath = array[0];
-            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
-            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
-            NSString *strUrl = [dict objectForKey:@"customer"];
-            WebViewController *webVC = [[WebViewController alloc] init];
-            webVC.strUrl = strUrl;
-            webVC.strTitle = @"客服中心";
-            [self.navigationController pushViewController:webVC animated:YES];
-        }else if (indexPath.row == 2){
             //检查更新
             GTAFNData *data = [[GTAFNData alloc] init];
             data.delegate = self;
             [data versionUpdate];
-        }else if (indexPath.row == 3){
+        }else if (indexPath.row == 2){
             //关于我们
             NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
             NSString*cachePath = array[0];
@@ -164,14 +164,23 @@
             webVC.strUrl = strUrl;
             webVC.strTitle = @"关于我们";
             [self.navigationController pushViewController:webVC animated:YES];
+        }else if (indexPath.row == 3){
+            //商务合作
+            NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
+            NSString*cachePath = array[0];
+            NSString*filePathName = [cachePath stringByAppendingPathComponent:@"webAddress.plist"];
+            NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
+            NSString *strUrl = [dict objectForKey:@"business"];
+            WebViewController *webVC = [[WebViewController alloc] init];
+            webVC.strUrl = strUrl;
+            webVC.strTitle = @"商务合作";
+            [self.navigationController pushViewController:webVC animated:YES];
         }
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section == 0) {
-        return 2;
-    }else if (section == 1){
+    if (section == 0){
         return 4;
     }else{
         return 0;
@@ -179,16 +188,16 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 1){
-        return 10;
-    }else{
-        return 0;
-    }
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    if (section == 1){
+//        return 10;
+//    }else{
+//        return 0;
+//    }
+//}
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 

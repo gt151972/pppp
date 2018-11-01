@@ -207,9 +207,9 @@
         case CellNewChatMessageType:  //新聊天消息
         {
             if (toId == 0) {
-                allMessage = [NSString stringWithFormat:@"%@:%@ $",name,message];
+                allMessage = [NSString stringWithFormat:@"%@:%@∮",name,message];
             }else{
-                allMessage = [NSString stringWithFormat:@"%@:@%@,%@ $",name,toUserAlias,message];
+                allMessage = [NSString stringWithFormat:@"%@:@%@,%@∮",name,toUserAlias,message];
             }
             
             
@@ -257,7 +257,7 @@
             [container addTextStorage:deserveTextStorage];
             
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
@@ -278,7 +278,7 @@
         }
             break;
         case CellSystemHomType:{
-            allMessage = [NSString stringWithFormat:@"喇叭: %@ $",message];
+            allMessage = [NSString stringWithFormat:@"喇叭: %@∮",message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -314,7 +314,7 @@
             [container addTextStorage:deserveTextStorage];
             
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
@@ -334,7 +334,7 @@
         }
             break;
         case CellHomType:{
-            allMessage = [NSString stringWithFormat:@"喇叭: %@:%@ $",name,message];
+            allMessage = [NSString stringWithFormat:@"喇叭: %@:%@∮",name,message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -369,7 +369,7 @@
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage];
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
@@ -388,7 +388,7 @@
         }
             break;
         case CellNoticeType:{
-            allMessage = [NSString stringWithFormat:@"公告: %@:%@ $",name,message];
+            allMessage = [NSString stringWithFormat:@"公告: %@:%@∮",name,message];
             // 属性文本生成器
             container.text = allMessage;
             NSMutableArray *tmpArray = [NSMutableArray array];
@@ -422,7 +422,7 @@
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage];
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
@@ -462,7 +462,7 @@
     container.linesSpacing = 3;
     container.characterSpacing = 0;
     container.isWidthToFit = YES;
-    NSString *allMessage= [NSString stringWithFormat:@"%@%@ $",name,message];
+    NSString *allMessage= [NSString stringWithFormat:@"%@%@∮",name,message];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -497,7 +497,7 @@
     deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
     [container addTextStorage:deserveTextStorage];
     TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-    deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+    deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
     deserveTextStorage2.textColor = [UIColor clearColor];
     deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
     [container addTextStorage:deserveTextStorage2];
@@ -522,7 +522,7 @@
     container.linesSpacing = 3;
     container.characterSpacing = 0;
     container.isWidthToFit = YES;
-    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@ %@ $",name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@ %@∮",name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -581,7 +581,7 @@
     giftInfoTextStorage.font = [UIFont boldSystemFontOfSize:14];
     [container addTextStorage:giftInfoTextStorage];
     TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-    deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+    deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
     deserveTextStorage2.textColor = [UIColor clearColor];
     deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
     [container addTextStorage:deserveTextStorage2];
@@ -618,7 +618,7 @@
         case CellLeaveType:  //新聊天消息
         {
             
-            allMessage = [NSString stringWithFormat:@"%@ 离开了! $",name];
+            allMessage = [NSString stringWithFormat:@"%@ 离开了!∮",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -658,7 +658,7 @@
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage];
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
@@ -679,7 +679,7 @@
             break;
         case CellEnterType:  //新聊天消息
         {
-            allMessage = [NSString stringWithFormat:@"%@ 进来了! $",name];
+            allMessage = [NSString stringWithFormat:@"%@ 进来了!∮",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -718,7 +718,7 @@
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage];
             TYTextStorage *deserveTextStorage2 = [[TYTextStorage alloc]init];
-            deserveTextStorage2.range = [allMessage rangeOfString:@" $"];
+            deserveTextStorage2.range = [allMessage rangeOfString:@"∮"];
             deserveTextStorage2.textColor = [UIColor clearColor];
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];

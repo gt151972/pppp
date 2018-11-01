@@ -187,7 +187,7 @@
                                 <action selector="logonButtonClicked:" destination="-1" eventType="touchUpInside" id="Df0-P8-sth"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxb-ul-R7A">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxb-ul-R7A">
                             <rect key="frame" x="295" y="207" width="9" height="6"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="9" id="B3w-eq-D5i"/>

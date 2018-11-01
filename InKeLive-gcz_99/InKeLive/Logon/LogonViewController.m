@@ -47,6 +47,11 @@
     self.navigationController.navigationBar.hidden = YES;
     
 }
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.arrUserAndPWD = [NSArray array];
@@ -76,23 +81,24 @@
     [self.btnUserId setImage:[UIImage imageNamed:@"login_up"] forState:UIControlStateSelected];
     [self.btnUserId setImage:[UIImage imageNamed:@"login_down"] forState:UIControlStateNormal];
     
+    _btnRegiest.layer.cornerRadius = 19;
+    _btnRegiest.layer.masksToBounds = YES;
+    _btnRegiest.layer.borderColor = MAIN_COLOR.CGColor;
+    _btnRegiest.layer.borderWidth = 1.0f;
     
-}
-
--(UITableView *)tableView{
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 40;
     _tableView.height = self.arrUserAndPWD.count * 40;
     _tableView.backgroundColor = [UIColor whiteColor];
+}
+
+-(UITableView *)tableView{
+    
     return _tableView;
 }
 
 - (UIButton *)btnRegiest{
-    _btnRegiest.layer.cornerRadius = 19;
-    _btnRegiest.layer.masksToBounds = YES;
-    _btnRegiest.layer.borderColor = MAIN_COLOR.CGColor;
-    _btnRegiest.layer.borderWidth = 2.0f;
     return _btnRegiest;
 }
 
@@ -204,7 +210,7 @@
     NSString *strUrl = [dict objectForKey:@"agreement"];
     WebViewController *webVC = [[WebViewController alloc] init];
     webVC.strUrl = strUrl;
-    webVC.strTitle = @"充值";
+    webVC.strTitle = @"用户协议";
     [self.navigationController pushViewController:webVC animated:YES];
 }
 
@@ -271,8 +277,26 @@
         int uid = [[[_arrUserAndPWD objectAtIndex:indexPath.row] objectForKey:@"uid"] intValue];
         cell.textLabel.text = [NSString stringWithFormat:@"%d",uid];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doTap:)];
+        // 允许用户交互
+        cell.textLabel.userInteractionEnabled = YES;
+        [cell.textLabel addGestureRecognizer:tap];
+
     }
     return cell;
+}
+
+- (void)doTap:(NSString *)str{
+//    int uid = [[[_arrUserAndPWD objectAtIndex:indexPath.row] objectForKey:@"uid"] intValue];
+//    _edtUserID.text = [NSString stringWithFormat:@"%d",uid];
+//    _edtUserPwd.text = [[_arrUserAndPWD objectAtIndex:indexPath.row] objectForKey:@"userPwd"];
+    _edtUserPwd.secureTextEntry = YES;
+    _tableView.hidden = YES;
+}
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return nil;
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -329,6 +353,14 @@
             [MBProgressHUD showAlertMessage:[data objectForKey:@"msg"]];
         }
     }
+}
+
+- (void)btnSelectClicked: (UIButton *)button{
+    int uid = [[[_arrUserAndPWD objectAtIndex:button.tag - 200] objectForKey:@"uid"] intValue];
+    _edtUserID.text = [NSString stringWithFormat:@"%d",uid];
+    _edtUserPwd.text = [[_arrUserAndPWD objectAtIndex:button.tag - 200] objectForKey:@"userPwd"];
+    _edtUserPwd.secureTextEntry = YES;
+    _tableView.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
