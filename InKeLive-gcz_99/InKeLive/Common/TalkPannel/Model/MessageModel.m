@@ -374,12 +374,12 @@
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
             //增加连接??
-            [container addLinkWithLinkData:userID linkColor:RGBA(30, 153, 247, 1) underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
+            [container addLinkWithLinkData:userID linkColor:RGB(32, 233, 256) underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
             
 //             链接
                         TYTextStorage *textStorage = [[TYTextStorage alloc]init];
                         textStorage.range = [allMessage rangeOfString:name];
-                        textStorage.textColor = RGB(30, 153, 247);
+                        textStorage.textColor = RGB(32, 233, 256);
                         textStorage.font = [UIFont systemFontOfSize:14];
                         [container addTextStorage:textStorage];
             
@@ -427,12 +427,12 @@
             deserveTextStorage2.font = [UIFont boldSystemFontOfSize:14];
             [container addTextStorage:deserveTextStorage2];
             //增加连接??
-                        [container addLinkWithLinkData:userID linkColor:RGBA(30, 153, 247, 1) underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
+                        [container addLinkWithLinkData:userID linkColor:GREEN_COLOR underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
             
             // 链接
                         TYTextStorage *textStorage = [[TYTextStorage alloc]init];
                         textStorage.range = [allMessage rangeOfString:name];
-                        textStorage.textColor = RGB(30, 153, 247);
+                        textStorage.textColor = GREEN_COLOR;
                         textStorage.font = [UIFont systemFontOfSize:14];
                         [container addTextStorage:textStorage];
             
@@ -522,7 +522,7 @@
     container.linesSpacing = 3;
     container.characterSpacing = 0;
     container.isWidthToFit = YES;
-    NSString *allMessage= [NSString stringWithFormat:@"%@:%@%@ %@∮",name,strAction,strToName,strGiftInfo];
+    NSString *allMessage= [NSString stringWithFormat:@"%@ %@ %@ %@∮",name,strAction,strToName,strGiftInfo];
     
     // 属性文本生成器
     container.text = allMessage;
@@ -542,10 +542,12 @@
             [tmpArray addObject:imageStorage];
         }
     }];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
-    [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
-    [container addView:view range:NSMakeRange(0, 0)];
-    
+    if (![name isEqualToString:@"天外贵宾"]) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
+        [view addSubview:[[LevelGrade shareInstance] greadImage:level]];
+        [container addView:view range:NSMakeRange(0, 0)];
+    }
+
     //礼物:
 //    TYTextStorage *text1TextStorage = [[TYTextStorage alloc]init];
 //    text1TextStorage.range = [allMessage rangeOfString:strText1];
@@ -555,7 +557,7 @@
     
     //用户名字的颜色和文字大小
     TYTextStorage *nameTextStorage = [[TYTextStorage alloc]init];
-    nameTextStorage.range = [allMessage rangeOfString:[NSString stringWithFormat:@"%@:",name]];
+    nameTextStorage.range = [allMessage rangeOfString:[NSString stringWithFormat:@"%@",name]];
     nameTextStorage.textColor = MAIN_COLOR;
     nameTextStorage.font = [UIFont boldSystemFontOfSize:14];
     [container addTextStorage:nameTextStorage];
@@ -588,7 +590,7 @@
     if (!hide) {
         [container addLinkWithLinkData:userId linkColor:MAIN_COLOR underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:name]];
     }
-    [container addLinkWithLinkData:toId linkColor:MAIN_COLOR underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:[NSString stringWithFormat:@"%@ ",strToName]]];
+    [container addLinkWithLinkData:toId linkColor:MAIN_COLOR underLineStyle:kCTUnderlineStyleNone range:[allMessage rangeOfString:[NSString stringWithFormat:@" %@",strToName]]];
     // 添加表情数组到label
     [container addTextStorageArray:tmpArray];
     

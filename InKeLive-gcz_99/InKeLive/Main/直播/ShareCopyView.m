@@ -31,7 +31,7 @@
     UIButton *btnLink = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
     [btnLink setImage:[UIImage imageNamed:@"login_icon_link"] forState:UIControlStateNormal];
     [btnLink.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [btnLink setTitle:@" 复制粘贴,发送给好友下载" forState:UIControlStateNormal];
+    [btnLink setTitle:@" 复制粘贴,发送给好友下载1258直播!" forState:UIControlStateNormal];
     [btnLink setTitleColor:RGB(57, 57, 57) forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(btnLickClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewBg addSubview:btnLink];

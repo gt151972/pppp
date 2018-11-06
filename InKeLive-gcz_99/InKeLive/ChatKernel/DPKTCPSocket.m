@@ -374,9 +374,9 @@ DataLen:(int)data_len
 	req.isHide = isHide;
 	req.isMobile = 2;
 	strcpy(req.userPwd, userPwd);
-//    strcpy(req.vcbPwd, roomPwd);
-    //if(sessionMask !=0)
-    //    strcpy(req.sessionmask, sessionMask);
+    strcpy(req.vcbPwd, roomPwd);
+//    if(sessionMask !=0)
+//        strcpy(req.sessionmask, sessionMask);
     if(_isConnected == 1) {
         int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand:MXP_SUBCMD_VIDEOCHAT_JOINROOM_REQ Data:(char*)&req DataLen:sizeof(HBCMD_VideoChat_JoinRoom_Req_t)];
         return 0;
@@ -683,6 +683,24 @@ DataLen:(int)data_len
     }
     return -2;
     
+}
+
+- (int)sendMicStatusModifyReq:(int)roomId
+                       userId:(int)userId
+                       status:(int)status{
+    HBCMD_VIDEOCHAT_MicStatusModify_Req_t req;
+    memset(&req, 0, sizeof(req));
+    req.nroomid = roomId;
+    req.nsrcuserid = userId;
+    req.nstatus = status;
+    NSLog(@"status == %d",status);
+    if (_isConnected == 1) {
+        int nret = [self SendData:MXP_MAINCMD_VIDEOCHAT SubCommand:MXP_SUBCMD_VIDEOCHAT_MICSTATUSMODIFY_REQ Data:(char *)&req DataLen:sizeof(HBCMD_VIDEOCHAT_MicStatusModify_Req_t)];
+        return 0;
+    }else if (_isConnecting == 1){
+        return -1;
+    }
+    return -2;
 }
 
 @end

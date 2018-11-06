@@ -122,7 +122,9 @@
 						 SealExpiredTime:(int)sealExpiredTime
 						 CarID:(int)carId
                         UserAlias:(NSString*)userAlias
-                      UserHeadPic:(NSString*)userHeadPic;
+                      UserHeadPic:(NSString*)userHeadPic
+                     nVideoStatus:(int)nVideoStatus
+                     nAudioStatus:(int)nAudioStatus;
 -(void) OnNetMsg_RoomUserListEnd;
 
 //获取房间在麦用户列表
@@ -185,7 +187,9 @@
                   SealExpiredTime:(int)sealExpiredTime
                            CardID:(int)cardId
                         UserAlias:(NSString*)userAlias
-                      UserHeadPic:(NSString*)userHeadPic;
+                      UserHeadPic:(NSString*)userHeadPic
+                      videoStatus:(int)videoStatus
+                      audioStatus:(int)audioStatus;
 
 //用户聊天通知 
 -(void)OnNetMsg_RoomChatMsgNoty:(int)roomId
@@ -342,6 +346,18 @@
 -(void)OnNetMsg_ScoreChargeResp:(int)vcbId
                          userId:(int)userId
                           money:(int)money;
+
+
+/**
+ 音视频状态变化
+
+ @param roomId 房间Id
+ @param userId 用户Id
+ @param status 1：视频播放，2视频暂停，3音频播放，4音频暂停
+ */
+-(void)OnNetMsg_micStatusModifyResp:(int)roomId
+                              userId:(int)userId
+                             status:(int)status;
 @end
 
 ///////////////////////////////////////////////////////////////////
@@ -477,6 +493,19 @@
 -(int)sendScoreChargeReq:(int)vcbId
                   userId:(int)userId
                    money:(int)money;
+
+
+/**
+ 麦状态更改
+
+ @param roomId 房间Id
+ @param userId 用户Id
+ @param status 1：视频播放，2视频暂停，3音频播放，4音频暂停
+ @return 
+ */
+-(int)sendMicStatusModifyReq:(int)roomId
+                      userId:(int)userId
+                      status:(int)status;
 @end
 
 ///////////////////////////////////////////////////////////////////

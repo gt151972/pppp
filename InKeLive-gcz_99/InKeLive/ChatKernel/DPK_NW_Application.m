@@ -652,6 +652,8 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                       CarID:pUserItem->carId
                                                   UserAlias:strUserAlias
                                                 UserHeadPic:strHeadPic
+                                               nVideoStatus:pUserItem->nVideoStatus
+                                               nAudioStatus:pUserItem->nAudioStatus
                          ];
                         pUserItem++;
                         cur_pos += sizeof(HBCMD_VideoChat_RoomUserInfo_t);
@@ -772,7 +774,9 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                         SealExpiredTime:pUserItem->sealExpiredTime
                                                  CardID:pUserItem->carId
                                               UserAlias:strUserAlias
-                                            UserHeadPic:strHeadPic];
+                                            UserHeadPic:strHeadPic
+                                            videoStatus:pUserItem->nVideoStatus
+                                            audioStatus:pUserItem->nAudioStatus];
                 }
             }
                 break;
@@ -1118,6 +1122,17 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                 RoomName:vcbName
                                                     Text:text
                                                 errorMsg:pNoty->errorCode];
+                }
+            }
+                break;
+            case MXP_SUBCMD_VIDEOCHAT_MICSTATUSMODIFY_RESP:{//1171:上麦用户修改音视频状态回包
+                NSLog(@"MXP_SUBCMD_VIDEOCHAT_MICSTATUSMODIFY_RESP");
+                __strong id delegate =[sock GetMessageEventSink];
+                if (delegate != nil) {
+                    HBCMD_VIDEOCHAT_MicStatusModify_Resp_t *pResp = (HBCMD_VIDEOCHAT_MicStatusModify_Resp_t *)data;
+                    [delegate OnNetMsg_micStatusModifyResp:pResp->nroomid
+                                                    userId:pResp->nuserid
+                                                    status:pResp->nstatus];
                 }
             }
                 break;

@@ -73,8 +73,8 @@
 {
     PresentLable *lable   = [[PresentLable alloc] init];
     lable.backgroundColor = [UIColor clearColor];
-    lable.borderColor     = [UIColor whiteColor];
-    lable.textColor       = MAIN_COLOR;
+    lable.borderColor     = MAIN_COLOR;
+    lable.textColor       = RGB(255, 98, 0);
     lable.font            = [UIFont systemFontOfSize:23.0];
     lable.textAlignment   = NSTextAlignmentLeft;
     lable.alpha           = 0.0;
@@ -97,7 +97,7 @@
 {
     self.superview.userInteractionEnabled = YES;
     _state                 = AnimationStateShaking;
-    self.shakeLable.text   = [NSString stringWithFormat:@"X%ld", ++self.number];
+    self.shakeLable.text   = [NSString stringWithFormat:@"   %ld", ++self.number];
     __weak typeof(self) ws = self;
     [self.shakeLable startAnimationDuration:Duration completion:^(BOOL finish) {
         if (number > 1) {
@@ -167,7 +167,7 @@
         _state = AnimationStateShaking;
         id<PresentModelAble> obj = self.modelCaches.firstObject;
         self.nowNO = (int)[obj giftNumber]+_nowNO;
-        self.shakeLable.text = [NSString stringWithFormat:@"X%d", _nowNO];
+        self.shakeLable.text = [NSString stringWithFormat:@"    %d", _nowNO];
         [self.modelCaches removeObjectAtIndex:0];
         __weak typeof(self) ws = self;
         //
@@ -245,7 +245,7 @@
     UIColor *textColor = self.textColor;
     
     CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(c, 5);
+    CGContextSetLineWidth(c, 2);
     CGContextSetLineJoin(c, kCGLineJoinRound);
     
     CGContextSetTextDrawingMode(c, kCGTextStroke);
@@ -260,26 +260,30 @@
 
 - (void)startAnimationDuration:(NSTimeInterval)interval completion:(void (^)(BOOL finish))completion
 {
-    [UIView animateKeyframesWithDuration:interval delay:0 options:0 animations:^{
-        
-        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1/2.0 animations:^{
-            self.transform = CGAffineTransformMakeScale(1.5, 1.5);
-        }];
-        [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1/2.0 animations:^{
-            self.transform = CGAffineTransformMakeScale(0.8, 0.8);
-        }];
-        
-    } completion:^(BOOL finished) {
-        
-        [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:0.4 initialSpringVelocity:10 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+//    if (!kIs_iPhone5S) {
+        [UIView animateKeyframesWithDuration:interval delay:0 options:0 animations:^{
+            
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                self.transform = CGAffineTransformScale(self.transform, 1.5, 1.5);
+                //            self.transform = CGAffineTransformMakeScale(3, 3);
+            }];
+            [UIView addKeyframeWithRelativeStartTime:1/2.0 relativeDuration:1.0 animations:^{
+                self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            }];
+            
         } completion:^(BOOL finished) {
-            if (completion) {
-                completion(finished);
-            }
+            
+            [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:10 options:UIViewAnimationOptionCurveLinear animations:^{
+                self.transform = CGAffineTransformScale(self.transform, 1.0, 1.0);
+                //            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            } completion:^(BOOL finished) {
+                if (completion) {
+                    completion(finished);
+                }
+            }];
+            
         }];
-        
-    }];
+//    }
 }
 
 @end

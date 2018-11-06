@@ -708,6 +708,16 @@
             [arrData removeObjectAtIndex:index + 1];
         }
     }
+    ClientUserModel *model = arrData[0];
+    if (model.userId != myModel.userID) {
+        for (int index = 0; index < self.roomObj.allMemberList.count; index ++ ) {
+            ClientUserModel *model = self.roomObj.allMemberList[index];
+            if (model.userId == myModel.userID) {
+                NSLog(@"userId == %d",model.userId);
+                [arrData insertObject:self.roomObj.allMemberList[index] atIndex:0];
+            }
+        }
+    }
     NSArray *arr = [[NSArray alloc] initWithArray:arrData];
     return arr;
 }

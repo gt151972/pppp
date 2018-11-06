@@ -101,5 +101,11 @@ enum {
 #define ROOM_OPSTATE_CLOSESIMIC           0x00000010      //关闭私聊
 #define ROOM_OPSTATE_OPENPAIMIC           0x00000020      //打开排麦
 
+//用户音视频状态
+
+#define VIDEO_PLAY 1    //视频播放
+#define VIDEO_PAUSE 2   //视频暂停
+#define AUDIO_PLAY 3    //音频播放
+#define AUDIO_PAUSE 4   //音频暂停
 
 #endif //__YC_COMM_DEFINES_HH__20130906__

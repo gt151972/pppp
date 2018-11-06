@@ -111,15 +111,15 @@
     }];
     _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    _logoImageView = [[UIImageView alloc]init];
-    _logoImageView.image = [UIImage imageNamed:@"live_tag_live"];
-    _logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.contentView addSubview:_logoImageView];
-    [_logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_coverImageView.mas_right).offset(-10);
-        make.top.equalTo(_coverImageView.mas_top).offset(10);
-        make.width.mas_equalTo(_logoImageView.mas_height).multipliedBy(1.3);
-    }];
+//    _logoImageView = [[UIImageView alloc]init];
+//    _logoImageView.image = [UIImage imageNamed:@"live_tag_live"];
+//    _logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    [self.contentView addSubview:_logoImageView];
+//    [_logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(_coverImageView.mas_right).offset(-10);
+//        make.top.equalTo(_coverImageView.mas_top).offset(10);
+//        make.width.mas_equalTo(_logoImageView.mas_height).multipliedBy(1.3);
+//    }];
 }
 
 -(void)updateCell:(InKeModel*)inKeModel{

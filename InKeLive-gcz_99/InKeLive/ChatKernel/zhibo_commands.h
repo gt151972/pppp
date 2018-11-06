@@ -189,6 +189,8 @@
 #define MXP_SUBCMD_VIDEOCHAT_USERATTENTION_REQ            1168        //用户关注请求
 #define MXP_SUBCMD_VIDEOCHAT_USERATTENTION_RESP            1169        //用户关注回包
 
+#define MXP_SUBCMD_VIDEOCHAT_MICSTATUSMODIFY_REQ            1170        //上麦用户修改音视频状态请求
+#define MXP_SUBCMD_VIDEOCHAT_MICSTATUSMODIFY_RESP        1171        //上麦用户修改音视频状态回包
 
 //////////////////////////////////////////////////////////////////////////
 #pragma pack(1)
@@ -365,6 +367,8 @@ typedef struct _tag_HBCMD_VideoChat_RoomUserInfo
     char        userHeadPic[MD5LEN];    //用户头像,可能有
     int8        ngender;                //用户性别
     int8        nsatrt[20] ;            //周星、日星数据
+    uint8    nVideoStatus ;        //0：视频播放，1：视频暂停
+    uint8    nAudioStatus    ;     //0：音频播放，1：音频暂停
     char        szcidiograph[128] ;    //个人签名
 }HBCMD_VideoChat_RoomUserInfo_t;
 
@@ -1191,6 +1195,21 @@ typedef struct _tag_HBCMD_VIDEOCHAT_UserAttention_Resp
     uint32    nRoomID;        //房间ID
     uint32    nSinger;        //歌手ID
 }HBCMD_VIDEOCHAT_UserAttention_Resp_t;
+
+typedef struct tag_HBCMD_VIDEOCHAT_MicStatusModify_Req
+{
+    uint32    nroomid;            //房间ID
+    uint32    nsrcuserid;        //用户ID
+    uint8    nstatus;            //1：视频播放，2视频暂停，3音频播放，4音频暂停
+}HBCMD_VIDEOCHAT_MicStatusModify_Req_t;
+
+typedef struct tag_HBCMD_VIDEOCHAT_MicStatusModify_Resp
+{
+    uint32    nroomid;            //房间ID
+    uint32    nuserid;            //用户ID
+    uint8    nstatus;            //1：视频播放，2视频暂停，3音频播放，4音频暂停
+}HBCMD_VIDEOCHAT_MicStatusModify_Resp_t;
+
 
 #pragma pack()
 //////////////////////////////////////////////////////////////////////////

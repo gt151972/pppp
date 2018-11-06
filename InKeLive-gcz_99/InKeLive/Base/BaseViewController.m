@@ -20,7 +20,7 @@
     UINavigationBar *bar = [UINavigationBar appearance];
     //背景色，文字颜色
     bar.barTintColor = [UIColor whiteColor];
-   [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+   [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : RGB(24, 24, 24)}];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

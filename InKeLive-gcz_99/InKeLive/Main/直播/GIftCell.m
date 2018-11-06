@@ -26,7 +26,7 @@
     [self.imgBg addSubview:self.giftImageView];
     [self.imgBg addSubview:self.senderLabel];
     [self.imgBg addSubview:self.lineLabel];
-//    [self.imgBg addSubview:self.labNum];
+    [self.imgBg addSubview:self.labNum];
     
     [self.imgBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
@@ -46,12 +46,12 @@
                                   );
     }];
     
-//    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(_imgBg.mas_centerY);
-//        make.right.equalTo(self).offset(20);
-//        make.left.equalTo(self.giftImageView.mas_right).offset(5);
-//        make.height.equalTo(@20);
-//    }];
+    [self.labNum mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_imgBg.mas_centerY);
+        make.right.equalTo(self).offset(20);
+        make.left.equalTo(self.giftImageView.mas_right).offset(5);
+        make.height.equalTo(@20);
+    }];
     
     [self.senderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImageView.mas_right).offset(10);
@@ -143,10 +143,10 @@
 - (PresentLable *)labNum{
     if (!_labNum) {
         _labNum = [[PresentLable alloc]init];
-        _labNum.textColor = MAIN_COLOR;
-        _labNum.borderColor = [UIColor whiteColor];
+        _labNum.textColor = RGB(255, 98, 0);
+        _labNum.borderColor = MAIN_COLOR;
         _labNum.textAlignment = NSTextAlignmentCenter;
-        _labNum.font = [UIFont systemFontOfSize:20];
+        _labNum.font = [UIFont systemFontOfSize:23];
     }
     return _labNum;
 }
@@ -206,7 +206,7 @@
     NSURL *urlGiftImage =[NSURL URLWithString:strUrl];
     [self.giftImageView sd_cancelCurrentImageLoad];
     [self.giftImageView sd_setImageWithURL:urlGiftImage];
-    self.labNum.text = [NSString stringWithFormat:@"x%ld",(long)presentmodel.num];
+    self.labNum.text = [NSString stringWithFormat:@"X"];
 }
 
 

@@ -58,8 +58,8 @@
 
 -(ClientUserModel *)findAllMember:(int)userId{
     ClientUserModel *userObj = nil;
-    for(int i=0; i<self.memberList.count; i++) {
-        ClientUserModel* p =[self.memberList objectAtIndex:i];
+    for(int i=0; i<self.allMemberList.count; i++) {
+        ClientUserModel* p =[self.allMemberList objectAtIndex:i];
         if(p.userId == userId) {
             userObj = p;
             break;

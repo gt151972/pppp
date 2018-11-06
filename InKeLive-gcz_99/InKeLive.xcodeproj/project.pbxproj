@@ -281,6 +281,11 @@
 		640526FD215249D6007C7E3E /* PresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F9215249D5007C7E3E /* PresentView.m */; };
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
 		64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067EE0218808C500EFB774 /* ShareCopyView.m */; };
+		640783AE218C32E000BDB5C8 /* hdaili.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AD218C32E000BDB5C8 /* hdaili.gif */; };
+		640783B0218C3DD100BDB5C8 /* shizhang1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AF218C3DD100BDB5C8 /* shizhang1.gif */; };
+		640783B2218C3DDC00BDB5C8 /* 35151.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783B1218C3DDC00BDB5C8 /* 35151.gif */; };
+		641E7492218FE9EF001BB754 /* AccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E7491218FE9EF001BB754 /* AccountView.m */; };
+		641E749521902CFA001BB754 /* MicStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E749421902CFA001BB754 /* MicStatusView.m */; };
 		6423C9EC2126631D00801996 /* AppInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6423C9EB2126631D00801996 /* AppInfo.plist */; };
 		64241E63214F5139007E3F3D /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64241E62214F5138007E3F3D /* ShareView.m */; };
 		643196132114027F00D97682 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 643196122114027F00D97682 /* Time.m */; };
@@ -298,8 +303,6 @@
 		644B1844211431B400939E76 /* ServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644B1842211431B400939E76 /* ServiceViewController.m */; };
 		644B1845211431B400939E76 /* ServiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 644B1843211431B400939E76 /* ServiceViewController.xib */; };
 		644CD61621353EB600BB1EF2 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 644CD61421353EB600BB1EF2 /* HistoryViewController.m */; };
-		64513C482121806800539CDD /* TEXTVIEW.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C472121806800539CDD /* TEXTVIEW.m */; };
-		64513C4A2121807800539CDD /* TEXTVIEW.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64513C492121807800539CDD /* TEXTVIEW.xib */; };
 		64513C4D2121872200539CDD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C4C2121872200539CDD /* Message.m */; };
 		64513C5021226EAE00539CDD /* MessageFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C4F21226EAE00539CDD /* MessageFrame.m */; };
 		64513C54212273D900539CDD /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 64513C52212273D900539CDD /* NSString+Extension.m */; };
@@ -357,7 +360,6 @@
 		6481F87A21464BC4007264AB /* kefu.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86521464BC4007264AB /* kefu.gif */; };
 		6481F87B21464BC4007264AB /* caizhu.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86621464BC4007264AB /* caizhu.gif */; };
 		6481F87C21464BC4007264AB /* desktop.ini in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86721464BC4007264AB /* desktop.ini */; };
-		6481F87D21464BC4007264AB /* hdaili.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86821464BC4007264AB /* hdaili.gif */; };
 		6481F87E21464BC4007264AB /* fuhao.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86921464BC4007264AB /* fuhao.gif */; };
 		6481F87F21464BC4007264AB /* tianzuin.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86A21464BC4007264AB /* tianzuin.gif */; };
 		6481F88021464BC4007264AB /* 2xing.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6481F86B21464BC4007264AB /* 2xing.gif */; };
@@ -840,6 +842,13 @@
 		640526FF21524A23007C7E3E /* PresentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentModel.m; sourceTree = "<group>"; };
 		64067EDF218808C500EFB774 /* ShareCopyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareCopyView.h; sourceTree = "<group>"; };
 		64067EE0218808C500EFB774 /* ShareCopyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareCopyView.m; sourceTree = "<group>"; };
+		640783AD218C32E000BDB5C8 /* hdaili.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = hdaili.gif; path = ../../../../../Downloads/hdaili.gif; sourceTree = "<group>"; };
+		640783AF218C3DD100BDB5C8 /* shizhang1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shizhang1.gif; sourceTree = "<group>"; };
+		640783B1218C3DDC00BDB5C8 /* 35151.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 35151.gif; sourceTree = "<group>"; };
+		641E7490218FE9EF001BB754 /* AccountView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountView.h; sourceTree = "<group>"; };
+		641E7491218FE9EF001BB754 /* AccountView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountView.m; sourceTree = "<group>"; };
+		641E749321902CFA001BB754 /* MicStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MicStatusView.h; sourceTree = "<group>"; };
+		641E749421902CFA001BB754 /* MicStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MicStatusView.m; sourceTree = "<group>"; };
 		6423C9EB2126631D00801996 /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppInfo.plist; sourceTree = "<group>"; };
 		6423C9ED212669B500801996 /* PlistName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlistName.h; sourceTree = "<group>"; };
 		64241E61214F5138007E3F3D /* ShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
@@ -869,9 +878,6 @@
 		644B1843211431B400939E76 /* ServiceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServiceViewController.xib; sourceTree = "<group>"; };
 		644CD61321353EB600BB1EF2 /* HistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		644CD61421353EB600BB1EF2 /* HistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
-		64513C462121806800539CDD /* TEXTVIEW.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TEXTVIEW.h; sourceTree = "<group>"; };
-		64513C472121806800539CDD /* TEXTVIEW.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TEXTVIEW.m; sourceTree = "<group>"; };
-		64513C492121807800539CDD /* TEXTVIEW.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TEXTVIEW.xib; sourceTree = "<group>"; };
 		64513C4B2121872200539CDD /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		64513C4C2121872200539CDD /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		64513C4E21226EAE00539CDD /* MessageFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageFrame.h; sourceTree = "<group>"; };
@@ -962,7 +968,6 @@
 		6481F86521464BC4007264AB /* kefu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = kefu.gif; sourceTree = "<group>"; };
 		6481F86621464BC4007264AB /* caizhu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = caizhu.gif; sourceTree = "<group>"; };
 		6481F86721464BC4007264AB /* desktop.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = desktop.ini; sourceTree = "<group>"; };
-		6481F86821464BC4007264AB /* hdaili.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = hdaili.gif; sourceTree = "<group>"; };
 		6481F86921464BC4007264AB /* fuhao.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = fuhao.gif; sourceTree = "<group>"; };
 		6481F86A21464BC4007264AB /* tianzuin.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = tianzuin.gif; sourceTree = "<group>"; };
 		6481F86B21464BC4007264AB /* 2xing.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2xing.gif; sourceTree = "<group>"; };
@@ -1110,6 +1115,8 @@
 				64AA3D632112C91700111B80 /* RegisteredViewController.h */,
 				64AA3D642112C91700111B80 /* RegisteredViewController.m */,
 				64AA3D652112C91700111B80 /* RegisteredViewController.xib */,
+				641E7490218FE9EF001BB754 /* AccountView.h */,
+				641E7491218FE9EF001BB754 /* AccountView.m */,
 			);
 			path = Logon;
 			sourceTree = "<group>";
@@ -1528,9 +1535,6 @@
 				64B76739213D0F1F00D61A0E /* ChatPublicView.m */,
 				64B61F062147973A00D2C3E3 /* ChangeScore.h */,
 				64B61F072147973A00D2C3E3 /* ChangeScore.m */,
-				64513C462121806800539CDD /* TEXTVIEW.h */,
-				64513C472121806800539CDD /* TEXTVIEW.m */,
-				64513C492121807800539CDD /* TEXTVIEW.xib */,
 				6461D085212EADF4006927D1 /* SearchInfoView.h */,
 				6461D086212EADF4006927D1 /* SearchInfoView.m */,
 				6461D083212EABB1006927D1 /* SearchInfoView.xib */,
@@ -1544,6 +1548,8 @@
 				64CA04C3215CD2A700A13359 /* WebView.m */,
 				640472BD21758AF2002AC257 /* SpecialView.h */,
 				640472BE21758AF2002AC257 /* SpecialView.m */,
+				641E749321902CFA001BB754 /* MicStatusView.h */,
+				641E749421902CFA001BB754 /* MicStatusView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2237,11 +2243,13 @@
 				6481F86521464BC4007264AB /* kefu.gif */,
 				6481F86621464BC4007264AB /* caizhu.gif */,
 				6481F86721464BC4007264AB /* desktop.ini */,
-				6481F86821464BC4007264AB /* hdaili.gif */,
+				640783AD218C32E000BDB5C8 /* hdaili.gif */,
 				6481F86921464BC4007264AB /* fuhao.gif */,
 				6481F86A21464BC4007264AB /* tianzuin.gif */,
 				6481F86B21464BC4007264AB /* 2xing.gif */,
 				6481F86C21464BC4007264AB /* gly.gif */,
+				640783AF218C3DD100BDB5C8 /* shizhang1.gif */,
+				640783B1218C3DDC00BDB5C8 /* 35151.gif */,
 				6481F86D21464BC4007264AB /* guanliyuan.gif */,
 			);
 			path = levelIcon;
@@ -2462,7 +2470,6 @@
 				1AEED2D71F5BAC7300A545BA /* radio.png in Resources */,
 				633282371E024CB400EC018B /* meteor_after_12.png in Resources */,
 				63FB93921E0375C000C8A84A /* bear1@2x.png in Resources */,
-				64513C4A2121807800539CDD /* TEXTVIEW.xib in Resources */,
 				6481F87021464BC4007264AB /* tianhuang.gif in Resources */,
 				6332823D1E024CB400EC018B /* meteor_after_18.png in Resources */,
 				63A3350D1E026E7500027174 /* porche-f1.png in Resources */,
@@ -2493,6 +2500,7 @@
 				6302FDFC1E1B9DD9007122D3 /* yipitiezhi005.png in Resources */,
 				6332822E1E024CB400EC018B /* meteor_after_3.png in Resources */,
 				63A3352E1E02767F00027174 /* rocket-fire-5.png in Resources */,
+				640783B2218C3DDC00BDB5C8 /* 35151.gif in Resources */,
 				6332823A1E024CB400EC018B /* meteor_after_15.png in Resources */,
 				633282401E024CB400EC018B /* meteor_after_21.png in Resources */,
 				633282311E024CB400EC018B /* meteor_after_6.png in Resources */,
@@ -2555,9 +2563,9 @@
 				63A335111E026ECC00027174 /* porche-b2.png in Resources */,
 				63D3A00B1E01AD300073F07C /* refresh_fly_0026.png in Resources */,
 				6302FE001E1B9DD9007122D3 /* yipitiezhi007.png in Resources */,
-				6481F87D21464BC4007264AB /* hdaili.gif in Resources */,
 				63D3A0011E01AD300073F07C /* refresh_fly_0016.png in Resources */,
 				63FB93981E0378E500C8A84A /* NHPlaneViews.xib in Resources */,
+				640783AE218C32E000BDB5C8 /* hdaili.gif in Resources */,
 				6302FE1E1E1B9DD9007122D3 /* yipitiezhi022.png in Resources */,
 				63FB93AA1E037A4D00C8A84A /* plane-screw-1-1.png in Resources */,
 				630483221E1F3B01004837C5 /* TableViewCell.xib in Resources */,
@@ -2659,6 +2667,7 @@
 				6332820D1E024BBA00EC018B /* heart3@2x.png in Resources */,
 				6302FE221E1B9DD9007122D3 /* yipitiezhi024.png in Resources */,
 				633282441E024CB400EC018B /* meteor_after_25.png in Resources */,
+				640783B0218C3DD100BDB5C8 /* shizhang1.gif in Resources */,
 				633E2DFD1E1CA6500049C9E8 /* NearHeadReusableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2747,8 +2756,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64513C482121806800539CDD /* TEXTVIEW.m in Sources */,
 				643196132114027F00D97682 /* Time.m in Sources */,
+				641E7492218FE9EF001BB754 /* AccountView.m in Sources */,
 				1A9D1CF51F42AB7A0003EA13 /* LiveUserInfoView.m in Sources */,
 				630E755F1E00017D00AF5EAF /* BaseViewController.m in Sources */,
 				1A9D1D0C1F43DD960003EA13 /* DPKTCPSocket.m in Sources */,
@@ -2811,6 +2820,7 @@
 				63402ED91E1244DD002F6661 /* MainViewController.m in Sources */,
 				6314834E1E15FFF800EB5294 /* LivingItem.m in Sources */,
 				64513C4D2121872200539CDD /* Message.m in Sources */,
+				641E749521902CFA001BB754 /* MicStatusView.m in Sources */,
 				6489CAFA212404C8007F6F3C /* MineViewController.m in Sources */,
 				647C78D6212D0D7E00C5EAAA /* GTBaseRequest.m in Sources */,
 				644B183121142DDC00939E76 /* Lobby.m in Sources */,

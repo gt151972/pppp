@@ -27,7 +27,8 @@
     self.pushStreamUrl = @"";
     self.pullStreamUrl =@"";
     self.isAttention = 0;
-    
+    self.isVideoStatus = 0;
+    self.isAudioStatus = 0;
 }
 
 @end

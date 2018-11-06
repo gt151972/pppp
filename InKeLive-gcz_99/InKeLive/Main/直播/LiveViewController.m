@@ -39,6 +39,7 @@
 #import "GTAFNData.h"
 #import "SpecialView.h"
 #import "ShareCopyView.h"
+#import "MicStatusView.h"
 
 #define USER_NEXTACTION_IDEL          0
 #define USER_NEXTACTION_LOGON         1
@@ -125,6 +126,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //@property (nonatomic, strong) ShareView *shareView;
 @property (nonatomic, strong)ShareCopyView *shareView;
 @property (nonatomic, strong) SpecialView *speicalView;
+@property (nonatomic, strong)MicStatusView *micStatusView;
 //充值网页
 @property (nonatomic, strong) WebView *webView;
 @property (nonatomic, readwrite) float grind;//磨皮
@@ -137,6 +139,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, assign)BOOL isQuitHide;//退房信息
 @property (nonatomic, assign)BOOL isHarnHide;//喇叭信息
 
+//在麦状态
+@property (nonatomic, assign)BOOL isVideoPause;//视频暂停
+@property (nonatomic, assign)BOOL isAudioPause;//音频暂停
 //公聊数据
 @property (nonatomic, strong) NSMutableArray *arrPubChat;
 
@@ -145,6 +150,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 @property (nonatomic, strong)UIImageView *imgHeadForSinger;
 
+//市长
+@property (nonatomic, strong)ClientUserModel *mayor;
+//市长夫人
+@property (nonatomic, strong)ClientUserModel *Lady;
 @end
 
 @implementation LiveViewController
@@ -197,6 +206,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
     _isEnterHide = NO;
     _isQuitHide = NO;
     _isHarnHide = NO;
+    _isAudioPause = NO;
+    _isVideoPause = NO;
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
@@ -264,7 +275,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [btnRoomName setImage:[UIImage imageNamed:@"living_arrows_down"] forState:UIControlStateSelected];
 //    [btnRoomName setBackgroundColor:[UIColor clearColor]];
 //    [btnRoomName setTitle:[_dicInfo objectForKey:@"room_name"] forState:UIControlStateNormal];
-    [btnRoomName setTitle:joinRoomInfo.roomName forState:UIControlStateNormal];
+    [btnRoomName setTitle:[NSString stringWithFormat:@"%@ ",joinRoomInfo.roomName
+                           ] forState:UIControlStateNormal];
     btnRoomName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     NSLog(@"width == %f",btnRoomName.titleLabel.bounds.size.width);
     [btnRoomName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -588,7 +600,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             }
         }else{
             _player.scalingMode = MPMovieScalingModeAspectFill;
-            _player.mirror = YES;
+            _player.mirror = NO;
             _player.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
         if(((_player.naturalRotate / 90) % 2  == 0 && _player.naturalSize.width > _player.naturalSize.height) ||
@@ -948,9 +960,44 @@ privateChatViewDelegate, GTAFNDataDelegate>
                     break;
                 case 154: //静音
                 {
-                    UIButton *btn = (UIButton *)[weakSelf.bottomTool viewWithTag:tag];
-                    [_kit.streamerBase muteStream:!btn.selected];
-                    btn.selected = !btn.selected;
+                    
+                    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+                    _micStatusView = [[MicStatusView alloc] initWithFrame:frame];
+                    _micStatusView.isVideoPause = _isVideoPause;
+                    _micStatusView.isAudioPause = _isAudioPause;
+                    [_micStatusView popShow];
+                    WEAKSELF;
+                    [_micStatusView setBtnButtonClick:^(int status) {
+                        int srcuserid =[DPK_NW_Application sharedInstance].localUserModel.userID;
+                        [weakSelf.socketObj sendMicStatusModifyReq:weakSelf.roomObj.roomId userId:srcuserid status:status];
+                        NSLog(@"%d%d",status,status);
+                        if (status == VIDEO_PLAY) {
+                            weakSelf.isVideoPause = NO;
+                            [_kit.streamerBase startStream:_pushStreamUrl];
+                        }else if (status == VIDEO_PAUSE){
+                            weakSelf.isVideoPause = YES;
+                            [_kit.streamerBase stopStream];
+                        }else if (status == AUDIO_PLAY){
+                            weakSelf.isAudioPause = NO;
+                            [_kit.streamerBase muteStream:NO];
+                        }else if (status == AUDIO_PAUSE){
+                            weakSelf.isAudioPause = YES;
+                            [_kit.streamerBase muteStream:YES];
+                        }
+                    }];
+                    
+//                    UIButton *btn = (UIButton *)[weakSelf.bottomTool viewWithTag:tag];
+//
+//                    btn.selected = !btn.selected;
+//                    int status = 0;
+//                    if (btn.selected != 0) {
+//                        status = AUDIO_PLAY;
+//                    }else{
+//                        status = AUDIO_PAUSE;
+//                    }
+//                    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
+//                    int srcuserid =[DPK_NW_Application sharedInstance].localUserModel.userID;
+//                    [self.socketObj sendMicStatusModifyReq:self.roomObj.roomId userId:srcuserid status:status];
                     //testcode
 //                    [weakSelf showSelectGiftUserView];
 //                    break;
@@ -1925,6 +1972,22 @@ privateChatViewDelegate, GTAFNDataDelegate>
             make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH/4-15, SCREEN_WIDTH/4-15));
         }];
         
+        UIImageView *imageMicrophone = [[UIImageView alloc] init];
+        UIImage *img = [UIImage imageNamed:@"living_microphone"];
+        imageMicrophone.image = img;
+        [cell.contentView addSubview:imageMicrophone];
+        [imageMicrophone mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(image.mas_centerX);
+            make.size.mas_equalTo(img.size);
+            make.bottom.equalTo(image.mas_bottom);
+        }];
+        
+        if (userObj.isAudioStatus) {
+            imageMicrophone.hidden = YES;
+        }else{
+            imageMicrophone.hidden = NO;
+        }
+        
         UILabel *labName = [[UILabel alloc] init];
         labName.text = userObj.userAlias;
         labName.textColor = [UIColor whiteColor];
@@ -2167,13 +2230,19 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [alertC addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *envirnmentNameTextField = alertC.textFields.firstObject;
         //输出 检查是否正确无误
+        
         NSLog(@"你输入的文本%@",envirnmentNameTextField.text);
+        DPK_NW_Application* dpkapp =[DPK_NW_Application sharedInstance];
         LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
         NSStringEncoding enc =CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
         const char* sessionMask =(const char*)[model.sessionMask cStringUsingEncoding:enc];
         const char* userLogonPwd =(const char*)[model.userLogonPwd cStringUsingEncoding:enc];
         const char* text =(const char*)[envirnmentNameTextField.text cStringUsingEncoding:enc];
-        [self.socketObj SendJoinRoomReq:0 RoomID:self.roomObj.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:_isHide isMobile:2];
+        NSLog(@"self.roomObj.roomId == %d",model.userID);
+        model.nextAction = USER_NEXTACTION_JOINROOM;
+        self.roomObj.isConnected = 0;
+        self.roomObj.isJoinRoomFinished = 0;
+        [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:model.userID SessionMask:sessionMask UserPwd:userLogonPwd RoomPwd:text IsReconnect:0 IsHide:_isHide isMobile:2];
         
     }]];
     //添加一个取消按钮
@@ -2270,6 +2339,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     //=======================================
 #endif
     NSArray *array = [self sortData:self.roomObj.memberList];
+    NSLog(@"array == %@",array);
     view.userArray = array;
     view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
@@ -2375,6 +2445,16 @@ privateChatViewDelegate, GTAFNDataDelegate>
         if (model.userId == myModel.userID) {
             [arrData insertObject:arrData[index] atIndex:0];
             [arrData removeObjectAtIndex:index + 1];
+        }
+    }
+    ClientUserModel *model = arrData[0];
+    if (model.userId != myModel.userID) {
+        for (int index = 0; index < self.roomObj.allMemberList.count; index ++ ) {
+            ClientUserModel *model = self.roomObj.allMemberList[index];
+            if (model.userId == myModel.userID) {
+                NSLog(@"userId == %d",model.userId);
+                [arrData insertObject:self.roomObj.allMemberList[index] atIndex:0];
+            }
         }
     }
     NSArray *arr = [[NSArray alloc] initWithArray:arrData];
@@ -2618,8 +2698,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
             NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);   //重点
             const char* sz_sessionmask = (const char*)[dpkapp.localUserModel.sessionMask cStringUsingEncoding:enc];
             const char* sz_userpwd =(const char*)[dpkapp.localUserModel.userLogonPwd cStringUsingEncoding:NSASCIIStringEncoding];
+            const char* sz_roompwd =(const char*)[@"" cStringUsingEncoding:NSASCIIStringEncoding];
             //发送加入房间请求
-            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:0 IsReconnect:0 IsHide:_isHide isMobile:2];
+            [self.socketObj SendJoinRoomReq:0 RoomID:dpkapp.tempJoinRoomInfo.roomId UserID:dpkapp.localUserModel.userID SessionMask:sz_sessionmask UserPwd:sz_userpwd RoomPwd:sz_roompwd IsReconnect:0 IsHide:_isHide isMobile:2];
 
             //房间连接标志
             self.roomObj.isConnected = 0;
@@ -2690,12 +2771,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
         //char *ptr = [blankText cStringUsingEncoding:NSASCIIStringEncoding];
         const char* logonPwd =[userData.userLogonPwd cStringUsingEncoding:NSASCIIStringEncoding];
         const char* session_mask =[userData.sessionMask cStringUsingEncoding:NSASCIIStringEncoding];
-        
+        const char* sz_roompwd =(const char*)[@"" cStringUsingEncoding:NSASCIIStringEncoding];
         //修改nextAction 以后变为加入房间请求(断线重连时使用)
         userData.nextAction = USER_NEXTACTION_JOINROOM;
         self.roomObj.isConnected = 0;
         self.roomObj.isJoinRoomFinished = 0;
-        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:0 IsReconnect:0 IsHide:_isHide isMobile:2];
+        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd RoomPwd:sz_roompwd IsReconnect:0 IsHide:_isHide isMobile:2];
 //        [self.socketObj SendJoinRoomReq:1 RoomID:roomId UserID:userData.userID SessionMask:session_mask UserPwd:logonPwd];
         self.lastJoinRoomTime =time(0);
     }
@@ -2742,6 +2823,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 {
     NSLog(@"OnNetMsg_UpMBMicNoty");
     ClientUserModel* userObj = [self.roomObj findMember:userId];
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
     if(userObj != nil) {
         userObj.inRoomState = userRoomState;
         userObj.mbTLstatus = tlStatus;
@@ -2750,6 +2832,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
         if([self.roomObj findOnMicUser:userId] == nil) {
             [self.roomObj.onMicUserList addObject:userObj];
             [self.onMicUsersHeadView reloadData];
+        }
+        if (userId == myModel.userID) {
+            [self.socketObj sendMicStatusModifyReq:self.roomObj.roomId userId:userId status:1];
+            [self.socketObj sendMicStatusModifyReq:self.roomObj.roomId userId:userId status:3];
         }
     }
 }
@@ -2871,13 +2957,14 @@ privateChatViewDelegate, GTAFNDataDelegate>
     NSString* strErrorMsg;
     if(error_code !=0) {
         NSLog(@"加入房间出现错误,就不用重试了,直接提示,退出!");
-        self.roomObj.isConnected = 0;
-        self.roomObj.isJoinRoomFinished = 0;
-        self.roomObj.connectedCount = 0; //防止自动重连
-        [self.socketObj CloseSocket:0];
-        self.isConnecting = NO;
-        self.isConnected = NO;
+        
         if(error_code == 407) {
+            self.roomObj.isConnected = 0;
+            self.roomObj.isJoinRoomFinished = 0;
+            self.roomObj.connectedCount = 0; //防止自动重连
+            [self.socketObj CloseSocket:0];
+            self.isConnecting = NO;
+            self.isConnected = NO;
             strErrorMsg = @"内核版本错误,请安装最新客户端!";
             [self showJoinFailedDialog:strErrorMsg];
         }
@@ -2886,10 +2973,22 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [self showAlertRoomPwd];
         }
         else if(error_code == 402) {
+            self.roomObj.isConnected = 0;
+            self.roomObj.isJoinRoomFinished = 0;
+            self.roomObj.connectedCount = 0; //防止自动重连
+            [self.socketObj CloseSocket:0];
+            self.isConnecting = NO;
+            self.isConnected = NO;
             strErrorMsg = @"用户密码错误!";
             [self showJoinFailedDialog:strErrorMsg];
         }
         else if(error_code == 404) {
+            self.roomObj.isConnected = 0;
+            self.roomObj.isJoinRoomFinished = 0;
+            self.roomObj.connectedCount = 0; //防止自动重连
+            [self.socketObj CloseSocket:0];
+            self.isConnecting = NO;
+            self.isConnected = NO;
             strErrorMsg = @"用户不存在!";
             [self showJoinFailedDialog:strErrorMsg];
         }
@@ -2924,21 +3023,24 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    [self.membersHeadView reloadData];
 }
 //房间用户信息结构
--(void) OnNetMsg_RoomUserListItem:(int)roomId
-                           UserID:(int)userId
-                           Gender:(int)gender
-                         VipLevel:(int)vipLevel
-                      PlayerLevel:(int)playerLevel
-                        RoomLevel:(int)roomLevel
-                      InRoomState:(int)inroomstate
-                         ComeTime:(int)comeTime
-                           SealID:(int)sealId
-                  SealExpiredTime:(int)sealExpiredTime
-                            CarID:(int)carId
-                        UserAlias:(NSString*)userAlias
-                      UserHeadPic:(NSString*)userHeadPic
+-(void)OnNetMsg_RoomUserListItem:(int)roomId
+                          UserID:(int)userId
+                          Gender:(int)gender
+                        VipLevel:(int)vipLevel
+                     PlayerLevel:(int)playerLevel
+                       RoomLevel:(int)roomLevel
+                     InRoomState:(int)inroomstate
+                        ComeTime:(int)comeTime
+                          SealID:(int)sealId
+                 SealExpiredTime:(int)sealExpiredTime
+                           CarID:(int)carId
+                       UserAlias:(NSString *)userAlias
+                     UserHeadPic:(NSString *)userHeadPic
+                    nVideoStatus:(int)nVideoStatus
+                    nAudioStatus:(int)nAudioStatus
 {
     NSLog(@"OnNetMsg_RoomUserListItem");
+    NSLog(@"inroomstate == %d",inroomstate);
     ClientConfigParam* clientConfig = [DPK_NW_Application sharedInstance].clientConfigParam;
     
     ClientUserModel* userObj = [[ClientUserModel alloc]init];
@@ -2955,12 +3057,25 @@ privateChatViewDelegate, GTAFNDataDelegate>
     userObj.userBigHeadPic =@"";
     userObj.pushStreamUrl = @"";
     userObj.pullStreamUrl =@"";
+    userObj.isVideoStatus = nVideoStatus;
+    userObj.isAudioStatus = nAudioStatus;
     if([self.roomObj findMember:userId] == nil) {
-        [self.roomObj addMember:userObj];
+        if (!((inroomstate & FT_USERROOMSTATE_HIDEIN) !=0)) {
+            //隐身登录
+            [self.roomObj addMember:userObj];
+        }
+        [self.roomObj addaAllMember:userObj];
+        
+        if ((inroomstate & FT_USERROOMSTATE_SIEGE1) != 0) {
+            //市长
+            _mayor = userObj;
+            
+        }else if ((inroomstate & FT_USERROOMSTATE_SIEGE2) != 0){
+            //市长夫人
+            _Lady = userObj;
+        }
     }
-    if (inroomstate && FT_USERROOMSTATE_HIDEIN !=0) {
-        //隐身登录
-    }
+    
     
 }
 
@@ -3149,6 +3264,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 }
 
 //新用户进入通知
+
 -(void) OnNetMsg_RoomUserComeNoty:(int)roomId
                            UserID:(int)userId
                            Gender:(int)gender
@@ -3160,8 +3276,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
                            SealID:(int)sealId
                   SealExpiredTime:(int)sealExpiredTime
                            CardID:(int)cardId
-                        UserAlias:(NSString*)userAlias
-                      UserHeadPic:(NSString*)userHeadPic
+                        UserAlias:(NSString *)userAlias
+                      UserHeadPic:(NSString *)userHeadPic
+                      videoStatus:(int)videoStatus
+                      audioStatus:(int)audioStatus
 {
     ClientConfigParam* clientConfig = [DPK_NW_Application sharedInstance].clientConfigParam;
     
@@ -3364,7 +3482,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                         GiftText:(NSString*)giftText
 {
     int level = 0;
-    NSArray *arrName = self.roomObj.memberList;
+    NSArray *arrName = self.roomObj.allMemberList;
     for (int i = 0; i<arrName.count; i++) {
         ClientUserModel *model = [arrName objectAtIndex:i];
         if (srcId == model.userId) {
@@ -3414,6 +3532,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     if(toId == 0)
         strToName = @"大家";
     ClientUserModel* srcUserObj= [self.roomObj findMember:srcId];
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     if(srcUserObj !=nil) {
         srcUserAlias = srcUserObj.userAlias;
     }else{
@@ -3422,22 +3541,29 @@ privateChatViewDelegate, GTAFNDataDelegate>
         if (srcId == toId) {
             strToName = @"天外贵宾";
         }
+        if (srcId == userData.userID || toId == userData.userID) {
+            ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
+            srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+            if (srcId == toId) {
+                strToName = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+            }
+        }
     }
     ClientUserModel* toUserObj = [self.roomObj findMember:toId];
     if(toUserObj !=nil) {
         strToName = toUserObj.userAlias;
     }
     
-    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
     
-    if(userData.userID == toId && srcId == toId){
-        strToName = @"你";
-        ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
-        if(srcUserObj ==nil && srcAllUserObj !=nil) {
-            srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
-            hidding = YES;
-        }
-    }
+    
+//    if(userData.userID == toId && srcId == toId){
+//        strToName = @"你";
+//        ClientUserModel *srcAllUserObj= [self.roomObj findAllMember:srcId];
+//        if(srcUserObj ==nil && srcAllUserObj !=nil) {
+//            srcUserAlias = [NSString stringWithFormat:@"[隐]%@",srcAllUserObj.userAlias];
+//            hidding = YES;
+//        }
+//    }
     
     
     if (!_isGiftHide) {
@@ -3785,6 +3911,35 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
     _flyView.giftNum = giftNum;
     [_flyView paomadeng];
+}
+
+- (void)OnNetMsg_micStatusModifyResp:(int)roomId
+                              userId:(int)userId
+                              status:(int)status{
+    for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
+        ClientUserModel *onMicUser = [self.roomObj.onMicUserList objectAtIndex:index];
+        if (onMicUser.userId == userId) {
+            if(status == VIDEO_PLAY){//视频播放
+                NSLog(@"1");
+                self.showView.hidden = YES;
+            }else if (status == VIDEO_PAUSE){//视频暂停
+                [MBProgressHUD showAlertMessage:@"主播已关闭视频"];
+                self.showView.hidden = NO;
+            }else if (status == AUDIO_PLAY){//音频播放
+                onMicUser.isAudioStatus = 0;
+                [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
+                [_onMicUsersHeadView reloadData];
+            }else if (status == AUDIO_PAUSE){//音频暂停
+                onMicUser.isAudioStatus = 1;
+                [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
+                [_onMicUsersHeadView reloadData];
+            }
+            
+            return;
+        }
+    }
+ 
+    
 }
 
 #pragma mark onMicUserList

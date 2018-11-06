@@ -21,6 +21,7 @@
 #import "ForgetPasswordViewController.h"
 #import "RegisteredViewController.h"
 #import "WebViewController.h"
+#import "AccountView.h"
 @interface LogonViewController ()<GTAFNDataDelegate, UITableViewDelegate, UITableViewDataSource>{
     int type;//1:账号密码 2:QQ 3:手机密码 4:微信
 }
@@ -34,7 +35,6 @@
 @property (weak, nonatomic) IBOutlet UIView *viewLine;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserId;
 //@property (strong, nonatomic)UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic)NSArray *arrUserAndPWD;
 @property (strong, nonatomic)NSDictionary *dicUserAndPWD;
 
@@ -59,6 +59,7 @@
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"USERID_PWD.plist"];
     self.arrUserAndPWD = [NSArray arrayWithContentsOfFile:filePathName];
+    NSLog(@"self.arrUserAndPWD == %@",self.arrUserAndPWD);
     type = 1;
     [self.navigationController.navigationBar setHidden:YES];
     [self.btnPwdVisable setImage:[UIImage imageNamed:@"password_hidden"] forState:UIControlStateNormal];
@@ -76,7 +77,7 @@
     [self.view addGestureRecognizer:tapGesture];
 
     self.viewFooter.hidden = YES;
-    [self.tableView setHidden:YES];
+//    [self.tableView setHidden:YES];
     
     [self.btnUserId setImage:[UIImage imageNamed:@"login_up"] forState:UIControlStateSelected];
     [self.btnUserId setImage:[UIImage imageNamed:@"login_down"] forState:UIControlStateNormal];
@@ -86,17 +87,17 @@
     _btnRegiest.layer.borderColor = MAIN_COLOR.CGColor;
     _btnRegiest.layer.borderWidth = 1.0f;
     
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.rowHeight = 40;
-    _tableView.height = self.arrUserAndPWD.count * 40;
-    _tableView.backgroundColor = [UIColor whiteColor];
+//    _tableView.delegate = self;
+//    _tableView.dataSource = self;
+//    _tableView.rowHeight = 40;
+//    _tableView.height = self.arrUserAndPWD.count * 40;
+//    _tableView.backgroundColor = [UIColor whiteColor];
 }
 
--(UITableView *)tableView{
-    
-    return _tableView;
-}
+//-(UITableView *)tableView{
+//
+//    return _tableView;
+//}
 
 - (UIButton *)btnRegiest{
     return _btnRegiest;
@@ -152,8 +153,23 @@
 }
 
 - (IBAction)btnUserClicked:(UIButton *)sender {
+    AccountView *view = [[AccountView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    view.backgroundColor = [UIColor clearColor];
+    [view setSubViews:_arrUserAndPWD];
+    if (!sender.selected) {
+        [view popShow];
+    }else{
+        [view hide];
+    }
     sender.selected = !sender.selected;
-    self.tableView.hidden = !sender.selected;
+    WEAKSELF;
+    [view setBtnAccountClick:^(NSString *userID, NSString *pwdMD5) {
+        NSLog(@"uid == %@",userID);
+        weakSelf.edtUserID.text = [NSString stringWithFormat:@"%@",userID];
+        weakSelf.edtUserPwd.text = [NSString stringWithFormat:@"%@",pwdMD5];
+        sender.selected = !sender.selected;
+        [view hide];
+    }];
 }
 
 /**
@@ -291,7 +307,7 @@
 //    _edtUserID.text = [NSString stringWithFormat:@"%d",uid];
 //    _edtUserPwd.text = [[_arrUserAndPWD objectAtIndex:indexPath.row] objectForKey:@"userPwd"];
     _edtUserPwd.secureTextEntry = YES;
-    _tableView.hidden = YES;
+//    _tableView.hidden = YES;
 }
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -304,7 +320,7 @@
     _edtUserID.text = [NSString stringWithFormat:@"%d",uid];
     _edtUserPwd.text = [[_arrUserAndPWD objectAtIndex:indexPath.row] objectForKey:@"userPwd"];
     _edtUserPwd.secureTextEntry = YES;
-    _tableView.hidden = YES;
+//    _tableView.hidden = YES;
 }
 - (void)responseDataWithCmd:(NSString *)cmd data:(NSDictionary *)data{
     NSLog(@"cmd == %@\n data == %@",cmd, data);
@@ -324,8 +340,8 @@
             userData.nb =[ data[@"nb"] longLongValue ];
             [DPK_NW_Application sharedInstance].isLogon = YES;
             
-            NSString *strPwd = [NSString md5:_edtUserPwd.text];
-            self.dicUserAndPWD = [NSDictionary dictionaryWithObjectsAndKeys:strPwd, @"userPwd", data[@"uid"], @"uid", nil];
+//            NSString *strPwd = [NSString md5:_edtUserPwd.text];
+            self.dicUserAndPWD = [NSDictionary dictionaryWithObjectsAndKeys:_edtUserPwd.text, @"userPwd", data[@"uid"], @"uid", nil];
             BOOL isUser  = [_arrUserAndPWD containsObject:_dicUserAndPWD];
             if (!isUser) {
                 NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
@@ -360,7 +376,7 @@
     _edtUserID.text = [NSString stringWithFormat:@"%d",uid];
     _edtUserPwd.text = [[_arrUserAndPWD objectAtIndex:button.tag - 200] objectForKey:@"userPwd"];
     _edtUserPwd.secureTextEntry = YES;
-    _tableView.hidden = YES;
+//    _tableView.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
