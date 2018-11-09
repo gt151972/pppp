@@ -20,7 +20,7 @@
 #import "HomeViewController.h"
 #import "GTAFNData.h"
 #import <UMCommon/UMCommon.h>
-
+#import "AcrossViewController.h"
 @interface AppDelegate ()<GTAFNDataDelegate>
 
 @end
@@ -272,6 +272,17 @@
             
         }
     }
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+//    AcrossViewController *acrossVC = [AcrossViewController defaultVideoPlayerViewController];
+//    if ([AcrossViewController isBeingShowed]) {
+//        && VideoPlayerViewModeFullscreen == acrossVC.viewMode
+//        && !acrossVC.presentedViewController
+//        && !acrossVC.isVideoPlayerDestroying)
+//        return UIInterfaceOrientationMaskLandscape;
+//    }
+    return UIInterfaceOrientationMaskPortrait;//其他都为竖屏
 }
 
 @end

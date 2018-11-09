@@ -38,7 +38,8 @@
 #import "WebView.h"
 #import "GTAFNData.h"
 #import "SpecialView.h"
-#import "ShareCopyView.h"
+//#import "ShareCopyView.h"
+#import "ShareAllView.h"
 #import "MicStatusView.h"
 
 #define USER_NEXTACTION_IDEL          0
@@ -102,6 +103,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 //关闭直播
 @property (nonatomic,strong)UIButton *closeButton;  //按钮
+@property (nonatomic,strong)UIButton *btnReload;//刷新按钮
+@property (nonatomic,strong)UIButton *btnReloadBg;//刷新提示背景
 
 //连麦视屏窗口数
 @property (nonatomic,strong)NSMutableArray *remoteArray;
@@ -124,7 +127,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong) BeautyView *beautyView;
 //分享面板
 //@property (nonatomic, strong) ShareView *shareView;
-@property (nonatomic, strong)ShareCopyView *shareView;
+@property (nonatomic, strong)ShareAllView *shareView;
 @property (nonatomic, strong) SpecialView *speicalView;
 @property (nonatomic, strong)MicStatusView *micStatusView;
 //充值网页
@@ -154,6 +157,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
 @property (nonatomic, strong)ClientUserModel *mayor;
 //市长夫人
 @property (nonatomic, strong)ClientUserModel *Lady;
+
+@property (nonatomic, assign)int wrongCount;
 @end
 
 @implementation LiveViewController
@@ -208,6 +213,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     _isHarnHide = NO;
     _isAudioPause = NO;
     _isVideoPause = NO;
+    _wrongCount = 0;
     //创建聊天室对象和Socket对象
     self.roomObj = [[ClientRoomModel alloc]init];
     self.socketObj = [[DPK_NW_Application sharedInstance] CreateSocket];
@@ -293,6 +299,49 @@ privateChatViewDelegate, GTAFNDataDelegate>
     labRoomId.font = [UIFont systemFontOfSize:12];
     [viewOnMic addSubview:labRoomId];
     
+    CGFloat width = (SCREEN_WIDTH - 132)/5;
+    _btnReload = [[UIButton alloc] initWithFrame:CGRectMake(132+2* width, SCREEN_HEIGHT - 54, 40, 40)];
+    if (kIs_iPhoneX) {
+        _btnReload.frame = CGRectMake(132+2* width, SCREEN_HEIGHT - 65, 40, 40);
+    }
+    UIImage *imgReload = [UIImage imageNamed:@"living_reload"];
+    [_btnReload setImage:imgReload forState:UIControlStateNormal];
+    [_btnReload addTarget:self action:@selector(btnReloadClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_btnReload];
+    
+    _btnReloadBg = [[UIButton alloc] initWithFrame: CGRectMake(132+2* width-12, SCREEN_HEIGHT - 94, 72, 40)];
+    if (kIs_iPhoneX) {
+        _btnReloadBg.frame = CGRectMake(132+2* width-12, SCREEN_HEIGHT - 105, 72, 40);
+    }
+    [_btnReloadBg.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [_btnReloadBg setBackgroundImage:[UIImage imageNamed:@"living_reload_bg"] forState:UIControlStateNormal];
+    [_btnReloadBg setTitle:@"点击刷新" forState:UIControlStateNormal];
+    [self.view addSubview:_btnReloadBg];
+    
+    [_btnReload setHidden:YES];
+    [_btnReloadBg setHidden:YES];
+    
+}
+
+- (void)btnReloadClicked{
+    self.pushStreamerView.hidden = YES;
+    self.playerView.hidden = NO;
+    [self addObserver:self forKeyPath:@"player" options:NSKeyValueObservingOptionNew context:nil];
+    [self initPlayerWithURL:_url fileList:_fileList];
+    NSLog(@"_url == %@",_url);
+    //连接房间服务器
+    [self connect_roomserver_joinroom];
+    int64_t delayInSeconds = 10.0;      // 延迟的时间
+    /*
+     *@parameter 1,时间参照，从此刻开始计时
+     *@parameter 2,延时多久，此处为秒级，还有纳秒等。10ull * NSEC_PER_MSEC
+     */
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [_btnReload setHidden:YES];
+        [_btnReloadBg setHidden:YES];
+    });
+
 }
 
 - (void)btnSpreadClicked:(UIButton *)button{
@@ -2223,7 +2272,16 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
 - (void)showAlertRoomPwd{
     [self hideLoadingHud];
-    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"当前房间需要密码" message:@"请输入密码" preferredStyle:UIAlertControllerStyleAlert];
+    NSString *strWrong;
+    NSString *info;
+    if (_wrongCount == 0) {
+        strWrong = @"当前房间需要密码";
+        info = @"请输入密码";
+    }else{
+        strWrong = @"当前密码错误";
+        info = @"请重新输入";
+    }
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:strWrong message:info preferredStyle:UIAlertControllerStyleAlert];
     [alertC addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"在此输入密码";
     }];
@@ -2313,7 +2371,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 }
 - (void)showShareView{
     CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    _shareView = [[ShareCopyView alloc] initWithFrame:frame];
+    _shareView = [[ShareAllView alloc] initWithFrame:frame];
     [_shareView popShow];
 }
 
@@ -2971,6 +3029,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         else if(error_code == 408) {
             strErrorMsg =@"请输入房间密码";
             [self showAlertRoomPwd];
+            _wrongCount++;
         }
         else if(error_code == 402) {
             self.roomObj.isConnected = 0;
@@ -3916,15 +3975,23 @@ privateChatViewDelegate, GTAFNDataDelegate>
 - (void)OnNetMsg_micStatusModifyResp:(int)roomId
                               userId:(int)userId
                               status:(int)status{
+//    self.userObj
     for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
         ClientUserModel *onMicUser = [self.roomObj.onMicUserList objectAtIndex:index];
         if (onMicUser.userId == userId) {
             if(status == VIDEO_PLAY){//视频播放
-                NSLog(@"1");
-                self.showView.hidden = YES;
+                if (userId == self.userObj.userId) {
+                    if (!_createFlag) {
+                        [_btnReload setHidden:NO];
+                        [_btnReloadBg setHidden:NO];
+                    }
+                    self.showView.hidden = YES;
+                }
             }else if (status == VIDEO_PAUSE){//视频暂停
-                [MBProgressHUD showAlertMessage:@"主播已关闭视频"];
-                self.showView.hidden = NO;
+                if (userId == self.userObj.userId) {
+                    [MBProgressHUD showAlertMessage:@"主播已关闭视频"];
+                    self.showView.hidden = NO;
+                }
             }else if (status == AUDIO_PLAY){//音频播放
                 onMicUser.isAudioStatus = 0;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];

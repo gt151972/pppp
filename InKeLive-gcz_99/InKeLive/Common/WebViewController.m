@@ -40,8 +40,10 @@
     else{
         self.title = _strTitle;
         [self.navigationController setNavigationBarHidden:NO];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
-        self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
+        if (![_strTitle isEqualToString:@"活动"]) {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"] style:UIBarButtonItemStyleDone target:self action:@selector(btnBackClicked)];
+            self.navigationItem.leftBarButtonItem.tintColor = RGB(110, 110, 110);
+        }
     }
 }
 
@@ -59,6 +61,8 @@
     [btnBack setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
     [btnBack addTarget:self action:@selector(btnBackClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewBg addSubview:btnBack];
+    
+
     
     UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 44)];
     labTitle.text = _strTitle;
@@ -250,6 +254,8 @@
                 NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", strUrl];
                 /// 防止iOS 10及其之后，拨打电话系统弹出框延迟出现
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+                decisionHandler(WKNavigationActionPolicyCancel);
+            }else{
                 decisionHandler(WKNavigationActionPolicyCancel);
             }
             

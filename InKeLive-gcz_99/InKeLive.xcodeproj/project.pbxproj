@@ -276,11 +276,13 @@
 		63FB93AB1E037A4D00C8A84A /* plane-tail.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A61E037A4D00C8A84A /* plane-tail.png */; };
 		63FB93AC1E037A4D00C8A84A /* plane-head.png in Resources */ = {isa = PBXBuildFile; fileRef = 63FB93A71E037A4D00C8A84A /* plane-head.png */; };
 		63FEFF7E1DFE74BF0059D460 /* NetWorkTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */; };
+		64032C1D219530C700604E56 /* ShareAllView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64032C1C219530C700604E56 /* ShareAllView.m */; };
 		640472BF21758AF2002AC257 /* SpecialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640472BE21758AF2002AC257 /* SpecialView.m */; };
 		640526FC215249D6007C7E3E /* PresentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F8215249D5007C7E3E /* PresentViewCell.m */; };
 		640526FD215249D6007C7E3E /* PresentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526F9215249D5007C7E3E /* PresentView.m */; };
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
 		64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067EE0218808C500EFB774 /* ShareCopyView.m */; };
+		6406AC3F219282BE0017D173 /* AcrossViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6406AC3E219282BE0017D173 /* AcrossViewController.m */; };
 		640783AE218C32E000BDB5C8 /* hdaili.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AD218C32E000BDB5C8 /* hdaili.gif */; };
 		640783B0218C3DD100BDB5C8 /* shizhang1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AF218C3DD100BDB5C8 /* shizhang1.gif */; };
 		640783B2218C3DDC00BDB5C8 /* 35151.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783B1218C3DDC00BDB5C8 /* 35151.gif */; };
@@ -831,6 +833,8 @@
 		63FB93A71E037A4D00C8A84A /* plane-head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane-head.png"; sourceTree = "<group>"; };
 		63FEFF7C1DFE74BF0059D460 /* NetWorkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTools.h; sourceTree = "<group>"; };
 		63FEFF7D1DFE74BF0059D460 /* NetWorkTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTools.m; sourceTree = "<group>"; };
+		64032C1B219530C700604E56 /* ShareAllView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareAllView.h; sourceTree = "<group>"; };
+		64032C1C219530C700604E56 /* ShareAllView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareAllView.m; sourceTree = "<group>"; };
 		640472BD21758AF2002AC257 /* SpecialView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialView.h; sourceTree = "<group>"; };
 		640472BE21758AF2002AC257 /* SpecialView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialView.m; sourceTree = "<group>"; };
 		640526F7215249D5007C7E3E /* PresentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentView.h; sourceTree = "<group>"; };
@@ -842,6 +846,8 @@
 		640526FF21524A23007C7E3E /* PresentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentModel.m; sourceTree = "<group>"; };
 		64067EDF218808C500EFB774 /* ShareCopyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareCopyView.h; sourceTree = "<group>"; };
 		64067EE0218808C500EFB774 /* ShareCopyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareCopyView.m; sourceTree = "<group>"; };
+		6406AC3D219282BE0017D173 /* AcrossViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcrossViewController.h; sourceTree = "<group>"; };
+		6406AC3E219282BE0017D173 /* AcrossViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcrossViewController.m; sourceTree = "<group>"; };
 		640783AD218C32E000BDB5C8 /* hdaili.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = hdaili.gif; path = ../../../../../Downloads/hdaili.gif; sourceTree = "<group>"; };
 		640783AF218C3DD100BDB5C8 /* shizhang1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shizhang1.gif; sourceTree = "<group>"; };
 		640783B1218C3DDC00BDB5C8 /* 35151.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 35151.gif; sourceTree = "<group>"; };
@@ -1544,6 +1550,8 @@
 				64241E62214F5138007E3F3D /* ShareView.m */,
 				64067EDF218808C500EFB774 /* ShareCopyView.h */,
 				64067EE0218808C500EFB774 /* ShareCopyView.m */,
+				64032C1B219530C700604E56 /* ShareAllView.h */,
+				64032C1C219530C700604E56 /* ShareAllView.m */,
 				64CA04C2215CD2A700A13359 /* WebView.h */,
 				64CA04C3215CD2A700A13359 /* WebView.m */,
 				640472BD21758AF2002AC257 /* SpecialView.h */,
@@ -1787,6 +1795,8 @@
 				6481F88421464EB7007264AB /* LevelGrade.m */,
 				6481F886214669F0007264AB /* WebViewController.h */,
 				6481F887214669F0007264AB /* WebViewController.m */,
+				6406AC3D219282BE0017D173 /* AcrossViewController.h */,
+				6406AC3E219282BE0017D173 /* AcrossViewController.m */,
 				64A43522214BA3C900A2FF99 /* GTAFNData.h */,
 				64A43523214BA3C900A2FF99 /* GTAFNData.m */,
 				646A0DF9216C982100F24B36 /* CatchCrash.h */,
@@ -2720,12 +2730,6 @@
 				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png",
 				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/QQ/QQSDK/TencentOpenApi_IOS_Bundle.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/Twitter/TwitterKitResources.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/Twitter/TwitterShareExtensionUIResources.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialUI/UMSocialSDKResources.bundle",
 				"${PODS_ROOT}/ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -2736,12 +2740,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_1.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_2.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKPromptResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TencentOpenApi_IOS_Bundle.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZYQAssetPicker.Bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2836,6 +2834,7 @@
 				64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */,
 				6357A6281DFE4DB1001E77AF /* UIView+Frame.m in Sources */,
 				64B61F082147973A00D2C3E3 /* ChangeScore.m in Sources */,
+				64032C1D219530C700604E56 /* ShareAllView.m in Sources */,
 				633E2E0E1E1CF9430049C9E8 /* FlowLayout.m in Sources */,
 				1AAD2FDB1F3EFB7A00FBB894 /* LogonViewController.m in Sources */,
 				633D8D751E0791B20087BD77 /* TYAttributedLabel.m in Sources */,
@@ -2863,6 +2862,7 @@
 				64513C5021226EAE00539CDD /* MessageFrame.m in Sources */,
 				6357A5D91DFE32B2001E77AF /* AppDelegate.m in Sources */,
 				63402F191E124805002F6661 /* BottomView.m in Sources */,
+				6406AC3F219282BE0017D173 /* AcrossViewController.m in Sources */,
 				6405270021524A23007C7E3E /* PresentModel.m in Sources */,
 				63402EFE1E124723002F6661 /* NearCell.m in Sources */,
 				6357A61C1DFE4C91001E77AF /* CameraViewController.m in Sources */,

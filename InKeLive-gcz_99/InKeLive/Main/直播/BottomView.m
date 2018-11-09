@@ -32,7 +32,7 @@
     }else{
         _createFlag = NO;
     }
-    CGFloat width = (SCREEN_WIDTH - 132)/5;;
+    CGFloat width = (SCREEN_WIDTH - 132)/5;
     
     for (NSInteger i = 0; i < self.imageArr.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

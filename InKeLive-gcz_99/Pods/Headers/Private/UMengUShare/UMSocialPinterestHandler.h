@@ -1,1 +1,0 @@
-../../../UMengUShare/UShareSDK/SocialLibraries/Pinterest/UMSocialPinterestHandler.h
