@@ -76,6 +76,9 @@
             resource = @"cjzc";
             break;
         case 201://灰代理
+            resource = @"hdaili(1)";
+            break;
+        case 202://红代理
             resource = @"hdaili";
             break;
         case 205://客服

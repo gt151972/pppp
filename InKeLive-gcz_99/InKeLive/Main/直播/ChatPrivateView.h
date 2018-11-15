@@ -16,11 +16,13 @@
 @property (nonatomic, strong) UILabel *labNameAndId;
 
 @property (nonatomic, assign) int nowRow;
+@property (nonatomic, assign) int lastRow;
 
 @property (nonatomic,copy)void (^privateChatSend)(NSString *messageInfo, int toId);
 @property (nonatomic,copy)void (^deteleChatUser)(int row);
 - (void)sendMessage:(NSString *)strInfo sendID:(int)sendId receiverID: (int)receiverId;
 - (void)reloadDateForTableView;
+-(void)reloadDate;
 //弹出窗口
 - (void)popShow;
 

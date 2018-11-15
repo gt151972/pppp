@@ -42,7 +42,7 @@
         make.top.equalTo(self).offset(2);
         make.right.equalTo(self).offset(-10);
         make.bottom.equalTo(self).offset(-2);
-        make.width.height.equalTo(@40
+        make.width.height.equalTo(@80
                                   );
     }];
     
@@ -200,7 +200,8 @@
 //    NSString*cachePath2 = array[0];
     NSString*filePathName2 = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
     NSDictionary *dicUser = [NSDictionary dictionaryWithContentsOfFile:filePathName2];
-    self.giftLabel.text = [NSString stringWithFormat:@"送给%@",[dicUser objectForKey:@"userAlias"]];
+//    self.giftLabel.text = [NSString stringWithFormat:@"送给%@",[dicUser objectForKey:@"userAlias"]];
+    self.giftLabel.text = [NSString stringWithFormat:@"送给%@",presentmodel.toName];
     //    NSURL *url = [NSURL URLWithString:giftImage];
     NSString *strUrl = [NSString stringWithFormat:@"%@gift/%@",[dict objectForKey:@"res"],presentmodel.giftImageName];
     NSURL *urlGiftImage =[NSURL URLWithString:strUrl];

@@ -204,7 +204,7 @@
     cell.label.layer.masksToBounds = YES;
     cell.label.layer.cornerRadius = 4;
     cell.label.layer.shadowOffset = CGSizeMake(5, 5);
-    NSLog(@"cell.width == %lu, cell.lable.text == %@",(unsigned long)cell.label.width, cell.label.text);
+//    NSLog(@"cell.width == %lu, cell.lable.text == %@",(unsigned long)cell.label.width, cell.label.text);
 //    cell.label.isWidthToFit = YES;
     return cell;
 }

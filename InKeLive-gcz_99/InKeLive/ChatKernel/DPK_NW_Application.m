@@ -650,6 +650,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                      SealID:pUserItem->sealId
                                             SealExpiredTime:pUserItem->sealExpiredTime
                                                       CarID:pUserItem->carId
+                                                   param_01:pUserItem->param_01
                                                   UserAlias:strUserAlias
                                                 UserHeadPic:strHeadPic
                                                nVideoStatus:pUserItem->nVideoStatus
@@ -773,6 +774,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                  SealID:pUserItem->sealId
                                         SealExpiredTime:pUserItem->sealExpiredTime
                                                  CardID:pUserItem->carId
+                                               param_01:pUserItem->param_01
                                               UserAlias:strUserAlias
                                             UserHeadPic:strHeadPic
                                             videoStatus:pUserItem->nVideoStatus

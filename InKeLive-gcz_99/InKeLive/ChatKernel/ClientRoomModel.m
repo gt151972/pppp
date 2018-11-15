@@ -103,6 +103,28 @@
 -(void) addOnMicUser:(ClientUserModel*) userObj {
     [self.onMicUserList addObject:userObj];
 }
+-(NSMutableArray *)sortMicUser:(NSMutableArray *)array{
+    NSMutableArray *arrayData = [[NSMutableArray alloc] init];
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
+    for (int index = 0; index < array.count; index++) {
+        ClientUserModel *model = [array objectAtIndex:index];
+        if (model.micState == 1) {
+            [arrayData addObject:model];
+            [arr removeObjectAtIndex:index];
+        }
+    }
+    NSArray *array2 = [arrayData sortedArrayUsingComparator:
+                       ^NSComparisonResult(ClientUserModel *obj1, ClientUserModel *obj2) {
+                           // 先按照麦序
+                           NSComparisonResult result = obj1.param_01 < obj2.param_01;
+                           return result;
+                       }];
+    NSMutableArray *array3 = [[NSMutableArray alloc] initWithArray:array2];
+    for (int index = 0; index < arr.count; index ++ ) {
+        [array3 addObject:[arr objectAtIndex:index]];
+    }
+    return array3;
+}
 
 - (void)delAllMember:(int)userId{
     for(int i=0; i<self.memberList.count; i++) {

@@ -12,6 +12,7 @@
 @interface PresentModel : NSObject<PresentModelAble>
 
 @property (copy, nonatomic) NSString *sender;
+@property (copy, nonatomic) NSString *toName;
 @property (copy, nonatomic) NSString *giftName;
 @property (copy, nonatomic) NSString *icon;
 @property (copy, nonatomic) NSString *giftImageName;

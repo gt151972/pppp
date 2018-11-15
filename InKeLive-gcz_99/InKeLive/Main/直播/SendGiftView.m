@@ -698,7 +698,7 @@
     [arrData sortUsingDescriptors:@[sort]];
     //     //输出排序结果
     for (ClientUserModel *model in arrData) {
-        NSLog(@"userLevel: %d,userId: %d userAlias: %@", model.userLevel,model.userId, model.userAlias);
+//        NSLog(@"userLevel: %d,userId: %d userAlias: %@", model.userLevel,model.userId, model.userAlias);
     }
     LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
     for (int index = 0; index < arrData.count; index ++ ) {

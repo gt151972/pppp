@@ -29,6 +29,7 @@
     self.isAttention = 0;
     self.isVideoStatus = 0;
     self.isAudioStatus = 0;
+    self.param_01 = 0;
 }
 
 @end

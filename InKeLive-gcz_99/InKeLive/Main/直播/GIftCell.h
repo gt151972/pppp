@@ -23,7 +23,7 @@
 //送礼物者名
 @property(nonatomic,strong)UILabel *senderLabel;
 
-//礼物名
+//被赠送者
 @property (nonatomic,strong)UILabel *giftLabel;
 
 //礼物

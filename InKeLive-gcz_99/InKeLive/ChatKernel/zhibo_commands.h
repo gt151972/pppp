@@ -361,7 +361,7 @@ typedef struct _tag_HBCMD_VideoChat_RoomUserInfo
     uint32    sealExpiredTime;        //盖章过期时间
     uint16    sealId;                //章ID
     uint16    carId;                //座驾ID
-    int32    param_01;            //pubMicIndex,MicGiftId
+    int32    param_01;            //pubMicIndex,MicGiftId 一麦:0 二麦:1
     int32    param_02;            //pubMicRemainTime,MicGiftNum
     char        userName[NAMELEN];    //用户呢称
     char        userHeadPic[MD5LEN];    //用户头像,可能有

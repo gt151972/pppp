@@ -283,6 +283,7 @@
 		6405270021524A23007C7E3E /* PresentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 640526FF21524A23007C7E3E /* PresentModel.m */; };
 		64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64067EE0218808C500EFB774 /* ShareCopyView.m */; };
 		6406AC3F219282BE0017D173 /* AcrossViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6406AC3E219282BE0017D173 /* AcrossViewController.m */; };
+		6407386E219A72D300F93E5B /* DKScrollTextLable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407386D219A72D200F93E5B /* DKScrollTextLable.m */; };
 		640783AE218C32E000BDB5C8 /* hdaili.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AD218C32E000BDB5C8 /* hdaili.gif */; };
 		640783B0218C3DD100BDB5C8 /* shizhang1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783AF218C3DD100BDB5C8 /* shizhang1.gif */; };
 		640783B2218C3DDC00BDB5C8 /* 35151.gif in Resources */ = {isa = PBXBuildFile; fileRef = 640783B1218C3DDC00BDB5C8 /* 35151.gif */; };
@@ -417,6 +418,7 @@
 		64CF3FBF213F85460060261B /* AnchorListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CF3FBE213F85460060261B /* AnchorListView.m */; };
 		64D07BDB211C19E8001C864F /* RoomInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64D07BDA211C19E8001C864F /* RoomInfo.plist */; };
 		64D07BDE211C2406001C864F /* TopToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D07BDD211C2406001C864F /* TopToolView.m */; };
+		64E149852199649E005EDE1D /* hdaili(1).gif in Resources */ = {isa = PBXBuildFile; fileRef = 64E149842199649E005EDE1D /* hdaili(1).gif */; };
 		7441DBEE2138295F00F44320 /* SignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBEC2138295F00F44320 /* SignatureViewController.m */; };
 		7441DBEF2138295F00F44320 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7441DBED2138295F00F44320 /* SignatureViewController.xib */; };
 		7441DBF3213948BE00F44320 /* ChangePwdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7441DBF1213948BE00F44320 /* ChangePwdViewController.m */; };
@@ -848,6 +850,8 @@
 		64067EE0218808C500EFB774 /* ShareCopyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareCopyView.m; sourceTree = "<group>"; };
 		6406AC3D219282BE0017D173 /* AcrossViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcrossViewController.h; sourceTree = "<group>"; };
 		6406AC3E219282BE0017D173 /* AcrossViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcrossViewController.m; sourceTree = "<group>"; };
+		6407386C219A72D200F93E5B /* DKScrollTextLable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKScrollTextLable.h; sourceTree = "<group>"; };
+		6407386D219A72D200F93E5B /* DKScrollTextLable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DKScrollTextLable.m; sourceTree = "<group>"; };
 		640783AD218C32E000BDB5C8 /* hdaili.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = hdaili.gif; path = ../../../../../Downloads/hdaili.gif; sourceTree = "<group>"; };
 		640783AF218C3DD100BDB5C8 /* shizhang1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shizhang1.gif; sourceTree = "<group>"; };
 		640783B1218C3DDC00BDB5C8 /* 35151.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 35151.gif; sourceTree = "<group>"; };
@@ -1061,6 +1065,7 @@
 		64D07BDA211C19E8001C864F /* RoomInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RoomInfo.plist; sourceTree = "<group>"; };
 		64D07BDC211C2406001C864F /* TopToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopToolView.h; sourceTree = "<group>"; };
 		64D07BDD211C2406001C864F /* TopToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopToolView.m; sourceTree = "<group>"; };
+		64E149842199649E005EDE1D /* hdaili(1).gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "hdaili(1).gif"; sourceTree = "<group>"; };
 		7441DBEB2138295F00F44320 /* SignatureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignatureViewController.h; sourceTree = "<group>"; };
 		7441DBEC2138295F00F44320 /* SignatureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignatureViewController.m; sourceTree = "<group>"; };
 		7441DBED2138295F00F44320 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
@@ -2013,6 +2018,15 @@
 			path = Present;
 			sourceTree = "<group>";
 		};
+		6407386B219A72D200F93E5B /* ScrollText */ = {
+			isa = PBXGroup;
+			children = (
+				6407386C219A72D200F93E5B /* DKScrollTextLable.h */,
+				6407386D219A72D200F93E5B /* DKScrollTextLable.m */,
+			);
+			path = ScrollText;
+			sourceTree = "<group>";
+		};
 		644B18022114244800939E76 /* 关注 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2149,6 +2163,7 @@
 		644B182321142CDC00939E76 /* thirthPath */ = {
 			isa = PBXGroup;
 			children = (
+				6407386B219A72D200F93E5B /* ScrollText */,
 				6481F85821464BC4007264AB /* levelIcon */,
 				64ADB23B213E79780065C1D5 /* JhtMarquee.framework */,
 				6462E7C92117F44E005EF737 /* SDCycleScrollView */,
@@ -2253,6 +2268,7 @@
 				6481F86521464BC4007264AB /* kefu.gif */,
 				6481F86621464BC4007264AB /* caizhu.gif */,
 				6481F86721464BC4007264AB /* desktop.ini */,
+				64E149842199649E005EDE1D /* hdaili(1).gif */,
 				640783AD218C32E000BDB5C8 /* hdaili.gif */,
 				6481F86921464BC4007264AB /* fuhao.gif */,
 				6481F86A21464BC4007264AB /* tianzuin.gif */,
@@ -2472,6 +2488,7 @@
 				6332820B1E024BBA00EC018B /* heart1@2x.png in Resources */,
 				6302FE051E1B9DD9007122D3 /* yipitiezhi010 16-51-33-688.png in Resources */,
 				6302FE171E1B9DD9007122D3 /* yipitiezhi019 16-51-33-528.png in Resources */,
+				64E149852199649E005EDE1D /* hdaili(1).gif in Resources */,
 				6489CAFC21240514007F6F3C /* MineViewController.xib in Resources */,
 				635587341E29C62900D1A209 /* search.jpg in Resources */,
 				633282381E024CB400EC018B /* meteor_after_13.png in Resources */,
@@ -2834,6 +2851,7 @@
 				64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */,
 				6357A6281DFE4DB1001E77AF /* UIView+Frame.m in Sources */,
 				64B61F082147973A00D2C3E3 /* ChangeScore.m in Sources */,
+				6407386E219A72D300F93E5B /* DKScrollTextLable.m in Sources */,
 				64032C1D219530C700604E56 /* ShareAllView.m in Sources */,
 				633E2E0E1E1CF9430049C9E8 /* FlowLayout.m in Sources */,
 				1AAD2FDB1F3EFB7A00FBB894 /* LogonViewController.m in Sources */,

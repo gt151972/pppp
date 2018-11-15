@@ -121,6 +121,7 @@
 						 SealID:(int)sealId
 						 SealExpiredTime:(int)sealExpiredTime
 						 CarID:(int)carId
+                         param_01:(int)param_01
                         UserAlias:(NSString*)userAlias
                       UserHeadPic:(NSString*)userHeadPic
                      nVideoStatus:(int)nVideoStatus
@@ -186,6 +187,7 @@
                            SealID:(int)sealId
                   SealExpiredTime:(int)sealExpiredTime
                            CardID:(int)cardId
+                         param_01:(int)param_01
                         UserAlias:(NSString*)userAlias
                       UserHeadPic:(NSString*)userHeadPic
                       videoStatus:(int)videoStatus

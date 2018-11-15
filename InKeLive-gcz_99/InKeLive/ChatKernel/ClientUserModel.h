@@ -27,6 +27,8 @@
 @property(nonatomic, assign) int isAttention;//是否被关注
 @property(nonatomic, assign) int isVideoStatus;//视频播放状态
 @property(nonatomic, assign) int isAudioStatus;//音频播放状态
+@property(nonatomic, assign) int micState;//麦状态(0:非主播 1:公麦 7:手机私麦 2:私麦)
+@property(nonatomic, assign) int param_01;//用于主播列表排序(先公麦的012,再私麦)
 
 -(void) reset;
 @end

@@ -24,7 +24,7 @@ static const CGFloat kHeight=285.0;
     if (self = [super initWithFrame:frame]) {
         _arrChatMessage = [[NSMutableArray alloc] init];
         _dicMessage = [[NSMutableDictionary alloc] init];
-        [self setSubViews];
+        
     }
     return self;
 }
@@ -54,6 +54,7 @@ static const CGFloat kHeight=285.0;
         }
         
         [_messageTableView reloadData];
+//        [self reloadDateForTableView];
         
     }else{
         if (myUserId == sendId) {
@@ -72,6 +73,7 @@ static const CGFloat kHeight=285.0;
         NSLog(@"dic == %@",_dicMessage);
         NSLog(@"arr == %@",_arrChatMessage);
         [_messageTableView reloadData];
+//        [self reloadDateForTableView];
     }
     
 }
@@ -94,19 +96,7 @@ static const CGFloat kHeight=285.0;
     [btnClose setImage:[UIImage imageNamed:@"living_close"] forState:UIControlStateNormal];
     [btnClose addTarget:self action:@selector(btnBgClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewTopBg addSubview:btnClose];
-//    _userTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, 51, SCREEN_HEIGHT - 35) style:UITableViewStylePlain];
-//    _userTableView.dataSource = self;
-//    _userTableView.delegate = self;
-//    _userTableView.rowHeight = 44;
-//    _userTableView.backgroundColor = RGBA(0, 0, 0, 0.8);
-//    _userTableView.separatorStyle = UITableViewCellEditingStyleNone;
     [viewBg addSubview:self.userTableView ];
-//    _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(51, 35, SCREEN_WIDTH - 51, SCREEN_HEIGHT/2 - 35 - -40) style:UITableViewStylePlain];
-//    _messageTableView.dataSource = self;
-//    _messageTableView.delegate = self;
-//    _messageTableView.backgroundColor = RGBA(0, 0, 0, 0.5);
-//    _messageTableView.separatorStyle = UITableViewCellEditingStyleNone;
-//    [_messageTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
     [viewBg addSubview:self.messageTableView];
     
     UIView *viewButtonBg = [[UIView alloc] initWithFrame:CGRectMake(51, kHeight-40, SCREEN_WIDTH - 51, 40)];
@@ -319,6 +309,7 @@ static const CGFloat kHeight=285.0;
             return 0;
         }else{
             if (_arrChatMessage.count > 0) {
+                NSLog(@"_nowRow == %d, count == %ld",_nowRow,_arrChatMessage.count);
                 NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
                 for (int index = 0; index < arrKey.count; index ++) {
                     if ([arrKey[index] isEqualToString:@"message"]) {
@@ -352,6 +343,7 @@ static const CGFloat kHeight=285.0;
         UITableViewCell *cell2 = (UITableViewCell *)[_userTableView viewWithTag:indexPath.row + 500];
         cell2.backgroundColor = RGB(67, 67, 67);
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
+        _lastRow = _nowRow;
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
         CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
         if (offset > 0)
@@ -365,7 +357,7 @@ static const CGFloat kHeight=285.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == _userTableView) {
+    if (tableView == _userTableView) {//7///5
         return 40;
     }else{
         UILabel *lab = (UILabel *)[self viewWithTag:6000+indexPath.row];
@@ -378,7 +370,8 @@ static const CGFloat kHeight=285.0;
 //    [self setSubViews];
 //    [self.userTableView reloadData];
 //    [self.messageTableView reloadData];
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [self setSubViews];
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;//3
     [keyWindow addSubview:self];
     NSLog(@"_arrChatMessage == %@",_arrChatMessage);
     CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
@@ -405,7 +398,7 @@ static const CGFloat kHeight=285.0;
 
 
 -(void)btnSendClicked{
-    if (self.privateChatSend) {
+    if (self.privateChatSend) {///1
         if (_textField.text.length > 0) {
             NSLog(@"_nowRow == %d",_nowRow);
             if (_arrChatMessage.count >0) {
@@ -421,7 +414,9 @@ static const CGFloat kHeight=285.0;
 - (void)btnUserDeleteClicked: (UIButton *)button{
     [_arrChatMessage removeObjectAtIndex:_nowRow];
     [self reloadDateForTableView];
+    
     _nowRow = 0;
+    _lastRow = 0;
     if (self.deteleChatUser) {
         self.deteleChatUser(_nowRow);
     }
@@ -450,16 +445,32 @@ static const CGFloat kHeight=285.0;
          self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
      }
  }
+//- (void)reloadDateForTableView{
+//    [_userTableView reloadData];
+//    [_messageTableView reloadData];
+////    [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+////    NSLog(@"row == %d",_nowRow);
+////    if (_nowRow>0 && _arrChatMessage) {
+////        NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+////        UITableViewCell *cell2 = (UITableViewCell *)[_messageTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:array.count inSection:0]];
+////        [cell2 reloadInputViews];
+////        UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0]];
+////        cell.selected = YES;
+////    }
+//}
 
-- (void)reloadDateForTableView{
-    
+
+-(void)reloadDateForTableView{
     [_userTableView reloadData];
     [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
     [_messageTableView reloadData];
-    NSLog(@"row == %d",_nowRow);
+    NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
     UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0]];
     cell.selected = YES;
-    
+//    if (_nowRow == _lastRow) {
+//
+//
+//    }
 }
 
 @end

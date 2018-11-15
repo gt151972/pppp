@@ -46,6 +46,7 @@
 -(void) addaAllMember: (ClientUserModel *)userObj;
 -(void) addMember: (ClientUserModel*) userObj;
 -(void) addOnMicUser:(ClientUserModel*) userObj;
+-(NSMutableArray *)sortMicUser:(NSMutableArray *)array;
 
 -(void) delAllMember: (int)userId;
 -(void) delMember: (int) userId;
