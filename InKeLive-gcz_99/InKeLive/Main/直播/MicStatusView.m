@@ -47,9 +47,9 @@
 
 -(UITableView*)tableView {
     if(_tableView == nil) {
-        CGRect frame = CGRectMake(SCREEN_WIDTH - 110, SCREEN_HEIGHT - 49-54, 101, 54);
+        CGRect frame = CGRectMake(SCREEN_WIDTH - 110, SCREEN_HEIGHT - 49-54, 101, 62);
         if (kIs_iPhoneX) {
-            frame = CGRectMake(SCREEN_WIDTH - 120, SCREEN_HEIGHT - 69-54, 101, 54);
+            frame = CGRectMake(SCREEN_WIDTH - 120, SCREEN_HEIGHT - 69-54, 101, 62);
         }
         _tableView = [[UITableView alloc]initWithFrame:frame style:UITableViewStylePlain];
         _tableView.dataSource = self;
@@ -78,11 +78,11 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    _labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 101, 27)];
+    _labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 101, 31)];
     _labTitle.text = [arrayTitle objectAtIndex:indexPath.row];
     _labTitle.textColor = [UIColor whiteColor];
     _labTitle.textAlignment = NSTextAlignmentCenter;
-    _labTitle.font = [UIFont systemFontOfSize:12];
+    _labTitle.font = [UIFont systemFontOfSize:15];
     [cell.contentView addSubview:_labTitle];
     if (_isAudioPause && indexPath.row == 0) {
         _labTitle.text = [arraySelect objectAtIndex:indexPath.row];

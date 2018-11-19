@@ -219,7 +219,7 @@ static const CGFloat kHeight=285.0;
         }
         cell.backgroundColor = [UIColor clearColor];
         //        cell.backgroundColor = [UIColor redColor];
-        if (_arrChatMessage && _nowRow >= 0) {
+        if (_arrChatMessage && _nowRow >= 0 && _lastRow == _nowRow) {
             BOOL haveKey = NO;
             NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
             for (int index = 0; index < arrKey.count; index ++) {
@@ -283,9 +283,12 @@ static const CGFloat kHeight=285.0;
         [_btnDelete setTag:400+indexPath.row];
         [cell.contentView addSubview:_btnDelete];
         _btnDelete.hidden = YES;
-        if (indexPath.row == _nowRow) {
+        if (indexPath.row == _lastRow) {
             cell.backgroundColor = RGB(67, 67, 67);
             _btnDelete.hidden = NO;
+        }else{
+            cell.backgroundColor = [UIColor clearColor];
+            _btnDelete.hidden = YES;
         }
        
         return cell;
@@ -345,12 +348,8 @@ static const CGFloat kHeight=285.0;
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
         _lastRow = _nowRow;
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
-        CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
-        if (offset > 0)
-        {
-            [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
-        }
-        [_messageTableView reloadData];
+        [self reloadDateForTableView];
+        
     }else if (tableView == _messageTableView){
 //        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -461,12 +460,17 @@ static const CGFloat kHeight=285.0;
 
 
 -(void)reloadDateForTableView{
-    [_userTableView reloadData];
-    [_messageTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+    CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
+    if (offset > 0)
+    {
+        [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
+    }
     [_messageTableView reloadData];
     NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
-    UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_nowRow inSection:0]];
+    UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
     cell.selected = YES;
+    
+    [_userTableView reloadData];
 //    if (_nowRow == _lastRow) {
 //
 //

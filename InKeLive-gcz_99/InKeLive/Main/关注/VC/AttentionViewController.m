@@ -136,7 +136,7 @@
 }
 
 - (void)btnCancelAttention:(UIButton *)button{
-    NSString *pid = [[_arrData objectAtIndex:button.tag - 200] objectForKey:@"pid"];
+    NSString *pid = [[_arrData objectAtIndex:button.tag - 200] objectForKey:@"uId"];
     [[GTAlertTool shareInstance]showAlert:@"是否取消关注此歌手" message:nil cancelTitle:@"确定" titleArray:@[@"取消"] viewController:self confirm:^(NSInteger buttonTag) {
         if (buttonTag == -1) {
             NSLog(@"确定");
@@ -195,9 +195,10 @@
             NSMutableArray *array = [NSMutableArray arrayWithArray:_arrData];
             if (_index > -1) {
                 [array removeObjectAtIndex:_index];
-                [self.tableView reloadData];
+                
                 [MBProgressHUD showAlertMessage:@"取消关注成功"];
             }
+            [self.tableView reloadData];
             _index = -1;
         }else{
             [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {

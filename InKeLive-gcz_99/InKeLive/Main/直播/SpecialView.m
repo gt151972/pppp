@@ -51,16 +51,16 @@
 
 -(UITableView*)tableView {
     if(_tableView == nil) {
-        CGRect frame = CGRectMake(170-30, 64+3, 101, 136);
+        CGRect frame = CGRectMake(170-30, 64+3, 121, 156);
         if (kIs_iPhoneX) {
-            frame = CGRectMake(170-30, 88+3, 101, 136);
+            frame = CGRectMake(170-30, 88+3, 121, 156);
         }
         _tableView = [[UITableView alloc]initWithFrame:frame style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundColor = RGBA(0,0,0,0.7);
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.rowHeight = 27;
+        _tableView.rowHeight = 31;
         _tableView.scrollEnabled = NO;
         //tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Background.png"]];
     }
@@ -81,11 +81,11 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    _labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 101, 27)];
+    _labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 121, 31)];
     _labTitle.text = [arrayTitle objectAtIndex:indexPath.row];
     _labTitle.textColor = [UIColor whiteColor];
     _labTitle.textAlignment = NSTextAlignmentCenter;
-    _labTitle.font = [UIFont systemFontOfSize:12];
+    _labTitle.font = [UIFont systemFontOfSize:15];
     [cell.contentView addSubview:_labTitle];
     if (_isAnimationHide && indexPath.row == 0) {
         _labTitle.text = [arraySelect objectAtIndex:indexPath.row];

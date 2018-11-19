@@ -4109,6 +4109,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             lab.font = [UIFont systemFontOfSize:22];
             lab.textAlignment = NSTextAlignmentCenter;
             [self.showView addSubview:lab];
+            lab.hidden = YES;
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.equalTo(self.view);
                 make.height.mas_equalTo(30);
@@ -4122,24 +4123,24 @@ privateChatViewDelegate, GTAFNDataDelegate>
                         [_btnReloadBg setHidden:NO];
                     }
                     self.showView.hidden = YES;
-//                    lab.hidden = YES;
+                    lab.hidden = YES;
                 }
             }else if (status == VIDEO_PAUSE){//视频暂停
                 if (userId == self.userObj.userId || userId == myModel.userID) {
                     [MBProgressHUD showAlertMessage:@"主播已关闭视频"];
                     self.showView.hidden = NO;
-//                    lab.hidden = NO;
+                    lab.hidden = NO;
                 }
             }else if (status == AUDIO_PLAY){//音频播放
                 onMicUser.isAudioStatus = 0;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
                 [_onMicUsersHeadView reloadData];
-//                lab.hidden = YES;
+                lab.hidden = YES;
             }else if (status == AUDIO_PAUSE){//音频暂停
                 onMicUser.isAudioStatus = 1;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
                 [_onMicUsersHeadView reloadData];
-//                lab.hidden = YES;
+                lab.hidden = YES;
             }
             
             return;
