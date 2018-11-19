@@ -231,6 +231,8 @@
             NSString *strWeb = @"jiujiu://Web/";
             NSString *strQQ = @"jiujiu://QQ/";
             NSString *strPhone = @"jiujiu://Phone/";
+            NSString *strAlipay = @"alpay://";
+            NSString *strAlipays = @"alpays://";
             if([strUrl rangeOfString:strWeb].location != NSNotFound){
                 strUrl = [strUrl stringByReplacingOccurrencesOfString:strWeb withString:@""];
                 childUrl = strUrl;
@@ -255,7 +257,21 @@
                 /// 防止iOS 10及其之后，拨打电话系统弹出框延迟出现
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
                 decisionHandler(WKNavigationActionPolicyCancel);
-            }else{
+            }else if ([strUrl rangeOfString:strAlipay].location != NSNotFound){
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:strUrl]];
+                BOOL bSucc = [[UIApplication sharedApplication] openURL:request.URL];
+                if (!bSucc) {
+                    [[GTAlertTool shareInstance] showAlert:@"未检测到支付宝客户端" message:@"请安装后重试" cancelTitle:@"确定" titleArray:@[@"取消"] viewController:self confirm:^(NSInteger buttonTag) {
+                        if (buttonTag == -1) {
+                            NSString *alipayPath = @"https://itunes.apple.com/cn/app/支付宝-让生活更简单/id333206289?mt=8&v0=WWW-GCCN-ITSTOP100-FREEAPPS&l=&ign-mpt=uo%3D4";
+                            NSURL *url = [NSURL URLWithString:alipayPath];
+                            [[UIApplication sharedApplication] openURL:url];
+                        }
+                    }];
+                }
+                
+            }
+            else{
                 decisionHandler(WKNavigationActionPolicyCancel);
             }
             
@@ -301,6 +317,7 @@
         self.viewLine.centerX = button.centerX;
     }];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

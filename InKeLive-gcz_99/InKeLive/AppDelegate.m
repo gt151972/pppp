@@ -21,6 +21,8 @@
 #import "GTAFNData.h"
 #import <UMCommon/UMCommon.h>
 #import "AcrossViewController.h"
+#import <KSCrash/KSCrash.h>
+#import <KSCrash/KSCrashInstallationStandard.h>
 @interface AppDelegate ()<GTAFNDataDelegate>
 
 @end
@@ -63,7 +65,7 @@
     
     //设置图片的最大缓存为30M
     [SDImageCache sharedImageCache].maxCacheSize = 20 * 1024 * 1024;
-    
+    [self installCrashHandler];
     //友盟SDK初始化
     [self initUmShareSDK];
     
@@ -181,7 +183,47 @@
     [data LoginWithUid:strUserId sid:strUserLogonPwd type:strType mac:strMac];
 }
 
+- (KSCrashInstallation*) makeStandardInstallation
+{
+    NSURL* url = [NSURL URLWithString:@"http://test.aa1258.com/upload"];
+    
+    KSCrashInstallationStandard* standard = [KSCrashInstallationStandard sharedInstance];
+    standard.url = url;
+    
+    
+    return standard;
+}
+- (void) installCrashHandler
+{
+    // Create an installation (choose one)
+    KSCrashInstallation* installation = [self makeStandardInstallation];
+    
+    // 安装异常处理者，越早安装越好
+    // 如下将自动记录崩溃信息，但是它不会自动发送报告
+    [installation install];
+    // 此方法是确认崩溃报告发送后，如何处理旧的崩溃。
+    [KSCrash sharedInstance].deleteBehaviorAfterSendAll = KSCDeleteNever;
+    // 发送崩溃日志
+    [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error)
+    {
+        NSLog(@"reports == %@",reports);
+        if(completed)
+        {
+            NSLog(@"Sent %d reports", (int)[reports count]);
+        }
+        else{
+            NSLog(@"Failed to send reports: %@", error);
+        }
+    }];
+    
+}
 
+- (void)uploadCrash{
+    NSURL *url;//ftp服务器地址
+    NSString *filePath;//图片地址
+    NSString *account;//账号
+    CFWriteStreamRef ftpStream;
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

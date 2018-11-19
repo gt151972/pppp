@@ -14,7 +14,7 @@ pod 'UMCCommon'
 pod 'UMCAnalytics'
 pod 'UMCSecurityPlugins'
 pod 'ZYQAssetPickerController'
-
+pod 'KSCrash'
 
 pod 'Reachability', '~> 3.2'
 pod 'libksygpulive/libksygpulive'

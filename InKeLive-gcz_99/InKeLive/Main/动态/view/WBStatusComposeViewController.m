@@ -223,40 +223,40 @@
 }
 
 - (void)_buttonClicked:(UIButton *)button {
-    if (button == _toolbarPictureButton) {
-        
-    } else if (button == _toolbarAtButton) {
-        NSArray *atArray = @[@"@姚晨 ", @"@陈坤 ", @"@赵薇 ", @"@Angelababy " , @"@TimCook ", @"@我的印象笔记 "];
-        NSString *atString = [atArray randomObject];
-        [_textView replaceRange:_textView.selectedTextRange withText:atString];
-        
-    } else if (button == _toolbarTopicButton) {
-        NSArray *topic = @[@"#冰雪奇缘[电影]# ", @"#Let It Go[音乐]# ", @"#纸牌屋[图书]# ", @"#北京·理想国际大厦[地点]# " , @"#腾讯控股 kh00700[股票]# ", @"#WWDC# "];
-        NSString *topicString = [topic randomObject];
-        [_textView replaceRange:_textView.selectedTextRange withText:topicString];
-        
-    } else if (button == _toolbarEmoticonButton) {
-        if (_textView.inputView) {
-            _textView.inputView = nil;
-            [_textView reloadInputViews];
-            [_textView becomeFirstResponder];
-            
-            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_emoticonbutton_background"] forState:UIControlStateNormal];
-            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_emoticonbutton_background_highlighted"] forState:UIControlStateHighlighted];
-        } else {
-            WBEmoticonInputView *v = [WBEmoticonInputView sharedView];
-            v.delegate = self;
-            _textView.inputView = v;
-            [_textView reloadInputViews];
-            [_textView becomeFirstResponder];
-            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_keyboardbutton_background"] forState:UIControlStateNormal];
-            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_keyboardbutton_background_highlighted"] forState:UIControlStateHighlighted];
-        }
-        
-        
-    } else if (button == _toolbarExtraButton) {
-        
-    }
+//    if (button == _toolbarPictureButton) {
+//
+//    } else if (button == _toolbarAtButton) {
+//        NSArray *atArray = @[@"@姚晨 ", @"@陈坤 ", @"@赵薇 ", @"@Angelababy " , @"@TimCook ", @"@我的印象笔记 "];
+//        NSString *atString = [atArray randomObject];
+//        [_textView replaceRange:_textView.selectedTextRange withText:atString];
+//
+//    } else if (button == _toolbarTopicButton) {
+//        NSArray *topic = @[@"#冰雪奇缘[电影]# ", @"#Let It Go[音乐]# ", @"#纸牌屋[图书]# ", @"#北京·理想国际大厦[地点]# " , @"#腾讯控股 kh00700[股票]# ", @"#WWDC# "];
+//        NSString *topicString = [topic randomObject];
+//        [_textView replaceRange:_textView.selectedTextRange withText:topicString];
+//
+//    } else if (button == _toolbarEmoticonButton) {
+//        if (_textView.inputView) {
+//            _textView.inputView = nil;
+//            [_textView reloadInputViews];
+//            [_textView becomeFirstResponder];
+//
+//            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_emoticonbutton_background"] forState:UIControlStateNormal];
+//            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_emoticonbutton_background_highlighted"] forState:UIControlStateHighlighted];
+//        } else {
+//            WBEmoticonInputView *v = [WBEmoticonInputView sharedView];
+//            v.delegate = self;
+//            _textView.inputView = v;
+//            [_textView reloadInputViews];
+//            [_textView becomeFirstResponder];
+//            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_keyboardbutton_background"] forState:UIControlStateNormal];
+//            [_toolbarEmoticonButton setImage:[WBStatusHelper imageNamed:@"compose_keyboardbutton_background_highlighted"] forState:UIControlStateHighlighted];
+//        }
+//
+//
+//    } else if (button == _toolbarExtraButton) {
+//
+//    }
 }
 
 #pragma mark @protocol YYTextViewDelegate
