@@ -9,13 +9,13 @@
 #ifndef CommonAPIDefines_h
 #define CommonAPIDefines_h
 
-//#define URL_UserLogon       @"logon2.php"            //登录
-//#define URL_QueryVCBServer  @"queryvcblist.php"      //获取vcd服务器
-//#define URL_HotPlayerList   @"hot_player_list2.php"  //首页数据
-//#define URL_GetGiftConf     @"get_giftconf.php"
-//#define URL_UploadUserHead  @"upload_userheadimg.php"
-//#define URL_ChangePWD       @"set_userlogonpwd.php"   //修改密码
-//#define URL_ChangeNickName  @"set_useralias.php"      //修改昵称
+#define URL_UserLogon       @"logon2.php"            //登录
+#define URL_QueryVCBServer  @"queryvcblist.php"      //获取vcd服务器
+#define URL_HotPlayerList   @"hot_player_list2.php"  //首页数据
+#define URL_GetGiftConf     @"get_giftconf.php"
+#define URL_UploadUserHead  @"upload_userheadimg.php"
+#define URL_ChangePWD       @"set_userlogonpwd.php"   //修改密码
+#define URL_ChangeNickName  @"set_useralias.php"      //修改昵称
 
 //cmd
 #define CMD_REQUEST_SEARCH         @"21006"   //搜索接口cmd
@@ -40,6 +40,12 @@
 #define CMD_CHANGE_USER_INFO       @"21002"   //个人信息修改
 
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
+
+//ftp传输
+#define FTP_URL_PATH @"116.62.148.217 " //IP
+#define FTP_USER_ID @"gtt_ios"//user
+#define FTP_PASSWORD @"VlVuaQ^4W4zDo9lQ37LR#JTPuOWBn*YOebd+kwY"//pwd
+
 
 #define URL_GiftInfo   @"http://em.aa1258.com/E/Api" //礼物状态和分组列表
 #define APPSTORE_PATH  @"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"//跳转商店地址

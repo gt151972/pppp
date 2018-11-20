@@ -48,21 +48,21 @@
 
 
 - (void)loadData{
-    [[NetWorkTools shareInstance]getWithURLString:SEARCHURL parameters:nil success:^(NSDictionary *dictionary) {
-        //直接由json数据变成Object
-        RecommendModel *model = [RecommendModel mj_objectWithKeyValues:dictionary];
-        for (NSInteger i = 0; i < model.live_nodes.count; i++) {
-            [self.sectionTitleArr addObject:model.live_nodes[i].title];   //几个secition抬头?
-            [self.dataArr addObject:model.live_nodes[i]];
-        }
-        //今日推荐
-        for (NSInteger i = 0; i < model.user_nodes[0].users.count; i++) {
-            [self.recommdArr addObject:model.user_nodes[0].users[i]];
-        }
-        [self.recommdTableView reloadData];
-    } failure:^(NSError *error) {
-        
-    }];
+//    [[NetWorkTools shareInstance]getWithURLString:SEARCHURL parameters:nil success:^(NSDictionary *dictionary) {
+//        //直接由json数据变成Object
+//        RecommendModel *model = [RecommendModel mj_objectWithKeyValues:dictionary];
+//        for (NSInteger i = 0; i < model.live_nodes.count; i++) {
+//            [self.sectionTitleArr addObject:model.live_nodes[i].title];   //几个secition抬头?
+//            [self.dataArr addObject:model.live_nodes[i]];
+//        }
+//        //今日推荐
+//        for (NSInteger i = 0; i < model.user_nodes[0].users.count; i++) {
+//            [self.recommdArr addObject:model.user_nodes[0].users[i]];
+//        }
+//        [self.recommdTableView reloadData];
+//    } failure:^(NSError *error) {
+//        
+//    }];
 
 }
 

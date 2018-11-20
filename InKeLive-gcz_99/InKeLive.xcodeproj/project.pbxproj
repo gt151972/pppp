@@ -378,6 +378,14 @@
 		6489CAEF2123D66A007F6F3C /* PrivateChat.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAEE2123D66A007F6F3C /* PrivateChat.plist */; };
 		6489CAFA212404C8007F6F3C /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6489CAF9212404C8007F6F3C /* MineViewController.m */; };
 		6489CAFC21240514007F6F3C /* MineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6489CAFB21240514007F6F3C /* MineViewController.xib */; };
+		649573A821A39C1F005806B6 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573A721A39C1F005806B6 /* Crash.m */; };
+		649573AB21A3A0C4005806B6 /* MyUncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573AA21A3A0C4005806B6 /* MyUncaughtExceptionHandler.m */; };
+		649573B321A3AF15005806B6 /* LxFTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573B121A3AF15005806B6 /* LxFTPRequest.m */; };
+		649573B621A3CF1E005806B6 /* FTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573B521A3CF1E005806B6 /* FTPManager.m */; };
+		649573B921A3F160005806B6 /* NoNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573B821A3F160005806B6 /* NoNet.m */; };
+		649573BB21A3F1A5005806B6 /* NoNet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649573BA21A3F1A5005806B6 /* NoNet.xib */; };
+		649573BF21A40793005806B6 /* NoNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573BD21A40793005806B6 /* NoNetViewController.m */; };
+		649573C021A40793005806B6 /* NoNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649573BE21A40793005806B6 /* NoNetViewController.xib */; };
 		649A079D212A6F0B00639EE7 /* WBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A079B212A6F0B00639EE7 /* WBModel.m */; };
 		649A07A0212A89BF00639EE7 /* YYTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A079F212A89BF00639EE7 /* YYTableViewCell.m */; };
 		649A07A3212A8A2D00639EE7 /* WBStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A07A1212A8A2C00639EE7 /* WBStatusCell.m */; };
@@ -999,6 +1007,20 @@
 		6489CAF8212404C8007F6F3C /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		6489CAF9212404C8007F6F3C /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		6489CAFB21240514007F6F3C /* MineViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MineViewController.xib; sourceTree = "<group>"; };
+		649573A621A39C1F005806B6 /* Crash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crash.h; sourceTree = "<group>"; };
+		649573A721A39C1F005806B6 /* Crash.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Crash.m; sourceTree = "<group>"; };
+		649573A921A3A0C4005806B6 /* MyUncaughtExceptionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyUncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		649573AA21A3A0C4005806B6 /* MyUncaughtExceptionHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyUncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		649573B121A3AF15005806B6 /* LxFTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LxFTPRequest.m; sourceTree = "<group>"; };
+		649573B221A3AF15005806B6 /* LxFTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LxFTPRequest.h; sourceTree = "<group>"; };
+		649573B421A3CF1E005806B6 /* FTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPManager.h; sourceTree = "<group>"; };
+		649573B521A3CF1E005806B6 /* FTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPManager.m; sourceTree = "<group>"; };
+		649573B721A3F160005806B6 /* NoNet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoNet.h; sourceTree = "<group>"; };
+		649573B821A3F160005806B6 /* NoNet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoNet.m; sourceTree = "<group>"; };
+		649573BA21A3F1A5005806B6 /* NoNet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoNet.xib; sourceTree = "<group>"; };
+		649573BC21A40793005806B6 /* NoNetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoNetViewController.h; sourceTree = "<group>"; };
+		649573BD21A40793005806B6 /* NoNetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoNetViewController.m; sourceTree = "<group>"; };
+		649573BE21A40793005806B6 /* NoNetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoNetViewController.xib; sourceTree = "<group>"; };
 		649A079B212A6F0B00639EE7 /* WBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBModel.m; sourceTree = "<group>"; };
 		649A079C212A6F0B00639EE7 /* WBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBModel.h; sourceTree = "<group>"; };
 		649A079E212A89BF00639EE7 /* YYTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTableViewCell.h; sourceTree = "<group>"; };
@@ -1578,6 +1600,9 @@
 				63402F0E1E1247F2002F6661 /* LiveViewController.m */,
 				63402F0F1E1247F2002F6661 /* LiveViewController+GiftAnnimation.h */,
 				63402F101E1247F2002F6661 /* LiveViewController+GiftAnnimation.m */,
+				649573B721A3F160005806B6 /* NoNet.h */,
+				649573B821A3F160005806B6 /* NoNet.m */,
+				649573BA21A3F1A5005806B6 /* NoNet.xib */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1771,6 +1796,7 @@
 		6357A6211DFE4CA7001E77AF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				649573A521A39C0D005806B6 /* Crash */,
 				640526F6215249D5007C7E3E /* Present */,
 				6480BC90212C08C600A08911 /* Data */,
 				1A9D1CFA1F43483A0003EA13 /* MBProgressHUD.bundle */,
@@ -1806,6 +1832,9 @@
 				64A43523214BA3C900A2FF99 /* GTAFNData.m */,
 				646A0DF9216C982100F24B36 /* CatchCrash.h */,
 				646A0DFA216C982100F24B36 /* CatchCrash.m */,
+				649573BC21A40793005806B6 /* NoNetViewController.h */,
+				649573BD21A40793005806B6 /* NoNetViewController.m */,
+				649573BE21A40793005806B6 /* NoNetViewController.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2281,6 +2310,29 @@
 			path = levelIcon;
 			sourceTree = "<group>";
 		};
+		649573A521A39C0D005806B6 /* Crash */ = {
+			isa = PBXGroup;
+			children = (
+				649573A621A39C1F005806B6 /* Crash.h */,
+				649573A721A39C1F005806B6 /* Crash.m */,
+				649573A921A3A0C4005806B6 /* MyUncaughtExceptionHandler.h */,
+				649573AA21A3A0C4005806B6 /* MyUncaughtExceptionHandler.m */,
+				649573B421A3CF1E005806B6 /* FTPManager.h */,
+				649573B521A3CF1E005806B6 /* FTPManager.m */,
+				649573B021A3AF15005806B6 /* LxFTPRequest */,
+			);
+			path = Crash;
+			sourceTree = "<group>";
+		};
+		649573B021A3AF15005806B6 /* LxFTPRequest */ = {
+			isa = PBXGroup;
+			children = (
+				649573B121A3AF15005806B6 /* LxFTPRequest.m */,
+				649573B221A3AF15005806B6 /* LxFTPRequest.h */,
+			);
+			path = LxFTPRequest;
+			sourceTree = "<group>";
+		};
 		649A07A4212A8AA600639EE7 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -2514,6 +2566,7 @@
 				6423C9EC2126631D00801996 /* AppInfo.plist in Resources */,
 				6332823B1E024CB400EC018B /* meteor_after_16.png in Resources */,
 				6304831F1E1F3B01004837C5 /* RecommendView.xib in Resources */,
+				649573C021A40793005806B6 /* NoNetViewController.xib in Resources */,
 				6481F87521464BC4007264AB /* youke.png in Resources */,
 				633282421E024CB400EC018B /* meteor_after_23.png in Resources */,
 				63A335121E026ECC00027174 /* porche-b3.png in Resources */,
@@ -2531,6 +2584,7 @@
 				6332823A1E024CB400EC018B /* meteor_after_15.png in Resources */,
 				633282401E024CB400EC018B /* meteor_after_21.png in Resources */,
 				633282311E024CB400EC018B /* meteor_after_6.png in Resources */,
+				649573BB21A3F1A5005806B6 /* NoNet.xib in Resources */,
 				63A335211E0275B600027174 /* RocketViews.xib in Resources */,
 				6302FDFF1E1B9DD9007122D3 /* yipitiezhi07.png in Resources */,
 				1AEED2D51F5BAC7300A545BA /* checked.png in Resources */,
@@ -2843,6 +2897,7 @@
 				6462E7DB2117F44E005EF737 /* SDCollectionViewCell.m in Sources */,
 				63402F1C1E124819002F6661 /* GIftCell.m in Sources */,
 				647C78D3212D0D5A00C5EAAA /* GTRequestManager.m in Sources */,
+				649573BF21A40793005806B6 /* NoNetViewController.m in Sources */,
 				649A07A3212A8A2D00639EE7 /* WBStatusCell.m in Sources */,
 				644B183A21142F1800939E76 /* MobileViewController.m in Sources */,
 				63402EDF1E124534002F6661 /* NearbyController.m in Sources */,
@@ -2851,6 +2906,7 @@
 				64C022CD212AC02700116F7F /* SendDynamicViewController.m in Sources */,
 				6357A6281DFE4DB1001E77AF /* UIView+Frame.m in Sources */,
 				64B61F082147973A00D2C3E3 /* ChangeScore.m in Sources */,
+				649573B621A3CF1E005806B6 /* FTPManager.m in Sources */,
 				6407386E219A72D300F93E5B /* DKScrollTextLable.m in Sources */,
 				64032C1D219530C700604E56 /* ShareAllView.m in Sources */,
 				633E2E0E1E1CF9430049C9E8 /* FlowLayout.m in Sources */,
@@ -2868,6 +2924,7 @@
 				6462E7DF2117F44E005EF737 /* TAAbstractDotView.m in Sources */,
 				1AE89ECA1F41CCF90001C5D8 /* UserSmallHeadImageCell.m in Sources */,
 				6304831E1E1F3B01004837C5 /* RecommendView.m in Sources */,
+				649573AB21A3A0C4005806B6 /* MyUncaughtExceptionHandler.m in Sources */,
 				63A335201E0275B600027174 /* RocketViews.m in Sources */,
 				6461D087212EADF4006927D1 /* SearchInfoView.m in Sources */,
 				633D8D5C1E0790AF0087BD77 /* DanmuItem.m in Sources */,
@@ -2886,6 +2943,7 @@
 				6357A61C1DFE4C91001E77AF /* CameraViewController.m in Sources */,
 				1A9D1CF81F4321B80003EA13 /* ClientConfigParam.m in Sources */,
 				633D8D981E0796010087BD77 /* MessageModel.m in Sources */,
+				649573B321A3AF15005806B6 /* LxFTPRequest.m in Sources */,
 				64B3325621425259009D28CC /* BindingViewController.m in Sources */,
 				64CF3FBF213F85460060261B /* AnchorListView.m in Sources */,
 				6379986D1E10EB0A00016B48 /* MyControlTool.m in Sources */,
@@ -2928,6 +2986,7 @@
 				64067EE1218808C500EFB774 /* ShareCopyView.m in Sources */,
 				63402F1F1E124ADD002F6661 /* EmptyView.m in Sources */,
 				633E2E0B1E1CF9050049C9E8 /* GiftViewCell.m in Sources */,
+				649573B921A3F160005806B6 /* NoNet.m in Sources */,
 				633D8D781E0791B20087BD77 /* TYImageStorage.m in Sources */,
 				64B3325121424864009D28CC /* RemoveBindingViewController.m in Sources */,
 				630483051E1F345A004837C5 /* AutoCommon.m in Sources */,
@@ -2948,6 +3007,7 @@
 				1AE89EB81F41C6850001C5D8 /* ClientRoomModel.m in Sources */,
 				1AA3E9411F448863009831F7 /* LWServerAddr.m in Sources */,
 				633D8D7C1E0791B20087BD77 /* TYTextStorage.m in Sources */,
+				649573A821A39C1F005806B6 /* Crash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

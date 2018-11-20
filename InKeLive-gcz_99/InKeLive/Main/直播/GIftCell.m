@@ -54,17 +54,17 @@
     }];
     
     [self.senderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.left.equalTo(self.iconImageView.mas_right).offset(5);
         make.top.equalTo(self.iconImageView.mas_top);
-        make.right.equalTo(self.giftImageView.mas_left).offset(-10);
+        make.right.equalTo(self.giftImageView.mas_left);
         make.height.equalTo(@16);
     }];
     
     
     [self.lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).offset(10);
+        make.left.equalTo(self.iconImageView.mas_right).offset(5);
         make.top.equalTo(self.senderLabel.mas_bottom).offset(5);
-        make.right.equalTo(self.giftImageView.mas_left).offset(-10);
+        make.right.equalTo(self.giftImageView.mas_left).offset(10);
         make.height.equalTo(@16);
     }];
 }

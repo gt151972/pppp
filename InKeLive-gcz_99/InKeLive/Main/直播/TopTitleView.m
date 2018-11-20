@@ -23,10 +23,13 @@
 
 - (void)scrollMove:(NSInteger)tag{
     UIButton *buttons = (UIButton *)[self viewWithTag:tag];
+    UIButton *buttons2 = (UIButton *)[self viewWithTag:_lastTag];
     [UIView animateWithDuration:0.3 animations:^{
         self.lineImageView.size = CGSizeMake(buttons.titleLabel.width, 3);
         self.lineImageView.centerX = buttons.centerX;
-
+        buttons.selected = YES;
+        buttons2.selected = NO;
+        _lastTag = tag;
     }];
 }
 

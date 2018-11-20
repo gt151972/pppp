@@ -60,7 +60,7 @@
 #define MessageFont [UIFont systemFontOfSize:13.0]
 
 //我的头像
-//#define MY_HEAD_IMAGE_PATH  @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1534571089180&di=e5adfce6f9b791f07824a2375a5271fc&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201408%2F08%2F20140808143427_y8P3S.jpeg"
+#define MY_HEAD_IMAGE_PATH  @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1534571089180&di=e5adfce6f9b791f07824a2375a5271fc&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201408%2F08%2F20140808143427_y8P3S.jpeg"
 //是否iphoneX
 #define kIs_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 #define kIs_iPhone5S ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)

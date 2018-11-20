@@ -620,7 +620,7 @@
         case CellLeaveType:  //新聊天消息
         {
             
-            allMessage = [NSString stringWithFormat:@"%@ 离开了!∮",name];
+            allMessage = [NSString stringWithFormat:@"%@ 离开了~∮",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -654,7 +654,7 @@
             
             //聊天格式
             TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
-            NSString *string2 = @" 离开了!";
+            NSString *string2 = @" 离开了~";
             deserveTextStorage.range = [allMessage rangeOfString:string2];
             deserveTextStorage.textColor = [UIColor whiteColor];
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];
@@ -681,7 +681,7 @@
             break;
         case CellEnterType:  //新聊天消息
         {
-            allMessage = [NSString stringWithFormat:@"%@ 进来了!∮",name];
+            allMessage = [NSString stringWithFormat:@"%@ 来了,欢迎~∮",name];
             
             // 属性文本生成器
             container.text = allMessage;
@@ -714,7 +714,7 @@
             
             //聊天格式
             TYTextStorage *deserveTextStorage = [[TYTextStorage alloc]init];
-            NSString *string2 = @" 进来了!";
+            NSString *string2 = @" 来了,欢迎~";
             deserveTextStorage.range = [allMessage rangeOfString:string2];
             deserveTextStorage.textColor = [UIColor whiteColor];
             deserveTextStorage.font = [UIFont boldSystemFontOfSize:14];

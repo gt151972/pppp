@@ -23,13 +23,35 @@
 #import "AcrossViewController.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationStandard.h>
-@interface AppDelegate ()<GTAFNDataDelegate>
+#import "Crash.h"
+#import "LxFTPRequest.h"
+#import "FTPManager.h"
+#import <Reachability.h>
+#import "NoNetViewController.h"
+@interface AppDelegate ()<GTAFNDataDelegate, FTPManagerDelegate>{
+    FMServer* server;
+    FTPManager* man;
+    NSTimer* progTimer;
+    NSString* filePath;  // 上传文件的路径
+    BOOL succeeded;  // 记录传输结果是否成功
+}
 
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //注册消息处理函数的处理方法
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    BOOL isConnect = [AutoCommon isEnbnleNet];
+    // 发送崩溃日志
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
+    NSData *data = [NSData dataWithContentsOfFile:dataPath];
+    if (data != nil) {
+//        [self sendExceptionLogWithData:data path:dataPath];
+        [self uploadWithPath:dataPath];
+    }
 //    [UMConfigure initWithAppkey:@"59892ebcaed179694b000104" channel:@"App Store"];
     // Override point for customization after application launch.
     [DPK_NW_Application sharedInstance].isLogon = NO;
@@ -43,6 +65,11 @@
     clientConfig.roomPicPrefix     = @"http://www.aa1258.com/real_bailh.com/mobileapi/roompic/";
     clientConfig.giftList = @"http://em.aa1258.com/E/Api";
     
+    //注册通知，异步加载，判断网络连接情况
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [reachability startNotifier];
+    
     self.tabbarVC = nil;
     self.createCameraVC =nil;
     self.LiveViewNavVC = nil;
@@ -50,6 +77,8 @@
     //窗口
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     
@@ -72,9 +101,79 @@
     //尝试自动登录服务器
     [self autoLogin];
     
+    
+    
     return YES;
 }
 
+/**
+ *此函数通过判断联网方式，通知给用户
+ */
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    
+    Reachability *curReachability = [notification object];
+    NSParameterAssert([curReachability isKindOfClass:[Reachability class]]);
+    NetworkStatus curStatus = [curReachability currentReachabilityStatus];
+    if(curStatus == NotReachable) {
+        NoNetViewController *nonetVC = [[NoNetViewController alloc] init];
+        BaseViewController* naviVC = [[BaseViewController alloc]initWithRootViewController:nonetVC];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:naviVC animated:YES completion:nil];
+//        NSDictionary *dic = @{@"status":@"0"};
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"isNotReachable" object:nil userInfo:dic];
+    }else{
+        
+        [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+
+//第三步:崩溃日志发动到服务器
+
+#pragma mark -- 发送崩溃日志
+
+-(void)uploadWithPath: (NSString *)path{
+    
+    // 配置FTP服务器信息
+    server = [FMServer serverWithDestination:FTP_URL_PATH username:FTP_USER_ID password:FTP_PASSWORD];
+    // 初始化定时器
+    progTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(changeProgress) userInfo:nil repeats:YES];
+    // 激活定时器
+    [progTimer fire];
+    // 调用开始上传文件的方法
+    [self performSelectorInBackground:@selector(startUploading) withObject:nil];
+}
+-(void)startUploading {
+    // 初始化FTPManager
+    man = [[FTPManager alloc] init];
+    // 设置代理（非必须）
+    man.delegate = self;
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
+//        NSString *path = @"/Users/lxf/Desktop/1114.txt";
+//        NSURL *fileUrl = [NSURL URLWithString:dataPath];
+    NSData *data = [NSData dataWithContentsOfFile:dataPath];
+    succeeded = [man uploadData:data withFileName:@"" toServer:server];
+    if (succeeded) {
+        [self performSelectorOnMainThread:@selector(uploadFinished) withObject:nil waitUntilDone:NO];
+    }
+}
+-(void)changeProgress {
+    if (!man) {
+        [progTimer invalidate];
+        progTimer = nil;
+        return;
+    }
+    NSLog(@"上传进度：%@",man.progress);
+}
+// 上传完毕，一切置空
+-(void)uploadFinished {
+    [progTimer invalidate];
+    progTimer = nil;
+    filePath = nil;
+    server = nil;
+    man = nil;
+}
 
 -(void)initUmShareSDK{
     //设置友盟appkey
@@ -219,10 +318,13 @@
 }
 
 - (void)uploadCrash{
-    NSURL *url;//ftp服务器地址
-    NSString *filePath;//图片地址
-    NSString *account;//账号
+    NSURL *url = [NSURL URLWithString:FTP_USER_ID];//ip
+    NSString *filePath = FTP_USER_ID;//文件地址
+    NSString *account = FTP_USER_ID;//账号
+    NSString *password = FTP_PASSWORD;//密码
     CFWriteStreamRef ftpStream;
+    
+    
 }
 
 
@@ -332,4 +434,8 @@
     return UIInterfaceOrientationMaskPortrait;//其他都为竖屏
 }
 
+#pragma mark - FTPManagerDelegate
+- (void)ftpManagerUploadProgressDidChange:(NSDictionary *)processInfo {
+    NSLog(@"processInfo ==%@", processInfo);
+}
 @end

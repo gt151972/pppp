@@ -2948,6 +2948,13 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [self.roomObj.onMicUserList addObject:userObj];
             [self.onMicUsersHeadView reloadData];
         }
+        for (int index = 0; index < self.roomObj.onMicUserList.count; index ++) {
+            ClientUserModel *user = [self.roomObj.onMicUserList objectAtIndex:index];
+            if (user.userId == userId) {
+                nowIndex = index;
+                [_onMicUsersHeadView reloadData];
+            }
+        }
         if (userId == myModel.userID) {
             [self.socketObj sendMicStatusModifyReq:self.roomObj.roomId userId:userId status:1];
             [self.socketObj sendMicStatusModifyReq:self.roomObj.roomId userId:userId status:3];
@@ -2987,6 +2994,14 @@ privateChatViewDelegate, GTAFNDataDelegate>
         for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
             ClientUserModel *model = [self.roomObj.onMicUserList objectAtIndex:index];
             if (userId == model.userId) {
+                _nowRow = index;
+            }
+        }
+    }
+    LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
+    if (_createFlag) {
+        for (int index = 0; index < self.roomObj.onMicUserList.count; index ++ ) {
+            if (userId == myModel.userID) {
                 _nowRow = index;
             }
         }
@@ -3300,43 +3315,54 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
     }
     else {
+        
         //找到对应的主播，打开视频连接
         if(_roomObj.roomId !=0 && self.roomObj.onMicUserList.count > 0) {
-            ClientUserModel *model= [self.roomObj.onMicUserList objectAtIndex:0];
-            self.playerId = model.userId;
-            ClientUserModel* userObj = [self.roomObj findMember:_playerId];
-            NSLog(@"userObj == %@",userObj);
-            if(userObj != nil) {
-                //设置主播信息
-                [self.anchorView setAnchorInfo:userObj.userId UserName:userObj.userAlias UserHeadPic:userObj.userSmallHeadPic];
-            }
-            else {
-                //主播不在线
-                MessageModel *model = [[MessageModel alloc] init];
-                [model setModel:@"观看主播不在线"];
-                [self.messageTableView sendMessage:model];
-            }
-            //开始拉流
-            if((userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK) != 0)
-            {
-                //获取用户的麦状态
-                int rotateDegree = 0;
-                int mic_state = userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK;
-                switch (mic_state) {
-                    case FT_USERROOMSTATE_MIC_GUAN:
-                    case FT_USERROOMSTATE_MIC_GONG:
-                    case FT_USERROOMSTATE_MIC_SI:
-                    case FT_USERROOMSTATE_MIC_MI:
-                    case FT_USERROOMSTATE_MIC_LIWU:
-                        rotateDegree = 180;
-                        break;
-                    default:
-                        break;
-                }
-                
-                if(userObj.mbTLstatus == 3) {
-                    nowIndex = 0;
-                     [self onPlayStream:YES URL:userObj.pullStreamUrl RotateDegree:rotateDegree];
+            for (int index = 0; index < self.roomObj.onMicUserList.count; index++) {
+                ClientUserModel *model= [self.roomObj.onMicUserList objectAtIndex:index];
+                BOOL canSee = (model.micState != 4) && (model.micState !=6);
+                if (canSee) {
+                    nowIndex = index;
+                    self.playerId = model.userId;
+                    ClientUserModel* userObj = [self.roomObj findMember:_playerId];
+                    NSLog(@"userObj == %@",userObj);
+                    if(userObj != nil) {
+                        //设置主播信息
+                        [self.anchorView setAnchorInfo:userObj.userId UserName:userObj.userAlias UserHeadPic:userObj.userSmallHeadPic];
+                    }
+                    else {
+                        //主播不在线
+                        MessageModel *model = [[MessageModel alloc] init];
+                        [model setModel:@"观看主播不在线"];
+                        [self.messageTableView sendMessage:model];
+                    }
+                    //开始拉流
+                    if((userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK) != 0)
+                    {
+                        //获取用户的麦状态
+                        int rotateDegree = 0;
+                        int mic_state = userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK;
+                        switch (mic_state) {
+                            case FT_USERROOMSTATE_MIC_GUAN:
+                            case FT_USERROOMSTATE_MIC_GONG:
+                            case FT_USERROOMSTATE_MIC_SI:
+                            case FT_USERROOMSTATE_MIC_MI:
+                            case FT_USERROOMSTATE_MIC_LIWU:
+                                rotateDegree = 180;
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                        if(userObj.mbTLstatus == 3) {
+                            nowIndex = index;
+                            [self onPlayStream:YES URL:userObj.pullStreamUrl RotateDegree:rotateDegree];
+                        }
+                    }
+                    return;
+                }else{
+                    nowIndex = -1;
+                    [_onMicUsersHeadView reloadData];
                 }
             }
         }
@@ -3464,7 +3490,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             sysTipText= [NSString stringWithFormat:@"%@ 主播上线了",userObj.userAlias];
         }
         else {
-            sysTipText = [NSString stringWithFormat:@"%@ 进来了",userObj.userAlias];
+            sysTipText = [NSString stringWithFormat:@"%@ 来了,欢迎~",userObj.userAlias];
         }
         if (!_isEnterHide) {
             MessageModel *model = [[MessageModel alloc] init];
@@ -3967,7 +3993,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         //用户离开提示
         ClientUserModel* userObj=[self.roomObj findMember:toId];
         if(userObj != nil) {
-            NSString* sysTipText =[NSString stringWithFormat:@"%@ 离开了", userObj.userAlias];
+            NSString* sysTipText =[NSString stringWithFormat:@"%@ 离开了~", userObj.userAlias];
             MessageModel *model = [[MessageModel alloc] init];
             [model setModel:sysTipText];
             [self.messageTableView sendMessage:model];

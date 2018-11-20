@@ -219,9 +219,9 @@ static const CGFloat kHeight=285.0;
         }
         cell.backgroundColor = [UIColor clearColor];
         //        cell.backgroundColor = [UIColor redColor];
-        if (_arrChatMessage && _nowRow >= 0 && _lastRow == _nowRow) {
+        if (_arrChatMessage && _lastRow >= 0) {
             BOOL haveKey = NO;
-            NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
+            NSArray *arrKey = [[_arrChatMessage objectAtIndex:_lastRow] allKeys] ;
             for (int index = 0; index < arrKey.count; index ++) {
                 if ([arrKey[index] isEqualToString:@"message"]) {
                     haveKey = YES;
@@ -229,7 +229,7 @@ static const CGFloat kHeight=285.0;
                 }
             }
             if (haveKey) {
-                NSArray *arr = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+                NSArray *arr = [[_arrChatMessage objectAtIndex:_lastRow] objectForKey:@"message"];
                 UIView *viewBg = [[UIView alloc] init];
                 viewBg.layer.cornerRadius = 3;
                 viewBg.layer.masksToBounds = YES;
@@ -312,8 +312,8 @@ static const CGFloat kHeight=285.0;
             return 0;
         }else{
             if (_arrChatMessage.count > 0) {
-                NSLog(@"_nowRow == %d, count == %ld",_nowRow,_arrChatMessage.count);
-                NSArray *arrKey = [[_arrChatMessage objectAtIndex:_nowRow] allKeys] ;
+                NSLog(@"_nowRow == %d, count == %ld",_lastRow,_arrChatMessage.count);
+                NSArray *arrKey = [[_arrChatMessage objectAtIndex:_lastRow] allKeys] ;
                 for (int index = 0; index < arrKey.count; index ++) {
                     if ([arrKey[index] isEqualToString:@"message"]) {
                         haveKey = YES;
@@ -321,7 +321,7 @@ static const CGFloat kHeight=285.0;
                     }
                 }
                 if (haveKey) {
-                    NSArray *array = [[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"message"];
+                    NSArray *array = [[_arrChatMessage objectAtIndex:_lastRow] objectForKey:@"message"];
                     NSLog(@"array == %lu",(unsigned long)array.count);
                     return array.count;
                 }else{
@@ -465,11 +465,11 @@ static const CGFloat kHeight=285.0;
     {
         [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
     }
-    [_messageTableView reloadData];
+    
     NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
     UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
     cell.selected = YES;
-    
+    [_messageTableView reloadData];
     [_userTableView reloadData];
 //    if (_nowRow == _lastRow) {
 //

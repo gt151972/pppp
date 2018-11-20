@@ -24,7 +24,7 @@
 #import "SDCycleScrollView.h"
 #import "CommonAPIDefines.h"
 #import "GTAFNData.h"
-
+#import <Reachability.h>
 @interface MainViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource, GTAFNDataDelegate>
 {
 //    UITableViewCell *cell;
@@ -43,6 +43,7 @@
 @end
 
 @implementation MainViewController
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [_mainTableView reloadData];
@@ -51,6 +52,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"tag == %d",_tag);
+    self.view.backgroundColor = [UIColor blueColor];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeColor:) name:@"isNotReachable" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeColor:) name:@"noNotReachable" object:nil];
+
     // Do any additional setup after loading the view.
     [self.view addSubview:self.mainTableView];
     
@@ -59,6 +65,29 @@
     header.stateLabel.hidden = YES;
     [header beginRefreshing];
     self.mainTableView.mj_header = header;
+}
+-(void)changeColor:(NSNotification *)notification{
+    NSString *str = @"0";
+    if([str isEqualToString:notification.userInfo[@"status"]]) {
+        self.view.backgroundColor = [UIColor redColor];
+    }else{
+        self.view.backgroundColor = [UIColor yellowColor];
+    }
+}
+
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    Reachability *curReachability = [notification object];
+    NSParameterAssert([curReachability isKindOfClass:[Reachability class]]);
+    NetworkStatus curStatus = [curReachability currentReachabilityStatus];
+    if(curStatus == NotReachable) {
+        NSDictionary *dic = @{@"status":@"0"};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isNotReachable" object:nil userInfo:dic];
+    }else{
+        NSDictionary *dic = @{@"status":@"1"};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"noNotReachable" object:nil userInfo:dic];
+    }
 }
 
 -(void)showLoadingHud {
@@ -195,6 +224,7 @@
 #pragma   UITableViewDataSource  UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _dataArr.count;
+//    return 200;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
