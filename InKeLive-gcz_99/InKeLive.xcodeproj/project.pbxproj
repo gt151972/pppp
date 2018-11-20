@@ -386,6 +386,7 @@
 		649573BB21A3F1A5005806B6 /* NoNet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649573BA21A3F1A5005806B6 /* NoNet.xib */; };
 		649573BF21A40793005806B6 /* NoNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 649573BD21A40793005806B6 /* NoNetViewController.m */; };
 		649573C021A40793005806B6 /* NoNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649573BE21A40793005806B6 /* NoNetViewController.xib */; };
+		649573C221A4224B005806B6 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 649573C121A4224B005806B6 /* CFNetwork.framework */; };
 		649A079D212A6F0B00639EE7 /* WBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A079B212A6F0B00639EE7 /* WBModel.m */; };
 		649A07A0212A89BF00639EE7 /* YYTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A079F212A89BF00639EE7 /* YYTableViewCell.m */; };
 		649A07A3212A8A2D00639EE7 /* WBStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A07A1212A8A2C00639EE7 /* WBStatusCell.m */; };
@@ -1021,6 +1022,7 @@
 		649573BC21A40793005806B6 /* NoNetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoNetViewController.h; sourceTree = "<group>"; };
 		649573BD21A40793005806B6 /* NoNetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoNetViewController.m; sourceTree = "<group>"; };
 		649573BE21A40793005806B6 /* NoNetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoNetViewController.xib; sourceTree = "<group>"; };
+		649573C121A4224B005806B6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		649A079B212A6F0B00639EE7 /* WBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBModel.m; sourceTree = "<group>"; };
 		649A079C212A6F0B00639EE7 /* WBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBModel.h; sourceTree = "<group>"; };
 		649A079E212A89BF00639EE7 /* YYTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTableViewCell.h; sourceTree = "<group>"; };
@@ -1103,6 +1105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				649573C221A4224B005806B6 /* CFNetwork.framework in Frameworks */,
 				647F33F7212514D800D06FD5 /* CoreLocation.framework in Frameworks */,
 				647A09A22117DAED0026722B /* libReactiveCocoa.a in Frameworks */,
 				647A09A02117DAE80026722B /* libReachability.a in Frameworks */,
@@ -2377,6 +2380,7 @@
 		8DAD9FAF60BAB25623670DEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				649573C121A4224B005806B6 /* CFNetwork.framework */,
 				647F33F6212514D700D06FD5 /* CoreLocation.framework */,
 				647A09A72117DE610026722B /* libSocialWechat.a */,
 				647A09A52117DD1D0026722B /* UMSocialWechatHandler.h */,

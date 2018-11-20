@@ -28,6 +28,7 @@
 #import "FTPManager.h"
 #import <Reachability.h>
 #import "NoNetViewController.h"
+#import <AFNetworking.h>
 @interface AppDelegate ()<GTAFNDataDelegate, FTPManagerDelegate>{
     FMServer* server;
     FTPManager* man;
@@ -107,6 +108,12 @@
     return YES;
 }
 
+
+/**
+ 修改网络状态后刷新
+
+ @param noti <#noti description#>
+ */
 - (void)receiveNotification:(NSNotification *)noti
 {
     
@@ -143,12 +150,10 @@
     if(curStatus == NotReachable) {
         NoNetViewController *nonetVC = [[NoNetViewController alloc] init];
         BaseViewController* naviVC = [[BaseViewController alloc]initWithRootViewController:nonetVC];
-        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:naviVC animated:YES completion:nil];
-//        NSDictionary *dic = @{@"status":@"0"};
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"isNotReachable" object:nil userInfo:dic];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:naviVC animated:YES completion:nil];;
     }else{
-        
-        [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
+//        
+//        [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -158,27 +163,81 @@
 #pragma mark -- 发送崩溃日志
 
 -(void)uploadWithPath: (NSString *)path{
+    NSString *strUserId =[[NSUserDefaults standardUserDefaults] objectForKey:@"DPK_USERID"];
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"ios", @"type", @"file", @"file_type",strUserId, @"file", nil];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = 20;
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
+    [manager POST:@"http://test.aa1258.com/upload" parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
+        //        NSString *path = @"/Users/lxf/Desktop/1114.txt";
+        //        NSURL *fileUrl = [NSURL URLWithString:dataPath];
+        NSData *data = [NSData dataWithContentsOfFile:dataPath];
+        [formData appendPartWithFileData:data name:@"file" fileName:@"ios.txt" mimeType:@"text/html"];
+//        [formData appendPartWithFileData:data name:fileKey] fileName:fileName mimeType:mimeType];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        NSLog(@"uploadProgress == %@",uploadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"responseObject == %@",responseObject);
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
+        //创建文件管理对象
+        NSFileManager *manager = [NSFileManager defaultManager];
+        //删除
+        [manager removeItemAtPath:dataPath error:nil];
+
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error == %@",error);
+    }];
     
-    // 配置FTP服务器信息
-    server = [FMServer serverWithDestination:FTP_URL_PATH username:FTP_USER_ID password:FTP_PASSWORD];
-    // 初始化定时器
-    progTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(changeProgress) userInfo:nil repeats:YES];
-    // 激活定时器
-    [progTimer fire];
-    // 调用开始上传文件的方法
-    [self performSelectorInBackground:@selector(startUploading) withObject:nil];
+//    [[AFHTTPSessionManager manager] POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        completedBlock(responseObject);
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        completedBlock(nil);
+//    }];
+//
+//    // 全局变量设定
+//    NSString *url = [NSString stringWithFormat:@"%@:%@/%d/%d", host, FTP_PORT,
+//                     [DataModelInstance shareInstance].userModel.client_id.intValue,
+//                     [DataModelInstance shareInstance].userModel.client_user_id.intValue
+//                     ];
+//
+//
+//    // 配置FTP服务器信息
+//    server = [FMServer serverWithDestination:FTP_URL_PATH username:FTP_USER_ID password:FTP_PASSWORD];
+//    // 初始化定时器
+//    progTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(changeProgress) userInfo:nil repeats:YES];
+//    // 激活定时器
+//    [progTimer fire];
+//    // 调用开始上传文件的方法
+//    [self performSelectorInBackground:@selector(startUploading) withObject:nil];
+//
+    
 }
 -(void)startUploading {
     // 初始化FTPManager
     man = [[FTPManager alloc] init];
     // 设置代理（非必须）
     man.delegate = self;
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
-//        NSString *path = @"/Users/lxf/Desktop/1114.txt";
-//        NSURL *fileUrl = [NSURL URLWithString:dataPath];
-    NSData *data = [NSData dataWithContentsOfFile:dataPath];
-    succeeded = [man uploadData:data withFileName:@"" toServer:server];
+//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    NSString *dataPath = [path stringByAppendingPathComponent:@"Exception.txt"];
+////        NSString *path = @"/Users/lxf/Desktop/1114.txt";
+////        NSURL *fileUrl = [NSURL URLWithString:dataPath];
+//    NSData *data = [NSData dataWithContentsOfFile:dataPath];
+//    NSLog(@"data == %d", [man uploadFile:[NSURL URLWithString:dataPath] toServer:server]);
+////    succeeded = [man uploadData:data withFileName:@"" toServer:server];
+    
+    UIImage *img = [UIImage imageNamed:@"noNet_icon"];
+    NSData * data = UIImagePNGRepresentation(img);
+    // 开始上传并记录结果
+    succeeded = [man uploadData:data withFileName:@"20173160007.png" toServer:server];
+
+//    succeeded = [man uploadFile:[NSURL URLWithString:dataPath] toServer:server];
     if (succeeded) {
         [self performSelectorOnMainThread:@selector(uploadFinished) withObject:nil waitUntilDone:NO];
     }

@@ -42,10 +42,12 @@
 #define IOS_REQUEST_FLAG @"2" //客户端分类flag 1 pc 2 ios 4 android
 
 //ftp传输
-#define FTP_URL_PATH @"116.62.148.217 " //IP
+#define FTP_URL_PATH @"ftp://116.62.148.217 " //IP
 #define FTP_USER_ID @"gtt_ios"//user
 #define FTP_PASSWORD @"VlVuaQ^4W4zDo9lQ37LR#JTPuOWBn*YOebd+kwY"//pwd
 
+//更新地址
+#define UPDATE_URL @"https://www.pgyer.com/9md8"
 
 #define URL_GiftInfo   @"http://em.aa1258.com/E/Api" //礼物状态和分组列表
 #define APPSTORE_PATH  @"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"//跳转商店地址

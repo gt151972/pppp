@@ -37,6 +37,10 @@
         [self.navigationController setNavigationBarHidden:YES];
         [self navA];
     }
+    else if ([_strTitle isEqualToString:@"更新"]){
+        [self.navigationController setNavigationBarHidden:YES];
+        [self navA];
+    }
     else{
         self.title = _strTitle;
         [self.navigationController setNavigationBarHidden:NO];
@@ -131,7 +135,6 @@
     NSString *url = _strUrl;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [_webView loadRequest:request];
-    
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
 

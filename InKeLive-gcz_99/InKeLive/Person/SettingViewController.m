@@ -15,6 +15,7 @@
 #import "CommonAPIDefines.h"
 #import "WebViewController.h"
 #import "GTAFNData.h"
+#import "WebViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource,GTAFNDataDelegate>{
     NSArray *arrayTitle;
@@ -300,10 +301,18 @@
             NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithContentsOfFile:File];
             int apkcode = [[dict objectForKey:@"apkcode"] intValue];
             NSLog(@"apkcode == %d",apkcode);
+            WebViewController *webVC = [[WebViewController alloc] init];
+            webVC.strUrl = UPDATE_URL;
+            webVC.strTitle = @"更新";
+            [self presentViewController:webVC animated:YES completion:nil];
             if ([data[@"apkcode"] intValue] > apkcode) {
                 [[GTAlertTool shareInstance] showAlert:@"当前版本不是最新版本" message:@"请前往商店下载更新" cancelTitle:@"取消" titleArray:@[@"去更新"] viewController:self confirm:^(NSInteger buttonTag) {
                     if (buttonTag != -1) {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_PATH]];
+//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_PATH]];
+                        WebViewController *webVC = [[WebViewController alloc] init];
+                        webVC.strUrl = UPDATE_URL;
+                        webVC.strTitle = @"更新";
+                        [self.navigationController pushViewController:webVC animated:YES]; 
                     }
                 }];
             }
