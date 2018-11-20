@@ -70,6 +70,10 @@
     Reachability *reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     [reachability startNotifier];
     
+    NSNotificationCenter *notiCenter = [NSNotificationCenter defaultCenter];
+    // 注册一个监听事件。第三个参数的事件名， 系统用这个参数来区别不同事件。
+    [notiCenter addObserver:self selector:@selector(receiveNotification:) name:@"canConnect" object:nil];
+    
     self.tabbarVC = nil;
     self.createCameraVC =nil;
     self.LiveViewNavVC = nil;
@@ -100,10 +104,31 @@
     
     //尝试自动登录服务器
     [self autoLogin];
-    
-    
-    
     return YES;
+}
+
+- (void)receiveNotification:(NSNotification *)noti
+{
+    
+    // NSNotification 有三个属性，name, object, userInfo，其中最关键的object就是从第三个界面传来的数据。name就是通知事件的名字， userInfo一般是事件的信息。
+    NSLog(@"%@ === %@ === %@", noti.object, noti.userInfo, noti.name);
+    BaseTabBarController *base = [[BaseTabBarController alloc]init];
+    //    if (self.window.rootViewController != nil) {
+    //        self.window.rootViewController = nil;
+    //    }
+    self.window.rootViewController = base;
+    [self.window makeKeyAndVisible];
+    self.tabbarVC = base;
+    
+    //设置图片的最大缓存为30M
+    [SDImageCache sharedImageCache].maxCacheSize = 20 * 1024 * 1024;
+    [self installCrashHandler];
+    //友盟SDK初始化
+    [self initUmShareSDK];
+    
+    //尝试自动登录服务器
+    [self autoLogin];
+    
 }
 
 /**

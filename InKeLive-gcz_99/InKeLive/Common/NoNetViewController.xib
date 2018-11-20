@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoNetViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lA-Kc-ELA">
+                    <rect key="frame" x="12" y="311.5" width="351" height="44"/>
+                    <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="dWa-aw-8vk"/>
+                    </constraints>
+                    <state key="normal" title="重新加载">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="btnReloadClicked:" destination="-1" eventType="touchUpInside" id="gsw-9k-ZP1"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noNet_icon" translatesAutoresizingMaskIntoConstraints="NO" id="1Zi-Wr-jzc">
+                    <rect key="frame" x="165" y="158" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="V5O-cc-Vzr"/>
+                        <constraint firstAttribute="width" constant="45" id="ptW-k2-shH"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前网络异常，页面无法显示！" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Je8-rN-hJM">
+                    <rect key="frame" x="94.5" y="222" width="186" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="AIz-UM-ckr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="1lA-Kc-ELA" firstAttribute="centerX" secondItem="1Zi-Wr-jzc" secondAttribute="centerX" id="4Eg-Og-uN7"/>
+                <constraint firstItem="1lA-Kc-ELA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="4PI-sh-eAa"/>
+                <constraint firstItem="Je8-rN-hJM" firstAttribute="top" secondItem="1Zi-Wr-jzc" secondAttribute="bottom" constant="19" id="HxM-TN-kEX"/>
+                <constraint firstItem="1lA-Kc-ELA" firstAttribute="top" secondItem="Je8-rN-hJM" secondAttribute="bottom" constant="68.5" id="NUw-4w-Y2Y"/>
+                <constraint firstItem="Je8-rN-hJM" firstAttribute="centerX" secondItem="1Zi-Wr-jzc" secondAttribute="centerX" id="S44-bV-CVc"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="1lA-Kc-ELA" secondAttribute="trailing" constant="12" id="dgF-ns-h2m"/>
+                <constraint firstItem="1lA-Kc-ELA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="tbJ-dn-IiA"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="noNet_icon" width="44.5" height="45"/>
+    </resources>
+</document>

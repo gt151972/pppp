@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoNet"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdM-mN-nGc">
+                    <rect key="frame" x="12" y="311.5" width="351" height="44"/>
+                    <color key="backgroundColor" red="1" green="0.81176470590000005" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="404-08-suK"/>
+                    </constraints>
+                    <state key="normal" title="重新加载">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noNet_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Ko9-wK-Fvh">
+                    <rect key="frame" x="165" y="158" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="acE-s2-Wug"/>
+                        <constraint firstAttribute="width" constant="45" id="qom-hF-hGs"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前网络异常，页面无法显示！" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tH8-WP-NRh">
+                    <rect key="frame" x="12" y="222" width="351" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="V8m-zv-vM6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tH8-WP-NRh" firstAttribute="top" secondItem="Ko9-wK-Fvh" secondAttribute="bottom" constant="19" id="1uE-px-ga3"/>
+                <constraint firstItem="mdM-mN-nGc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="2Hf-4Z-ma4"/>
+                <constraint firstItem="mdM-mN-nGc" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="C0r-7i-SMP"/>
+                <constraint firstItem="mdM-mN-nGc" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="DYC-6A-sNO"/>
+                <constraint firstItem="tH8-WP-NRh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="mpa-fb-Qbs"/>
+                <constraint firstItem="Ko9-wK-Fvh" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="oFy-ND-Xch"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="mdM-mN-nGc" secondAttribute="trailing" constant="12" id="xKh-3e-xuU"/>
+                <constraint firstItem="mdM-mN-nGc" firstAttribute="top" secondItem="tH8-WP-NRh" secondAttribute="bottom" constant="68.5" id="yer-Xj-Yib"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tH8-WP-NRh" secondAttribute="trailing" constant="12" id="zDG-AA-2Q1"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="noNet_icon" width="44.5" height="45"/>
+    </resources>
+</document>
