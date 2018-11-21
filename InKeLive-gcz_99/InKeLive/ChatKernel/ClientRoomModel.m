@@ -106,13 +106,17 @@
 -(NSMutableArray *)sortMicUser:(NSMutableArray *)array{
     NSMutableArray *arrayData = [[NSMutableArray alloc] init];
     NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
-    for (int index = 0; index < array.count; index++) {
-        ClientUserModel *model = [array objectAtIndex:index];
-        if (model.micState == 1) {
-            [arrayData addObject:model];
-            [arr removeObjectAtIndex:index];
+    NSLog(@"arr == %@",arr);
+//    if (array.count > 1) {
+        for (int index = 0; index < arr.count; index++) {
+            ClientUserModel *model = [array objectAtIndex:index];
+            if (model.micState == 1) {
+                [arrayData addObject:model];
+                [arr removeObjectAtIndex:index];
+            }
         }
-    }
+//    }
+    
     NSArray *array2 = [arrayData sortedArrayUsingComparator:
                        ^NSComparisonResult(ClientUserModel *obj1, ClientUserModel *obj2) {
                            // 先按照麦序

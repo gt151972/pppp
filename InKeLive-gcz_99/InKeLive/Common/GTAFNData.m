@@ -24,6 +24,7 @@
     session.requestSerializer = [AFJSONRequestSerializer serializer];
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:data];
     [parameters setValue:cmd forKey:@"cmd"];
+    NSLog(@"parameters == %@",parameters);
     NSString* strAPIUrl = URL_GiftInfo;
     [session.requestSerializer requestWithMethod:@"POST" URLString:strAPIUrl parameters:parameters error:nil];
     [session POST:strAPIUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -185,6 +186,7 @@
     currResult = CMD_PASSWORD_CHANGE;
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",model.userID], @"uid", oldPwd, @"op", newPwd, @"np", nil];
+    NSLog(@"np == %@,op = %@",oldPwd, newPwd);
     [self postData:currResult data:dict];
 }
 

@@ -354,6 +354,7 @@
     NSString *strUserLogonPwd =[[NSUserDefaults standardUserDefaults] objectForKey:@"DPK_USERLOGONPWD"];
     NSString *strType = [[NSUserDefaults standardUserDefaults] objectForKey:@"DPK_USERLOGONTYPE"];
     NSString *strMac = [[NSUserDefaults standardUserDefaults] objectForKey:@"DPK_USERLOGONMAC"];
+//    NSLog(@"strMac = %@",strMac);
     GTAFNData *data = [[GTAFNData alloc] init];
     data.delegate = self;
     [data LoginWithUid:strUserId sid:strUserLogonPwd type:strType mac:strMac];

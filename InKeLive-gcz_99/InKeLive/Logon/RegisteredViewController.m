@@ -44,7 +44,7 @@
         [Time setTheCountdownButton:sender startWithTime:45 title:@"获取验证码" countDownTitle:@"s" mainColor:MAIN_COLOR countColor:MAIN_COLOR];
         GTAFNData *data = [[GTAFNData alloc] init];
         data.delegate = self;
-        [data phoneMsgWithPhone:_textFieldPhone.text reg:@"1"];
+        [data phoneMsgWithPhone:_textFieldPhone.text reg:@"true"];
     }else{
         [[GTAlertTool shareInstance] showAlert:@"您输入的手机号格式有误" message:@"请重新输入" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
     }

@@ -62,7 +62,7 @@
     if (_textFieldPhone.text.length == 11) {
         GTAFNData *data = [[GTAFNData alloc] init];
         data.delegate = self;
-        [data phoneMsgWithPhone:_textFieldPhone.text reg:0];
+        [data phoneMsgWithPhone:_textFieldPhone.text reg:@"false"];
     }else{
         [[GTAlertTool shareInstance] showAlert:@"您输入的手机号格式有误" message:@"请重新输入" cancelTitle:nil titleArray:nil viewController:self confirm:nil];
     }
