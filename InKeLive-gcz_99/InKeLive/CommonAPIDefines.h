@@ -43,8 +43,8 @@
 
 //ftp传输
 #define FTP_URL_PATH @"ftp://116.62.148.217 " //IP
-#define FTP_USER_ID @"gtt_ios"//user
-#define FTP_PASSWORD @"VlVuaQ^4W4zDo9lQ37LR#JTPuOWBn*YOebd+kwY"//pwd
+#define FTP_USER_ID @"zyt_android"//user
+#define FTP_PASSWORD @"pLH*2%~w^=@f&4X!Z0b&58loR9-_0EjNk?Zf&Ve"//pwd
 
 //更新地址
 #define UPDATE_URL @"https://www.pgyer.com/9md8"
