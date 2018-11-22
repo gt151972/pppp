@@ -28,6 +28,12 @@
     self.navigationController.navigationBar.hidden = NO;
     self.title = @"关注";
     _arrData = [NSArray array];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self getData];
 }
 
 - (void)viewDidLoad {
@@ -172,7 +178,7 @@
         NSLog(@"data == %@",data);
         if ([[data objectForKey:@"code"] intValue] == 0) {
             NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
-            if (array.count != 0) {
+            if (array.count > 0) {
                 self.arrData = array;
                 [self.emptyView removeFromSuperview];
                 if (kIs_iPhoneX) {
@@ -192,13 +198,20 @@
     }else if ([cmd isEqualToString:CMD_ATTENTION_DELETE]){
         NSLog(@"data == %@",data);
         if ([[data objectForKey:@"code"] intValue] == 0) {
-            NSMutableArray *array = [NSMutableArray arrayWithArray:_arrData];
+            NSArray *array = [NSArray arrayWithArray:[data objectForKey:@"List"]];
             if (_index > -1) {
-                [array removeObjectAtIndex:_index];
-                
+                if (array.count >0) {
+                    self.arrData = array;
+                    [self.tableView reloadData];
+                }else{
+                    self.arrData = array;
+                    self.tableView.frame = CGRectMake(0, 88, SCREEN_WIDTH, 0);
+                    [self.tableView reloadData];
+                    [self.view addSubview:self.emptyView];
+                }
                 [MBProgressHUD showAlertMessage:@"取消关注成功"];
             }
-            [self.tableView reloadData];
+            
             _index = -1;
         }else{
             [[GTAlertTool shareInstance] showAlert:[data objectForKey:@"msg"] message:@"请重试" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {

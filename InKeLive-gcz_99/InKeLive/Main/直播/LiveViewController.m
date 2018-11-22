@@ -1688,7 +1688,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
             LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
-            NSLog(@"_userObj.vipLevel == %d",weakSelf.userObj.vipLevel);
+            NSLog(@"_userObj.vipLevel == %d",weakSelf.userObj.userId);
             if (_userObj.vipLevel <= 25 && _userObj.vipLevel >= 21) {
                 [weakSelf sendAttention:flag roomId:_roomObj.roomId singerId:_userObj.userId];
             }else{
@@ -2952,6 +2952,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             ClientUserModel *user = [self.roomObj.onMicUserList objectAtIndex:index];
             if (user.userId == userId) {
                 nowIndex = index;
+                
                 [_onMicUsersHeadView reloadData];
             }
         }
@@ -3329,6 +3330,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                     if(userObj != nil) {
                         //设置主播信息
                         [self.anchorView setAnchorInfo:userObj.userId UserName:userObj.userAlias UserHeadPic:userObj.userSmallHeadPic];
+                        self.userObj = userObj;
                     }
                     else {
                         //主播不在线
