@@ -88,10 +88,10 @@
             resource = @"gly";
             break;
         case 210://站长
-            resource = @"zhanzhang";
+            resource = @"guanliyuan";
             break;
         case 211://管理员
-            resource = @"guanliyuan";
+            resource = @"zhanzhang";
             break;
         default:
             break;
