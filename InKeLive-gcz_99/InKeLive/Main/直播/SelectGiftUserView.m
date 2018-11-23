@@ -161,7 +161,8 @@
                          @"vipLevel":[NSString stringWithFormat:@"%d",model.vipLevel],
                          @"userBigHeadPic":model.userBigHeadPic,
                          @"pushStreamUrl":model.pushStreamUrl,
-                         @"pullStreamUrl":model.pullStreamUrl
+                         @"pullStreamUrl":model.pullStreamUrl,
+                         @"szcidiograph":model.szcidiograph
                          };
     [dict writeToFile:filePathName atomically:YES];
     if (self.userClick) {

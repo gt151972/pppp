@@ -236,6 +236,7 @@
         //个性签名
         SignatureViewController *signatureVC = [[SignatureViewController alloc] init];
         signatureVC.delegate = self;
+        NSLog(@"model.sign == %@",model.sign);
         signatureVC.strInfo = model.sign;
         [self.navigationController pushViewController:signatureVC animated:YES];
     }
@@ -483,6 +484,7 @@
             model.sign = dic[@"Sign"];
             model.qq = dic[@"QQ"];
             model.wechat = dic[@"WeChat"];
+            model.sign = dic[@"Sign"];
             [self.tableView reloadData];
         }else{
             NSLog(@"msg == %@",data[@"msg"]);
@@ -498,6 +500,7 @@
             model.sign = dict[@"Sign"];
             model.qq = dict[@"QQ"];
             model.wechat = dict[@"WeChat"];
+            model.sign = dict[@"Sign"];
             [self.navigationController popViewControllerAnimated:YES];
         }else{
             [MBProgressHUD showAlertMessage:data[@"msg"]];
@@ -508,6 +511,7 @@
 #pragma mark signDelegate
 - (void)addItemViewController:(UIViewController *)controller didFinishEnteringItem:(NSString *)item{
     self.strSign = item;
+    NSLog(@"item == %@",item);
 }
 
 #pragma mark EditNameViewControllerDelegate

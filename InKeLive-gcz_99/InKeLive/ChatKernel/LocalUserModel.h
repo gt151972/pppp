@@ -16,7 +16,6 @@
 @property(nonatomic, strong) NSString* userSid; //sid
 //@property(nonatomic, strong) NSString* userMobile;
 @property(nonatomic, strong) NSString* userName;           //用户名称
-
 @property(nonatomic, strong) NSString* userSmallHeadPic;         //用户头像图片
 @property(nonatomic, strong) NSString* userBigHeadPic;           //用户头像图片
 //@property(nonatomic, strong) NSString* downloadUserHeadPic;      //

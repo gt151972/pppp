@@ -34,7 +34,9 @@
     _labTextNum.text =  [NSString stringWithFormat:@"您最多还能输入%d个字",50-num];
     
     _textView.delegate =self;
-    if (_strInfo) {
+    _textView.textColor = TEXT_COLOR;
+    NSLog(@"_strInfo == %@",_strInfo);
+    if (![_strInfo isEqualToString:@""]) {
         _textView.text = _strInfo;
     }else{
         _textView.text = @"今天有什么想和大家分享一下呢？";

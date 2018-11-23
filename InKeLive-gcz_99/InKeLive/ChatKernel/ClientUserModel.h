@@ -24,6 +24,7 @@
 @property(nonatomic, strong) NSString* userBigHeadPic;
 @property(nonatomic, strong) NSString* pushStreamUrl;
 @property(nonatomic, strong) NSString* pullStreamUrl;
+@property(nonatomic, strong) NSString* szcidiograph;//签名
 @property(nonatomic, assign) int isAttention;//是否被关注
 @property(nonatomic, assign) int isVideoStatus;//视频播放状态
 @property(nonatomic, assign) int isAudioStatus;//音频播放状态

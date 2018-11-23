@@ -898,7 +898,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
                                      @"vipLevel":[NSString stringWithFormat:@"%d",model.vipLevel],
                                      @"userBigHeadPic":model.userBigHeadPic,
                                      @"pushStreamUrl":model.pushStreamUrl,
-                                     @"pullStreamUrl":model.pullStreamUrl
+                                     @"pullStreamUrl":model.pullStreamUrl,
+                                     @"szcidiograph":model.szcidiograph
                                      };
                 [dict writeToFile:filePathName atomically:YES];
                 break;
@@ -3171,6 +3172,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                      UserHeadPic:(NSString *)userHeadPic
                     nVideoStatus:(int)nVideoStatus
                     nAudioStatus:(int)nAudioStatus
+                    szcidiograph:(NSString*)szcidiograph
 {
     NSLog(@"OnNetMsg_RoomUserListItem");
 //    NSLog(@"inroomstate == %d",inroomstate);
@@ -3193,6 +3195,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     userObj.isVideoStatus = nVideoStatus;
     userObj.isAudioStatus = nAudioStatus;
     userObj.param_01 = param_01;
+    userObj.szcidiograph = szcidiograph;
     if([self.roomObj findMember:userId] == nil) {
         if (!((inroomstate & FT_USERROOMSTATE_HIDEIN) !=0)) {
             //隐身登录

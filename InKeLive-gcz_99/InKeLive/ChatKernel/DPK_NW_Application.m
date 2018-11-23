@@ -639,6 +639,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                     while(cur_pos + sizeof(HBCMD_VideoChat_RoomUserInfo_t) <=data_len) {
                         NSString* strUserAlias =[[NSString alloc]initWithCString:pUserItem->userName encoding:enc];
                         NSString* strHeadPic = [[NSString alloc] initWithCString:pUserItem->userHeadPic encoding:NSASCIIStringEncoding];
+                        NSString* strSignature = [[NSString alloc] initWithCString:pUserItem->szcidiograph encoding:NSASCIIStringEncoding];
                         [delegate OnNetMsg_RoomUserListItem:pUserItem->vcbId
                                                      UserID:pUserItem->userId
                                                      Gender:0
@@ -654,7 +655,8 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                                   UserAlias:strUserAlias
                                                 UserHeadPic:strHeadPic
                                                nVideoStatus:pUserItem->nVideoStatus
-                                               nAudioStatus:pUserItem->nAudioStatus
+                                               nAudioStatus:pUserItem->nAudioStatus szcidiograph:strSignature
+                        
                          ];
                         pUserItem++;
                         cur_pos += sizeof(HBCMD_VideoChat_RoomUserInfo_t);

@@ -125,7 +125,8 @@
                         UserAlias:(NSString*)userAlias
                       UserHeadPic:(NSString*)userHeadPic
                      nVideoStatus:(int)nVideoStatus
-                     nAudioStatus:(int)nAudioStatus;
+                     nAudioStatus:(int)nAudioStatus
+                     szcidiograph:(NSString*)szcidiograph;
 -(void) OnNetMsg_RoomUserListEnd;
 
 //获取房间在麦用户列表

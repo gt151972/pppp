@@ -121,13 +121,17 @@
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
     NSDictionary*dict = [NSDictionary dictionaryWithContentsOfFile:filePathName];
 
-    NSLog(@"model == %@",self.userModel);
+    NSLog(@"dict == %@",dict);
     NSURL *url =[NSURL URLWithString:[dict objectForKey:@"userSmallHeadPic"]];
     [self.userHeadImageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     NSString* strUserAlias = [NSString stringWithFormat:@"%@", [dict objectForKey:@"userAlias"]];
     NSString *strUserId = [NSString stringWithFormat:@"ID:%@",[dict objectForKey:@"userId"]];
     userId = [[dict objectForKey:@"userId"] intValue];
     UserAlias = [dict objectForKey:@"userAlias"];
+    NSString *strSzcidiograph = [dict objectForKey:@"szcidiograph"];
+    if (strSzcidiograph.length > 0) {
+        self.userLevelLable.text = strSzcidiograph;
+    }
     [_viewLevel addSubview:[[LevelGrade shareInstance] greadImage:[[dict objectForKey:@"vipLevel"]intValue]]];
 //    NSString* strUserVipLevel = [NSString stringWithFormat:@"用户等级：%d", self.userModel.vipLevel];
     
