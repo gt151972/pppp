@@ -402,6 +402,7 @@ static const CGFloat kHeight=285.0;
             NSLog(@"_nowRow == %d",_nowRow);
             if (_arrChatMessage.count >0) {
                 self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
+                NSLog(@"%d",[[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
             }else{
                 self.privateChatSend(_textField.text, 0);
             }

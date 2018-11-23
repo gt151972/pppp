@@ -2700,7 +2700,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
-        }else if ([self.roomObj findAllMember:userId] == nil){
+        }else if ([self.roomObj findAllMember:userId]){
             [[GTAlertTool shareInstance] showAlert:@"对方已下线" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
