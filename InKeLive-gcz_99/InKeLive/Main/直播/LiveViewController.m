@@ -2525,8 +2525,29 @@ privateChatViewDelegate, GTAFNDataDelegate>
             case 30:
                 model.userLevel = 40;
                 break;
+            case 31:
+                model.userLevel = 35;
+                break;
+            case 32:
+                model.userLevel = 36;
+                break;
+            case 33:
+                model.userLevel = 37;
+                break;
+            case 34:
+                model.userLevel = 38;
+                break;
+            case 35:
+                model.userLevel = 39;
+                break;
+            case 40:
+                model.userLevel = 40;
+                break;
             case 201:
                 model.userLevel = 26;
+                break;
+            case 202:
+                model.userLevel = 94;
                 break;
             case 205:
                 model.userLevel = 27;
@@ -2549,9 +2570,9 @@ privateChatViewDelegate, GTAFNDataDelegate>
     
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"userLevel" ascending:NO];
     [arrData sortUsingDescriptors:@[sort]];
-//     //输出排序结果
+     //输出排序结果
     for (ClientUserModel *model in arrData) {
-//        NSLog(@"userLevel: %d,userId: %d userAlias: %@", model.userLevel,model.userId, model.userAlias);
+        NSLog(@"vip: %d userLevel: %d,userId: %d userAlias: %@",model.vipLevel, model.userLevel,model.userId, model.userAlias);
     }
     LocalUserModel *myModel = [DPK_NW_Application sharedInstance].localUserModel;
     for (int index = 0; index < arrData.count; index ++ ) {
@@ -2694,13 +2715,13 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
-        NSLog(@"toId == %d",toId);
+//        NSLog(@"toId == %d",toId);
         //判断是否在线
         if (toId == 0) {
             [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
-        }else if ([self.roomObj findAllMember:userId]){
+        }else if ([weakSelf.roomObj findAllMember:userId]){
             [[GTAlertTool shareInstance] showAlert:@"对方已下线" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
@@ -4150,10 +4171,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //            lab.hidden = YES;
             if(status == VIDEO_PLAY){//视频播放
                 if (userId == self.userObj.userId) {
-                    if (!_createFlag) {
-                        [_btnReload setHidden:NO];
-                        [_btnReloadBg setHidden:NO];
-                    }
+                    
                     self.showView.hidden = YES;
                     lab.hidden = YES;
                 }
@@ -4167,6 +4185,10 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 onMicUser.isAudioStatus = 0;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
                 [_onMicUsersHeadView reloadData];
+                if (!_createFlag) {
+                    [_btnReload setHidden:NO];
+                    [_btnReloadBg setHidden:NO];
+                }
                 lab.hidden = YES;
             }else if (status == AUDIO_PAUSE){//音频暂停
                 onMicUser.isAudioStatus = 1;
