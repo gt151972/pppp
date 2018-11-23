@@ -461,16 +461,19 @@ static const CGFloat kHeight=285.0;
 
 -(void)reloadDateForTableView{
     CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
-    if (offset > 0)
-    {
-        [self.messageTableView setContentOffset:CGPointMake(0, offset) animated:NO];
-    }
-    
     NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
     UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
     cell.selected = YES;
     [_messageTableView reloadData];
-    [_userTableView reloadData];
+//    [_userTableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.messageTableView reloadData];
+        if (offset > 0) {
+            [self.messageTableView layoutIfNeeded]; 
+            [self.messageTableView setContentOffset:CGPointMake(0, self.messageTableView.contentSize.height -self.messageTableView.bounds.size.height) animated:YES];
+        }
+    });
+
 //    if (_nowRow == _lastRow) {
 //
 //

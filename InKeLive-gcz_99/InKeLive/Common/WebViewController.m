@@ -66,8 +66,6 @@
     [btnBack addTarget:self action:@selector(btnBackClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewBg addSubview:btnBack];
     
-
-    
     UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 44)];
     labTitle.text = _strTitle;
     labTitle.textColor = [UIColor blackColor];

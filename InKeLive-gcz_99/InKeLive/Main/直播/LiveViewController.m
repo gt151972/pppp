@@ -1685,7 +1685,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             _anchorView.frame = CGRectMake(4, 54, 150, 36);
         }
         WEAKSELF;
-        NSLog(@"userId == %d",_userObj.userId);
+//        NSLog(@"userId == %d",_userObj.userId);
         [_anchorView setAnchorClick:^(int flag) {
             //Singer是等级在21<=level<=25
             LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
@@ -2051,7 +2051,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             [btnName setImage:[UIImage imageNamed:@"living_device_mobile"] forState:UIControlStateNormal];
         }
         [btnName setTitle:userObj.userAlias forState:UIControlStateNormal];
-        [btnName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnName setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
         [btnName.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [cell.contentView addSubview:btnName];
         [btnName mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -2694,6 +2694,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
+        NSLog(@"toId == %d",toId);
         //判断是否在线
         if (toId == 0) {
             [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {

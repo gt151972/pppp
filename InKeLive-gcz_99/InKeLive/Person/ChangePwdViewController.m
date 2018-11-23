@@ -120,9 +120,9 @@
         make.width.equalTo(viewLine.mas_width);
     }];
     
-    if (indexPath.row == 0) {
-        viewLine.backgroundColor = MAIN_COLOR;
-    }
+//    if (indexPath.row == 0) {
+//        viewLine.backgroundColor = MAIN_COLOR;
+//    }
     return cell;
 }
 
