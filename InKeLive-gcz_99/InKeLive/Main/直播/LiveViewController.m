@@ -2561,6 +2561,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
             case 211:
                 model.userLevel = 30;
                 break;
+            case 500:
+                model.userLevel = 200;
+                break;
+            case 501:
+                model.userLevel = 201;
+                break;
                 
             default:
                 break;
@@ -3227,11 +3233,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
         
         if ((inroomstate & FT_USERROOMSTATE_SIEGE1) != 0) {
             //市长
-            _mayor = userObj;
+            userObj.vipLevel = 501;
             
         }else if ((inroomstate & FT_USERROOMSTATE_SIEGE2) != 0){
             //市长夫人
-            _Lady = userObj;
+            userObj.vipLevel = 500;
         }
     }
     int ismic = inroomstate & FT_USERROOMSTATE_MIC_MASK;

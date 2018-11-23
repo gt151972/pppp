@@ -93,6 +93,12 @@
         case 211://管理员
             resource = @"zhanzhang";
             break;
+        case 500://市长夫人(自己加)
+            resource = @"35151";
+            break;
+        case 501://市长(自己加)
+            resource = @"shizhang1";
+            break;
         default:
             break;
     }
