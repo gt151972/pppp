@@ -24,7 +24,7 @@ static const CGFloat kHeight=285.0;
     if (self = [super initWithFrame:frame]) {
         _arrChatMessage = [[NSMutableArray alloc] init];
         _dicMessage = [[NSMutableDictionary alloc] init];
-        
+        _lastRow = 0;
     }
     return self;
 }

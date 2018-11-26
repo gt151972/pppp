@@ -129,6 +129,7 @@
     userId = [[dict objectForKey:@"userId"] intValue];
     UserAlias = [dict objectForKey:@"userAlias"];
     NSString *strSzcidiograph = [dict objectForKey:@"szcidiograph"];
+//    NSLog(@"strSzcidiograph == %@",strSzcidiograph);
     if (strSzcidiograph.length > 0) {
         self.userLevelLable.text = strSzcidiograph;
     }

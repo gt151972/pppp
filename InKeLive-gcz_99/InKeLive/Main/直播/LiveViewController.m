@@ -332,10 +332,29 @@ privateChatViewDelegate, GTAFNDataDelegate>
     self.pushStreamerView.hidden = YES;
     self.playerView.hidden = NO;
     [self addObserver:self forKeyPath:@"player" options:NSKeyValueObservingOptionNew context:nil];
-    [self initPlayerWithURL:_url fileList:_fileList];
-    NSLog(@"_url == %@",_url);
-    //连接房间服务器
-    [self connect_roomserver_joinroom];
+//    [self initPlayerWithURL:_url fileList:_fileList];
+//    NSLog(@"_url == %@",_url);
+//    //连接房间服务器
+//    [self connect_roomserver_joinroom];
+    //获取用户的麦状态
+    int rotateDegree = 0;
+    int mic_state = _userObj.inRoomState & FT_USERROOMSTATE_MIC_MASK;
+    switch (mic_state) {
+        case FT_USERROOMSTATE_MIC_GUAN:
+        case FT_USERROOMSTATE_MIC_GONG:
+        case FT_USERROOMSTATE_MIC_SI:
+        case FT_USERROOMSTATE_MIC_MI:
+        case FT_USERROOMSTATE_MIC_LIWU:
+            rotateDegree = 180;
+            break;
+        default:
+            break;
+    }
+    
+//    NSLog(@"============================");
+//    NSLog(@"RTMP:%@",userObj.pullStreamUrl);
+//    NSLog(@"============================");
+    [self onPlayStream:YES URL:self.userObj.pullStreamUrl RotateDegree:rotateDegree];
     int64_t delayInSeconds = 10.0;      // 延迟的时间
     /*
      *@parameter 1,时间参照，从此刻开始计时
@@ -892,6 +911,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
                 NSString*cachePath = array[0];
                 NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+                NSLog(@"%@",model.szcidiograph);
                 NSDictionary*dict =@{@"userId":[NSString stringWithFormat:@"%d",model.userId],
                                      @"userAlias":model.userAlias,
                                      @"userSmallHeadPic":model.userSmallHeadPic,
@@ -2715,22 +2735,24 @@ privateChatViewDelegate, GTAFNDataDelegate>
 
             }
         }
-        _chatPrivateView.lastRow = _chatPrivateView.nowRow;
+//        if (_chatPrivateView.arrChatMessage.count == 1) {
+//            _chatPrivateView.lastRow = 0;
+//        }
         [self.chatPrivateView reloadDateForTableView];
         [_chatPrivateView popShow];
     }
      WEAKSELF;
     [_chatPrivateView setPrivateChatSend:^(NSString *messageInfo, int toId) {
-//        NSLog(@"toId == %d",toId);
+        NSLog(@"toId == %d",toId);
         //判断是否在线
         if (toId == 0) {
             [[GTAlertTool shareInstance] showAlert:@"未选择私聊对象" message:@"请先选择对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
                 
             }];
-        }else if ([weakSelf.roomObj findAllMember:userId]){
-            [[GTAlertTool shareInstance] showAlert:@"对方已下线" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
-                
-            }];
+//        }else if ([weakSelf.roomObj findAllMember:userId]){
+//            [[GTAlertTool shareInstance] showAlert:@"对方已下线" message:@"请选择其他私聊对象" cancelTitle:nil titleArray:nil viewController:weakSelf confirm:^(NSInteger buttonTag) {
+//                
+//            }];
         }else{
             [weakSelf SendPrivateMessage:messageInfo receiverId:toId];
         }
@@ -3224,6 +3246,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     userObj.isAudioStatus = nAudioStatus;
     userObj.param_01 = param_01;
     userObj.szcidiograph = szcidiograph;
+    NSLog(@"szcidiograph == %@",szcidiograph);
     if([self.roomObj findMember:userId] == nil) {
         if (!((inroomstate & FT_USERROOMSTATE_HIDEIN) !=0)) {
             //隐身登录
@@ -4191,15 +4214,20 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 onMicUser.isAudioStatus = 0;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
                 [_onMicUsersHeadView reloadData];
-                if (!_createFlag) {
-                    [_btnReload setHidden:NO];
-                    [_btnReloadBg setHidden:NO];
-                }
-                lab.hidden = YES;
+//                if (!_createFlag) {
+//                    [_btnReload setHidden:NO];
+//                    [_btnReloadBg setHidden:NO];
+//                }
+//                lab.hidden = YES;
             }else if (status == AUDIO_PAUSE){//音频暂停
                 onMicUser.isAudioStatus = 1;
                 [self.roomObj.onMicUserList replaceObjectAtIndex:index withObject:onMicUser];
                 [_onMicUsersHeadView reloadData];
+                lab.hidden = YES;
+                if (!_createFlag) {
+                    [_btnReload setHidden:NO];
+                    [_btnReloadBg setHidden:NO];
+                }
                 lab.hidden = YES;
             }
             
