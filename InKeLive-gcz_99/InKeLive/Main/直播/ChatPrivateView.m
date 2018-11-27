@@ -20,6 +20,7 @@
 @end
 @implementation ChatPrivateView
 static const CGFloat kHeight=285.0;
+
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         _arrChatMessage = [[NSMutableArray alloc] init];
@@ -346,8 +347,17 @@ static const CGFloat kHeight=285.0;
         UITableViewCell *cell2 = (UITableViewCell *)[_userTableView viewWithTag:indexPath.row + 500];
         cell2.backgroundColor = RGB(67, 67, 67);
         _nowRow = [[NSString stringWithFormat:@"%ld",(long)indexPath.row] intValue];
-        _lastRow = _nowRow;
         _labNameAndId.text = [NSString stringWithFormat:@"悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userAlias"],[[_arrChatMessage objectAtIndex:_nowRow]objectForKey:@"userId"]];
+        _lastRow = _nowRow;
+//        [_userTableView reloadData];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.messageTableView reloadData];
+//            CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
+//            if (offset > 0) {
+//                [self.messageTableView layoutIfNeeded];
+//                [self.messageTableView setContentOffset:CGPointMake(0, self.messageTableView.contentSize.height -self.messageTableView.bounds.size.height) animated:YES];
+//            }
+//        });
         [self reloadDateForTableView];
         
     }else if (tableView == _messageTableView){
@@ -412,15 +422,23 @@ static const CGFloat kHeight=285.0;
 }
 
 - (void)btnUserDeleteClicked: (UIButton *)button{
-    [_arrChatMessage removeObjectAtIndex:_nowRow];
-    [self reloadDateForTableView];
-    
-    _nowRow = 0;
-    _lastRow = 0;
-    if (self.deteleChatUser) {
-        self.deteleChatUser(_nowRow);
-    }
-    if (_arrChatMessage.count <=0) {
+    if (_arrChatMessage.count >1) {
+        [_arrChatMessage removeObjectAtIndex:_nowRow];
+        _nowRow = 0;
+        _lastRow = 0;
+        [self reloadDateForTableView];
+        if (self.deteleChatUser) {
+            self.deteleChatUser(_nowRow);
+        }
+    }else if (_arrChatMessage.count ==1){
+        [_arrChatMessage removeObjectAtIndex:0];
+        _nowRow = -1;
+        _lastRow = -1;
+        [_userTableView reloadData];
+        [_messageTableView reloadData];
+        if (self.deteleChatUser) {
+            self.deteleChatUser(0);
+        }
         [self hide];
     }
 }
@@ -461,16 +479,17 @@ static const CGFloat kHeight=285.0;
 
 
 -(void)reloadDateForTableView{
-    CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
     NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
+    self.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userAlias"], [[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userId"]];
     UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
     cell.selected = YES;
     [_messageTableView reloadData];
-//    [_userTableView reloadData];
+    [_userTableView reloadData];
+    CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.messageTableView reloadData];
         if (offset > 0) {
-            [self.messageTableView layoutIfNeeded]; 
+            [self.messageTableView layoutIfNeeded];
             [self.messageTableView setContentOffset:CGPointMake(0, self.messageTableView.contentSize.height -self.messageTableView.bounds.size.height) animated:YES];
         }
     });

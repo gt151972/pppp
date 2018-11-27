@@ -312,7 +312,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2896301"
+            timestampString = "564995838.182529"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2921"
@@ -520,7 +520,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/ChatKernel/DPK_NW_Application.m"
-            timestampString = "564905119.290117"
+            timestampString = "564915535.490199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "530"
@@ -664,7 +664,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.290683"
+            timestampString = "564995838.183151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2878"
@@ -711,40 +711,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "InKeLive/Main/&#x76f4;&#x64ad;/ChatPrivateView.m"
-            timestampString = "564905119.29082"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.290861"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1441"
-            endingLineNumber = "1441"
-            landmarkName = "-onPlayStream:URL:RotateDegree:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2909091"
+            timestampString = "564995838.183252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "4210"
@@ -872,7 +840,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2911921"
+            timestampString = "564995838.183435"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2961"
@@ -888,7 +856,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.291242"
+            timestampString = "564995838.1834739"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3053"
@@ -904,7 +872,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.29129"
+            timestampString = "564995838.1835099"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3031"
@@ -1080,7 +1048,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2916811"
+            timestampString = "564995838.183758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3420"
@@ -1208,11 +1176,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/ChatPrivateView.m"
-            timestampString = "564905119.291979"
+            timestampString = "564995838.183953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
             landmarkName = "-btnSendClicked"
             landmarkType = "7">
          </BreakpointContent>
@@ -1224,7 +1192,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2920181"
+            timestampString = "564995838.184248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "492"
@@ -1240,39 +1208,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.292066"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1835"
-            endingLineNumber = "1835"
-            landmarkName = "-userView"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2921081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2746"
-            endingLineNumber = "2746"
-            landmarkName = "-showPrivateChatView:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "InKeLive/Main/&#x76f4;&#x64ad;/LiveViewController.m"
-            timestampString = "564905119.2921489"
+            timestampString = "564995838.184289"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "914"
@@ -1287,13 +1223,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "InKeLive/ChatKernel/DPK_NW_Application.m"
-            timestampString = "564905119.2921849"
+            filePath = "InKeLive/Main/&#x76f4;&#x64ad;/ChatPrivateView.m"
+            timestampString = "564995838.184327"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "643"
-            endingLineNumber = "643"
-            landmarkName = "-OnEventTCPSocketRead:MainCommand:SubCommand:Data:time:roomID:userID:DataLen:"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
+            landmarkName = "-reloadDateForTableView"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -2692,7 +2692,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 _chatPrivateView.nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
                 NSString *strUserId = [[_arrPrivate lastObject] objectForKey:@"userId"];
                 NSString *strUserName = [[_arrPrivate lastObject] objectForKey:@"userAlias"];
-                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",strUserId, strUserName];
+//                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",strUserId, strUserName];
             }else{
                 //直接跳入userId的私聊页面(判断是否替换)
                 ClientUserModel* userObj = [self.roomObj findMember:userId];
@@ -2714,7 +2714,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                     _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
                 }
                 
-                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
+//                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
             }
             _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
         }else{
@@ -2730,7 +2730,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 [_arrPrivate addObject:dicAll];
                 _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
-                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
+//                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
                 _chatPrivateView.nowRow = 0;
 
             }
