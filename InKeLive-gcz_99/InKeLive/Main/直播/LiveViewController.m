@@ -2717,6 +2717,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
             }
             _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
+            [self.chatPrivateView reloadDateForTableView];
         }else{
             if (userId == 0) {
                 _chatPrivateView.labNameAndId.text = @"  悄悄说";
@@ -2732,13 +2733,13 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
 //                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];
                 _chatPrivateView.nowRow = 0;
+                [self.chatPrivateView reloadDateForTableView];
 
             }
         }
 //        if (_chatPrivateView.arrChatMessage.count == 1) {
 //            _chatPrivateView.lastRow = 0;
 //        }
-        [self.chatPrivateView reloadDateForTableView];
         [_chatPrivateView popShow];
     }
      WEAKSELF;
