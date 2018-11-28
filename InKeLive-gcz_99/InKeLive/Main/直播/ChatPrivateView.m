@@ -411,8 +411,8 @@ static const CGFloat kHeight=285.0;
         if (_textField.text.length > 0) {
             NSLog(@"_nowRow == %d",_nowRow);
             if (_arrChatMessage.count >0) {
-                self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
-                NSLog(@"%d",[[[_arrChatMessage objectAtIndex:_nowRow] objectForKey:@"userId"]intValue]);
+                self.privateChatSend(_textField.text, [[[_arrChatMessage objectAtIndex:_lastRow] objectForKey:@"userId"]intValue]);
+                NSLog(@"%d",[[[_arrChatMessage objectAtIndex:_lastRow] objectForKey:@"userId"]intValue]);
             }else{
                 self.privateChatSend(_textField.text, 0);
             }
@@ -434,11 +434,11 @@ static const CGFloat kHeight=285.0;
         [_arrChatMessage removeObjectAtIndex:0];
         _nowRow = -1;
         _lastRow = -1;
-        [_userTableView reloadData];
-        [_messageTableView reloadData];
         if (self.deteleChatUser) {
             self.deteleChatUser(0);
         }
+        [_userTableView reloadData];
+        [_messageTableView reloadData];
         [self hide];
     }
 }
@@ -479,10 +479,13 @@ static const CGFloat kHeight=285.0;
 
 
 -(void)reloadDateForTableView{
-    NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
-    self.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userAlias"], [[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userId"]];
-    UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
-    cell.selected = YES;
+    
+    if (_lastRow >= 0) {
+        NSLog(@"_lastRow == %d\n _nowRow == %d",_lastRow,_nowRow);
+        self.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%@(%@)",[[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userAlias"], [[_arrChatMessage objectAtIndex:_lastRow]objectForKey:@"userId"]];
+        UITableViewCell *cell = (UITableViewCell *)[_userTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_lastRow inSection:0]];
+        cell.selected = YES;
+    }
     [_messageTableView reloadData];
     [_userTableView reloadData];
     CGFloat offset = self.messageTableView.contentSize.height - self.messageTableView.bounds.size.height;

@@ -355,6 +355,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //    NSLog(@"RTMP:%@",userObj.pullStreamUrl);
 //    NSLog(@"============================");
     [self onPlayStream:YES URL:self.userObj.pullStreamUrl RotateDegree:rotateDegree];
+    [self onPlayStream:YES URL:self.userObj.pullStreamUrl RotateDegree:rotateDegree];
     int64_t delayInSeconds = 10.0;      // 延迟的时间
     /*
      *@parameter 1,时间参照，从此刻开始计时
@@ -2719,7 +2720,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
             _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
             [self.chatPrivateView reloadDateForTableView];
         }else{
-            if (userId == 0) {
+           if (userId == 0) {
                 _chatPrivateView.labNameAndId.text = @"  悄悄说";
                 _chatPrivateView.nowRow = -1;
             }else{
