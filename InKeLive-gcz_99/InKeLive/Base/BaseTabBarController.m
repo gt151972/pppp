@@ -132,12 +132,24 @@
 }
 
 - (void)cameraButtonClick:(TabBar *)tabBar{
-    CameraViewController *cameraVc = [[CameraViewController alloc]init];
-    //cameraVc.presentingVC = self;
-    //[self presentViewController:cameraVc animated:YES completion:nil];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    appDelegate.createCameraVC = cameraVc;
-    [[UIApplication sharedApplication].keyWindow addSubview:cameraVc.view];
+    //要求用户有归宿房间
+    LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
+    if(userData.guishuRoomId == 0) {
+        UIAlertView *baseAlert = [[UIAlertView alloc]
+                                  initWithTitle:@"提示" message:@"没有进行房间归属，不能开播!"
+                                  delegate:self cancelButtonTitle:@"知道了"
+                                  otherButtonTitles:nil, nil];
+        [baseAlert show];
+        return;
+    }else{
+        CameraViewController *cameraVc = [[CameraViewController alloc]init];
+        //cameraVc.presentingVC = self;
+        //[self presentViewController:cameraVc animated:YES completion:nil];
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        appDelegate.createCameraVC = cameraVc;
+        [[UIApplication sharedApplication].keyWindow addSubview:cameraVc.view];
+    }
+    
 //    //全屏大小的pop 弹窗
 //    //使用局部变量?,show里面因为增加到keyWindow中, 所以还是生存的..
 //    CameraView *popCamera = [[CameraView alloc]initWithFrame:self.view.bounds];
@@ -147,7 +159,7 @@
 //            [self doLogon];
 //            return;
 //        }
-//        //要求用户有归宿房间
+        //要求用户有归宿房间
 //        LocalUserModel* userData = [DPK_NW_Application sharedInstance].localUserModel;
 //        if(userData.guishuRoomId == 0) {
 //            UIAlertView *baseAlert = [[UIAlertView alloc]
@@ -157,7 +169,7 @@
 //            [baseAlert show];
 //            return;
 //        }
-//
+
 //
 //        //按钮事件
 //        switch (tag) {
