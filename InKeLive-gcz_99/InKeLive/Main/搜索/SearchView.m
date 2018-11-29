@@ -11,7 +11,7 @@
 #import "CommonAPIDefines.h"
 #import "SearchModel.h"
 #import "InKeCell.h"
-#import "InKeModel.h"
+
 #import "TempJoinRoomInfo.h"
 #import "AppDelegate.h"
 #import "DPK_NW_Application.h"
@@ -322,6 +322,11 @@
     
     InKeModel *model = [_arrayData objectAtIndex:indexPath.row];
     [cell updateCell:model];
+    [cell setBtnHideClicked:^{
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate showLiveRoom:NO CameraFront:FALSE hide:YES];
+        [self hide];
+    }];
     return cell;
 }
 

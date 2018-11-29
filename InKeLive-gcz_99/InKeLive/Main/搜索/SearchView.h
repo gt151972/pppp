@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "InKeModel.h"
 @interface SearchView : UIView
 
 @property (nonatomic,strong)UISearchBar *searchBar;
@@ -17,7 +17,7 @@
 @property (nonatomic,strong)UIButton *searchButton;
 
 @property (nonatomic,copy)void (^cancleBlock)();
-
+@property (nonatomic,copy)void (^hideBlock)();
 - (void) popToView;
 - (void) hide;
 

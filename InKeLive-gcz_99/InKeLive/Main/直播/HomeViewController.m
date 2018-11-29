@@ -100,7 +100,37 @@
 
 - (void)enterSearchClick{
     [_searchView popToView];
+//    [_searchView setHideBlock:^(InKeModel *mode) {
+//        [self goRoomHide:mode];
+//    }];
 }
+//- (void)goRoomHide:(InKeModel *)model{
+//    NSLog(@"goroom");
+//    ishide = YES;
+//    self.roomObj = model;
+//    GTAFNData *data = [[GTAFNData alloc] init];
+//    data.delegate = self;
+//    [data getRoomInfoWithRid:[NSString stringWithFormat:@"%d",_roomObj.roomId]];
+//
+//    //LiveViewController *live = [[LiveViewController alloc]init];
+//    //[live initURL:[NSURL URLWithString:@"rtmp://live.hkstv.hk.lxdns.com/live/hks"] fileList:nil];
+//    //if (self.livingDataArray.count > 0) {
+//    //    //默认只开启一个直播（开启多个可自行判断添加）
+//    //    LivingItem *item = [self.livingDataArray objectAtIndex:0];
+//    //    live.livingItem = item;
+//    //}
+//    //[self.navigationController pushViewController:live animated:YES];
+//    self.joinRoomInfo = [DPK_NW_Application sharedInstance].tempJoinRoomInfo;
+//    [self.joinRoomInfo reset];
+//    self.joinRoomInfo.isHide = YES;
+//    self.joinRoomInfo.roomId = _roomObj.roomId;
+//    self.joinRoomInfo.lookUserId = _roomObj.userId;
+//    self.joinRoomInfo.roomName = _roomObj.roomName;
+//    self.joinRoomInfo.dicRoomInfo = model;
+//    NSLog(@"dicRoomInfo == %@",self.joinRoomInfo.dicRoomInfo);
+//
+//}
+
 
 - (void)btnHistoryClicked{
     HistoryViewController *historyVC = [[HistoryViewController alloc] init];
