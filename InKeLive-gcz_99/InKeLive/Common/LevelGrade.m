@@ -75,6 +75,24 @@
         case 30://超级主持
             resource = @"cjzc";
             break;
+        case 31://一级主持
+            resource = @"1xingGray";
+            break;
+        case 32://二级主持
+            resource = @"2xingGray";
+            break;
+        case 33://三级主持
+            resource = @"3xingGray";
+            break;
+        case 34://四级主持
+            resource = @"4xingGray";
+            break;
+        case 35://五级主持
+            resource = @"5xingGray";
+            break;
+        case 40://超级主持
+            resource = @"cjzcGray";
+            break;
         case 201://灰代理
             resource = @"hdaili(1)";
             break;

@@ -251,6 +251,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hadEnterBackGround) name:UIApplicationDidEnterBackgroundNotification object:nil];//进入后台
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(closeRoom) name:UIApplicationWillTerminateNotification object:nil];//退出程序
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(closeRoom) name:UIApplicationDidEnterBackgroundNotification object:nil];//退出程序
     }
     else {
         //观众端，播放器
@@ -2474,7 +2475,6 @@ privateChatViewDelegate, GTAFNDataDelegate>
     //=======================================
 #endif
     NSArray *array = [self sortData:self.roomObj.memberList];
-    NSLog(@"array == %@",array);
     view.userArray = array;
     view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
@@ -2723,6 +2723,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
            if (userId == 0) {
                 _chatPrivateView.labNameAndId.text = @"  悄悄说";
                 _chatPrivateView.nowRow = -1;
+               _chatPrivateView.arrChatMessage = [NSMutableArray arrayWithArray:_arrPrivate];
             }else{
                 ClientUserModel* userObj = [self.roomObj findMember:userId];
                 NSDictionary *dicAll = @{@"userId":[NSString stringWithFormat:@"%d",userObj.userId],
@@ -2762,6 +2763,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     }];
     [_chatPrivateView setDeteleChatUser:^(int row) {
         [weakSelf.arrPrivate removeObjectAtIndex:row];
+        NSLog(@"array == %@",weakSelf.arrPrivate);
     }];
 }
 
@@ -3640,21 +3642,27 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 }
             }
             ClientUserModel* userObj = [self.roomObj findMember:toId];
-            if (count == -1) {
-                NSString* chatContent2 = [NSString filterHTML:chatContent];
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
-                NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
-                [_arrPrivate addObject:dicAll];
-                _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
+            if (userObj.userId == 0) {
+                [[GTAlertTool shareInstance]showAlert:@"消息发送失败" message:@"对方已退出房间" cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                    return ;
+                }];
             }else{
-                NSString* chatContent2 = [NSString filterHTML:chatContent];
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
-                NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
-                [arrMsg addObject:dic];
-                NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
-                [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
-                _nowRow = count;///2
+                if (count == -1) {
+                    NSString* chatContent2 = [NSString filterHTML:chatContent];
+                    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
+                    NSArray *arrMsg = [NSArray arrayWithObjects:dic, nil];
+                    NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
+                    [_arrPrivate addObject:dicAll];
+                    _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue]-1;
+                }else{
+                    NSString* chatContent2 = [NSString filterHTML:chatContent];
+                    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:chatContent2, @"msg", @"1", @"isMe", nil];
+                    NSMutableArray *arrMsg = [NSMutableArray arrayWithArray:[[_arrPrivate objectAtIndex:count] objectForKey:@"message"]];
+                    [arrMsg addObject:dic];
+                    NSDictionary *dicAll = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",toId], @"userId", toUserAlias, @"userAlias", arrMsg, @"message",userObj.userSmallHeadPic, @"image", nil];
+                    [_arrPrivate replaceObjectAtIndex:count withObject:dicAll];
+                    _nowRow = count;///2
+                }
             }
         }else if (myId == toId){
             for (int index = 0; index < _arrPrivate.count; index ++ ) {

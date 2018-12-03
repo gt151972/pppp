@@ -433,7 +433,7 @@ static const CGFloat kHeight=285.0;
     }else if (_arrChatMessage.count ==1){
         [_arrChatMessage removeObjectAtIndex:0];
         _nowRow = -1;
-        _lastRow = -1;
+        _lastRow = 0;
         if (self.deteleChatUser) {
             self.deteleChatUser(0);
         }

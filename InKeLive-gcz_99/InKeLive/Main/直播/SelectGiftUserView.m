@@ -123,6 +123,7 @@
     [imgHead sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default_head"]];
     [cell.contentView addSubview:imgHead];
     UIView *level = [[UIView alloc] initWithFrame:CGRectMake(60, 17, 16, 16)];
+    NSLog(@"viplevel == %d",model.vipLevel);
     [level addSubview:[[LevelGrade shareInstance] greadImage:model.vipLevel]];
     [cell.contentView addSubview:level];
     UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(80, 17, SCREEN_WIDTH - 85, 16)];

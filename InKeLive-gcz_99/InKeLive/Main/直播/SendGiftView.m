@@ -672,8 +672,29 @@
             case 30:
                 model.userLevel = 40;
                 break;
+            case 31:
+                model.userLevel = 35;
+                break;
+            case 32:
+                model.userLevel = 36;
+                break;
+            case 33:
+                model.userLevel = 37;
+                break;
+            case 34:
+                model.userLevel = 38;
+                break;
+            case 35:
+                model.userLevel = 39;
+                break;
+            case 40:
+                model.userLevel = 40;
+                break;
             case 201:
                 model.userLevel = 26;
+                break;
+            case 202:
+                model.userLevel = 94;
                 break;
             case 205:
                 model.userLevel = 27;
@@ -686,6 +707,12 @@
                 break;
             case 211:
                 model.userLevel = 30;
+                break;
+            case 500:
+                model.userLevel = 200;
+                break;
+            case 501:
+                model.userLevel = 201;
                 break;
                 
             default:
