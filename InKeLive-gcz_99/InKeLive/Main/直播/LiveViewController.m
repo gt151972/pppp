@@ -2415,9 +2415,11 @@ privateChatViewDelegate, GTAFNDataDelegate>
     view.userArray = self.roomObj.memberList;
     view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
-        self.giftView.userName = userAlias;
-        self.giftView.userId = (int)userId;
-//        [self bottomToolPosition];
+        ClientUserModel* userObj = [self.roomObj findMember:[[NSString stringWithFormat:@"%ld",(long)userId]intValue]];
+        if(userObj != nil) {
+            self.giftView.userName = userAlias;
+            self.giftView.userId = (int)userId;
+        }
     }];
     
     [view popShow];
@@ -2478,9 +2480,14 @@ privateChatViewDelegate, GTAFNDataDelegate>
     view.userArray = array;
     view.ishide = _isHide;
     [view setUserClick:^(NSInteger userId, NSString *userAlias) {
-        [UIView animateWithDuration:0 animations:^{
-            self.userView.transform = CGAffineTransformIdentity;
-        }];
+        ClientUserModel* userObj = [self.roomObj findMember:[[NSString stringWithFormat:@"%ld",(long)userId]intValue]];
+        if(userObj != nil) {
+            [UIView animateWithDuration:0 animations:^{
+                self.userView.transform = CGAffineTransformIdentity;
+            }];
+        }else{
+            [[GTAlertTool shareInstance]showAlert:@"该用户已离开房间" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+        }
     }];
     
     [view popShow];
@@ -3512,6 +3519,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                       UserHeadPic:(NSString *)userHeadPic
                       videoStatus:(int)videoStatus
                       audioStatus:(int)audioStatus
+                     szcidiograph:(NSString *)szcidiograph
 {
     ClientConfigParam* clientConfig = [DPK_NW_Application sharedInstance].clientConfigParam;
     
@@ -3530,6 +3538,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
     userObj.pushStreamUrl = @"";
     userObj.pullStreamUrl =@"";
     userObj.param_01 = param_01;
+    userObj.szcidiograph = szcidiograph;
     NSLog(@"param_01 == %d",param_01);
     NSLog(@"inroomstate == %d",inroomstate);
     if([self.roomObj findAllMember:userId] == nil) {
@@ -3557,6 +3566,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
 //            [model setModel:sysTipText];
             [model setModelWithId:[NSString stringWithFormat:@"%d",userObj.userId] name:userObj.userAlias type:CellEnterType level:vipLevel];
             [self.messageTableView sendMessage:model];
+        
         }
     }
     

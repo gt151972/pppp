@@ -766,6 +766,7 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                     HBCMD_VideoChat_RoomUserInfo_t* pUserItem = (HBCMD_VideoChat_RoomUserInfo_t *)data;
                     NSString* strUserAlias =[[NSString alloc]initWithCString:pUserItem->userName encoding:enc];
                     NSString* strHeadPic = [[NSString alloc] initWithCString:pUserItem->userHeadPic encoding:NSASCIIStringEncoding];
+                    NSString*strSzcidiograph = [[NSString alloc]initWithCString:pUserItem->szcidiograph encoding:NSASCIIStringEncoding];
                     [delegate OnNetMsg_RoomUserComeNoty:pUserItem->vcbId
                                                  UserID:pUserItem->userId
                                                  Gender:0
@@ -781,7 +782,8 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                                               UserAlias:strUserAlias
                                             UserHeadPic:strHeadPic
                                             videoStatus:pUserItem->nVideoStatus
-                                            audioStatus:pUserItem->nAudioStatus];
+                                            audioStatus:pUserItem->nAudioStatus
+                                           szcidiograph:strSzcidiograph];
                 }
             }
                 break;

@@ -192,7 +192,8 @@
                         UserAlias:(NSString*)userAlias
                       UserHeadPic:(NSString*)userHeadPic
                       videoStatus:(int)videoStatus
-                      audioStatus:(int)audioStatus;
+                      audioStatus:(int)audioStatus
+                     szcidiograph:(NSString*)szcidiograph;
 
 //用户聊天通知 
 -(void)OnNetMsg_RoomChatMsgNoty:(int)roomId

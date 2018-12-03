@@ -156,6 +156,15 @@
     NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
+    NSLog(@",model.userId == %d",model.userId);
+//    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"userId",[NSString stringWithFormat:@"%d",model.userId],
+//                          @"userAlias",model.userAlias,
+//                          @"userSmallHeadPic",model.userSmallHeadPic,
+//                          @"vipLevel",[NSString stringWithFormat:@"%d",model.vipLevel],
+//                          @"userBigHeadPic",model.userBigHeadPic,
+//                          @"pushStreamUrl",model.pushStreamUrl,
+//                          @"pullStreamUrl",model.pullStreamUrl,
+//                          @"szcidiograph",model.szcidiograph, nil];
     NSDictionary*dict =@{@"userId":[NSString stringWithFormat:@"%d",model.userId],
                          @"userAlias":model.userAlias,
                          @"userSmallHeadPic":model.userSmallHeadPic,
@@ -165,6 +174,7 @@
                          @"pullStreamUrl":model.pullStreamUrl,
                          @"szcidiograph":model.szcidiograph
                          };
+    NSLog(@"dict == %@",dict);
     [dict writeToFile:filePathName atomically:YES];
     if (self.userClick) {
         self.userClick(model.userId, model.userAlias);
