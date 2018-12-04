@@ -161,7 +161,7 @@
     [cell.contentView addSubview:btnHide];
     [btnHide mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);
-        make.size.mas_equalTo(CGSizeMake(40, 18));
+        make.size.mas_equalTo(CGSizeMake(40, 22));
         make.right.equalTo(btnGo.mas_left).offset(-5);
     }];
     LocalUserModel *model = [DPK_NW_Application sharedInstance].localUserModel;
