@@ -796,6 +796,8 @@ privateChatViewDelegate, GTAFNDataDelegate>
     [self.view addSubview:self.playerView];
     [self.view addSubview:self.pushStreamerView];
     
+ 
+
     [self.view addSubview:self.showView];
     [self.showView addSubview:self.backdropView];
     [self.view insertSubview:self.topSideView aboveSubview:self.showView];
@@ -1021,6 +1023,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 break;
                 case 151: //礼物
                 {
+                    
                     [weakSelf bottomToolPosition];
                     
                 }
@@ -1440,7 +1443,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         is_ksystream_pull_connecting_ = NO;
         is_ksystream_pull_connected_ = NO;
         self.KSYstreamerStatusLabel.text =@"[L:流状态:无]";
-        self.showView.hidden = NO;
+        self.showView.hidden = YES;
     }
 }
 
@@ -1886,6 +1889,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         }];
         
         [userView setPrivateChatBlock:^(int userId, NSString *userName) {
+            ClientUserModel* userObj = [self.roomObj findMember:[[NSString stringWithFormat:@"%ld",(long)userId]intValue]];
             //关闭回调函数
             [UIView animateWithDuration:0 animations:^{
                 self.userView.transform = CGAffineTransformMakeScale(0.01, 0.01);
@@ -1893,7 +1897,12 @@ privateChatViewDelegate, GTAFNDataDelegate>
                 [self.userView removeFromSuperview];
                 self.userView = nil;
             }];
-            [self showPrivateChatView:userId];
+            if(userObj != nil) {
+                [self showPrivateChatView:userId];
+            }else{
+                [[GTAlertTool shareInstance]showAlert:@"对方已离开房间" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:nil];
+            }
+            
         }];
         
         WEAKSELF;
@@ -1910,7 +1919,15 @@ privateChatViewDelegate, GTAFNDataDelegate>
             anim.fillMode = kCAFillModeForwards;
             anim.toValue = [NSValue valueWithCGPoint:CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT + 32)];
             [weakSelf.bottomTool.layer addAnimation:anim forKey:@"positionHide"];
-            [weakSelf showPublicChatView:userId userName:userName];
+            ClientUserModel* userObj = [self.roomObj findMember:[[NSString stringWithFormat:@"%ld",(long)userId]intValue]];
+            if(userObj != nil) {
+                [weakSelf showPublicChatView:userId userName:userName];
+            }else{
+                [[GTAlertTool shareInstance]showAlert:@"@的用户已离开房间" message:nil cancelTitle:nil titleArray:nil viewController:self confirm:^(NSInteger buttonTag) {
+                    
+                }];
+            }
+            
         }];
        
     }
@@ -2720,6 +2737,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
                                              };
                     [_arrPrivate addObject:dicAll];
                     _nowRow = [[NSString stringWithFormat:@"%lu",(unsigned long)_arrPrivate.count] intValue] - 1;
+                    _chatPrivateView.lastRow = _nowRow;
                 }
                 
 //                _chatPrivateView.labNameAndId.text = [NSString stringWithFormat:@"  悄悄说:%d(%@)",userId,userObj.userAlias];

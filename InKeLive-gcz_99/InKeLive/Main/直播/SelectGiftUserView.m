@@ -156,7 +156,7 @@
     NSArray*array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES);
     NSString*cachePath = array[0];
     NSString*filePathName = [cachePath stringByAppendingPathComponent:@"livingUserInfo.plist"];
-    NSLog(@",model.userId == %d",model.userId);
+//    NSLog(@",model.userId == %d",model.userId);
 //    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"userId",[NSString stringWithFormat:@"%d",model.userId],
 //                          @"userAlias",model.userAlias,
 //                          @"userSmallHeadPic",model.userSmallHeadPic,
