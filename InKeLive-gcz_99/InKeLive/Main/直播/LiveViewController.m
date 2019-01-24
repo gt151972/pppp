@@ -251,7 +251,7 @@ privateChatViewDelegate, GTAFNDataDelegate>
         
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hadEnterBackGround) name:UIApplicationDidEnterBackgroundNotification object:nil];//进入后台
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(closeRoom) name:UIApplicationWillTerminateNotification object:nil];//退出程序
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(closeRoom) name:UIApplicationDidEnterBackgroundNotification object:nil];//退出程序
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(closeRoom) name:UIApplicationDidEnterBackgroundNotification object:nil];//退出程序
     }
     else {
         //观众端，播放器

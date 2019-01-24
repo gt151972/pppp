@@ -606,6 +606,7 @@
     //新的关闭方式
     [self endRecordingVideo];
     [self.view removeFromSuperview];
+    
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if([DPK_NW_Application sharedInstance].isLogon == NO) {
         [appDelegate doLogon];
@@ -615,6 +616,7 @@
     if(createFlag) {
         [appDelegate showLiveRoom:YES CameraFront:self.cameraIsFront hide:NO];
     }
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 #if 0 //异步的方式
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

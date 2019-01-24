@@ -423,11 +423,6 @@ static DPK_NW_Application* DPKApp_ShareObj =nil;
                       roomID:(int)roomID
                       userID:(int)userID
                      DataLen:(int)data_len
-
-//- (void)OnEventTCPSocketRead:(DPKTCPSocket*)sock MainCommand:(int)main_cmd
-//                  SubCommand:(int)sub_cmd
-//                        Data:(char*)data
-//                     DataLen:(int)data_len
 {
     
     
